@@ -15,7 +15,7 @@
     <color name="md_theme_onError">#FFFFFF</color>
     <color name="md_theme_errorContainer">#FFDAD6</color>
     <color name="md_theme_onErrorContainer">#93000A</color>
-    <color name="md_theme_background">#F4FBF8</color>
+    <color name="md_theme_background">#FFFFFF</color>
     <color name="md_theme_onBackground">#171D1B</color>
     <color name="md_theme_surface">#F4FBF8</color>
     <color name="md_theme_onSurface">#171D1B</color>
@@ -140,4 +140,17 @@
     <color name="md_theme_surfaceContainer_highContrast">#DDE4E1</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#CFD6D3</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C1C8C5</color>
+
+    <!-- Basic Color -->
+    <color name="black">#000000</color>
+    <color name="red_error">#B3261E</color>
+    <color name="green_line">#CDE8DF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="green_progress_indicator">#CEE1DE</color>
+    <color name="green_track_indicator">#086B5A</color>
+
+
+    <!-- Google SignIn Text Color -->
+    <color name="black_google_signin">#06201A</color>
+
 </resources>

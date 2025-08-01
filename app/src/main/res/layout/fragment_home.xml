@@ -1,22 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_home"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="275dp"
+            android:background="@color/md_theme_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="380dp"
+            android:layout_height="306dp"
+            android:backgroundTint="@color/white"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="4dp"
+            android:layout_marginTop="22dp"
+            app:contentPadding="24dp"
+            app:layout_constraintTop_toBottomOf="@id/header_home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/ic_food"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="logo makanan"
+                        android:src="@drawable/ic_food"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="14dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_food"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Asupan"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:letterSpacing="0.03"
+                        app:layout_constraintTop_toBottomOf="@id/ic_food"
+                        app:layout_constraintStart_toStartOf="@id/ic_food"
+                        app:layout_constraintEnd_toEndOf="@id/ic_food"/>
+
+                    <TextView
+                        android:id="@+id/tv_calories_consumed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="150"
+                        android:textStyle="bold"
+                        android:textSize="22sp"
+                        android:gravity="center"
+                        app:layout_constraintTop_toBottomOf="@id/tv_food"
+                        app:layout_constraintStart_toStartOf="@id/tv_food"
+                        app:layout_constraintEnd_toEndOf="@id/tv_food"/>
+
+                    <TextView
+                        android:id="@+id/tv_kkal_of_calories_consumed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="kkal"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:letterSpacing="0.03"
+                        app:layout_constraintTop_toBottomOf="@id/tv_calories_consumed"
+                        app:layout_constraintStart_toStartOf="@id/tv_calories_consumed"
+                        app:layout_constraintEnd_toEndOf="@id/tv_calories_consumed"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    layout="@layout/component_circular_progress"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ic_calories_needed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="logo target kalori"
+                        android:src="@drawable/ic_target_calories"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="14dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Total"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:letterSpacing="0.03"
+                        app:layout_constraintTop_toBottomOf="@id/ic_calories_needed"
+                        app:layout_constraintStart_toStartOf="@id/ic_calories_needed"
+                        app:layout_constraintEnd_toEndOf="@id/ic_calories_needed"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_calories_needed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="150"
+                        android:textStyle="bold"
+                        android:textSize="22sp"
+                        android:gravity="center"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total"
+                        app:layout_constraintStart_toStartOf="@id/tv_total"
+                        app:layout_constraintEnd_toEndOf="@id/tv_total"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_kkal_of_calories_needed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="kkal"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:letterSpacing="0.03"
+                        app:layout_constraintTop_toBottomOf="@id/tv_calories_needed"
+                        app:layout_constraintStart_toStartOf="@id/tv_calories_needed"
+                        app:layout_constraintEnd_toEndOf="@id/tv_calories_needed"/>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="22dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/title_greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/hello"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jakarta_sans_family"
+                        android:text="Halo,\u0020"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jakarta_sans_family"
+                        android:text="Ilham"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/hello"
+                        app:layout_constraintTop_toTopOf="@id/hello" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/subtitle_greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jakarta_sans_family"
+                    android:letterSpacing="0.03"
+                    android:text="Pantau gula dan aktivitas harianmu hari ini"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/hello"
+                    app:layout_constraintTop_toTopOf="@id/hello" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="logo insight"
+                android:src="@drawable/ic_insights"
+                android:layout_marginEnd="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/notifications"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_notifications"
+                android:contentDescription="logo insight"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

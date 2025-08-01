@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    tools:context=".ui.auth.register.inputdatauser.InputGenderFragment">
+
+    <TextView
+        android:id="@+id/pilihan_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:text="Memiliki Riwayat Tekanan Darah Tinggi?"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextSizeCheck" />
+
+    <TextView
+        android:id="@+id/subtitle_input_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jakarta_sans_family"
+        android:letterSpacing="0.02"
+        android:lineSpacingExtra="2sp"
+        android:text="Riwayat tekanan darah tinggi  dapat meningkatkan risiko diabetes dan penyakit jantung"
+        android:textSize="14sp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="@+id/pilihan_gender"
+        app:layout_constraintTop_toBottomOf="@+id/pilihan_gender"
+        tools:ignore="TextContrastCheck" />
+
+    <include
+        android:id="@+id/male"
+        layout="@layout/component_input_tekanan_darah_tinggi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@id/subtitle_input_gender"/>
+
+    <include
+        layout="@layout/component_input_tekanan_darah_tinggi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/male"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:padding="16dp"
+        android:text="@string/lanjutkan"
+        android:textStyle="bold"
+        android:layout_marginBottom="34dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

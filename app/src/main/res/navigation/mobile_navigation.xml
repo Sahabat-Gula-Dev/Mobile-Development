@@ -12,14 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.pkm.sahabatgula.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_scan"
+        android:name="com.pkm.sahabatgula.ui.scan.ScanFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_scan" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.pkm.sahabatgula.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_explore"
+        android:name="com.pkm.sahabatgula.ui.explore.ExploreFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_explore" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.pkm.sahabatgula.ui.settings.SettingsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
