@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="0dp"
+    app:contentPadding="16dp"
+    app:cardCornerRadius="2dp"
+    app:strokeWidth="0.1dp"
+    android:backgroundTint="#F4E3CD">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/arrow_right">
+
+            <ImageView
+                android:id="@+id/ic_sugar_candy"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_activity_dumble"
+                android:contentDescription="logo konsumsi gula"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="37dp"
+                app:layout_constraintStart_toEndOf="@id/ic_sugar_candy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ic_sugar_candy"
+                app:layout_constraintBottom_toBottomOf="@id/ic_sugar_candy">
+
+                <TextView
+                    android:id="@+id/tv_title_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:letterSpacing="0.02"
+                    android:text="Sudah Bergerak Hari Ini?"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_number_of_consumption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.03"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="1dp"
+                    android:text="Aktivitas fisik bantu bakar kalori dan jaga kadar gula tetap stabil"
+                    />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_right"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

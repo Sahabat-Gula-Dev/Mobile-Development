@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="2dp"
+    app:contentPadding="16dp"
+    app:cardCornerRadius="2dp"
+    app:strokeWidth="0.1dp"
+    android:backgroundTint="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ic_sugar_candy"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_sugar_candy"
+            android:contentDescription="logo konsumsi gula"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_title_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:letterSpacing="0.02"
+            android:text="Konsumsi Gula Hari Ini"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginStart="24dp"
+            app:layout_constraintTop_toTopOf="@id/ic_sugar_candy"
+            app:layout_constraintStart_toEndOf="@id/ic_sugar_candy"
+            />
+
+        <TextView
+            android:id="@+id/tv_number_of_consumption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.03"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            android:text="3"
+            app:layout_constraintStart_toStartOf="@id/tv_title_progress"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_progress"/>
+
+        <TextView
+            android:id="@+id/tv_number_of_total_nutrition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.03"
+            android:textSize="12sp"
+            android:text="\u0020dari 50 gr"
+            app:layout_constraintStart_toEndOf="@id/tv_number_of_consumption"
+            app:layout_constraintTop_toTopOf="@id/tv_number_of_consumption"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+
+        >
+
+        <ImageView
+            android:id="@+id/ic_graphic_of_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_graphic_of_progress"
+            app:layout_constraintEnd_toStartOf="@id/tv_plus_sign"
+            app:layout_constraintTop_toTopOf="@id/tv_plus_sign"
+            app:layout_constraintBottom_toBottomOf="@id/tv_plus_sign"/>
+
+        <TextView
+            android:id="@+id/tv_plus_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="+"
+            app:layout_constraintEnd_toStartOf="@id/tv_number_of_percentage"
+            app:layout_constraintTop_toTopOf="@id/tv_number_of_percentage"
+            app:layout_constraintBottom_toBottomOf="@id/tv_number_of_percentage"/>
+
+        <TextView
+            android:id="@+id/tv_number_of_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.03"
+            android:textSize="12sp"
+            android:text="0"
+            app:layout_constraintEnd_toStartOf="@id/tv_percentage_sign"
+            app:layout_constraintTop_toTopOf="@id/tv_percentage_sign"
+            app:layout_constraintBottom_toBottomOf="@id/tv_percentage_sign"/>
+
+        <TextView
+            android:id="@+id/tv_percentage_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.03"
+            android:textSize="12sp"
+            android:text="%"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
