@@ -8,10 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.home.waterintake.WaterIntakeFragment">
+    tools:context=".ui.home.dailywater.WaterIntakeFragment">
 
     <TextView
-        android:id="@+id/title_step"
+        android:id="@+id/title_daily_carbo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Asupan Air Harian"
@@ -24,14 +24,14 @@
         />
 
     <include
-        android:id="@+id/pi_daily_step"
+        android:id="@+id/pi_log_food"
         android:layout_width="221dp"
         android:layout_height="221dp"
         layout="@layout/component_daily_consumption_circular_progress"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_step"
+        app:layout_constraintTop_toBottomOf="@id/title_daily_carbo"
         />
 
     <TextView
@@ -43,7 +43,7 @@
         android:textStyle="bold"
         android:textColor="@color/md_theme_onSurface"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/pi_daily_step"
+        app:layout_constraintTop_toBottomOf="@id/pi_log_food"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

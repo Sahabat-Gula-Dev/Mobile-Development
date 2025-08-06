@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.waterintake
+package com.pkm.sahabatgula.ui.home.dailywater
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

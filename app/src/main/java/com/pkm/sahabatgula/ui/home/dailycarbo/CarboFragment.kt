@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.step
+package com.pkm.sahabatgula.ui.home.dailycarbo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [StepFragment.newInstance] factory method to
+ * Use the [CarboFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class StepFragment : Fragment() {
+class CarboFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +35,7 @@ class StepFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_step, container, false)
+        return inflater.inflate(R.layout.fragment_carbo, container, false)
     }
 
     companion object {
@@ -45,12 +45,12 @@ class StepFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment StepFragment.
+         * @return A new instance of fragment CarboFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            StepFragment().apply {
+            CarboFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

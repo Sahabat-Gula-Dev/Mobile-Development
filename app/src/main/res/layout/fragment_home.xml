@@ -272,6 +272,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <!-- card konsumsi gula -->
         <include
             android:id="@+id/sugar_consumption"
             layout="@layout/component_progress"
@@ -282,6 +283,7 @@
             android:layout_marginTop="22dp"
             app:layout_constraintTop_toBottomOf="@id/calories_summary_card"/>
 
+        <!-- card "belum catat konsumsi harian" -->
         <include
             android:id="@+id/no_consumption_today"
             layout="@layout/component_action"
@@ -292,6 +294,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/sugar_consumption"/>
 
+        <!-- card karbohidrat -->
         <include
             android:id="@+id/carbo_consumption"
             layout="@layout/component_progress"

@@ -8,18 +8,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:paddingHorizontal="16dp"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    tools:context=".ui.home.dailycarbo.CarboFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.dailystep.StepFragment">
+        android:layout_height="wrap_content">
+
 
         <TextView
             android:id="@+id/title_daily_carbo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Langkah Harian"
+            android:text="Asupan Karbohidrat Harian"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/md_theme_onSurface"
@@ -28,6 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             />
 
+        <!-- circular progress, ganti warna jadi hijau dan logo food  -->
         <include
             android:id="@+id/pi_log_food"
             android:layout_width="221dp"
@@ -39,6 +41,7 @@
             app:layout_constraintTop_toBottomOf="@id/title_daily_carbo"
             />
 
+        <!-- card tips -->
         <include
             android:id="@+id/card_daily_carbo_tips"
             layout="@layout/component_information"
@@ -49,29 +52,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <!-- card information -->
         <include
-            android:id="@+id/card_daily_food_entry"
-            layout="@layout/component_activating_step_count"
+            android:id="@+id/card_daily_carbo_information"
+            layout="@layout/component_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@id/card_daily_carbo_tips"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <!-- card history food -->
         <include
             android:id="@+id/card_history_food"
             layout="@layout/component_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/card_daily_food_entry"/>
+            app:layout_constraintTop_toBottomOf="@id/card_daily_carbo_information"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             android:id="@+id/title_water_intake_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Riwayat Konsumsi Asupan Air"
+            android:text="Riwayat Konsumsi Karbohiodrat Harian"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/md_theme_onSurface"
@@ -80,20 +87,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- tambahkan grafik asupan air mingguan dan bulanan -->
-
-
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_smartwatch_integration"
-            android:clickable="true"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="157dp"
-            app:layout_constraintTop_toBottomOf="@id/title_water_intake_history"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        <!-- tambahkan grafik histori Karbohiodrat mingguan dan bulanan -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
