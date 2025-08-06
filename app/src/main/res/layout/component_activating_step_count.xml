@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="0.2dp"
+    android:backgroundTint="@color/white"
+    app:cardCornerRadius="4dp"
+    app:strokeWidth="0.2dp"
+    app:contentPadding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ic_step_bicycle"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_step_bicycle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="Indikator konsumsi gula rendah: ikon wajah senang berwarna hijau"/>
+
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toEndOf="@id/ic_step_bicycle"
+            app:layout_constraintTop_toTopOf="@id/ic_step_bicycle"
+            app:layout_constraintBottom_toBottomOf="@id/ic_step_bicycle"
+            app:layout_constraintEnd_toStartOf="@id/switch_button">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Sedang Berkendara?"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/md_theme_onSurface"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Nonaktifkan perhitungan langkah sementara"
+                android:textSize="12sp"
+                android:letterSpacing="0.03"/>
+        </LinearLayout>
+
+        <!-- Untuk switch button, di bawah ini adalah kondisi false
+             jika true, maka lakukan perubahan pada
+             app:thumbTint="@color/white"
+             app:trackTint="#B35A1E"
+        -->
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:thumbTint="#B35A1E"
+            app:trackTint="@color/white"
+            app:trackDecorationTint="#B35A1E"
+            android:checked="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

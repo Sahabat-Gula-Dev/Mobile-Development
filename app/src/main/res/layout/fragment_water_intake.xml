@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- tambahkan arrow left dan icon share -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
+    tools:context=".ui.home.waterintake.WaterIntakeFragment">
+
+    <TextView
+        android:id="@+id/title_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Asupan Air Harian"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_theme_onSurface"
+        android:layout_marginTop="17dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <include
+        android:id="@+id/pi_daily_step"
+        android:layout_width="221dp"
+        android:layout_height="221dp"
+        layout="@layout/component_daily_consumption_circular_progress"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_step"
+        />
+
+    <TextView
+        android:id="@+id/title_add_water_intake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tambah Asupan Air"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_theme_onSurface"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/pi_daily_step"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layout_glasses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/title_add_water_intake"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:contentPaddingTop="24dp"
+        app:contentPaddingBottom="24dp"
+        android:layout_marginTop="16dp"
+        android:elevation="2dp"
+        app:cardCornerRadius="0dp"
+        android:backgroundTint="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/img_glass_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas pertama"
+                android:src="@drawable/img_glass_filled"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/img_glass_2"/>
+
+            <ImageView
+                android:id="@+id/img_glass_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas kedua"
+                android:src="@drawable/img_glass_empty"
+                app:layout_constraintStart_toEndOf="@id/img_glass_1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/img_glass_3"/>
+
+            <ImageView
+                android:id="@+id/img_glass_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas ketiga"
+                android:src="@drawable/img_glass_empty"
+                app:layout_constraintStart_toEndOf="@id/img_glass_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/img_glass_4"/>
+
+            <ImageView
+                android:id="@+id/img_glass_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas keempat"
+                android:src="@drawable/img_glass_empty"
+                app:layout_constraintStart_toEndOf="@id/img_glass_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/img_glass_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas kelima"
+                android:src="@drawable/img_glass_empty"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/img_glass_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/img_glass_6" />
+
+            <ImageView
+                android:id="@+id/img_glass_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas keenam"
+                android:src="@drawable/img_glass_empty"
+                app:layout_constraintStart_toEndOf="@id/img_glass_5"
+                app:layout_constraintTop_toTopOf="@id/img_glass_5"
+                app:layout_constraintEnd_toStartOf="@id/img_glass_7"/>
+
+            <ImageView
+                android:id="@+id/img_glass_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas ketujuh"
+                android:src="@drawable/img_glass_empty"
+                app:layout_constraintStart_toEndOf="@id/img_glass_6"
+                app:layout_constraintTop_toTopOf="@id/img_glass_6"
+                app:layout_constraintEnd_toStartOf="@id/img_glass_8"/>
+
+            <ImageView
+                android:id="@+id/img_glass_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Gelas kedelapan"
+                android:src="@drawable/img_glass_empty"
+                app:layout_constraintTop_toTopOf="@id/img_glass_7"
+                app:layout_constraintStart_toEndOf="@id/img_glass_7"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <include
+        android:id="@+id/card_tips"
+        layout="@layout/component_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_glasses"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/card_step_information"
+        layout="@layout/component_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_tips"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/title_water_intake_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Riwayat Konsumsi Asupan Air"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_theme_onSurface"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/card_step_information"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- tambahkan grafik asupan air mingguan dan bulanan -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

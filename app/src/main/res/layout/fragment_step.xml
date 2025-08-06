@@ -8,13 +8,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.home.sugarconsumption.SugarConsumptionFragment">
+    tools:context=".ui.home.step.StepFragment">
 
     <TextView
         android:id="@+id/title_step"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Konsumsi Gula Harian"
+        android:text="Total Langkah Harian"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/md_theme_onSurface"
@@ -35,8 +35,8 @@
         />
 
     <include
-        android:id="@+id/card_sugar_consumption_level"
-        layout="@layout/component_sugar_consumption_card"
+        android:id="@+id/card_step_tips"
+        layout="@layout/component_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -44,30 +44,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- di sini ganti kontennya dengan konten reminder untuk minum air -->
     <include
-        android:id="@+id/card_water_intake"
+        android:id="@+id/card_activating_step_count"
+        layout="@layout/component_activating_step_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_step_tips"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/card_target_daily_step"
         layout="@layout/component_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/card_sugar_consumption_level"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/card_activating_step_count"/>
 
     <TextView
-        android:id="@+id/title_history_sugar_consumption"
+        android:id="@+id/title_water_intake_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Riwayat Konsumsi Gula"
+        android:text="Riwayat Konsumsi Asupan Air"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/md_theme_onSurface"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/card_water_intake"
+        app:layout_constraintTop_toBottomOf="@id/card_target_daily_step"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- tambahkan grafik konsumsi gula mingguan dan bulanan -->
+    <!-- tambahkan grafik asupan air mingguan dan bulanan -->
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
