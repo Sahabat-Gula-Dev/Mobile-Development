@@ -55,4 +55,7 @@ dependencies {
 
     // card
     implementation(libs.androidx.cardview)
+
+    // Chart
+    implementation(libs.mpandroidchart)
 }
