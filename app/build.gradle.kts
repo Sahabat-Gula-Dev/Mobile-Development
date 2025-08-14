@@ -60,4 +60,8 @@ dependencies {
     implementation(libs.androidx.camera.camera2)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
+
+    // viewpager2
+    implementation(libs.androidx.viewpager2)
+
 }

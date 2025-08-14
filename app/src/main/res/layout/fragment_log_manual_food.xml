@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.dailyfood.manual.LogManualFoodFragment">
+
+    <!-- card suggestion food by manually  -->
+    <include
+        android:id="@+id/card_suggestion_food_manually_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/component_action"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar_food"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Cari Makanan"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        app:strokeColor="@color/md_theme_onSurfaceVariant"
+        app:strokeWidth="1dp"
+        app:navigationIcon="@null"
+        app:menu="@menu/search_menu"
+        android:backgroundTint="@color/md_theme_onPrimary"
+        app:layout_constraintTop_toBottomOf="@id/card_suggestion_food_manually_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
