@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.auth.register.inputdatauser.InputGenderFragment">
+    tools:context=".ui.auth.register.inputdatauser.InputDataUserGenderFragment">
 
     <TextView
         android:id="@+id/pilihan_gender"

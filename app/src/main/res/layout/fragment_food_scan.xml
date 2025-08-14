@@ -1,14 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_food_scan"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.dailyfood.scan.FoodScanFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="16dp"
+    tools:context=".ui.home.dailyfood.scan.LogFoodScanFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="28dp"
+        app:cardCornerRadius="4dp"
+        android:elevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_check_nutritions">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/cam_scan_food"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <!-- top left -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="32dp"
+                android:contentDescription="Bingkai kiri atas pemindaian makanan"
+                android:src="@drawable/frame_top_left"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- top right -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="32dp"
+                android:contentDescription="Bingkai kanan atas pemindaian makanan"
+                android:src="@drawable/frame_top_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- bottom right -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginBottom="32dp"
+                android:contentDescription="Bingkai kanan bawah pemindaian makanan"
+                android:src="@drawable/frame_bottom_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- bottom left -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginBottom="32dp"
+                android:contentDescription="Bingkai kiri bawah pemindaian makanan"
+                android:src="@drawable/frame_bottom_left"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/btn_check_nutritions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cek Kandungan Gizi"
+        android:textStyle="bold"
+        android:lineSpacingExtra="4sp"
+        android:letterSpacing="0.01"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_upload_photo"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_upload_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Unggah Foto"
+        android:textStyle="bold"
+        android:lineSpacingExtra="4sp"
+        app:rippleColor="#CECECE"
+        android:letterSpacing="0.01"
+        android:paddingVertical="16dp"
+        android:backgroundTint="@color/md_theme_onPrimary"
+        android:textColor="@color/md_theme_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeColor="#79747E"
+        app:strokeWidth="1dp"
+        android:layout_marginBottom="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

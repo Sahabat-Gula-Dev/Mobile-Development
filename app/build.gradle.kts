@@ -56,6 +56,8 @@ dependencies {
     // card
     implementation(libs.androidx.cardview)
 
-    // Chart
-    implementation(libs.mpandroidchart)
+    // cameraX
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
 }

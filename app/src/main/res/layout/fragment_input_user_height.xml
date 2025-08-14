@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.auth.register.inputdatauser.InputUserHeightFragment">
+    tools:context=".ui.auth.register.inputdatauser.InputDataUserHeightFragment">
 
     <TextView
         android:id="@+id/title_input_height"

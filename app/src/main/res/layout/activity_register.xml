@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:startIconDrawable="@drawable/icon_person"
+                app:startIconDrawable="@drawable/ic_person"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:startIconDrawable="@drawable/icon_mail"
+                app:startIconDrawable="@drawable/ic_mail"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:startIconDrawable="@drawable/icon_lock"
+                app:startIconDrawable="@drawable/ic_lock"
                 app:endIconMode="custom"
                 app:endIconDrawable="@drawable/ic_error_password"
                 app:endIconTint="@color/red_error"

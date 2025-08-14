@@ -67,7 +67,7 @@
             android:layout_height="144dp"
             android:layout_gravity="center"
             android:contentDescription="@string/age_center_marker"
-            android:src="@drawable/icon_ruler_center" />
+            android:src="@drawable/ic_ruler_center" />
     </FrameLayout>
 
 

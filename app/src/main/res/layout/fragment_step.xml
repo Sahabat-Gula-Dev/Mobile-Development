@@ -8,12 +8,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:paddingHorizontal="16dp"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    tools:context=".ui.home.dailystep.StepFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.dailystep.StepFragment">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/title_daily_carbo"

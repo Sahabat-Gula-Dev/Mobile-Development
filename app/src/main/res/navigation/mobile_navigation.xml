@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_scan"
-        android:name="com.pkm.sahabatgula.ui.scan.ScanFragment"
-        android:label="@string/title_dashboard"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.scan.LogFoodScanFragment"
+        android:label="Pindai"
         tools:layout="@layout/fragment_scan" />
 
     <fragment
