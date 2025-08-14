@@ -35,7 +35,7 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_input_konsumsi_buah_sayur, container, false)
+        return inflater.inflate(R.layout.fragment_input_data_user_daily_consumption, container, false)
     }
 
     companion object {

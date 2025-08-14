@@ -38,7 +38,7 @@
 
     <include
         android:id="@+id/ruler_component"
-        layout="@layout/component_input_height_ruler"
+        layout="@layout/component_ruler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"

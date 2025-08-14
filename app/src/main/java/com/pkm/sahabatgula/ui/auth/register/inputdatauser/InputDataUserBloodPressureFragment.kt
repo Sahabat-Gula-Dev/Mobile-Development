@@ -35,7 +35,7 @@ class InputDataUserBloodPressureFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_input_tekanan_darah_tinggi, container, false)
+        return inflater.inflate(R.layout.fragment_input_data_user_blood_pressure, container, false)
     }
 
     companion object {

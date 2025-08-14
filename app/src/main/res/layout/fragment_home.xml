@@ -110,7 +110,7 @@
 
 
                     <include
-                        layout="@layout/component_circular_progress"
+                        layout="@layout/component_calories_circular_progress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
@@ -178,7 +178,7 @@
                 </LinearLayout>
 
                 <include
-                    layout="@layout/component_index_of_risk_diabetes"
+                    layout="@layout/component_index_of_diabetes_risk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

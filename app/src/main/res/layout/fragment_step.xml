@@ -32,7 +32,7 @@
             android:id="@+id/pi_log_food"
             android:layout_width="221dp"
             android:layout_height="221dp"
-            layout="@layout/component_daily_consumption_circular_progress"
+            layout="@layout/component_consumption_circular_progress"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
