@@ -7,7 +7,7 @@
     tools:context=".ui.home.dailyfood.manual.customfood.LogManualCustomFoodFragment">
 
     <TextView
-        android:id="@+id/tv_title_custom_food"
+        android:id="@+id/tv_header_custom_food"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Racik Makananmu Sendiri"
@@ -31,7 +31,7 @@
         app:menu="@menu/search_menu"
         android:layout_marginTop="28dp"
         android:backgroundTint="@color/md_theme_onPrimary"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_custom_food"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_custom_food"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -130,6 +130,6 @@
         app:layout_constraintTop_toBottomOf="@id/layout_chip_group_food_categories"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_card_food"/>
+        tools:listitem="@layout/item_card_custom_food"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
