@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="0dp"
+    app:cardCornerRadius="4dp"
+    app:strokeWidth="0dp"
+    android:layout_marginBottom="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Pertimbangkan lagi tentang ukuran gambar atau layotu suapya pas ketika ada gambar yang berda, atau ukuran gambarnya memang fix       -->
+        <ImageView
+            android:id="@+id/img_food"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_food_satay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/gradient_img_shadow"
+            app:layout_constraintStart_toStartOf="@id/img_food"
+            app:layout_constraintEnd_toEndOf="@id/img_food"
+            app:layout_constraintTop_toTopOf="@id/img_food"
+            app:layout_constraintBottom_toBottomOf="@id/img_food"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_food_calories_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:backgroundTint="@color/md_theme_onPrimary"
+            app:cardCornerRadius="2dp"
+            app:contentPadding="6dp"
+            android:elevation="0dp"
+            app:strokeWidth="0dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_food_name"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_calories"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"/>
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="203 kkal"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:textColor="#C80000"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tv_food_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sate Ayam 1 Porsi 100 gr"
+            android:textColor="@color/md_theme_onPrimary"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4sp"
+            android:textSize="16sp"
+            android:letterSpacing="0.03"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_food_desc"
+            app:layout_constraintStart_toStartOf="@id/card_food_calories_total"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        
+        <TextView
+            android:id="@+id/tv_food_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tinggi natrium dan lemak. Sebaiknya dibatasi untuk penderita hipertensi dan kolesterol."
+            android:textColor="@color/md_theme_onPrimary"
+            android:layout_marginBottom="24dp"
+            android:lineSpacingExtra="2sp"
+            android:letterSpacing="0.05"
+            android:textSize="11sp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintStart_toStartOf="@id/tv_food_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
