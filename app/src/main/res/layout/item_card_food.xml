@@ -26,7 +26,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/gradient_img_shadow"
+            android:background="@drawable/gradient_shadow_img_food"
             app:layout_constraintStart_toStartOf="@id/img_food"
             app:layout_constraintEnd_toEndOf="@id/img_food"
             app:layout_constraintTop_toTopOf="@id/img_food"

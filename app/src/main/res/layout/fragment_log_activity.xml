@@ -4,57 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.dailyfood.manualsearch.customfood.LogManualCustomFoodFragment">
-
-    <TextView
-        android:id="@+id/tv_header_custom_food"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Racik Makananmu Sendiri"
-        android:layout_marginHorizontal="16dp"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    tools:context=".ui.home.dailyactivity.logactivity.LogActivityFragment">
 
     <com.google.android.material.search.SearchBar
-        android:id="@+id/search_bar_food"
+        android:id="@+id/search_bar_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cari Makanan"
+        android:hint="Cari Aktivitas"
         android:paddingStart="20dp"
         android:paddingEnd="0dp"
         app:strokeColor="@color/md_theme_onSurfaceVariant"
         app:strokeWidth="1dp"
         app:navigationIcon="@null"
         app:menu="@menu/search_menu"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/md_theme_onPrimary"
-        app:layout_constraintTop_toBottomOf="@id/tv_header_custom_food"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <HorizontalScrollView
-        android:id="@+id/layout_chip_group_food_categories"
+        android:id="@+id/layout_chip_group_activity_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:overScrollMode="never"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/search_bar_food"
+        app:layout_constraintTop_toBottomOf="@id/search_bar_activity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_food_categories"
+            android:id="@+id/chip_group_activity_categories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleSelection="true"
             app:singleLine="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_1"
+                android:id="@+id/chip_activity_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Semua"
@@ -68,7 +56,7 @@
                 app:chipCornerRadius="100dp"/>
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_2"
+                android:id="@+id/chip_activity_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Olahan Ayam"
@@ -81,7 +69,7 @@
                 app:chipCornerRadius="100dp"/>
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_3"
+                android:id="@+id/chip_activity_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sate"
@@ -94,7 +82,7 @@
                 app:chipCornerRadius="100dp"/>
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_4"
+                android:id="@+id/chip_activity_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bakso"
@@ -107,7 +95,7 @@
                 app:chipCornerRadius="100dp"/>
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_5"
+                android:id="@+id/chip_activity_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gorengan"
@@ -127,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/layout_chip_group_food_categories"
+        app:layout_constraintTop_toBottomOf="@id/layout_chip_group_activity_categories"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_card_custom_food"/>

@@ -14,11 +14,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import com.pkm.sahabatgula.databinding.FragmentDetailFoodBinding
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentDetailFoodBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,7 +27,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailFoodBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.dailyfood.scan
+package com.pkm.sahabatgula.ui.home.dailyfood.scanning
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -13,7 +13,6 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentFoodScanBinding
 
 class LogFoodScanFragment : Fragment() {

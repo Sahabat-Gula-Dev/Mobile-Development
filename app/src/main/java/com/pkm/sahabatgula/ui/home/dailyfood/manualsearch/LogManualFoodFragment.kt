@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.dailyfood.manual
+package com.pkm.sahabatgula.ui.home.dailyfood.manualsearch
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
