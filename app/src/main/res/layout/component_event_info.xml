@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/ic_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        android:backgroundTint="@color/md_theme_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_calendar"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_title_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:letterSpacing="0.02"
+        android:lineSpacingExtra="2sp"
+        android:text="18 Agustus 2025"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_theme_onSurface"
+        app:layout_constraintStart_toEndOf="@id/ic_calendar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_subtitle_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Senin, 09:00 - 12:00 WITA"
+        android:textColor="@color/md_theme_onSurface"
+        android:lineSpacingExtra="2sp"
+        android:letterSpacing="0.02"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@id/tv_title_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="tv_title_info"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

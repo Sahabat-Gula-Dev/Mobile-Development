@@ -10,13 +10,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_title_event"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Mengenali Risiko Diabetes Sejak Dini"
+            android:text="Mengenal Batas Aman Gula Harian"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/md_theme_onSurface"
@@ -24,7 +24,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
+        
+<!--      tanggal -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_event_organizer"
             android:layout_width="0dp"

@@ -38,4 +38,16 @@
     <string name="title_scan">Pindai</string>
     <string name="title_explore">Jelajahi</string>
     <string name="title_setting">Pengaturan</string>
+
+    <string name="event_desc">
+        Dalam rangka memperingati Hari Diabetes Nasional, Universitas Mataram mengadakan kegiatan edukatif bertajuk "Mengenali Risiko Diabetes Sejak Dini". Acara ini dirancang untuk meningkatkan kesadaran masyarakat terhadap pentingnya deteksi dini risiko diabetes sebagai langkah preventif menjaga kesehatan jangka panjang.\n
+        Peserta akan mendapatkan kesempatan untuk:\n
+        \u2022 Pemeriksaan gula darah gratis\n
+        \u2022 Konsultasi langsung dengan ahli gizi dan tenaga medis\n
+        \u2022 Edukasi seputar gaya hidup sehat dan pola makan yang dianjurkan\n
+        \u2022 Sesi tanya jawab interaktif\n
+        \u2022 Pembagian leaflet edukatif dan doorprize menarik\n
+        Acara ini terbuka untuk umum dan tidak dipungut biaya. Cocok untuk masyarakat umum, pelajar, pekerja, dan lansia yang ingin lebih memahami risiko diabetes sejak dini dan bagaimana langkah-langkah pencegahannya.
+    </string>
+
 </resources>
