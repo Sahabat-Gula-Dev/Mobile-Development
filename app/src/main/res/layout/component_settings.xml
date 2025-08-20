@@ -59,7 +59,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/ic_keyboard_arrow_right"
+            android:src="@drawable/ic_keyboard_arrow_right"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
