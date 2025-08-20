@@ -544,7 +544,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/layout_fiber_in_micronutrients"
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView

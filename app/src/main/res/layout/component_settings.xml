@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="0dp"
+    app:contentPadding="16dp"
+    android:backgroundTint="@color/md_theme_onPrimary"
+    app:strokeWidth="1dp"
+    app:strokeColor="#DEDBDBDB"
+    app:cardCornerRadius="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ic_card_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person"
+            app:layout_constraintTop_toTopOf="@id/tv_title_setting_card"
+            app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_setting_card"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_title_setting_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Profil Pengguna"
+            android:lineSpacingExtra="2sp"
+            android:textSize="14sp"
+            android:letterSpacing="0.02"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintStart_toEndOf="@id/ic_card_setting"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ic_arrow_right"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle_setting_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Kelola informasi pribadi"
+            android:lineSpacingExtra="1sp"
+            android:letterSpacing="0.03"
+            android:textSize="12sp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_setting_card"
+            app:layout_constraintStart_toStartOf="@id/tv_title_setting_card"
+            app:layout_constraintEnd_toStartOf="@id/ic_arrow_right"/>
+
+
+        <ImageView
+            android:id="@+id/ic_arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_keyboard_arrow_right"
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

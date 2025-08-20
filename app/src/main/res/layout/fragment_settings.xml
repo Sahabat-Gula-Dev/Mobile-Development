@@ -1,14 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
     tools:context=".ui.settings.SettingsFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tv_title_settings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Pengaturan"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_article"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Atur akun, koneksi, dan preferensi "
+            app:layout_constraintTop_toBottomOf="@id/tv_title_settings"
+            app:layout_constraintStart_toStartOf="@id/tv_title_settings"/>
+
+        <TextView
+            android:id="@+id/tv_info_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Akun &amp; Preferensi Pengguna"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_article"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4sp"
+            android:textSize="16sp"
+            android:textColor="@color/md_theme_onSurface"
+            android:letterSpacing="0.01"
+            />
+
+        <!-- Card Profil   -->
+        <include
+            android:id="@+id/card_user_profile"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_info_account"/>
+
+        <!-- Card Notifikasi   -->
+        <include
+            android:id="@+id/card_notification"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_user_profile"/>
+
+        <!-- Card Riwayat Catatan   -->
+        <include
+            android:id="@+id/card_log_history"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_notification"/>
+
+
+        <!-- Support layanan   -->
+        <TextView
+            android:id="@+id/tv_support_and_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Akun &amp; Preferensi Pengguna"
+            app:layout_constraintTop_toBottomOf="@id/card_log_history"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4sp"
+            android:textSize="16sp"
+            android:textColor="@color/md_theme_onSurface"
+            android:letterSpacing="0.01"
+            />
+
+        <!-- Card Pusat Bantuan   -->
+        <include
+            android:id="@+id/card_help_center"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_support_and_service"/>
+
+        <!-- Card Upgrade Premium   -->
+        <include
+            android:id="@+id/card_upgrade_premium"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_help_center"/>
+
+        <!-- Card Saran Makanan Baru   -->
+        <include
+            android:id="@+id/card_upgrade_premium"
+            layout="@layout/component_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_help_center"/>
+
+        <!-- Informasi Aplikasi   -->
+        <TextView
+            android:id="@+id/tv_app_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Akun &amp; Preferensi Pengguna"
+            app:layout_constraintTop_toBottomOf="@id/card_upgrade_premium"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4sp"
+            android:textSize="16sp"
+            android:textColor="@color/md_theme_onSurface"
+            android:letterSpacing="0.01"
+            />
+        <!-- Card Kebijakan Privasi   -->
+        <include
+            android:id="@+id/card_privacy_policy"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_app_info"/>
+
+        <!-- Card Syarat dan Ketentuan   -->
+        <include
+            android:id="@+id/card_terms_and_conditions"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_privacy_policy"/>
+
+        <!-- Card Tentang Aplikasi   -->
+        <include
+            android:id="@+id/card_about_app"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_terms_and_conditions"/>
+
+        <!-- Card Logout   -->
+        <!-- Pada bagian ini, hilangkan stroke card dan arrow right    -->
+        <include
+            android:id="@+id/card_logout"
+            layout="@layout/component_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_about_app"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
