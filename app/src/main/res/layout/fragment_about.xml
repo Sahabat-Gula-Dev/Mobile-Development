@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="16dp"
+    android:scrollbars="none"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.appinfo.AboutFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title_terms_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tentang Aplikasi"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_terms_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Versi aplikasi dan pengembangan"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_terms_conditions"
+            app:layout_constraintStart_toStartOf="@id/tv_title_terms_conditions"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_terms_conditions"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Versi 1.0.0"
+                android:textSize="14sp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Sahabat Gula adalah aplikasi edukasi yang membantu pengguna memantau asupan gula harian, memberikan rekomendasi kalori, dan menghitung indeks risiko diabetes berdasarkan data kesehatan yang diisi pengguna. Aplikasi ini dikembangkan dengan tujuan membantu masyarakat mengenali potensi risiko diabetes sejak dini melalui pendekatan yang mudah, interaktif, dan berbasis data."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kontak Resmi"
+                android:textSize="14sp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Untuk pertanyaan, saran, atau keluhan terkait Sahabat Gula, Anda dapat menghubungi kami melalui sahabatgula@gmail.com."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Kami selalu terbuka menerima masukan demi peningkatan kualitas aplikasi."
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

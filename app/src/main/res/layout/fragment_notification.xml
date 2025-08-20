@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    tools:context=".ui.settings.notification.NotificationFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp">
+        <TextView
+            android:id="@+id/tv_title_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Notifikasi"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Kelola informasi pribadi"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_notification"
+            app:layout_constraintStart_toStartOf="@id/tv_title_notification"/>
+
+        <!-- Card Daily Calories Intake   -->
+        <include
+            android:id="@+id/card_daily_calories_intake"
+            layout="@layout/component_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_notification"/>
+
+        <!-- Card Daily Sugar Limit   -->
+        <include
+            android:id="@+id/card_daily_sugar_limit"
+            layout="@layout/component_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_daily_calories_intake"/>
+
+        <!-- Card Daily Water Intake   -->
+        <include
+            android:id="@+id/card_daily_water_intake"
+            layout="@layout/component_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_daily_sugar_limit"/>
+
+        <!-- Card Daily Step   -->
+        <include
+            android:id="@+id/card_daily_step"
+            layout="@layout/component_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_daily_water_intake"/>
+
+        <!-- Card Article   -->
+        <include
+            android:id="@+id/card_article"
+            layout="@layout/component_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_daily_step"/>
+
+        <!-- Card Event   -->
+        <include
+            android:id="@+id/card_event"
+            layout="@layout/component_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_article"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
+
+

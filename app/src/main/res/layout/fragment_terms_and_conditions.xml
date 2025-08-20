@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="16dp"
+    android:scrollbars="none"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.appinfo.TermsAndConditionsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title_terms_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Kebijakan Privasi"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_terms_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Pelajari perizinan dan akses aplikasi"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_terms_conditions"
+            app:layout_constraintStart_toStartOf="@id/tv_title_terms_conditions"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_terms_conditions"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_last_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Terakhir diperbarui 13 Agustus 2025"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2sp"
+                android:layout_marginVertical="24dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sahabat Gula berkomitmen untuk melindungi privasi dan keamanan data Anda. Kebijakan ini menjelaskan jenis informasi yang kami kumpulkan, bagaimana kami menggunakannya, dan hak Anda sebagai pengguna."
+                android:textSize="14sp"
+                android:justificationMode="inter_word"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dengan menggunakan aplikasi ini, Anda menyetujui ketentuan berikut."
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                android:justificationMode="inter_word"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Batasan Penggunaan"
+                android:textSize="14sp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Aplikasi ini hanya dapat digunakan oleh pengguna berusia 16 tahun ke atas. Selama masa pengujian beta, akses aplikasi bersifat terbatas."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Kewajiban Pengguna"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Pengguna wajib memberikan informasi yang benar dan akurat saat pendaftaran, baik melalui formulir registrasi maupun akun Google. Data kesehatan yang diisi harus sesuai kondisi sebenarnya untuk memastikan rekomendasi yang diberikan relevan."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Larangan Penggunaan"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Pada fitur pemindaian atau unggah foto makanan, pengguna dilarang mengirimkan gambar yang tidak relevan, tidak pantas, atau tidak sesuai tujuan aplikasi, karena data tersebut digunakan untuk pengembangan sistem."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5. Batas Tanggung Jawab"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Informasi yang disediakan Sahabat Gula hanya bersifat edukasi untuk membantu memantau asupan gula harian dan mendukung pencegahan risiko diabetes sejak dini. Aplikasi ini tidak menggantikan saran medis profesional. Untuk masalah kesehatan, konsultasikan dengan dokter atau tenaga medis yang berkompeten."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6. Perubahan Ketentuan"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Kami menggunakan cookie dan teknologi pelacakan tertentu untuk meningkatkan pengalaman pengguna, termasuk analisis penggunaan aplikasi."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Kebijakan privasi ini dapat diperbarui dari waktu ke waktu. Versi terbaru akan diumumkan langsung melalui aplikasi."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7. Kontak Kami"
+                android:layout_marginVertical="16dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Untuk pertanyaan atau keluhan terkait privasi, silakan hubungi kami melalui email sahabatgula@gmail.com."
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

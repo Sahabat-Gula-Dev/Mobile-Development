@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="16dp"
+    android:scrollbars="none"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.appinfo.PrivacyPolicyFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title_privacy_policy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Kebijakan Privasi"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_subtitle_help_center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Pelajari perizinan dan akses aplikasi"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_privacy_policy"
+            app:layout_constraintStart_toStartOf="@id/tv_title_privacy_policy"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_help_center"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_last_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Terakhir diperbarui 13 Agustus 2025"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2sp"
+                android:layout_marginVertical="24dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sahabat Gula berkomitmen untuk melindungi privasi dan keamanan data Anda. Kebijakan ini menjelaskan jenis informasi yang kami kumpulkan, bagaimana kami menggunakannya, dan hak Anda sebagai pengguna."
+                android:textSize="14sp"
+                android:justificationMode="inter_word"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Informasi yang Kami Kumpulkan"
+                android:textSize="14sp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Kami dapat mengumpulkan data seperti nama lengkap, alamat email, umur, tinggi badan, berat badan, riwayat kesehatan, riwayat aktivitas fisik, konsumsi makanan, catatan harian, serta foto makanan yang diunggah atau di-scan menggunakan fitur AI. Selain itu, informasi teknis seperti data perangkat dan penggunaan aplikasi juga dapat dikumpulkan."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Cara Kami Menggunakan Data Anda"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Data Anda digunakan untuk memberikan rekomendasi kalori dan gizi, menghitung indeks risiko diabetes, menyimpan riwayat catatan sebagai bahan analisis untuk pengembangan aplikasi, serta melatih dan meningkatkan akurasi fitur AI pemindai makanan. Kami juga dapat mengirimkan informasi atau notifikasi terkait kesehatan, fitur baru, dan event kepada Anda."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Penyimpanan &amp; Keamanan Data"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Data Anda disimpan menggunakan Supabase dan Google Cloud Platform (GCP), dengan beberapa data tertentu tersimpan hanya di perangkat Anda. Layanan Firebase digunakan untuk fungsi tertentu. Semua kata sandi di-hash demi keamanan, dan kami menerapkan enkripsi serta prosedur perlindungan data."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. Berbagi Data"
+                android:layout_marginVertical="16dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Saat ini, kami tidak membagikan data pribadi Anda kepada pihak ketiga. Namun di masa depan, data dapat dibagikan kepada mitra resmi seperti Dinas Kesehatan atau pihak terkait lainnya, hanya dengan persetujuan Anda dan sesuai peraturan yang berlaku."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5. Hak Pengguna"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Anda memiliki hak untuk melihat dan memperbarui data asesmen kesehatan, mengubah informasi profil, dan meminta penghapusan data akun Anda."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6. Cookie &amp; Pelacakan"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Kami menggunakan cookie dan teknologi pelacakan tertentu untuk meningkatkan pengalaman pengguna, termasuk analisis penggunaan aplikasi."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7. Perubahan Kebijakan"
+                android:textSize="14sp"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Kebijakan privasi ini dapat diperbarui dari waktu ke waktu. Versi terbaru akan diumumkan langsung melalui aplikasi."
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8. Kontak Kami"
+                android:layout_marginVertical="16dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="2sp"
+                android:text="Untuk pertanyaan atau keluhan terkait privasi, silakan hubungi kami melalui email sahabatgula@gmail.com."
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

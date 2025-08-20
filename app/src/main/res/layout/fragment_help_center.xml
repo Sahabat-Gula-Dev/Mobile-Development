@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.helpcenter.HelpCenterFragment">
+
+    <TextView
+        android:id="@+id/tv_title_help_center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pusat Bantuan"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/md_theme_onSurface"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_subtitle_help_center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="Panduan umum untuk pengguna"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_help_center"
+        app:layout_constraintStart_toStartOf="@id/tv_title_help_center"/>
+
+    <HorizontalScrollView
+        android:id="@+id/layout_chip_group_help_center_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:layout_marginTop="22dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_help_center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_food_categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_help_center_1"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:text="Umum"
+                android:lineSpacingExtra="2sp"
+                android:letterSpacing="0.05"
+                android:textSize="11sp"
+                android:layout_marginStart="16dp"
+                android:textAppearance="@font/plus_jakarta_sans_light"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="@color/md_theme_onPrimary"
+                app:chipCornerRadius="100dp"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_help_center_2"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:text="Layanan"
+                android:lineSpacingExtra="2sp"
+                android:letterSpacing="0.05"
+                android:textSize="11sp"
+                android:layout_marginEnd="2dp"
+                android:textAppearance="@font/plus_jakarta_sans_light"
+                android:backgroundTint="@color/md_theme_onPrimary"
+                app:chipCornerRadius="100dp"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_help_center_3"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:text="Konektivitas"
+                android:lineSpacingExtra="2sp"
+                android:letterSpacing="0.05"
+                android:textSize="11sp"
+                android:layout_marginEnd="2dp"
+                android:textAppearance="@font/plus_jakarta_sans_light"
+                android:backgroundTint="@color/md_theme_onPrimary"
+                app:chipCornerRadius="100dp"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_help_center_4"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:text="Troubleshooting"
+                android:lineSpacingExtra="2sp"
+                android:letterSpacing="0.05"
+                android:textSize="11sp"
+                android:layout_marginEnd="2dp"
+                android:textAppearance="@font/plus_jakarta_sans_light"
+                android:backgroundTint="@color/md_theme_onPrimary"
+                app:chipCornerRadius="100dp"/>
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/layout_chip_group_help_center_categories"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="18dp"
+        tools:listitem="@layout/component_help_center"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
