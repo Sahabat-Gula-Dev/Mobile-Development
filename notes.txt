@@ -1,0 +1,7 @@
+- cek semua id dan perbaiki
+- tambahkan blur di card event
+- jadikan chipgroup itu dinamis
+- sesuaikan wartna icon di day dan night
+- file untuk halaman search pinahkanh supaya lebih general
+- sesuiakan file untuk halaman scan
+- buat stringnya di day dan night
