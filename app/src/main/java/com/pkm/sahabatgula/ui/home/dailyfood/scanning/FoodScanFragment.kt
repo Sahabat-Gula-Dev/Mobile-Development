@@ -15,7 +15,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.pkm.sahabatgula.databinding.FragmentFoodScanBinding
 
-class LogFoodScanFragment : Fragment() {
+class FoodScanFragment : Fragment() {
 
     private var _binding: FragmentFoodScanBinding? = null
     private val binding get() = _binding!!
