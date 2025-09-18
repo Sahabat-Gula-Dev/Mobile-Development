@@ -116,7 +116,7 @@
 
         <!-- Card Saran Makanan Baru   -->
         <include
-            android:id="@+id/card_upgrade_premium"
+            android:id="@+id/card_new_food_suggestions"
             layout="@layout/component_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

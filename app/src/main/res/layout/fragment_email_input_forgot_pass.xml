@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.auth.forgotpassword.ResetPasswordFragment">
+    tools:context=".ui.auth.forgotpassword.EmailInputForgotPassFragment">
 
     <TextView
         android:id="@+id/header_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buat Password Baru"
+        android:text="Lupa Password"
         android:textSize="22sp"
         android:textColor="@color/md_theme_onSurface"
         android:textStyle="bold"
@@ -24,7 +24,7 @@
         android:id="@+id/sub_header_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pastikan password kamu kuat dan mudah diingat"
+        android:text="Masukkan email yang terdaftar untuk reset password"
         android:textSize="12sp"
         android:lineSpacingExtra="1sp"
         android:letterSpacing="0.03"
@@ -34,40 +34,20 @@
         />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_new_pass"
+        android:id="@+id/input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconDrawable="@drawable/ic_mail"
         app:endIconMode="clear_text"
         app:layout_constraintTop_toBottomOf="@id/sub_header_login">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_input_new_pass"
+            android:id="@+id/edit_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Password Baru"
-            android:importantForAutofill="yes"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
-    </com.google.android.material.textfield.TextInputLayout >
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_confirm_pass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:startIconDrawable="@drawable/ic_lock"
-        app:endIconMode="clear_text"
-        app:layout_constraintTop_toBottomOf="@id/input_new_pass">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_confirm_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Konfirmasi Password"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email"
             android:importantForAutofill="yes"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
@@ -77,3 +57,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

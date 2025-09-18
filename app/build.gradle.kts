@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -63,5 +64,9 @@ dependencies {
 
     // viewpager2
     implementation(libs.androidx.viewpager2)
+
+    // encryptedSharedPreferences
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
 
 }

@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.auth.forgotpassword.ResetPasswordFragment">
+    tools:context=".ui.auth.forgotpassword.EmailInputForgotPassFragment">
 
     <TextView
-        android:id="@+id/header_login"
+        android:id="@+id/header_otp_verif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buat Password Baru"
+        android:text="Verifikasi Akun"
         android:textSize="22sp"
         android:textColor="@color/md_theme_onSurface"
         android:textStyle="bold"
@@ -21,53 +21,33 @@
         />
 
     <TextView
-        android:id="@+id/sub_header_login"
+        android:id="@+id/sub_header_otp_verif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pastikan password kamu kuat dan mudah diingat"
+        android:text="Kode OTP terkirim ke email. Belum terlihat? Coba cek spam"
         android:textSize="12sp"
         android:lineSpacingExtra="1sp"
         android:letterSpacing="0.03"
         android:layout_marginTop="3dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_login"
+        app:layout_constraintTop_toBottomOf="@id/header_otp_verif"
         />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_new_pass"
+        android:id="@+id/input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconDrawable="@drawable/ic_key_otp"
         app:endIconMode="clear_text"
-        app:layout_constraintTop_toBottomOf="@id/sub_header_login">
+        app:layout_constraintTop_toBottomOf="@id/sub_header_otp_verif">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_input_new_pass"
+            android:id="@+id/edit_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Password Baru"
-            android:importantForAutofill="yes"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
-    </com.google.android.material.textfield.TextInputLayout >
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_confirm_pass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:startIconDrawable="@drawable/ic_lock"
-        app:endIconMode="clear_text"
-        app:layout_constraintTop_toBottomOf="@id/input_new_pass">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_confirm_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Konfirmasi Password"
+            android:inputType="number"
+            android:hint="Kode OTP"
             android:importantForAutofill="yes"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
@@ -77,3 +57,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

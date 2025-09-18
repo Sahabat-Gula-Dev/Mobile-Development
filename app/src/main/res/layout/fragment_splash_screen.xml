@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.splashscreen.SplashscreenActivity">
+    tools:context=".ui.splashscreen.SplashScreenFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"

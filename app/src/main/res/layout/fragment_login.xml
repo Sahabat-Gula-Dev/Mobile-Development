@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.auth.login.LoginActivity">
+    tools:context=".ui.auth.login.LoginFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,8 +102,9 @@
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:text="@string/login"
+            android:paddingVertical="16dp"
             android:layout_marginTop="28dp"
             android:fontFamily="@font/plus_jakarta_sans_medium"
             android:textStyle="bold"/>

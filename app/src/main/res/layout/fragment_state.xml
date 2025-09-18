@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.common.State">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ic_gluby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sad_gluby"/>
+
+        <TextView
+            android:id="@+id/tv_title_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verifikasi Gagal"
+            android:textColor="@color/md_theme_onSurface"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:layout_marginTop="24dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_subtitle_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kode OTP yang kamu masukkan salah atau sudah kadaluarsa. Coba kirim ulang kode."
+            android:textAlignment="center"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"/>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

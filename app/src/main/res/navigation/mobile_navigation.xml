@@ -3,29 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/auth_graph">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.pkm.sahabatgula.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/navigation_scan"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.scanning.FoodScanFragment"
-        android:label="Pindai"
-        tools:layout="@layout/fragment_scan" />
-
-    <fragment
-        android:id="@+id/navigation_explore"
-        android:name="com.pkm.sahabatgula.ui.explore.ExploreFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_explore" />
-
-    <fragment
-        android:id="@+id/navigation_setting"
-        android:name="com.pkm.sahabatgula.ui.settings.SettingsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_settings" />
+    <!-- Include kedua graph -->
+    <include app:graph="@navigation/auth_graph" />
+    <include app:graph="@navigation/home_graph" />
 </navigation>
