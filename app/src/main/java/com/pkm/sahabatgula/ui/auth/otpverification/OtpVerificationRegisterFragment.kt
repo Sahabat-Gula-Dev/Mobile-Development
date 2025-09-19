@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.auth.register
+package com.pkm.sahabatgula.ui.auth.otpverification
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

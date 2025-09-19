@@ -95,6 +95,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation("com.squareup:javapoet:1.13.0")
 
     // auth google
     implementation(libs.androidx.credentials)
