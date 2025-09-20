@@ -141,6 +141,12 @@
     <color name="md_theme_surfaceContainerHigh_highContrast">#CFD6D3</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C1C8C5</color>
 
+    <color name="selected_card">#E5FAEF</color>
+    <color name="shadow_box">#EDF5FF</color>
+    <color name="number_picker_v1">#6F7976</color>
+    <color name="number_picker_v2">#BEC9C5</color>
+
+
     <!-- Basic Color -->
     <color name="black">#000000</color>
     <color name="red_error">#B3261E</color>

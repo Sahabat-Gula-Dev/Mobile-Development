@@ -50,5 +50,8 @@
         \u2022 Pembagian leaflet edukatif dan doorprize menarik\n
         Acara ini terbuka untuk umum dan tidak dipungut biaya. Cocok untuk masyarakat umum, pelajar, pekerja, dan lansia yang ingin lebih memahami risiko diabetes sejak dini dan bagaimana langkah-langkah pencegahannya.
     </string>
+    <string name="resend_in_30_secs">Kirim ulang dalam %1$d detik</string>
+    <string name="resend">Kirim ulang</string>
+
 
 </resources>

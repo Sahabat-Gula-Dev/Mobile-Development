@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.splashscreen.onboardingscreen.OnBoardingScreenFragment">
+    tools:context=".onboardingscreen.OnBoardingScreenFragment">
 
     <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"

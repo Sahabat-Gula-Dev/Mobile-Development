@@ -1,60 +1,94 @@
 package com.pkm.sahabatgula.ui.auth.login
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlin.getValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+    private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val etEmail = binding.editInputEmail
+        val etPassword = binding.editInputPassword
+        val btnLogin = binding.btnLogin
+
+        btnLogin.setOnClickListener {
+            loginViewModel.login(
+                etEmail.text.toString(),
+                etPassword.text.toString()
+            )
+        }
+
+        observeState()
+        observeEffect()
+
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            loginViewModel.loginState.collect { it ->
+                when (it) {
+                    is LoginViewState.Idle -> {
+                        binding.btnLogin.isEnabled = true
+                    }
+                    is LoginViewState.Loading -> {
+                        binding.btnLogin.isEnabled = false
+                        Toast.makeText(requireContext(), "Loading", Toast.LENGTH_LONG).show()
+                    }
+                    is LoginViewState.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        Log.d("LoginFragment", "observeState: ${it.message}")
+                        binding.btnLogin.isEnabled = true
+                    }
+                    is LoginViewState.Success -> binding.btnLogin.isEnabled = false
                 }
             }
+        }
     }
+
+    private fun observeEffect() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                loginViewModel.effect.collect { effect ->
+                    when(effect) {
+                        is LoginEffect.ShowToast -> {
+                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_LONG).show()
+                        }
+                        is LoginEffect.NavigateToHome -> {
+                            findNavController().navigate(R.id.action_login_to_input_data)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

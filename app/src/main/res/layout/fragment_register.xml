@@ -39,6 +39,7 @@
             android:layout_marginBottom="24dp"/>
 
         <include
+            android:id="@+id/comp_sign_in_with_google"
             layout="@layout/component_google_button"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -92,13 +93,13 @@
             android:layout_marginTop="24dp"
             app:startIconDrawable="@drawable/ic_lock"
             app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_error_password"
             app:endIconTint="@color/red_error"
             app:boxStrokeColor="@color/red_error"
             app:boxStrokeErrorColor="@color/red_error">
 
             <!-- untuk custom warning ketika error dilakukan pada logic ui -->
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_input_password_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -122,6 +123,7 @@
             tools:ignore="VisualLintButtonSize" />
 
         <Button
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="16dp"
@@ -144,6 +146,7 @@
                 android:fontFamily="@font/jakarta_sans_family"/>
 
             <TextView
+                android:id="@+id/btn_to_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"

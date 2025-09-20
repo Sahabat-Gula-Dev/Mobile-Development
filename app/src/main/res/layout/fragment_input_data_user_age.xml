@@ -1,14 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.register.inputdatauser.InputDataUserAge">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:text="Usiamu Berapa?"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="28sp"
+        android:paddingHorizontal="16dp"
+        android:textStyle="bold"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.02"
+        android:lineSpacingExtra="2sp"
+        android:text="Kebutuhan kalori harian dan risiko kesehatan yang kamu hadapi juga dipengaruhi oleh usia"
+        android:textSize="14sp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="6dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center"
+        tools:ignore="RtlSymmetry">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAge"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:clipToPadding="false"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardIndicator"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="12dp"
+            app:strokeWidth="4dp"
+            app:strokeColor="@color/shadow_box"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="@color/md_theme_primary">
+
+            <TextView
+                android:id="@+id/tvSelectedAge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingBottom="8dp"
+                android:textSize="57sp"
+                android:textStyle="bold"
+                android:textColor="@color/md_theme_onPrimary"
+                android:text="19" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
+
+</LinearLayout>

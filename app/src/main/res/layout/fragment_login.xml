@@ -80,6 +80,7 @@
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -101,6 +102,7 @@
             tools:ignore="RtlHardcoded,TouchTargetSizeCheck" />
 
         <Button
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
@@ -123,6 +125,7 @@
                 android:fontFamily="@font/jakarta_sans_family"/>
 
             <TextView
+                android:id="@+id/tv_register_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"

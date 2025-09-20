@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_graph"
-    app:startDestination="@id/register_fragment">
+    app:startDestination="@id/login_fragment">
 
-    <fragment
-        android:id="@+id/splashscreen_fragment"
-        android:name="com.pkm.sahabatgula.ui.splashscreen.SplashScreenFragment"
-        tools:layout="@layout/fragment_scan">
-        <action
-            android:id="@+id/splashscreen_to_onboarding"
-            app:destination="@id/onboarding_screen_fragment"/>
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/splashscreen_fragment"-->
+<!--        android:name="com.pkm.sahabatgula.ui.splashscreen.SplashScreenFragment"-->
+<!--        tools:layout="@layout/fragment_scan">-->
+<!--        <action-->
+<!--            android:id="@+id/splashscreen_to_onboarding"-->
+<!--            app:destination="@id/onboarding_screen_fragment"/>-->
+<!--    </fragment>-->
 
     <fragment
         android:id="@+id/onboarding_screen_fragment"
-        android:name="com.pkm.sahabatgula.ui.splashscreen.onboardingscreen.OnBoardingScreenFragment">
+        android:name="com.pkm.sahabatgula.onboardingscreen.OnBoardingScreenFragment">
         <action
             android:id="@+id/onboarding_to_register"
             app:destination="@id/register_fragment" />
@@ -37,16 +37,23 @@
         android:id="@+id/login_fragment"
         android:name="com.pkm.sahabatgula.ui.auth.login.LoginFragment">
         <action
-            android:id="@+id/login_to_otp_verification"
-            app:destination="@id/otp_verification_fragment"/>
-        <action
             android:id="@+id/login_to_register"
             app:destination="@id/register_fragment" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_login_to_input_data"
+            app:destination="@id/input_data_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
         android:id="@+id/otp_verification_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.forgotpassword.OtpVerificationForgotPassFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.otpverification.OtpVerificationRegisterFragment">
         <action
             android:id="@+id/otp_to_welcome_screen"
             app:destination="@id/welcome_screen_fragment"/>
@@ -54,90 +61,7 @@
 
     <fragment
         android:id="@+id/welcome_screen_fragment"
-        android:name="com.pkm.sahabatgula.ui.splashscreen.welcomescreen.WelcomeScreenFragment">
-        <action
-            android:id="@+id/welcome_screen_to_input_data"
-            app:destination="@id/input_data_gender_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_gender_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserGenderFragment">
-        <action
-            android:id="@+id/input_gender_to_input_age"
-            app:destination="@id/input_data_age_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_age_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserAge">
-        <action
-            android:id="@+id/input_age_to_input_height"
-            app:destination="@id/input_data_height_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_height_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHeightFragment">
-        <action
-            android:id="@+id/input_height_to_input_heavy"
-            app:destination="@id/input_data_heavy_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_heavy_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHeavyFragment">
-        <action
-            android:id="@+id/input_heavy_to_input_waist_circumstances"
-            app:destination="@id/input_data_waist_circumstances_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_waist_circumstances_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserWaistCircumferenceFragment">
-        <action
-            android:id="@+id/input_waist_circumstances_to_input_blood_pressure"
-            app:destination="@id/input_data_blood_pressure_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_blood_pressure_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserBloodPressureFragment">
-        <action
-            android:id="@+id/input_blood_pressure_to_input_high_blood_glucose"
-            app:destination="@id/input_data_high_blood_glucose_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_high_blood_glucose_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHighBloodGlucoseFragment">
-        <action
-            android:id="@+id/input_high_blood_glucose_to_input_daily_consumption"
-            app:destination="@id/input_data_daily_consumption_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_daily_consumption_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserDailyConsumptionFragment">
-        <action
-            android:id="@+id/input_daily_consumption_to_input_history_family"
-            app:destination="@id/input_data_history_family_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_history_family_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHistoryFamilyFragment">
-        <action
-            android:id="@+id/input_history_family_to_input_user_activity"
-            app:destination="@id/input_data_user_activity_fragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/input_data_user_activity_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserActivityFragment">
-        <action
-            android:id="@+id/input_user_activity_to_otp_verification"
-            app:destination="@id/otp_verification_fragment"/>
+        android:name="com.pkm.sahabatgula.welcomescreen.WelcomeScreenFragment">
     </fragment>
 
 </navigation>

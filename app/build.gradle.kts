@@ -95,7 +95,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation("com.squareup:javapoet:1.13.0")
+    implementation(libs.javapoet)
 
     // auth google
     implementation(libs.androidx.credentials)
@@ -106,10 +106,23 @@ dependencies {
 
     // Google Identity Services untuk Credential Manager
     implementation(libs.googleid)
-
     // firebase
     implementation(libs.firebase.auth.ktx)
 
+    // Room
+    implementation(libs.androidx.room.runtime)
+    // Room Kotlin Extensions & Coroutines support
+    implementation(libs.androidx.room.ktx)
+    // Annotation Processor pakai KSP (bukan kapt)
+    ksp(libs.androidx.room.compiler)
+    // (Opsional) Testing Room
+    testImplementation(libs.androidx.room.testing)
+
+
+    // decode
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
 
 }

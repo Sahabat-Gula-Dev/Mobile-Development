@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/input_data_graph"
+    app:startDestination="@id/input_data_gender_fragment">
+
+    <fragment
+        android:id="@+id/input_data_gender_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.gender.InputDataUserGenderFragment">
+        <action
+            android:id="@+id/input_gender_to_input_age"
+            app:destination="@id/input_data_age_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_age_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.age.InputDataUserAgeFragment">
+        <action
+            android:id="@+id/input_age_to_input_height"
+            app:destination="@id/input_data_height_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_height_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHeightFragment">
+        <action
+            android:id="@+id/input_height_to_input_heavy"
+            app:destination="@id/input_data_heavy_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_heavy_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHeavyFragment">
+        <action
+            android:id="@+id/input_heavy_to_input_waist_circumferences"
+            app:destination="@id/input_data_waist_circumferences_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_waist_circumferences_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserWaistCircumferenceFragment">
+        <action
+            android:id="@+id/input_waist_circumferences_to_input_blood_pressure"
+            app:destination="@id/input_data_blood_pressure_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_blood_pressure_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserBloodPressureFragment">
+        <action
+            android:id="@+id/input_blood_pressure_to_input_high_blood_glucose"
+            app:destination="@id/input_data_high_blood_glucose_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_high_blood_glucose_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHighBloodGlucoseFragment">
+        <action
+            android:id="@+id/input_high_blood_glucose_to_input_daily_consumption"
+            app:destination="@id/input_data_daily_consumption_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_daily_consumption_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserDailyConsumptionFragment">
+        <action
+            android:id="@+id/input_daily_consumption_to_input_history_family"
+            app:destination="@id/input_data_history_family_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_history_family_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHistoryFamilyFragment">
+        <action
+            android:id="@+id/input_history_family_to_input_user_activity"
+            app:destination="@id/input_data_user_activity_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/input_data_user_activity_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserActivityFragment">
+        <action
+            android:id="@+id/input_user_activity_to_otp_verification"
+            app:destination="@id/otp_verification_fragment"/>
+    </fragment>
+
+
+</navigation>
