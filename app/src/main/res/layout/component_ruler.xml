@@ -20,7 +20,7 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <TextView
-            android:id="@+id/age_value"
+            android:id="@+id/tv_height_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/age_value"
@@ -29,7 +29,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/age_format"
+            android:id="@+id/tv_age_format"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
@@ -59,7 +59,8 @@
             android:gravity="center_vertical"
             android:layout_marginTop="60dp"
             android:paddingStart="100dp"
-            android:paddingEnd="100dp"/>
+            android:paddingEnd="100dp"
+            tools:listitem="@layout/item_ruler"/>
 
         <ImageView
             android:id="@+id/age_center_marker"

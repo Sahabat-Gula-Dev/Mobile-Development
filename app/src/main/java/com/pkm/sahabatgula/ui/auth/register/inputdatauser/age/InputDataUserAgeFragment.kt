@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -48,8 +49,22 @@ class InputDataUserAgeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupClickListener()
         setupRecyclerView()
         observeViewModel()
+    }
+
+    private fun setupClickListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                inputDataViewModel.profileData.collect { state ->
+                    binding.btnContinueToHeight.isEnabled = state.age != null
+                    binding.btnContinueToHeight.setOnClickListener {
+                        findNavController().navigate(R.id.input_age_to_input_height)
+                    }
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {

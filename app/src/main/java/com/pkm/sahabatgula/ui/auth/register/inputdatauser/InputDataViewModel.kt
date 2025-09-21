@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.auth.register.inputdatauser
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
@@ -23,13 +24,18 @@ class InputDataViewModel @Inject constructor(private val  profileRepository: Pro
     val setupResult: StateFlow<Resource<SetupProfileResponse>?> = _setupResult
 
     fun selectGender(gender: String) {
-        _profileData.update { currentState ->
-            currentState.copy(gender = gender)
-        }
+        _profileData.update { it.copy(gender = gender)}
     }
 
     fun selectAge(age: Int){
         _profileData.update { it.copy(age = age) }
+        Log.d("DARI VIEW MODEL", "Usia dipilih: $age, gender ${_profileData.value.gender}")
+    }
+
+    fun selectHeight(height: Int){
+        _profileData.update { it.copy(height = height) }
+        Log.d("DARI VIEW MODEL", "Usia dipilih: ${_profileData.value.age}, gender: ${_profileData.value.gender}, tinggi: ${_profileData.value.height}")
+
     }
 
     fun submitProfileData() {

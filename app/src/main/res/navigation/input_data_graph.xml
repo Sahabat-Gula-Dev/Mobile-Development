@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/input_data_height_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHeightFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.height.InputDataUserHeightFragment">
         <action
             android:id="@+id/input_height_to_input_heavy"
             app:destination="@id/input_data_heavy_fragment"/>

@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.data.remote.model.Gender
@@ -23,7 +26,7 @@ class InputDataUserGenderFragment : Fragment() {
 
     private var _binding: FragmentInputDataUserGenderBinding? = null
     private val binding get() = _binding!!
-    private val inputDataViewModel: InputDataViewModel by viewModels()
+    private val inputDataViewModel: InputDataViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +45,11 @@ class InputDataUserGenderFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            inputDataViewModel.profileData.collect { profileData ->
-                updateGenderSelection(profileData.gender)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                inputDataViewModel.profileData.collect { profileData ->
+                    updateGenderSelection(profileData.gender)
+                }
             }
         }
     }
@@ -87,12 +92,25 @@ class InputDataUserGenderFragment : Fragment() {
             inputDataViewModel.selectGender(Gender.FEMALE.value)
         }
 
+        // jiak dipilih male, nilainya laki-laki
+        binding.cardMale.radioButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                inputDataViewModel.selectGender(Gender.MALE.value)
+            }
+        }
+        binding.cardFemale.radioButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                inputDataViewModel.selectGender(Gender.FEMALE.value)
+            }
+        }
         binding.btnContinueToAge.setOnClickListener {
             if(inputDataViewModel.profileData.value.gender != null) {
                 findNavController().navigate(R.id.input_gender_to_input_age)
             } else {
                 Toast.makeText(requireContext(), "Silakan pilih jenis kelamin Anda", Toast.LENGTH_SHORT).show()
+
             }
+
         }
     }
 
