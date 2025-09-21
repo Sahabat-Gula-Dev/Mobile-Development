@@ -145,6 +145,8 @@
     <color name="shadow_box">#EDF5FF</color>
     <color name="number_picker_v1">#6F7976</color>
     <color name="number_picker_v2">#BEC9C5</color>
+    <color name="number_format">#5D6A85</color>
+
 
 
     <!-- Basic Color -->

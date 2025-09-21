@@ -38,6 +38,50 @@ class InputDataViewModel @Inject constructor(private val  profileRepository: Pro
 
     }
 
+    fun selectWeight(weight: Int){
+        _profileData.update { it.copy(weight = weight) }
+        Log.d("DARI VIEW MODEL",
+            "Usia dipilih: ${_profileData.value.age}, " +
+                    "gender: ${_profileData.value.gender}, " +
+                    "tinggi: ${_profileData.value.height}, " +
+                    "berat: ${_profileData.value.weight}")
+    }
+
+    fun selectWaistCirc(waistCirc: Int){
+        _profileData.update { it.copy(waistCircumference = waistCirc) }
+        Log.d("DARI VIEW MODEL",
+            "Usia dipilih: ${_profileData.value.age}, " +
+                    "gender: ${_profileData.value.gender}, " +
+                    "tinggi: ${_profileData.value.height}, " +
+                    "berat: ${_profileData.value.weight}, " +
+                    "lingkar pinggang: ${_profileData.value.waistCircumference}")
+
+    }
+
+    fun selectBloodPressure(bloodPressure: Boolean){
+        _profileData.update{it.copy(bloodPressure = bloodPressure)}
+        Log.d("DARI VIEW MODEL",
+            "Usia dipilih: ${_profileData.value.age}, " +
+                    "gender: ${_profileData.value.gender}, " +
+                    "tinggi: ${_profileData.value.height}, " +
+                    "berat: ${_profileData.value.weight}, " +
+                    "lingkar pinggang: ${_profileData.value.waistCircumference}, " +
+                    "riwayat tekanan darah: ${_profileData.value.bloodPressure}")
+    }
+
+    fun selectHighBloodGlucose(highBloodGlucose: Boolean){
+        _profileData.update{it.copy(bloodSugar = highBloodGlucose)}
+        Log.d("DARI VIEW MODEL",
+            "Usia dipilih: ${_profileData.value.age}, " +
+                    "gender: ${_profileData.value.gender}, " +
+                    "tinggi: ${_profileData.value.height}, " +
+                    "berat: ${_profileData.value.weight}, " +
+                    "lingkar pinggang: ${_profileData.value.waistCircumference}, " +
+                    "riwayat tekanan darah: ${_profileData.value.bloodPressure}, " +
+                    "riwayat gula darah: ${_profileData.value.bloodSugar}")
+
+    }
+
     fun submitProfileData() {
         viewModelScope.launch {
             _setupResult.value = Resource.Loading()

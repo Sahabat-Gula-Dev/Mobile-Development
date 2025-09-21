@@ -74,12 +74,12 @@ fun ProfileData.toProfileEntity(
         age = this.age,
         height = this.height,
         weight = this.weight,
-        waist_circumference = this.waist_circumference,
-        blood_pressure = this.blood_pressure,
-        blood_sugar = this.blood_sugar,
-        eat_vegetables = this.eat_vegetables,
-        diabetes_family = this.diabetes_family,
-        activity_level = this.activity_level,
+        waist_circumference = this.waistCircumference,
+        blood_pressure = this.bloodPressure,
+        blood_sugar = this.bloodSugar,
+        eat_vegetables = this.eatVegetables,
+        diabetes_family = this.diabetesFamily,
+        activity_level = this.activityLevel,
 
         // Mengambil setupProfileData hasil kalkulasi dari response API
         risk_index = response.setupProfileData.riskIndex,

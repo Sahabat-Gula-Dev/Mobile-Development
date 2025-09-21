@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/rulerContainer"
+        app:layout_constraintBottom_toTopOf="@id/ruler_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,13 +29,13 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_age_format"
+            android:id="@+id/tv_height_format"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:text="@string/age_format"
             android:paddingStart="8dp"
-            android:textColor="#5D6A85"
+            android:textColor="@color/number_format"
             android:textStyle="bold"
             android:gravity="center_vertical"
             android:textSize="24sp"
@@ -43,7 +43,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/rulerContainer"
+        android:id="@+id/ruler_container"
         android:layout_width="0dp"
         android:layout_height="144dp"
         android:layout_marginTop="24dp"
@@ -60,10 +60,10 @@
             android:layout_marginTop="60dp"
             android:paddingStart="100dp"
             android:paddingEnd="100dp"
-            tools:listitem="@layout/item_ruler"/>
+            tools:listitem="@layout/item_ruler_waist_circumference"/>
 
         <ImageView
-            android:id="@+id/age_center_marker"
+            android:id="@+id/height_center_marker"
             android:layout_width="24dp"
             android:layout_height="144dp"
             android:layout_gravity="center"

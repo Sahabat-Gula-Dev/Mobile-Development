@@ -35,7 +35,7 @@
 
     <include
         android:id="@+id/component_ruler_height"
-        layout="@layout/component_ruler"
+        layout="@layout/component_ruler_for_height"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"

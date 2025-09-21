@@ -13,15 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentInputUserHeightBinding
 import com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataViewModel
 import kotlinx.coroutines.launch
-import okhttp3.internal.cache.DiskLruCache
 import kotlin.getValue
 import kotlin.let
-import kotlin.properties.Delegates
 
 class InputDataUserHeightFragment : Fragment() {
 
@@ -71,7 +68,7 @@ class InputDataUserHeightFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val rvRulerHeight = binding.componentRulerHeight.rulerRv
-        val heightAdapter = RulerAdapter(minValue, maxValue)
+        val heightAdapter = RulerAdapterHeight(minValue, maxValue)
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         rvRulerHeight.apply {

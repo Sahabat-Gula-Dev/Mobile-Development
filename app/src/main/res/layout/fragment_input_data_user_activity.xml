@@ -38,7 +38,7 @@
 
     <include
         android:id="@+id/tidak_aktif_beraktivitas"
-        layout="@layout/component_input_tekanan_darah_tinggi"
+        layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -46,7 +46,7 @@
 
     <include
         android:id="@+id/aktivitas_ringan"
-        layout="@layout/component_input_tekanan_darah_tinggi"
+        layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -54,7 +54,7 @@
 
     <include
         android:id="@+id/aktivitas_sedang"
-        layout="@layout/component_input_tekanan_darah_tinggi"
+        layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -62,7 +62,7 @@
 
     <include
         android:id="@+id/aktivitas_berat"
-        layout="@layout/component_input_tekanan_darah_tinggi"
+        layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -71,7 +71,7 @@
 
     <include
         android:id="@+id/aktivitas_sangat_berat"
-        layout="@layout/component_input_tekanan_darah_tinggi"
+        layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

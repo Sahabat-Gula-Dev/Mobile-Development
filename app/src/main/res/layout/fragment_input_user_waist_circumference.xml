@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.auth.register.inputdatauser.InputDataUserWaistCircumferenceFragment">
+    tools:context=".ui.auth.register.inputdatauser.waistcircumference.InputDataUserWaistCircFragment">
 
     <TextView
-        android:id="@+id/title_input_height"
+        android:id="@+id/title_input_waist_circ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="43dp"
-        android:fontFamily="@font/plus_jakarta_sans_medium"
         android:text="Ukuran Lingkar Pinggang"
-        android:textColor="@color/black"
+        android:textColor="@color/md_theme_onSurface"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,31 +22,30 @@
         tools:ignore="TextSizeCheck" />
 
     <TextView
-        android:id="@+id/subtitle_input_height"
+        android:id="@+id/subtitle_input_waist_circ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/jakarta_sans_family"
         android:letterSpacing="0.02"
         android:lineSpacingExtra="2sp"
         android:text="Data ini bisa menunjukkan risiko penumpukan lemak di perut yang berhubungan dengan diabetes"
         android:textSize="14sp"
         android:layout_marginTop="6dp"
-        app:layout_constraintStart_toStartOf="@+id/title_input_height"
-        app:layout_constraintTop_toBottomOf="@+id/title_input_height"
+        app:layout_constraintStart_toStartOf="@+id/title_input_waist_circ"
+        app:layout_constraintTop_toBottomOf="@+id/title_input_waist_circ"
         tools:ignore="TextContrastCheck" />
 
     <include
-        android:id="@+id/ruler_component"
-        layout="@layout/component_ruler"
+        android:id="@+id/ruler_component_waist"
+        layout="@layout/component_ruler_waist_circumference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@id/subtitle_input_height"/>
+        app:layout_constraintTop_toBottomOf="@id/subtitle_input_waist_circ"/>
 
     <Button
+        android:id="@+id/btn_continue_to_blood_pressure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/plus_jakarta_sans_medium"
         android:padding="16dp"
         android:text="@string/lanjutkan"
         android:textStyle="bold"

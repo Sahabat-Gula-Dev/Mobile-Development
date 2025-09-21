@@ -52,6 +52,10 @@
     </string>
     <string name="resend_in_30_secs">Kirim ulang dalam %1$d detik</string>
     <string name="resend">Kirim ulang</string>
+    <string name="subtitle_input_weight">Kami juga menggunakan data ini untuk menghitung kebutuhan kalori</string>
+    <string name="title_weight_input">Beratmu Berapa?</string>
+    <string name="number_selected_weight">19</string>
+    <string name="format_kg_weight">kg</string>
 
 
 </resources>

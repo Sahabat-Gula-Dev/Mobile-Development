@@ -24,10 +24,10 @@ data class ProfileData(
     val age: Int? = null,
     val height: Int? = null,
     val weight: Int? = null,
-    val waist_circumference: Int? = null,
-    val blood_pressure: Boolean? = null,
-    val blood_sugar: Boolean? = null,
-    val eat_vegetables: Boolean? = null,
-    val diabetes_family: String? = null,
-    val activity_level: String? = null
+    val waistCircumference: Int? = null,
+    val bloodPressure: Boolean? = null,
+    val bloodSugar: Boolean? = null,
+    val eatVegetables: Boolean? = null,
+    val diabetesFamily: String? = null,
+    val activityLevel: String? = null
 )

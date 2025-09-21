@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.auth.register.inputdatauser.height
+package com.pkm.sahabatgula.ui.auth.register.inputdatauser.waistcircumference
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,18 +7,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pkm.sahabatgula.R
-import com.pkm.sahabatgula.databinding.ItemRulerBinding
+import com.pkm.sahabatgula.databinding.ItemRulerWaistCircumferenceBinding
 
-class RulerAdapter(private val minValue: Int, private val maxValue: Int) : RecyclerView.Adapter<RulerAdapter.RulerViewHolder>() {
+class RulerAdapterWaistCircumference(private val minValue: Int, private val maxValue: Int) : RecyclerView.Adapter<RulerAdapterWaistCircumference.RulerViewHolder>() {
 
-    inner class RulerViewHolder(val binding: ItemRulerBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RulerViewHolder(val binding: ItemRulerWaistCircumferenceBinding) : RecyclerView.ViewHolder(binding.root) {
         val tick: View = binding.tick
         val label: TextView = binding.label
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RulerViewHolder {
 
-        val binding = ItemRulerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemRulerWaistCircumferenceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RulerViewHolder(binding)
     }
 

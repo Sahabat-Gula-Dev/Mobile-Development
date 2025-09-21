@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/input_data_heavy_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHeavyFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.heavy.InputDataUserHeavyFragment">
         <action
             android:id="@+id/input_heavy_to_input_waist_circumferences"
             app:destination="@id/input_data_waist_circumferences_fragment"/>
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/input_data_waist_circumferences_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserWaistCircumferenceFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.waistcircumference.InputDataUserWaistCircFragment">
         <action
             android:id="@+id/input_waist_circumferences_to_input_blood_pressure"
             app:destination="@id/input_data_blood_pressure_fragment"/>
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/input_data_blood_pressure_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserBloodPressureFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.bloodpressure.InputDataUserBloodPressureFragment">
         <action
             android:id="@+id/input_blood_pressure_to_input_high_blood_glucose"
             app:destination="@id/input_data_high_blood_glucose_fragment"/>
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/input_data_high_blood_glucose_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHighBloodGlucoseFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.highbloodglucose.InputDataUserHighBloodGlucoseFragment">
         <action
             android:id="@+id/input_high_blood_glucose_to_input_daily_consumption"
             app:destination="@id/input_data_daily_consumption_fragment"/>
