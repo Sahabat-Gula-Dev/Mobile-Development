@@ -29,14 +29,13 @@ class InputDataUserAgeFragment : Fragment() {
 
     private var _binding: FragmentInputDataUserAgeBinding? = null
     private val binding get() = _binding!!
-
     private val inputDataViewModel: InputDataViewModel by activityViewModels()
     private lateinit var ageAdapter: AgePickerAdapter
+    private var layoutManager: LinearLayoutManager? = null
+    // Flag untuk mencegah loop update
+    private var isUpdatingFromScroll = false
+    private var isUpdatingFromViewModel = false
 
-    private lateinit var layoutManager: LinearLayoutManager
-    private val snapHelper = LinearSnapHelper()
-
-    private var selectedAge = 20
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,13 +54,15 @@ class InputDataUserAgeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         ageAdapter = AgePickerAdapter()
+        layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+
         binding.rvAge.apply {
             adapter = ageAdapter
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
+            layoutManager = this@InputDataUserAgeFragment.layoutManager
 
             addItemDecoration(object: RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
@@ -96,110 +97,87 @@ class InputDataUserAgeFragment : Fragment() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                        updateSelectedAge()
-                        val layoutManager = binding.rvAge.layoutManager as LinearLayoutManager
-                        val centerPosition = findCenterPosition(layoutManager)
-
-                        if (centerPosition != RecyclerView.NO_POSITION) {
-                            val age = ageAdapter.getAgeAtPosition(centerPosition)
-                            if (age != selectedAge) {
-                                selectedAge = age
-                                inputDataViewModel.selectAge(selectedAge)
-                                binding.tvSelectedAge.text = age.toString()
-                            }
-                            Log.d("AgePicker", "Usia dipilih lewat scroll: $selectedAge tahun")
-                        }
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && !isUpdatingFromViewModel) {
+                        updateSelectedAgeFromScroll()
                     }
                 }
+
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    // Update selected age saat scroll (real-time)
-                    updateSelectedAge()
-                    applyScaleEffectToChildren()
+                    // Hanya update visual effects, tidak update ViewModel
+                    if (!isUpdatingFromViewModel) {
+                        applyScaleEffectToChildren()
+                        updateSelectedAgeDisplay() // Update display tanpa update ViewModel
+                    }
                 }
             })
         }
 
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvAge)
-        val selectedPosition = ageAdapter.getPositionForAge(selectedAge)
 
+        // Setup initial position
+        setupInitialPosition(snapHelper)
+    }
 
-        binding.rvAge.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+    private fun setupInitialPosition(snapHelper: LinearSnapHelper) {
+        binding.rvAge.addOnLayoutChangeListener(object :View.OnLayoutChangeListener {
             override fun onLayoutChange(
                 v: View,
                 left: Int, top: Int, right: Int, bottom: Int,
                 oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int
             ) {
                 binding.rvAge.removeOnLayoutChangeListener(this)
-                binding.rvAge.scrollToPosition(selectedPosition)
+                val initialAge = inputDataViewModel.profileData.value.age?:20
+                val selectedPosition = ageAdapter.getPositionForAge(initialAge)
 
+                binding.rvAge.scrollToPosition(selectedPosition)
                 binding.rvAge.post {
-                    val layoutManager = binding.rvAge.layoutManager as LinearLayoutManager
-                    val view = layoutManager.findViewByPosition(selectedPosition)
+                    val view = layoutManager?.findViewByPosition(selectedPosition)
                     if (view != null) {
-                        val distance = snapHelper.calculateDistanceToFinalSnap(layoutManager, view)
+                        val distance = snapHelper.calculateDistanceToFinalSnap(layoutManager!!, view)
                         if (distance != null) {
                             binding.rvAge.smoothScrollBy(distance[0], distance[1])
                         }
                     }
+                    // Update display setelah scroll selesai
+                    binding.tvSelectedAge.text = initialAge.toString()
                 }
             }
-
         })
-
     }
-//
-//    private fun setupRecyclerView() {
-//        ageAdapter = AgePickerAdapter()
-//        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//        binding.rvAge.apply {
-//            adapter = ageAdapter
-//            layoutManager = this@InputDataUserAgeFragment.layoutManager
-//            // Padding agar item pertama dan terakhir bisa berhenti di tengah
-//            val padding = resources.displayMetrics.widthPixels / 2 - (40 * resources.displayMetrics.density).toInt()
-//            setPadding(padding, 0, padding, 0)
-//        }
-//        snapHelper.attachToRecyclerView(binding.rvAge)
-//
-//        binding.rvAge.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    val centerView = snapHelper.findSnapView(layoutManager) ?: return
-//                    val position = layoutManager.getPosition(centerView)
-//                    val selectedAge = ageAdapter.getAgeAtPosition(position)
-//
-//                    // SATU-SATUNYA TUGAS LISTENER: KIRIM DATA KE VIEWMODEL
-//                    if (selectedAge != inputDataViewModel.profileData.value.age) {
-//                        inputDataViewModel.selectAge(selectedAge)
-//                    }
-//                }
-//            }
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                applyScaleEffectToChildren()
-//            }
-//        })
-//    }
 
-    private fun updateSelectedAge() {
-        val layoutManager = binding.rvAge.layoutManager as LinearLayoutManager
-        val centerPosition = findCenterPosition(layoutManager)
 
+    private fun updateSelectedAgeDisplay() {
+        val centerPosition = findCenterPosition()
         if (centerPosition != RecyclerView.NO_POSITION) {
             val age = ageAdapter.getAgeAtPosition(centerPosition)
-            if (age != inputDataViewModel.profileData.value.age) {
-                inputDataViewModel.selectAge(age) // update ViewModel
-                binding.tvSelectedAge.text = age.toString()
-                Log.d("AgePicker", "Usia dipilih lewat scroll: $age tahun")
-            }
+            binding.tvSelectedAge.text = age.toString()
         }
     }
 
 
-    private fun findCenterPosition(layoutManager: LinearLayoutManager): Int {
+    private fun updateSelectedAgeFromScroll() {
+        if (isUpdatingFromViewModel) return
+
+        isUpdatingFromScroll = true
+        val centerPosition = findCenterPosition()
+
+        if (centerPosition != RecyclerView.NO_POSITION) {
+            val age = ageAdapter.getAgeAtPosition(centerPosition)
+            val currentAge = inputDataViewModel.profileData.value.age
+
+            if (age != currentAge) {
+                inputDataViewModel.selectAge(age)
+                Log.d("AgePicker", "Usia dipilih lewat scroll: $age tahun")
+            }
+        }
+        isUpdatingFromScroll = false
+    }
+
+
+    private fun findCenterPosition(): Int {
+        val layoutManager = this.layoutManager ?: return RecyclerView.NO_POSITION
         val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
         val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
 
@@ -234,16 +212,19 @@ class InputDataUserAgeFragment : Fragment() {
             val scale = 0.9f + (1.7f - 0.5f) * (1 - kotlin.math.min(distanceFromCenter / maxDistance, 1f))
             child.scaleX = scale
             child.scaleY = scale
+
             val textView = child.findViewById<TextView>(R.id.tvAge)
             val minTextSize = 18f
             val maxTextSize = 32f
             val textSize = minTextSize + (maxTextSize - minTextSize) * (1 - kotlin.math.min(distanceFromCenter / maxDistance, 1f))
             textView.textSize = textSize
+
             val textColor = when {
-                distanceFromCenter < child.width * 3.5f -> ContextCompat.getColor(requireContext(), R.color.number_picker_v1) // kiri-kanan pertama
-                else -> ContextCompat.getColor(requireContext(), R.color.number_picker_v2) // jauh
+                distanceFromCenter < child.width * 3.5f -> ContextCompat.getColor(requireContext(), R.color.number_picker_v1)
+                else -> ContextCompat.getColor(requireContext(), R.color.number_picker_v2)
             }
             textView.setTextColor(textColor)
+
             val padding = 36.dpToPx()
             if (distanceFromCenter < child.width / 2f) {
                 child.setPadding(padding, 0, padding, 0)
@@ -256,25 +237,40 @@ class InputDataUserAgeFragment : Fragment() {
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Saat pertama kali dijalankan, ambil setupProfileData dari ViewModel untuk setup awal
-                val initialAge = inputDataViewModel.profileData.first().age ?: 20 // Ambil nilai awal atau default 20
-                val initialPosition = ageAdapter.getPositionForAge(initialAge)
-                layoutManager.scrollToPosition(initialPosition)
-
-                // Terus observasi perubahan dari ViewModel
                 inputDataViewModel.profileData.collect { state ->
+                    if (isUpdatingFromScroll) return@collect // Skip update jika sedang scroll
+
+                    isUpdatingFromViewModel = true
                     val age = state.age ?: 20
 
-                    // SEMUA UPDATE UI TERJADI DI SINI
+                    // Update display
                     binding.tvSelectedAge.text = age.toString()
 
+                    // Update adapter selection
                     val currentPosition = ageAdapter.getPositionForAge(age)
                     if (ageAdapter.selectedPosition != currentPosition) {
                         val previousPosition = ageAdapter.selectedPosition
                         ageAdapter.selectedPosition = currentPosition
-                        ageAdapter.notifyItemChanged(previousPosition)
+
+                        // Update adapter items
+                        if (previousPosition != -1) {
+                            ageAdapter.notifyItemChanged(previousPosition)
+                        }
                         ageAdapter.notifyItemChanged(currentPosition)
+
+                        // Scroll ke posisi baru (hanya jika perlu)
+                        val layoutManager = this@InputDataUserAgeFragment.layoutManager
+                        val firstVisible = layoutManager?.findFirstVisibleItemPosition() ?: -1
+                        val lastVisible = layoutManager?.findLastVisibleItemPosition() ?: -1
+
+                        if (currentPosition < firstVisible || currentPosition > lastVisible) {
+                            binding.rvAge.post {
+                                binding.rvAge.smoothScrollToPosition(currentPosition)
+                            }
+                        }
                     }
+
+                    isUpdatingFromViewModel = false
                 }
             }
         }
@@ -291,3 +287,4 @@ class InputDataUserAgeFragment : Fragment() {
 
 
 }
+

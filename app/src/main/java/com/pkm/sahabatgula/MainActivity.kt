@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -27,5 +28,16 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val parentGraphId = destination.parent?.id
+            val destId = destination.id
+            if(parentGraphId == R.id.auth_graph || parentGraphId == R.id.input_data_graph || destId == R.id.splashscreen_fragment) {
+                binding.navView.visibility = View.GONE
+            } else {
+                binding.navView.visibility = View.VISIBLE
+
+            }
+        }
     }
 }

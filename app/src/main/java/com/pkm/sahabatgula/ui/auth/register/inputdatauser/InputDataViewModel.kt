@@ -29,9 +29,7 @@ class InputDataViewModel @Inject constructor(private val  profileRepository: Pro
     }
 
     fun selectAge(age: Int){
-        _profileData.update { currentState ->
-            currentState.copy(age = age)
-        }
+        _profileData.update { it.copy(age = age) }
     }
 
     fun submitProfileData() {

@@ -2,9 +2,7 @@ package com.pkm.sahabatgula.ui.auth.register.inputdatauser.age
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.ItemAgeBinding
 
 class AgePickerAdapter: RecyclerView.Adapter<AgePickerAdapter.AgeViewHolder>() {
@@ -34,5 +32,5 @@ class AgePickerAdapter: RecyclerView.Adapter<AgePickerAdapter.AgeViewHolder>() {
     override fun getItemCount(): Int = ageList.size
 
     fun getAgeAtPosition(position: Int): Int = ageList[position]
-    fun getPositionForAge(age: Int): Int = ageList.indexOf(age)
+    fun getPositionForAge(age: Int?): Int = ageList.indexOf(age)
 }
