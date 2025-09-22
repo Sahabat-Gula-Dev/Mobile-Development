@@ -34,7 +34,7 @@
         tools:ignore="TextContrastCheck" />
 
     <include
-        android:id="@+id/chose_yes_blood_pressure"
+        android:id="@+id/choose_yes_blood_pressure"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,12 +42,12 @@
         app:layout_constraintTop_toBottomOf="@id/tv_subtitle_input_blood_pressure"/>
 
     <include
-        android:id="@+id/chose_no_blood_pressure"
+        android:id="@+id/choose_no_blood_pressure"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/chose_yes_blood_pressure"/>
+        app:layout_constraintTop_toBottomOf="@id/choose_yes_blood_pressure"/>
 
     <Button
         android:id="@+id/btn_continue_to_high_blood_glucose"

@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.splashscreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.pkm.sahabatgula.data.local.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,11 +36,17 @@ class SplashViewModel @Inject constructor(
             kotlinx.coroutines.delay(1500)
 
             val user = sessionManager.getCurrentUser()
-            if(user == null) {
+            val token = sessionManager.isProfileCompleted()
+
+            Log.d("DARI SPLASH", "user dari db: $user")
+            Log.d("DARI SPLASH", "token dari db: $token")
+            Log.d("DARI SPLASH", "profile completed flag: ${sessionManager.isProfileCompleted()}")
+
+            if (user == null) {
                 _destination.value = SplashDestination.AUTH_FLOW
             } else {
-                if(user.gender.isNullOrEmpty()) {
-                    _destination.value = SplashDestination.INPUT_DATA_FLOW // nanti ganti jadi welcome screen (krn ini masih debug)
+                if (!sessionManager.isProfileCompleted()) {
+                    _destination.value = SplashDestination.INPUT_DATA_FLOW
                 } else {
                     _destination.value = SplashDestination.HOME_FLOW
                 }

@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.local.SessionManager
+import com.pkm.sahabatgula.data.local.TokenManager
+import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.remote.model.ProfileData
 import com.pkm.sahabatgula.data.remote.model.SetupProfileResponse
 import com.pkm.sahabatgula.data.repository.ProfileRepository
@@ -15,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class InputDataViewModel @Inject constructor(private val  profileRepository: ProfileRepository) : ViewModel(){
+class InputDataViewModel @Inject constructor(private val  profileRepository: ProfileRepository, private val sessionManager: SessionManager) : ViewModel(){
 
     private val _profileData = MutableStateFlow(ProfileData())
     val profileData: StateFlow<ProfileData> = _profileData
@@ -82,10 +85,61 @@ class InputDataViewModel @Inject constructor(private val  profileRepository: Pro
 
     }
 
+    fun selectDailyConsumption(dailyConsumption: Boolean){
+        _profileData.update{it.copy(eatVegetables = dailyConsumption)}
+            Log.d("DARI VIEW MODEL",
+                "Usia dipilih: ${_profileData.value.age}," +
+                    "gender: ${_profileData.value.gender},"+
+                    "tinggi: ${_profileData.value.height},"+
+                    "berat: ${_profileData.value.weight},"+
+                    "lingkar pinggang: ${_profileData.value.waistCircumference},"+
+                    "riwayat tekanan darah: ${_profileData.value.bloodPressure},"+
+                    "riwayat gula darah: ${_profileData.value.bloodSugar},"+
+                    "konsumsi makanan: ${_profileData.value.eatVegetables}")
+
+    }
+
+    fun selectDiabetesFamily(diabetesFamily: String) {
+        _profileData.update { it.copy(diabetesFamily = diabetesFamily)}
+
+        Log.d("DARI VIEW MODEL",
+            "Usia dipilih: ${_profileData.value.age}," +
+                    "gender: ${_profileData.value.gender},"+
+                    "tinggi: ${_profileData.value.height},"+
+                    "berat: ${_profileData.value.weight},"+
+                    "lingkar pinggang: ${_profileData.value.waistCircumference},"+
+                    "riwayat tekanan darah: ${_profileData.value.bloodPressure},"+
+                    "riwayat gula darah: ${_profileData.value.bloodSugar},"+
+                    "konsumsi makanan: ${_profileData.value.eatVegetables},"+
+                    "keluarga diabetes: ${_profileData.value.diabetesFamily}")
+
+    }
+
+    fun selectActivityLevel(activityLevel: String) {
+        _profileData.update { it.copy(activityLevel = activityLevel) }
+        Log.d("DARI VIEW MODEL",
+                "Usia dipilih: ${_profileData.value.age}," +
+                "gender: ${_profileData.value.gender},"+
+                "tinggi: ${_profileData.value.height},"+
+                "berat: ${_profileData.value.weight},"+
+                "lingkar pinggang: ${_profileData.value.waistCircumference},"+
+                "riwayat tekanan darah: ${_profileData.value.bloodPressure},"+
+                "riwayat gula darah: ${_profileData.value.bloodSugar},"+
+                "konsumsi makanan: ${_profileData.value.eatVegetables},"+
+                "keluarga diabetes: ${_profileData.value.diabetesFamily},"+
+                "tingkat aktivitas: ${_profileData.value.activityLevel}")
+
+    }
+
     fun submitProfileData() {
         viewModelScope.launch {
+            Log.d("PROFILE_SETUP", "Submit profile data dipanggil")
             _setupResult.value = Resource.Loading()
             _setupResult.value = profileRepository.setupProfile(_profileData.value)
+            if (_setupResult.value is Resource.Success) {
+                sessionManager.setProfileCompleted(true)
+            }
         }
     }
+
 }

@@ -104,7 +104,8 @@ class InputDataUserGenderFragment : Fragment() {
             }
         }
         binding.btnContinueToAge.setOnClickListener {
-            if(inputDataViewModel.profileData.value.gender != null) {
+            val currentGender = inputDataViewModel.profileData.value.gender
+            if(currentGender != null) {
                 findNavController().navigate(R.id.input_gender_to_input_age)
             } else {
                 Toast.makeText(requireContext(), "Silakan pilih jenis kelamin Anda", Toast.LENGTH_SHORT).show()

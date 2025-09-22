@@ -61,54 +61,54 @@ class InputDataUserBloodPressureFragment : Fragment() {
 
     private fun resetBloodPressureSelection() {
         // Semua reset ke default
-        binding.choseYesBloodPressure.radioButton.isChecked = false
-        binding.choseYesBloodPressure.cardChoice.setCardBackgroundColor(
+        binding.chooseYesBloodPressure.radioButton.isChecked = false
+        binding.chooseYesBloodPressure.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
-        binding.choseYesBloodPressure.tvSubtitleChoice.visibility = View.GONE
+        binding.chooseYesBloodPressure.tvSubtitleChoice.visibility = View.GONE
 
-        binding.choseNoBloodPressure.radioButton.isChecked = false
-        binding.choseNoBloodPressure.cardChoice.setCardBackgroundColor(
+        binding.chooseNoBloodPressure.radioButton.isChecked = false
+        binding.chooseNoBloodPressure.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
-        binding.choseNoBloodPressure.tvSubtitleChoice.visibility = View.GONE
+        binding.chooseNoBloodPressure.tvSubtitleChoice.visibility = View.GONE
     }
 
     private fun updateBloodPressureSelection(selectedBloodPressure: Boolean) {
         val isYesSelected = selectedBloodPressure
-        binding.choseYesBloodPressure.radioButton.isChecked = isYesSelected
-        binding.choseYesBloodPressure.cardChoice.setCardBackgroundColor(
+        binding.chooseYesBloodPressure.radioButton.isChecked = isYesSelected
+        binding.chooseYesBloodPressure.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(),
                 if (isYesSelected) R.color.selected_card
                 else R.color.md_theme_onPrimary
             )
         )
-        binding.choseYesBloodPressure.tvSubtitleChoice.visibility =
+        binding.chooseYesBloodPressure.tvSubtitleChoice.visibility =
             if (isYesSelected) View.VISIBLE else View.GONE
 
         val isNoSelected = !selectedBloodPressure
-        binding.choseNoBloodPressure.radioButton.isChecked = isNoSelected
-        binding.choseNoBloodPressure.cardChoice.setCardBackgroundColor(
+        binding.chooseNoBloodPressure.radioButton.isChecked = isNoSelected
+        binding.chooseNoBloodPressure.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(),
                 if (isNoSelected) R.color.selected_card
                 else R.color.md_theme_onPrimary
             )
         )
-        binding.choseNoBloodPressure.tvSubtitleChoice.visibility =
+        binding.chooseNoBloodPressure.tvSubtitleChoice.visibility =
             if (isNoSelected) View.VISIBLE else View.GONE
 
 
     }
 
     private fun setupClickListener() {
-        binding.choseYesBloodPressure.tvTitleChoice.text = "Pernah Atau Sedang Mengalami"
-        binding.choseNoBloodPressure.tvTitleChoice.text = "Tidak Pernah Mengalami"
+        binding.chooseYesBloodPressure.tvTitleChoice.text = "Pernah Atau Sedang Mengalami"
+        binding.chooseNoBloodPressure.tvTitleChoice.text = "Tidak Pernah Mengalami"
 
         val bloodPressure = inputDataViewModel.profileData.value.bloodPressure
-        binding.choseYesBloodPressure.root.setOnClickListener {
+        binding.chooseYesBloodPressure.root.setOnClickListener {
             inputDataViewModel.selectBloodPressure(true)
         }
-        binding.choseNoBloodPressure.root.setOnClickListener {
+        binding.chooseNoBloodPressure.root.setOnClickListener {
             inputDataViewModel.selectBloodPressure(false)
         }
 

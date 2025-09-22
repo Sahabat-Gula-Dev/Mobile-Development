@@ -25,10 +25,7 @@ class InputDataUserHeightFragment : Fragment() {
     private var _binding: FragmentInputUserHeightBinding? = null
     private val binding get() = _binding!!
     private val inputDataViewModel: InputDataViewModel by activityViewModels()
-
     private var layoutManager: LinearLayoutManager? = null
-
-    private lateinit var recyclerView: RecyclerView
     private val minValue = 60
     private val maxValue = 300
     private val defaultValue = 140

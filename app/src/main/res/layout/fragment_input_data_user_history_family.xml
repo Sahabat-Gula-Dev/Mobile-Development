@@ -4,18 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    tools:context=".ui.auth.register.inputdatauser.InputKeluargaDiabetesFragment">
+    android:paddingHorizontal="16dp"
+    tools:context=".ui.auth.register.inputdatauser.historyfamily.InputDataUserHistoryFamilyFragment">
 
     <TextView
-        android:id="@+id/tv_choose_gender"
+        android:id="@+id/tv_choose_diabetes_fam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="43dp"
-        android:fontFamily="@font/plus_jakarta_sans_medium"
         android:text="Memiliki Keluarga Dengan Riwayat Diabetes?"
-        android:textColor="@color/black"
+        android:textColor="@color/md_theme_onSurface"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +21,7 @@
         tools:ignore="TextSizeCheck" />
 
     <TextView
-        android:id="@+id/tv_subtitle_input_gender"
+        android:id="@+id/tv_subtitle_input_diabetes_fam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/jakarta_sans_family"
@@ -32,37 +30,38 @@
         android:text="Riwayat keluarga dapat meningkatkan risiko, tapi gaya hidup sehat tetap bisa jadi tameng terbaik."
         android:textSize="14sp"
         android:layout_marginTop="6dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_choose_gender"
-        app:layout_constraintTop_toBottomOf="@+id/tv_choose_gender"
+        app:layout_constraintStart_toStartOf="@+id/tv_choose_diabetes_fam"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_diabetes_fam"
         tools:ignore="TextContrastCheck" />
 
     <include
-        android:id="@+id/kerabat_tingkat_satu"
+        android:id="@+id/choose_first_fam"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_input_gender"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_input_diabetes_fam"/>
 
     <include
-        android:id="@+id/kerabat_tingkat_dua"
+        android:id="@+id/choose_second_fam"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/kerabat_tingkat_satu"/>
+        app:layout_constraintTop_toBottomOf="@id/choose_first_fam"/>
 
     <include
+        android:id="@+id/choose_third_fam"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/kerabat_tingkat_dua"/>
+        app:layout_constraintTop_toBottomOf="@id/choose_second_fam"/>
 
     <Button
+        android:id="@+id/btn_continue_to_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/plus_jakarta_sans_medium"
         android:padding="16dp"
         android:text="@string/lanjutkan"
         android:textStyle="bold"

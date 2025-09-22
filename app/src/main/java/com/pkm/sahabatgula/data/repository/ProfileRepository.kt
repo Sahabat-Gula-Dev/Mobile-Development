@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.data.repository
 
+import android.util.Log
 import com.google.gson.Gson
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.local.SessionManager
@@ -35,11 +36,24 @@ class ProfileRepository @Inject constructor(
                     userId = currentUser.id,
                     username = currentUser.username,
                     response = profileResponse,
-                    email = currentUser.email
-                )
-                profileDao.upsertProfile(profileEntity
-                )
+                    email = currentUser.email)
+
+                profileDao.upsertProfile(profileEntity)
+                tokenManager.setProfileCompleted(true)
+
+                Log.d("PROFILE_SETUP", "Profile disimpan ke DB: $profileEntity")
+                Log.d("PROFILE_SETUP", "ProfileCompleted Flag diset ke true")
+
                 Resource.Success(profileResponse)
+
+//                val resp = response.body()!!
+//                val old = profileDao.getProfile()?: currentUser.toProfileEntityFallback()
+//                val merged = mergeProfile(old, profileData, resp)
+//                profileDao.upsertProfile(merged)
+//                tokenManager.setProfileCompleted(true)
+//                Log.d("PROFILE_SETUP", "Profile disimpan ke DB: $merged")
+//                Log.d("PROFILE_SETUP", "ProfileCompleted Flag diset ke true")
+//                Resource.Success(resp)
             } else {
                 val errorBody = response.errorBody()?.string()
                 val errorMessage = if (errorBody.isNullOrEmpty()) {
@@ -60,6 +74,8 @@ class ProfileRepository @Inject constructor(
     }
 }
 
+//private fun ProfileEntity.toProfileEntityFallback(): ProfileEntity = this
+//
 fun ProfileData.toProfileEntity(
     userId: String,
     username: String?,
@@ -96,3 +112,37 @@ fun ProfileData.toProfileEntity(
         max_potassium = null
     )
 }
+//
+//private fun <T> prefer(server: T?, form: T?, old: T?): T? = server ?: form ?: old
+//
+//fun mergeProfile(
+//    old: ProfileEntity,
+//    form: ProfileData,
+//    resp: SetupProfileResponse?
+//): ProfileEntity {
+//    return old.copy(
+//        gender =          prefer(null,             form.gender,            old.gender),
+//        age =             prefer(null,             form.age,               old.age),
+//        height =          prefer(null,             form.height,            old.height),
+//        weight =          prefer(null,             form.weight,            old.weight),
+//        waist_circumference = prefer(null,         form.waistCircumference, old.waist_circumference),
+//        blood_pressure =  prefer(null,             form.bloodPressure,     old.blood_pressure),
+//        blood_sugar =     prefer(null,             form.bloodSugar,        old.blood_sugar),
+//        eat_vegetables =  prefer(null,             form.eatVegetables,     old.eat_vegetables),
+//        diabetes_family = prefer(null,             form.diabetesFamily,    old.diabetes_family),
+//        activity_level =  prefer(null,             form.activityLevel,     old.activity_level),
+//
+//        // bagian kalkulasi biasanya datang dari server setelah setup
+//        risk_index =      prefer(resp?.setupProfileData?.riskIndex,  null,                   old.risk_index),
+//        bmi_score =       prefer(resp?.setupProfileData?.bmi,   null,                   old.bmi_score),
+//        max_calories =    prefer(resp?.setupProfileData?.maxCalories,null,                   old.max_calories),
+//        max_carbs =                     old.max_carbs,
+//        max_protein =     old.max_protein,
+//        max_fat =         old.max_fat,
+//        max_sugar =       old.max_sugar,
+//        max_natrium =     old.max_natrium,
+//        max_fiber =       old.max_fiber,
+//        max_potassium =   old.max_potassium
+//    )
+//}
+

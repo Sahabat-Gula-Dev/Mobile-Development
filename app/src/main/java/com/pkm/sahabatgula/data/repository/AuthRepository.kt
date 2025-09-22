@@ -22,7 +22,7 @@ import kotlin.runCatching
 
 @Singleton
 class AuthRepository @Inject constructor(
-    private val apiService: ApiService, // DIBERI oleh Hilt
+    private val apiService: ApiService,
     private val tokenManager: TokenManager,
     private val profileDao: ProfileDao
 ) {
@@ -62,12 +62,14 @@ class AuthRepository @Inject constructor(
                     val myProfile = body?.data?.myProfile
                     if(myProfile != null){
                         val profileEntity = myProfile.toProfileEntity()
-                    profileDao.upsertProfile(profileEntity)
+                        profileDao.upsertProfile(profileEntity)
+
                     } else {
                         return Resource.Error("Gagal mengambil data profil")
                     }
                 }
                 Resource.Success(loginResponse)
+
             } else {
                 // Implementasikan error handling yang lebih baik di sini
                 Resource.Error("Login gagal: ${response.message()}")

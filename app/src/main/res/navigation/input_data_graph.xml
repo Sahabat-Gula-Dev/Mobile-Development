@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/input_data_high_blood_glucose_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.highbloodglucose.InputDataUserHighBloodGlucoseFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.highbloodglucose.InputDataUserHighBloodGluFragment">
         <action
             android:id="@+id/input_high_blood_glucose_to_input_daily_consumption"
             app:destination="@id/input_data_daily_consumption_fragment"/>
@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/input_data_daily_consumption_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserDailyConsumptionFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.consumption.InputDataUserDailyConsumptionFragment">
         <action
             android:id="@+id/input_daily_consumption_to_input_history_family"
             app:destination="@id/input_data_history_family_fragment"/>
@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/input_data_history_family_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserHistoryFamilyFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.historyfamily.InputDataUserHistoryFamilyFragment">
         <action
             android:id="@+id/input_history_family_to_input_user_activity"
             app:destination="@id/input_data_user_activity_fragment"/>
@@ -78,10 +78,12 @@
 
     <fragment
         android:id="@+id/input_data_user_activity_fragment"
-        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataUserActivityFragment">
+        android:name="com.pkm.sahabatgula.ui.auth.register.inputdatauser.activity.InputDataUserActivityFragment">
         <action
-            android:id="@+id/input_user_activity_to_otp_verification"
-            app:destination="@id/otp_verification_fragment"/>
+            android:id="@+id/action_input_data_user_activity_to_home"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/input_data_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 

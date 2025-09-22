@@ -4,18 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    tools:context=".ui.auth.register.inputdatauser.InputTingkatAktivitasFragment">
+    android:paddingHorizontal="16dp"
+    tools:context=".ui.auth.register.inputdatauser.activity.InputDataUserActivityFragment">
 
     <TextView
-        android:id="@+id/tv_choose_gender"
+        android:id="@+id/tv_choose_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="43dp"
-        android:fontFamily="@font/plus_jakarta_sans_medium"
         android:text="Tingkat Aktivitas Harian Yang Dilakukan"
-        android:textColor="@color/black"
+        android:textColor="@color/md_theme_onSurface"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,62 +21,61 @@
         tools:ignore="TextSizeCheck" />
 
     <TextView
-        android:id="@+id/tv_subtitle_input_gender"
+        android:id="@+id/tv_subtitle_input_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/jakarta_sans_family"
         android:letterSpacing="0.02"
         android:lineSpacingExtra="2sp"
         android:text="Aktivitas fisik seperti berjalan, bekerja fisik, atau olahraga bisa memengaruhi kebutuhan kalori."
         android:textSize="14sp"
         android:layout_marginTop="6dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_choose_gender"
-        app:layout_constraintTop_toBottomOf="@+id/tv_choose_gender"
+        app:layout_constraintStart_toStartOf="@+id/tv_choose_activity"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_activity"
         tools:ignore="TextContrastCheck" />
 
     <include
-        android:id="@+id/tidak_aktif_beraktivitas"
+        android:id="@+id/choose_inactive"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_input_gender"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_input_activity"/>
 
     <include
-        android:id="@+id/aktivitas_ringan"
+        android:id="@+id/choose_lightly_active"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tidak_aktif_beraktivitas"/>
+        app:layout_constraintTop_toBottomOf="@id/choose_inactive"/>
 
     <include
-        android:id="@+id/aktivitas_sedang"
+        android:id="@+id/choose_moderately_active"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/aktivitas_ringan"/>
+        app:layout_constraintTop_toBottomOf="@id/choose_lightly_active"/>
 
     <include
-        android:id="@+id/aktivitas_berat"
+        android:id="@+id/choose_very_active"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/aktivitas_sedang"/>
+        app:layout_constraintTop_toBottomOf="@id/choose_lightly_active"/>
 
 
     <include
-        android:id="@+id/aktivitas_sangat_berat"
+        android:id="@+id/choose_extremely_active"
         layout="@layout/component_input_radio_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/aktivitas_berat"/>
-
+        app:layout_constraintTop_toBottomOf="@id/choose_very_active"/>
 
     <Button
+        android:id="@+id/btn_submit_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/plus_jakarta_sans_medium"

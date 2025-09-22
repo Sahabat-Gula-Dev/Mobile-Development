@@ -22,6 +22,7 @@ class TokenManager(context: Context) {
 
     companion object {
         private const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN"
+        private const val PROFILE_COMPLETED_KEY = "PROFILE_COMPLETED"
     }
 
     fun saveAccessToken(token: String) {
@@ -34,5 +35,18 @@ class TokenManager(context: Context) {
 
     fun clearAccessToken() {
         sharedPreferences.edit { remove(ACCESS_TOKEN_KEY) }
+    }
+
+    // === PROFILE FLAG ===
+    fun setProfileCompleted(completed: Boolean) {
+        sharedPreferences.edit { putBoolean(PROFILE_COMPLETED_KEY, completed) }
+    }
+
+    fun isProfileCompleted(): Boolean {
+        return sharedPreferences.getBoolean(PROFILE_COMPLETED_KEY, false)
+    }
+
+    fun clearProfileCompleted() {
+        sharedPreferences.edit { remove(PROFILE_COMPLETED_KEY) }
     }
 }

@@ -32,15 +32,21 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 splashViewModel.destination.collect { destination ->
-                    when(destination) {
+                    when (destination) {
                         SplashDestination.AUTH_FLOW -> {
-                            findNavController().navigate(R.id.action_splash_to_auth)
+                            if (findNavController().currentDestination?.id == R.id.splashscreen_fragment) {
+                                findNavController().navigate(R.id.action_splash_to_auth)
+                            }
                         }
                         SplashDestination.INPUT_DATA_FLOW -> {
-                            findNavController().navigate(R.id.action_splash_to_input_data)
+                            if (findNavController().currentDestination?.id == R.id.splashscreen_fragment) {
+                                findNavController().navigate(R.id.action_splash_to_input_data)
+                            }
                         }
                         SplashDestination.HOME_FLOW -> {
-                            findNavController().navigate(R.id.action_splash_to_home)
+                            if (findNavController().currentDestination?.id == R.id.splashscreen_fragment) {
+                                findNavController().navigate(R.id.action_splash_to_home)
+                            }
                         }
                         else -> {}
                     }
@@ -48,5 +54,6 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
             }
         }
     }
+
 
 }
