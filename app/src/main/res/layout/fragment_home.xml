@@ -178,6 +178,7 @@
                 </LinearLayout>
 
                 <include
+                    android:id="@+id/comp_risk_index"
                     layout="@layout/component_index_of_diabetes_risk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
