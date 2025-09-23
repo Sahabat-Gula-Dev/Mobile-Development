@@ -5,6 +5,8 @@ import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
+import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
+import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
@@ -14,8 +16,12 @@ import com.pkm.sahabatgula.data.remote.model.RegisterResponse
 import com.pkm.sahabatgula.data.remote.model.ResendOtpRequest
 import com.pkm.sahabatgula.data.remote.model.ResendOtpResponse
 import com.pkm.sahabatgula.data.remote.model.RegisterRequest
+import com.pkm.sahabatgula.data.remote.model.ResetPasswordRequest
+import com.pkm.sahabatgula.data.remote.model.ResetPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpResponse
+import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpRequest
+import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.runCatching
@@ -27,24 +33,45 @@ class AuthRepository @Inject constructor(
     private val profileDao: ProfileDao
 ) {
 
+
     suspend fun register(username: String, email: String, password: String): Result<RegisterResponse> =
         runCatching {
             val response = apiService.register(RegisterRequest(username, email, password))
             response.body()?: throw IllegalStateException("Response body is null")
         }
-
     suspend fun resendOtp(email: String): Result<ResendOtpResponse> =
         runCatching {
             val response = apiService.resendOtp(ResendOtpRequest(email))
             response.body()?: throw IllegalStateException("Response body is null")
         }
 
-    suspend fun verifyOtp(email: String, otp: String): Result<VerifyOtpResponse> =
-        runCatching {
+    suspend fun verifyOtp(email: String, otp: String): Resource<VerifyOtpResponse> {
+        return try {
             val response = apiService.verifyOtp(VerifyOtpRequest(email, otp))
-            response.body()?: throw IllegalStateException("Response body is null")
+            if(response.isSuccessful && response.body() != null) {
+                val otpResponse = response.body()!!
+                val token = otpResponse.data.accessToken
+                tokenManager.saveAccessToken(token)
+                val myProfileResponse = apiService.getMyProfile("Bearer $token")
+                if (myProfileResponse.isSuccessful) {
+                    val body = myProfileResponse.body()
+                    val myProfile = body?.data?.myProfile
+                    if (myProfile != null) {
+                        val profileEntity = myProfile.toProfileEntity()
+                        profileDao.upsertProfile(profileEntity)
+                    } else {
+                        return Resource.Error("Gagal mengambil data profil")
+                    }
+                }
+                Resource.Success(otpResponse)
+            } else {
+                // Implementasikan error handling yang lebih baik di sini
+                Resource.Error("Gagal mengambil data profile: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Terjadi kesalahan jaringan")
         }
-
+    }
 
     suspend fun login(email: String, password: String): Resource<LoginResponse> {
         return try {
@@ -54,8 +81,6 @@ class AuthRepository @Inject constructor(
                 val token = loginResponse.data.accessToken
                 tokenManager.saveAccessToken(token)
 
-
-                // ambil dan save profile
                 val myProfileResponse = apiService.getMyProfile("Bearer $token")
                 if(myProfileResponse.isSuccessful) {
                     val body = myProfileResponse.body()
@@ -83,6 +108,51 @@ class AuthRepository @Inject constructor(
         return runCatching {
             val response = apiService.googleAuth(request)
             response.body()?: throw IllegalStateException("Response body is null")
+        }
+    }
+
+    suspend fun verifyResetOtp(email:String, otp:String): Resource<VerifyResetOtpResponse> {
+        return try {
+            val request = VerifyResetOtpRequest(email, otp)
+            val response = apiService.verifyResetOtp(request)
+            if (response.isSuccessful && response.body() != null) {
+                val resetOtpResponse = response.body()!!
+                Resource.Success(resetOtpResponse)
+            } else {
+                Resource.Error("Gagal memverifikasi OTP: ${response.message()}")
+
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Terjadi kesalahan jaringan")
+        }
+    }
+
+    suspend fun forgotPasswordInputEmail(email: String): Resource<ForgotPasswordResponse> {
+        return try {
+            val request = ForgotPasswordRequest(email)
+            val response = apiService.forgotPasswordInputEmail(request)
+            if(response.isSuccessful && response.body() != null) {
+                Resource.Success(response.body()!!)
+            } else {
+                Resource.Error("Gagal mengirim email: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Terjadi kesalahan jaringan")
+        }
+    }
+
+    suspend fun resetPassword(resetToken: String, newPassword: String): Resource<ResetPasswordResponse> {
+        return try {
+            val request = ResetPasswordRequest(resetToken, newPassword)
+            val response = apiService.resetPassword(request)
+            if (response.isSuccessful && response.body() != null) {
+                val resetPasswordResponse = response.body()!!
+                Resource.Success(resetPasswordResponse)
+            } else {
+                Resource.Error("Gagal mereset password: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Terjadi kesalahan jaringan")
         }
     }
 }

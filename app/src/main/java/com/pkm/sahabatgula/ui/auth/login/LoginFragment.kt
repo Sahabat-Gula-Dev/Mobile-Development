@@ -47,6 +47,10 @@ class LoginFragment : Fragment() {
             )
         }
 
+        binding.tvForgotPasswordClickable.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_forgot_password)
+        }
+
         observeState()
         observeEffect()
 

@@ -1,9 +1,16 @@
 package com.pkm.sahabatgula.ui.auth.otpverification
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.remote.model.LoginResponse
+import com.pkm.sahabatgula.data.remote.model.TokenData
 import com.pkm.sahabatgula.data.repository.AuthRepository
+import com.pkm.sahabatgula.ui.auth.login.LoginViewState.Error
+import com.pkm.sahabatgula.ui.auth.login.LoginViewState.Loading
+import com.pkm.sahabatgula.ui.auth.login.LoginViewState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -56,23 +63,44 @@ class OtpVerificationRegisterViewModel @Inject constructor(
         )
     }
 
-    fun verify(code: String) = viewModelScope.launch {
-        if (code.length != 6) {
-            _effect.send(OtpEffect.ShowToast("Kode OTP harus 6 digit"))
-            return@launch
-        }
-        _ui.value = OtpViewState.Loading
-        val r = repository.verifyOtp(email, code)
-        r.fold(
-            onSuccess = { verifyOtpResponse ->
-                val token = verifyOtpResponse.data.accessToken
-                _effect.send(OtpEffect.VerificationSuccess(token))
-            },
-            onFailure = {
-                _effect.send(OtpEffect.ShowToast(it.message ?: "Verifikasi gagal"))
-                _ui.value = OtpViewState.ReadyToResend
+    fun verify(email: String, otpCode: String) = viewModelScope.launch {
+//        if (code.length != 6) {
+//            _effect.send(OtpEffect.ShowToast("Kode OTP harus 6 digit"))
+//            return@launch
+//        }
+//        _ui.value = OtpViewState.Loading
+//        val r = repository.verifyOtp(email, code)
+//        r.fold(
+//            onSuccess = { verifyOtpResponse ->
+//                val token = verifyOtpResponse.data.accessToken
+//                _effect.send(OtpEffect.VerificationSuccess(token))
+//            },
+//            onFailure = {
+//                _effect.send(OtpEffect.ShowToast(it.message ?: "Verifikasi gagal"))
+//                _ui.value = OtpViewState.ReadyToResend
+//            }
+//        )
+
+        viewModelScope.launch {
+            _ui.value = Loading
+            val resource = repository.verifyOtp(email,otpCode)
+            when (resource) {
+                is Resource.Success -> {
+//                    _ui.value = Success(resource.data)
+                    val token = resource.data?.data?.accessToken
+                    _effect.send(OtpEffect.VerificationSuccess(token))
+                }
+                is Resource.Error -> {
+                    _ui.value = Error(resource.message)
+                }
+                is Resource.Loading<*> -> {
+                    Log.d("OtpViewModel", "tunggu dulu")
+                }
             }
-        )
+
+        }
     }
+
+
 }
 

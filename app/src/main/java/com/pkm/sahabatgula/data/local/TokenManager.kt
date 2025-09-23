@@ -25,7 +25,7 @@ class TokenManager(context: Context) {
         private const val PROFILE_COMPLETED_KEY = "PROFILE_COMPLETED"
     }
 
-    fun saveAccessToken(token: String) {
+    fun saveAccessToken(token: String?) {
         sharedPreferences.edit { putString(ACCESS_TOKEN_KEY, token) }
     }
 

@@ -5,3 +5,7 @@
 - file untuk halaman search pinahkanh supaya lebih general
 - sesuiakan file untuk halaman scan
 - buat stringnya di day dan night
+
+
+- di bagian graph input data harusnya mulai dari welcome screen supaay itu yang dilihat oleh user ketika belum input data
+- atur logic on boarding screennya

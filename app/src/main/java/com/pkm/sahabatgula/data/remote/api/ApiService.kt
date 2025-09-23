@@ -1,5 +1,7 @@
 package com.pkm.sahabatgula.data.remote.api
 
+import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
+import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
@@ -11,8 +13,12 @@ import com.pkm.sahabatgula.data.remote.model.RegisterRequest
 import com.pkm.sahabatgula.data.remote.model.RegisterResponse
 import com.pkm.sahabatgula.data.remote.model.ResendOtpRequest
 import com.pkm.sahabatgula.data.remote.model.ResendOtpResponse
+import com.pkm.sahabatgula.data.remote.model.ResetPasswordRequest
+import com.pkm.sahabatgula.data.remote.model.ResetPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpResponse
+import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpRequest
+import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,6 +26,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ApiService {
+
     @POST("register")
     suspend fun register(@Body userDataItem: RegisterRequest): Response<RegisterResponse>
 
@@ -34,6 +41,15 @@ interface ApiService {
 
     @POST("google")
     suspend fun googleAuth(@Body body: GoogleAuthRequest): Response<GoogleAuthResponse>
+
+    @POST("forgot-password")
+    suspend fun forgotPasswordInputEmail(@Body body: ForgotPasswordRequest): Response<ForgotPasswordResponse>
+
+    @POST("verify-reset-otp")
+    suspend fun verifyResetOtp(@Body body: VerifyResetOtpRequest): Response<VerifyResetOtpResponse>
+
+    @POST("reset-password")
+    suspend fun resetPassword(@Body body: ResetPasswordRequest): Response<ResetPasswordResponse>
 
     @POST ("setup")
     suspend fun setupProfile(

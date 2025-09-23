@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_graph"
-    app:startDestination="@id/login_fragment">
+    app:startDestination="@id/register_fragment">
 
 <!--    <fragment-->
 <!--        android:id="@+id/splashscreen_fragment"-->
@@ -49,7 +49,41 @@
             app:destination="@id/input_data_graph"
             app:popUpTo="@id/auth_graph"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_login_to_forgot_password"
+            app:destination="@id/input_email_forgot_password_fragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/input_email_forgot_password_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.forgotpassword.inputemail.ForgotPassEmailInputFragment">
+        <action
+            android:id="@+id/action_forgot_pass_input_email_to_verify_otp"
+            app:destination="@id/verify_otp_forgot_password_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/verify_otp_forgot_password_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.forgotpassword.verifyotp.VerifyResetOtpFragment">
+        <action
+            android:id="@+id/action_verify_otp_to_reset_password"
+            app:destination="@id/reset_password_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/reset_password_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.forgotpassword.newpassword.ResetPasswordFragment">
+        <argument
+            android:name="resetToken"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_reset_password_to_login"
+            app:destination="@id/login_fragment"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
 
     <fragment
         android:id="@+id/otp_verification_fragment"

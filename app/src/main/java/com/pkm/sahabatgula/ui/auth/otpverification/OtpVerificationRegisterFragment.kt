@@ -46,8 +46,9 @@ class OtpVerificationRegisterFragment : Fragment() {
 
         binding.btnVerify.setOnClickListener {
             val code = binding.editInputOtp.text?.toString()?.trim().orEmpty()
+            val email = otpViewModel.email
             Log.d("OTP", "Verify clicked code='$code'")
-            otpViewModel.verify(code)
+            otpViewModel.verify(email, code)
         }
 
         binding.tvResend.setOnClickListener {

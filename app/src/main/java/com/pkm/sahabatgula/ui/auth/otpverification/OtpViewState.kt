@@ -9,5 +9,5 @@ interface OtpViewState {
 
 sealed interface OtpEffect {
     data class ShowToast(val message: String): OtpEffect
-    data class VerificationSuccess(val accessToken: String): OtpEffect
+    data class VerificationSuccess(val accessToken: String?): OtpEffect
 }
