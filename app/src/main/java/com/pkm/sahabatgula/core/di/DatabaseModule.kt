@@ -3,6 +3,9 @@ package com.pkm.sahabatgula.core.di
 import android.content.Context
 import androidx.room.Room
 import com.pkm.sahabatgula.data.local.room.AppDatabase
+import com.pkm.sahabatgula.data.local.room.DailySummaryDao
+import com.pkm.sahabatgula.data.local.room.MIGRATION_1_2
+import com.pkm.sahabatgula.data.local.room.MIGRATION_2_3
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import dagger.Module
 import dagger.Provides
@@ -21,8 +24,11 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "sahabat_gula_db" // Nama file database Anda
-        ).build()
+            "sahabat_gula_db" // Nama file database
+        )
+//            .fallbackToDestructiveMigration() // hanya untuk dev
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .build()
     }
 
     @Provides // DAO tidak perlu @Singleton karena AppDatabase sudah singleton
@@ -30,7 +36,12 @@ object DatabaseModule {
         return appDatabase.profileDao() // Resep untuk membuat ProfileDao
     }
 
-    // Jika Anda punya DAO lain nanti (misal: FoodDao), tambahkan resepnya di sini
+    @Provides
+    fun provideDailySummaryDao(appDatabase: AppDatabase): DailySummaryDao {
+        return appDatabase.dailySummaryDao()
+    }
+
+    // Jika ada DAO lain nanti (misal: FoodDao), tambahkan resepnya di sini
     // @Provides
     // fun provideFoodDao(appDatabase: AppDatabase): FoodDao {
     //     return appDatabase.foodDao()

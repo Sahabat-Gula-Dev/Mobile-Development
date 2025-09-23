@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProfileDao {
@@ -25,5 +26,13 @@ interface ProfileDao {
     @Delete
     suspend fun deleteProfile(profile: ProfileEntity)
 
+}
 
+@Dao
+interface DailySummaryDao {
+    @Query("SELECT * FROM daily_summary WHERE date = :date LIMIT 1")
+    fun getSummaryByDate(date: String): Flow<DailySummaryEntity?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(summary: DailySummaryEntity)
 }

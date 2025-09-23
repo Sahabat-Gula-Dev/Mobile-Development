@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="3dp"
     app:contentPadding="12dp"
     app:cardCornerRadius="2dp"
     app:strokeWidth="0.1dp"
@@ -18,7 +17,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:cardCornerRadius="4dp"
-            android:backgroundTint="@color/green_card"
+            app:cardUseCompatPadding="false"
+            app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -32,22 +32,22 @@
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
-                android:textColor="@color/white"
-                android:background="@color/green_card"/>
+                android:textColor="@color/white"/>
 
 
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/tv_title_index_risk"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:letterSpacing="0.02"
-            android:text="Risiko Diabetes Rendah"
+            android:text="Risiko Diabetes Sangat Rendah"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/bg_number_of_risk"
             app:layout_constraintStart_toEndOf="@id/bg_number_of_risk"
             />

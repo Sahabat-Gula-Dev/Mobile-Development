@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.pkm.sahabatgula.data.remote.api.ApiService
 import kotlinx.coroutines.launch
 
 
@@ -21,11 +22,14 @@ enum class SplashDestination {
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
+    private val apiService: ApiService
 ): ViewModel() {
 
     private val _destination = MutableStateFlow(SplashDestination.LOADING)
     val destination= _destination.asStateFlow()
+
+
 
     init {
         checkUserSession()
@@ -52,5 +56,23 @@ class SplashViewModel @Inject constructor(
                 }
             }
         }
+
+        viewModelScope.launch {
+            if (sessionManager.isLoggedIn()) {
+                // coba ambil dari Room atau fetch ulang kalau kosong
+                val profile = sessionManager.getOrFetchProfile(apiService)
+                if (profile != null) {
+                    // langsung ke Home
+                    _destination.value = SplashDestination.HOME_FLOW
+                } else {
+                    // token ada tapi gagal fetch profile → fallback ke login
+                    _destination.value = SplashDestination.AUTH_FLOW
+                }
+            } else {
+                // tidak ada token → ke login
+                _destination.value = SplashDestination.AUTH_FLOW
+            }
+        }
+
     }
 }

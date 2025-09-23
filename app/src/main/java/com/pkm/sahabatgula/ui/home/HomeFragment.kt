@@ -15,11 +15,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.pkm.sahabatgula.core.utils.RiskCategory
+import com.pkm.sahabatgula.data.local.room.DailySummaryEntity
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -46,9 +49,10 @@ class HomeFragment : Fragment() {
 
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
+            val profile = viewModel.homeRepository.getProfile()
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    handleState(state)
+                viewModel.summary.collect { summary ->
+                    updateSuccessfullUi(profile, summary)
                 }
             }
         }
@@ -69,55 +73,54 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun handleState(state: HomeState) {
-        binding.root.apply {
-            alpha = if (state is HomeState.Loading) 0.5f else 1.0f
-            isEnabled = state !is HomeState.Loading
-        }
-
-        when (state) {
-            is HomeState.Loading-> {
-
-            }
-            is HomeState.Success -> {
-                updateSuccessfullUi(state.profile, state.summary)
-            }
-            is HomeState.Error -> {
-                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-
-            }
-        }
-    }
+//    private fun handleState(state: HomeState) {
+//        binding.root.apply {
+//            alpha = if (state is HomeState.Loading) 0.5f else 1.0f
+//            isEnabled = state !is HomeState.Loading
+//        }
+//
+//        when (state) {
+//            is HomeState.Loading-> {
+//
+//            }
+//            is HomeState.Success -> {
+//                updateSuccessfullUi(state.profile, state.summary)
+//            }
+//            is HomeState.Error -> {
+//                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+//
+//            }
+//        }
+//    }
 
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
-        summary: DailySummaryResponse
+        summary: DailySummaryEntity?
     ) {
-        val summaryData = summary.data
-        val nutrients = summary.data?.summary?.nutrients
+//        val summaryData = summary.data
+//        val nutrients = summary.data?.summary?.nutrients
         binding.userName.text = profile.username?: "Pengguna"
 
 
-        val caloriesConsumed = nutrients?.calories
-        val carbsConsumed = nutrients?.carbs
-        val proteinConsumed = nutrients?.protein
-        val fatConsumed = nutrients?.fat
-        val sugarConsumed = nutrients?.sugar
-        val sodiumConsumed = nutrients?.sodium
-        val fiberConsumed = nutrients?.fiber
-        val potassiumConsumed = nutrients?.potassium
-        val burned = summaryData?.summary?.activities?.burned
-        val steps = summaryData?.summary?.steps
-        val water = summaryData?.summary?.water
-
-        val maxCalories = profile.max_calories
-        val maxCarbs = profile.max_carbs
-        val maxProtein = profile.max_protein
-        val maxFat = profile.max_fat
-        val maxSugar = profile.max_sugar
-        val maxSodium = profile.max_natrium
-        val maxFiber = profile.max_fiber
-        val maxPotassium = profile.max_potassium
+        val caloriesConsumed = summary?.calories?:0
+        val carbsConsumed = summary?.carbs?:0
+        val proteinConsumed = summary?.protein?:0
+        val fatConsumed = summary?.fat?:0
+        val sugarConsumed = summary?.sugar?:0
+        val sodiumConsumed = summary?.sodium?:0
+        val fiberConsumed = summary?.fiber?:0
+        val potassiumConsumed = summary?.potassium?:0
+        val burned = summary?.burned?:0
+        val steps = summary?.steps?:0
+        val water = summary?.water?:0
+        val maxCalories = profile.max_calories?:0
+        val maxCarbs = profile.max_carbs?:0
+        val maxProtein = profile.max_protein?:0
+        val maxFat = profile.max_fat?:0
+        val maxSugar = profile.max_sugar?:0
+        val maxSodium = profile.max_natrium?:0
+        val maxFiber = profile.max_fiber?:0
+        val maxPotassium = profile.max_potassium?:0
 
 
 
@@ -126,7 +129,7 @@ class HomeFragment : Fragment() {
         // risk category
         val riskCategory = getRiskCategory(riskIndex)
 
-        binding.compRiskIndex.bgNumberOfRisk.setBackgroundColor(riskCategory.colorRes)
+        binding.compRiskIndex.bgNumberOfRisk.setCardBackgroundColor(riskCategory.colorRes)
         binding.compRiskIndex.tvNumberOfRisk.text = riskIndex.toString()
         binding.compRiskIndex.tvTitleIndexRisk.text = riskCategory.title
         binding.compRiskIndex.subtitleTvIndexRisk.text = riskCategory.subtitle
@@ -134,8 +137,8 @@ class HomeFragment : Fragment() {
         binding.sugarConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_sugar_candy)
             tvNumberOfConsumption.text = sugarConsumed.toString()
-//            tvTitleProgress.text = "Konsumsi Gula Hari skrg"
-//            tvNumberOfTotalNutrition.text = "dari $maxSugar gr"
+            tvTitleProgress.text = "Konsumsi Gula Hari Ini"
+            tvNumberOfTotalNutrition.text = " dari $maxSugar gr"
 //            tvNumberOfPercentage.text = "${sugarConsumed?.toPercentage(maxSugar?.toInt())}"
         }
 

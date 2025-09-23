@@ -165,8 +165,8 @@
     <color name="gray_icon">#1f1f1f</color>
 
     <!-- risk category  -->
-    <color name="green_dark_low">#088D08"</color>
-    <color name="yellow_moderate">#F4C300"</color>
-    <color name="red_high">#FF0000"</color>
+    <color name="green_dark_low">#088D08</color>
+    <color name="yellow_moderate">#F4C300</color>
+    <color name="red_high">#FF0000</color>
 
 </resources>
