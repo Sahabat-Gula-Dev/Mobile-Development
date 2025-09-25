@@ -5,6 +5,8 @@ import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
+import com.pkm.sahabatgula.data.remote.model.LogFoodRequest
+import com.pkm.sahabatgula.data.remote.model.LogFoodResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
 import com.pkm.sahabatgula.data.remote.model.LoginResponse
 import com.pkm.sahabatgula.data.remote.model.MyProfileResponse
