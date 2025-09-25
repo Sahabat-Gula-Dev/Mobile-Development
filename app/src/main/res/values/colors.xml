@@ -169,4 +169,14 @@
     <color name="yellow_moderate">#F4C300</color>
     <color name="red_high">#FF0000</color>
 
+
+    <color name="yellow_carbo">#C89632</color>
+    <color name="red_fat">#FF5023</color>
+    <color name="brown_protein">#B35408</color>
+    <color name="blue_water">#2196F3</color>
+    <color name="blue_steps">#2196F3</color>
+    <color name="brown_card_action">#F4E3CD</color>
+    <color name="green_card_action">#CEE8CE</color>
+
+
 </resources>

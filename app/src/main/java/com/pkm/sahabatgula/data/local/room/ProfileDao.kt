@@ -15,7 +15,7 @@ interface ProfileDao {
     suspend fun getProfileByUserId(userId: String): ProfileEntity?
 
     @Query("SELECT * FROM user_profile LIMIT 1")
-    suspend fun getProfile(): ProfileEntity
+    suspend fun getProfile(): ProfileEntity?
 
     @Upsert
     suspend fun upsertProfile(profile: ProfileEntity)
@@ -25,6 +25,9 @@ interface ProfileDao {
 
     @Delete
     suspend fun deleteProfile(profile: ProfileEntity)
+
+    @Query("SELECT * FROM user_profile LIMIT 1")
+    fun observeProfile(): Flow<ProfileEntity?>
 
 }
 

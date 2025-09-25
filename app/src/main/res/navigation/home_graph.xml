@@ -4,9 +4,146 @@
     android:id="@+id/home_graph"
     app:startDestination="@id/home_fragment">
 
+    <!-- home -->
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.pkm.sahabatgula.ui.home.HomeFragment">
+
+        <action
+            android:id="@+id/action_home_to_log_sugar"
+            app:destination="@id/log_sugar_fragment"/>
+        <action
+            android:id="@+id/action_home_to_log_food"
+            app:destination="@id/log_food_fragment"/>
+        <action
+            android:id="@+id/action_home_to_carbo"
+            app:destination="@id/log_carbo_fragment"/>
+        <action
+            android:id="@+id/action_home_to_log_fat"
+            app:destination="@id/log_fat_fragment"/>
+        <action
+            android:id="@+id/action_home_to_log_protein"
+            app:destination="@id/log_protein_fragment"/>
+        <action
+            android:id="@+id/action_home_to_log_activity"
+            app:destination="@id/log_activity_fragment"/>
+        <action
+            android:id="@+id/action_home_to_log_water"
+            app:destination="@id/log_water_fragment"/>
+        <action
+            android:id="@+id/action_home_to_log_step"
+            app:destination="@id/log_step_fragment"/>
     </fragment>
+
+    <!-- log sugar   -->
+    <fragment
+        android:id="@+id/log_sugar_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailysugar.SugarFragment">
+
+        <action
+            android:id="@+id/action_log_sugar_to_log_water"
+            app:destination="@id/log_water_fragment"/>
+    </fragment>
+
+    <!-- log water   -->
+
+    <fragment
+        android:id="@+id/log_water_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailywater.WaterFragment">
+
+    </fragment>
+
+    <!-- log step  -->
+    <fragment
+        android:id="@+id/log_step_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailystep.StepFragment">
+
+    </fragment>
+
+    <!-- log food   -->
+
+    <fragment
+        android:id="@+id/log_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.FoodFragment">
+
+
+    </fragment>
+
+    <!-- log carbo   -->
+    <fragment
+        android:id="@+id/log_carbo_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailycarbo.CarboFragment">
+        <action
+            android:id="@+id/action_log_carbo_to_log_food"
+            app:destination="@id/log_food_fragment"/>
+
+    </fragment>
+
+    <!-- log fat   -->
+    <fragment
+        android:id="@+id/log_fat_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfat.FatFragment">
+
+        <action
+            android:id="@+id/action_log_fat_to_log_food"
+            app:destination="@id/log_food_fragment"/>
+    </fragment>
+
+    <!-- log protein   -->
+    <fragment
+        android:id="@+id/log_protein_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyprotein.ProteinFragment">
+
+        <action
+            android:id="@+id/action_log_protein_to_log_food"
+            app:destination="@id/log_food_fragment"/>
+    </fragment>
+
+    <!-- log activity   -->
+    <fragment
+        android:id="@+id/log_activity_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.activity.ActivityFragment">
+
+        <action
+            android:id="@+id/action_log_activity_to_log_step"
+            app:destination="@id/log_step_fragment"/>
+    </fragment>
+
+
+
+    <!-- Food Scan   -->
+    <fragment
+        android:id="@+id/scan_fragment"
+        android:name="com.pkm.sahabatgula.ui.scan.ScanFragment">
+
+    </fragment>
+
+    <!-- food scan result   -->
+    <fragment
+        android:id="@+id/scan_result_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.scanning.ResultScanFoodFragment">
+
+    </fragment>
+
+    <!-- log manual food  ini refers ke tab layout yang  kedua -->
+
+    <!-- log manual custom food   -->
+    <fragment
+        android:id="@+id/log_manual_custom_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.customfood.search.ResultSearchManualCustomFoodFragment">
+
+    </fragment>
+
+    <!-- activity result   -->
+    <fragment
+        android:id="@+id/result_search_activity_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.search.ResultSearchActivityFragment">
+
+    </fragment>
+
+<!-- TAMBAH FRAGMENT UNTUK CHATBOTNYA JUGA   -->
+
+    
+
 
 </navigation>

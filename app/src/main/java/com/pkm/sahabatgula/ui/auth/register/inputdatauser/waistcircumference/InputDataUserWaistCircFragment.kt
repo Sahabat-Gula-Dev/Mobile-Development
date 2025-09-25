@@ -106,6 +106,14 @@ class InputDataUserWaistCircFragment : Fragment() {
             binding.rulerComponentWaist.tvHeightValue.text = valueWaistCirc.toString()
         }
 
+        binding.cardInfoTips.apply {
+            tvSubtitleInfo.text = "Gunakan meteran kain. Ukur di sekitar perut bagian tengah, antara pusar dan tulang rusuk"
+        }
+        binding.cardInfoAverageWaistCirc.apply {
+            icInfo.setImageResource(R.drawable.ic_question)
+            tvSubtitleInfo.text = "Rata-rata lingkar pinggang laki-laki biasanya di atas 60 cm, dan wanita di atas 50 cm"
+        }
+
     }
 
     private fun observeViewModel() {

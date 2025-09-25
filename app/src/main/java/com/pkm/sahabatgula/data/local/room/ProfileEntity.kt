@@ -33,7 +33,7 @@ data class ProfileEntity(
 @Entity(tableName = "daily_summary")
 data class DailySummaryEntity(
     @PrimaryKey val date: String,
-    val calories: Int,
+    val calories: Int?,
     val carbs: Double,
     val protein: Double,
     val fat: Double,

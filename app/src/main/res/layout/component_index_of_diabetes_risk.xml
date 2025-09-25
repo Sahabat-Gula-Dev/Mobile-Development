@@ -19,6 +19,7 @@
             app:cardCornerRadius="4dp"
             app:cardUseCompatPadding="false"
             app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/green_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -37,33 +38,37 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tv_title_index_risk"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:letterSpacing="0.02"
-            android:text="Risiko Diabetes Sangat Rendah"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
             app:layout_constraintTop_toTopOf="@id/bg_number_of_risk"
+            app:layout_constraintBottom_toBottomOf="@id/bg_number_of_risk"
             app:layout_constraintStart_toEndOf="@id/bg_number_of_risk"
-            />
-
-        <TextView
-            android:id="@+id/subtitle_tv_index_risk"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.03"
-            android:layout_marginTop="6dp"
-            android:textSize="12sp"
-            android:text="Kondisi cukup baik, jaga pola makan dan aktivitas harian"
-            app:layout_constraintStart_toStartOf="@id/tv_title_index_risk"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_index_risk"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/bg_number_of_risk"/>
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/tv_title_index_risk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:letterSpacing="0.02"
+                android:text="Risiko Diabetes Rendah"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/subtitle_tv_index_risk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.03"
+                android:textSize="12sp"
+                android:text="Kondisi cukup baik, jaga pola makan dan aktivitas harian"/>
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

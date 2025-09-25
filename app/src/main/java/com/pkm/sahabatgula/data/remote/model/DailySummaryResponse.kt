@@ -5,28 +5,26 @@ import com.google.gson.annotations.SerializedName
 data class DailySummaryResponse(
 
 	@field:SerializedName("data")
-	val data: DailySummaryData? = null,
+	val data: SummaryData? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null
 )
 
-data class Summary(
+data class SummaryData(
+	// Pindahkan properti dari class 'Summary' yang lama ke sini
+	@SerializedName("date")
+	val date: String,
+	@SerializedName("nutrients")
+	val nutrients: Nutrients,
 
-	@field:SerializedName("date")
-	val date: String? = null,
-
-	@field:SerializedName("activities")
-	val activities: Activities? = null,
-
-	@field:SerializedName("steps")
-	val steps: Int? = null,
-
-	@field:SerializedName("water")
-	val water: Int? = null,
-
-	@field:SerializedName("nutrients")
-	val nutrients: Nutrients? = null
+	// Properti ini sudah benar
+	@SerializedName("activities")
+	val activities: Activities,
+	@SerializedName("steps")
+	val steps: Int,
+	@SerializedName("water")
+	val water: Int
 )
 
 data class Nutrients(
@@ -60,10 +58,4 @@ data class Activities(
 
 	@field:SerializedName("burned")
 	val burned: Int? = null
-)
-
-data class DailySummaryData(
-
-	@field:SerializedName("summary")
-	val summary: Summary? = null
 )

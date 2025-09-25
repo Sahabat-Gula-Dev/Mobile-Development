@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toStartOf="@id/arrow_right">
 
             <ImageView
-                android:id="@+id/ic_sugar_candy"
+                android:id="@+id/ic_action"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_activity_dumble"
@@ -38,24 +38,23 @@
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="37dp"
-                app:layout_constraintStart_toEndOf="@id/ic_sugar_candy"
+                app:layout_constraintStart_toEndOf="@id/ic_action"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ic_sugar_candy"
-                app:layout_constraintBottom_toBottomOf="@id/ic_sugar_candy">
+                app:layout_constraintTop_toTopOf="@id/ic_action"
+                app:layout_constraintBottom_toBottomOf="@id/ic_action">
 
                 <TextView
-                    android:id="@+id/tv_title_progress"
+                    android:id="@+id/tv_title_action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
-                    android:letterSpacing="0.02"
                     android:text="Sudah Bergerak Hari Ini?"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     />
 
                 <TextView
-                    android:id="@+id/tv_number_of_consumption"
+                    android:id="@+id/tv_subtitle_action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.03"
@@ -71,7 +70,7 @@
             android:id="@+id/arrow_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_arrow_right"
+            android:src="@drawable/ic_arrow_right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

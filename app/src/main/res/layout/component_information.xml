@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/ic_step_bicycle"
+            android:id="@+id/ic_info"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/ic_information"
@@ -28,12 +28,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="24dp"
-            app:layout_constraintStart_toEndOf="@id/ic_step_bicycle"
-            app:layout_constraintTop_toTopOf="@id/ic_step_bicycle"
-            app:layout_constraintBottom_toBottomOf="@id/ic_step_bicycle"
+            app:layout_constraintStart_toEndOf="@id/ic_info"
+            app:layout_constraintTop_toTopOf="@id/ic_info"
+            app:layout_constraintBottom_toBottomOf="@id/ic_info"
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
+                android:id="@+id/tv_title_info"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Tips Buat Kamu"
@@ -43,6 +44,7 @@
                 android:textColor="@color/md_theme_onSurface"/>
 
             <TextView
+                android:id="@+id/tv_subtitle_info"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Minum segelas air saat bangun tidur bantu detoks alami tubuh"

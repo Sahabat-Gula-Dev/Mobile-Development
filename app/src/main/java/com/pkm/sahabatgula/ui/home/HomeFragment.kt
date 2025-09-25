@@ -9,18 +9,20 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.pkm.sahabatgula.R
 import android.icu.text.DecimalFormat
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.core.utils.RiskCategory
-import com.pkm.sahabatgula.data.local.room.DailySummaryEntity
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -28,7 +30,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<HomeViewModel>()
-    val df = DecimalFormat("#.##")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,10 +50,10 @@ class HomeFragment : Fragment() {
 
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val profile = viewModel.homeRepository.getProfile()
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.summary.collect { summary ->
-                    updateSuccessfullUi(profile, summary)
+                // Hanya collect dari satu sumber: uiState
+                viewModel.uiState.collect { state ->
+                    handleState(state) // <-- Gunakan fungsi handleState yang sudah benar
                 }
             }
         }
@@ -73,46 +74,47 @@ class HomeFragment : Fragment() {
         }
     }
 
-//    private fun handleState(state: HomeState) {
-//        binding.root.apply {
-//            alpha = if (state is HomeState.Loading) 0.5f else 1.0f
-//            isEnabled = state !is HomeState.Loading
-//        }
-//
-//        when (state) {
-//            is HomeState.Loading-> {
-//
-//            }
-//            is HomeState.Success -> {
-//                updateSuccessfullUi(state.profile, state.summary)
-//            }
-//            is HomeState.Error -> {
-//                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
-//
-//            }
-//        }
-//    }
+    private fun handleState(state: HomeState) {
+        binding.root.apply {
+            alpha = if (state is HomeState.Loading) 0.5f else 1.0f
+            isEnabled = state !is HomeState.Loading
+        }
 
+        when (state) {
+            is HomeState.Loading -> {
+                Log.d("HomeFragment", "UI State: Loading")
+            }
+            is HomeState.Success -> {
+                Log.d("HomeFragment", "UI State: Success, updating UI.")
+
+                updateSuccessfullUi(state.profile, state.summary)
+            }
+            is HomeState.Error -> {
+                Log.e("HomeFragment", "UI State: Error: ${state.message}")
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
-        summary: DailySummaryEntity?
+        summary: DailySummaryResponse
     ) {
 //        val summaryData = summary.data
-//        val nutrients = summary.data?.summary?.nutrients
+        val nutrients = summary.data?.nutrients
         binding.userName.text = profile.username?: "Pengguna"
-
-
-        val caloriesConsumed = summary?.calories?:0
-        val carbsConsumed = summary?.carbs?:0
-        val proteinConsumed = summary?.protein?:0
-        val fatConsumed = summary?.fat?:0
-        val sugarConsumed = summary?.sugar?:0
-        val sodiumConsumed = summary?.sodium?:0
-        val fiberConsumed = summary?.fiber?:0
-        val potassiumConsumed = summary?.potassium?:0
-        val burned = summary?.burned?:0
-        val steps = summary?.steps?:0
-        val water = summary?.water?:0
+        val caloriesConsumed = nutrients?.calories
+        val carbsConsumed = summary.data?.nutrients?.carbs
+        val proteinConsumed = summary.data?.nutrients?.protein
+        val fatConsumed = summary.data?.nutrients?.fat
+        val sugarConsumed = summary.data?.nutrients?.sugar?:0
+        val sodiumConsumed = summary.data?.nutrients?.sodium?:0
+        val fiberConsumed = summary.data?.nutrients?.fiber?:0
+        val potassiumConsumed = summary.data?.nutrients?.potassium?:0
+        val burned = summary.data?.activities?.burned?:0
+        val steps = summary.data?.steps?:0
+        val waterIntake = summary.data?.water?:0
         val maxCalories = profile.max_calories?:0
         val maxCarbs = profile.max_carbs?:0
         val maxProtein = profile.max_protein?:0
@@ -122,27 +124,123 @@ class HomeFragment : Fragment() {
         val maxFiber = profile.max_fiber?:0
         val maxPotassium = profile.max_potassium?:0
 
-
-
         // risk index
         val riskIndex = profile.risk_index
         // risk category
         val riskCategory = getRiskCategory(riskIndex)
-
+        val numberRisk = binding.compRiskIndex.tvNumberOfRisk
+        // risk
         binding.compRiskIndex.bgNumberOfRisk.setCardBackgroundColor(riskCategory.colorRes)
-        binding.compRiskIndex.tvNumberOfRisk.text = riskIndex.toString()
+        numberRisk.text = String.format("%02d", riskIndex)
         binding.compRiskIndex.tvTitleIndexRisk.text = riskCategory.title
         binding.compRiskIndex.subtitleTvIndexRisk.text = riskCategory.subtitle
 
+        // sugar
         binding.sugarConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_sugar_candy)
-            tvNumberOfConsumption.text = sugarConsumed.toString()
+            tvNumberOfConsumption.text = anyToZeroInt(sugarConsumed)
             tvTitleProgress.text = "Konsumsi Gula Hari Ini"
             tvNumberOfTotalNutrition.text = " dari $maxSugar gr"
-//            tvNumberOfPercentage.text = "${sugarConsumed?.toPercentage(maxSugar?.toInt())}"
+            tvNumberOfPercentage.text = "${sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())}"
         }
 
+        // carbo
+        binding.carboConsumption.apply {
+            icProgress.setImageResource(R.drawable.carbo)
+            tvNumberOfConsumption.text = DoubleToZeroInt(carbsConsumed)
+            tvTitleProgress.text = "Karbohidrat"
+            tvNumberOfTotalNutrition.text = " dari $maxCarbs gr"
+            icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.yellow_carbo)
+            tvNumberOfPercentage.text = "${carbsConsumed?.toPercentage(maxCarbs.toInt())}"
+        }
 
+        // fat
+        binding.fatConsumption.apply {
+            icProgress.setImageResource(R.drawable.ic_fat)
+            tvNumberOfConsumption.text = DoubleToZeroInt(fatConsumed)
+            tvTitleProgress.text = "Lemak"
+            tvNumberOfTotalNutrition.text = " dari $maxFat gr"
+            icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_fat)
+            tvNumberOfPercentage.text = "${fatConsumed?.toPercentage(maxFat.toInt())}"
+        }
+
+        // protein
+        binding.proteinConsumption.apply {
+            icProgress.setImageResource(R.drawable.ic_protein)
+            tvNumberOfConsumption.text = DoubleToZeroInt(proteinConsumed)
+            tvTitleProgress.text = "Protein"
+            tvNumberOfTotalNutrition.text = " dari $maxProtein gr"
+            icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.brown_protein)
+            tvNumberOfPercentage.text = "${proteinConsumed?.toPercentage(maxProtein.toInt())}"
+        }
+
+        // protein
+        binding.waterIntakeCard.apply {
+            icProgress.setImageResource(R.drawable.ic_water_intake_glass)
+            tvNumberOfConsumption.text = waterIntake.toString()
+            tvTitleProgress.text = "Asupan Air"
+            tvNumberOfTotalNutrition.text = " dari 2000 ML"
+            icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.blue_water)
+            tvNumberOfPercentage.text = "${waterIntake.toDouble()?.toPercentage(total = 2500)}"
+        }
+
+        // step
+        binding.cardTotalSteps.apply {
+            icProgress.setImageResource(R.drawable.ic_steps_total)
+            tvNumberOfConsumption.text = steps.toString()
+            tvTitleProgress.text = "Total Langkah Hari Ini"
+            tvNumberOfTotalNutrition.text = " dari 6000 Langkah"
+            icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.blue_steps)
+            tvNumberOfPercentage.text = "${steps.toDouble()?.toPercentage(total = 6000)}"
+        }
+
+        binding.tvCaloriesConsumed.text = caloriesConsumed?.toInt().toString()
+        binding.tvCaloriesNeeded.text = maxCalories.toString()
+
+        val progressCalories = (caloriesConsumed!! / maxCalories.toDouble()) * 100
+        binding.circularProgressCalories.piCircularProgress.progress = progressCalories.toInt()
+        binding.circularProgressCalories.tvRemaining.text = (maxCalories.toDouble()- caloriesConsumed).toInt().toString()
+
+        binding.noConsumptionToday.root.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.green_card_action)
+        binding.noConsumptionToday.apply {
+            icAction.setImageResource(R.drawable.ic_food_filled)
+            tvTitleAction.text = "Belum Catat Konsumsi Harian?"
+            tvSubtitleAction.text = "Asupan harianmu menentukan kadar gula dalam tubuh"
+        }
+
+        binding.haveMovementToday.apply {
+            icAction.setImageResource(R.drawable.ic_activity_dumble)
+            tvTitleAction.text = "Sudah Bergerak Hari Ini?"
+            tvSubtitleAction.text = "Aktivitas fisik bantu bakar kalori dan jaga kadar gula tetap stabil"
+        }
+
+        binding.circularProgressCalories.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_activity)
+        }
+        binding.sugarConsumption.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_sugar)
+        }
+        binding.noConsumptionToday.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_food)
+        }
+        binding.haveMovementToday.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_activity)
+        }
+        binding.carboConsumption.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_carbo)
+        }
+        binding.fatConsumption.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_fat)
+        }
+        binding.proteinConsumption.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_protein)
+        }
+        binding.waterIntakeCard.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_water)
+        }
+        binding.cardTotalSteps.root.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_log_step)
+        }
     }
 
     override fun onDestroyView() {
@@ -150,30 +248,38 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    private fun anyToZeroInt (a: Any): String {
+        return if (a == 0.0) "0" else a.toString()
+    }
+
+    private fun DoubleToZeroInt (a: Double?): String {
+        return if (a == 0.0) a.toInt().toString() else a.toString()
+    }
+
     private fun getRiskCategory(riskIndex: Int?): RiskCategory {
         return when(riskIndex) {
             in 0..5 -> RiskCategory(
-                title = "Risiko Diabetes Sangat Rendah",
+                title = "Risiko Sangat Rendah",
                 subtitle = "Pertahankan gaya hidup aktif dan pola makan seimbang",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.green_dark_low)
             )
             in 6..10 -> RiskCategory(
-                title = "Risiko Diabetes Rendah",
+                title = "Risiko Rendah",
                 subtitle = "Kondisi cukup baik, jaga pola makan dan aktivitas harian",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.green_dark_low)
             )
             in 11..15 -> RiskCategory(
-                title = "Risiko Diabetes Sedang",
+                title = "Risiko Sedang",
                 subtitle = "Waktunya lebih aktif dan evaluasi kebiasaan makan",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.yellow_moderate)
             )
             in 16..20 -> RiskCategory(
-                title = "Risiko Diabetes Tinggi",
+                title = "Risiko Tinggi",
                 subtitle = "Gaya hidup dan riwayat kesehatan menunjukkan risiko tinggi",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.red_high)
             )
             else -> RiskCategory(
-                title = "Risiko Diabetes Sangat Tinggi",
+                title = "Risiko Sangat Tinggi",
                 subtitle = "Segera konsultasi dan ubah gaya hidup secara drastis",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.red_high)
             )
@@ -182,10 +288,10 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("DefaultLocale")
-    fun Double.toPercentage(total: Int?): String {
+    infix fun Double.toPercentage(total: Int?): String {
         if (total?.toDouble() == 0.0) return "0%"
         val result = (this / total?.toDouble()!!) * 100
-        return String.format("%.2f%%", result)
+        return String.format("%d%%", result.roundToInt())
     }
 
 }

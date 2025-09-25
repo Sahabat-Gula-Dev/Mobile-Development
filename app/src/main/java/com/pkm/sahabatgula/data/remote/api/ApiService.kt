@@ -63,4 +63,10 @@ interface ApiService {
 
     @GET("daily-summary")
     suspend fun getDailySummary(@Header ("Authorization") token: String): Response<DailySummaryResponse>
+
+    @POST("log-foods")
+    suspend fun logFood(
+        @Header("Authorization") token: String,
+        @Body body: LogFoodRequest
+    ): Response<LogFoodResponse>
 }

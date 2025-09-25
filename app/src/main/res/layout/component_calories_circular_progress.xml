@@ -54,11 +54,12 @@
             android:id="@+id/tv_remaining"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2500"
-            android:textSize="32sp"
-            android:textStyle="bold"
+            android:textAlignment="center"
             android:fontFamily="@font/jakarta_sans_family"
-            android:textColor="@color/green_track_indicator"/>
+            android:text=""
+            android:textColor="@color/green_track_indicator"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"

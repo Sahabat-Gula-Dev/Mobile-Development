@@ -6,6 +6,7 @@ import com.pkm.sahabatgula.data.local.room.AppDatabase
 import com.pkm.sahabatgula.data.local.room.DailySummaryDao
 import com.pkm.sahabatgula.data.local.room.MIGRATION_1_2
 import com.pkm.sahabatgula.data.local.room.MIGRATION_2_3
+import com.pkm.sahabatgula.data.local.room.MIGRATION_3_4
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,7 @@ object DatabaseModule {
             "sahabat_gula_db" // Nama file database
         )
 //            .fallbackToDestructiveMigration() // hanya untuk dev
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 

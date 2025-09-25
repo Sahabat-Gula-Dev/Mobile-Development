@@ -61,7 +61,7 @@ class InputDataUserActivityFragment : Fragment() {
                 if (isInactive) R.color.selected_card else R.color.md_theme_onPrimary
             )
         )
-        binding.chooseInactive.tvTitleChoice.text = "Tidak Aktif Beraktivita"
+        binding.chooseInactive.tvTitleChoice.text = "Tidak Aktif Beraktivitas"
         binding.chooseInactive.tvSubtitleChoice.text = "Kebanyakan duduk, jarang untuk bergerak atau olahraga"
         binding.chooseInactive.tvSubtitleChoice.visibility =
             if(isInactive) View.VISIBLE else View.GONE

@@ -1,4 +1,4 @@
 package com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.search
 
-class ActivitySearchViewModel {
+class ResultSearchActivityViewModel {
 }
