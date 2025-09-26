@@ -9,6 +9,7 @@ import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
+import com.pkm.sahabatgula.util.DateConverter
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -32,21 +33,36 @@ class HomeRepository @Inject constructor(
             val response = apiService.getDailySummary("Bearer $token")
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
+                Log.d("DATA_CHECK", "1. Raw API Response Body: $body")
 
-                // --- DEBUGGING PENTING ---
-                Log.d("HomeRepository", "API Success. Response Body: $body")
+//                Log.d("HomeRepository", "API Success. Response Body: $body")
 
-                // Paksa simpan data dengan tanggal hari ini untuk konsistensi
-                val todayDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
-                val entity = body.toEntity(todayDate) // <-- Kirim tanggal hari ini
-                dailySummaryDao.upsert(entity)
+//                val todayDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+//                val entity = body.toEntity(todayDate) // <-- Kirim tanggal hari ini
+//                dailySummaryDao.upsert(entity)
+//                Log.d("HomeRepository", "Data saved to DB with date: $todayDate. Entity: $entity")
 
-                // --- DEBUGGING PENTING ---
-                Log.d("HomeRepository", "Data saved to DB with date: $todayDate. Entity: $entity")
+                val serverTimestamp = body.data?.date
+
+                if (serverTimestamp != null) {
+                    // KONVERSI KE TANGGAL LOKAL
+                    val localDate = DateConverter.convertUtcTimestampToLocalDateString(serverTimestamp)
+
+                    Log.d("DATA_CHECK", "2. Date Conversion: Server UTC '$serverTimestamp' -> Local Date '$localDate'")
+
+                    // SIMPAN KE DB DENGAN TANGGAL LOKAL YANG BENAR
+                    val entity = body.toEntity(localDate)
+                    dailySummaryDao.upsert(entity)
+
+                    Log.d("HomeRepository", "Data saved to DB for local date: $localDate")
+                }
 
                 Resource.Success(body)
             } else {
-                Log.e("HomeRepository", "API Error. Code: ${response.code()}, Message: ${response.message()}")
+                Log.e(
+                    "HomeRepository",
+                    "API Error. Code: ${response.code()}, Message: ${response.message()}"
+                )
                 Resource.Error("Gagal memuat ringkasan harian: ${response.code()}")
             }
         } catch (e: Exception) {
@@ -72,44 +88,38 @@ class HomeRepository @Inject constructor(
 
     suspend fun refreshDailySummary(): Resource<Unit> {
         return try {
-            val token = tokenManager.getAccessToken()
-                ?: return Resource.Error("Token tidak ditemukan, silakan login kembali")
-
+            val token = tokenManager.getAccessToken() ?: return Resource.Error("Token tidak ditemukan")
             val response = apiService.getDailySummary("Bearer $token")
 
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
-                val todayDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
-                val entity = body.toEntity(todayDate)
+                Log.d("DATA_CHECK", "1. Raw API Response Body: $body")
 
-                dailySummaryDao.upsert(entity) // Simpan data baru ke DB
+                val serverTimestamp = body.data?.date
+                if (serverTimestamp != null) {
+                    val localDate = DateConverter.convertUtcTimestampToLocalDateString(serverTimestamp)
+                    Log.d("DATA_CHECK", "2. Date Conversion: Server UTC '$serverTimestamp' -> Local Date '$localDate'")
 
-                Log.d("HomeRepository", "Successfully refreshed and saved data for $todayDate")
-                Resource.Success(Unit) // Beri sinyal sukses
+                    val entity = body.toEntity(localDate)
+                    dailySummaryDao.upsert(entity)
+
+                    Log.d("HomeRepository", "Data refreshed and saved for local date: $localDate")
+                Log.d("DATA_CHECK", "3. Entity to be Saved: $entity")
+                }
+
+                Resource.Success(Unit)
             } else {
-                Log.e("HomeRepository", "API Error. Code: ${response.code()}")
                 Resource.Error("Gagal memperbarui data: ${response.message()}")
             }
         } catch (e: Exception) {
-            Log.e("HomeRepository", "Network Exception: ${e.message}", e)
             Resource.Error("Terjadi kesalahan jaringan saat memperbarui data")
         }
     }
-
-//    suspend fun refreshDailySummary() {
-//        val token = tokenManager.getAccessToken() ?: return
-//        val response = apiService.getDailySummary("Bearer $token")
-//        if (response.isSuccessful) {
-//            response.body()?.let {
-//                dailySummaryDao.upsert(it.toEntity()) // simpan ke Room
-//            }
-//        }
-//    }
 }
 
 
+
 fun DailySummaryResponse.toEntity(date: String): DailySummaryEntity {
-    // Dengan elvis operator (?:), kita memberikan nilai default jika ada data yang null dari API
     return DailySummaryEntity(
         date = date,
         calories = this.data?.nutrients?.calories?.toInt() ?: 0,

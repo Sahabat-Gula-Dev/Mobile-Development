@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula.data.remote.model
 
 import com.google.gson.annotations.SerializedName
+import com.pkm.sahabatgula.data.local.room.DailySummaryEntity
 
 data class FoodItemRequest(
     @SerializedName("food_id")
@@ -50,6 +51,7 @@ data class LogEntry(
     @SerializedName("logged_at")
     val loggedAt: String
 )
+
 
 data class Totals(
     @SerializedName("calories")

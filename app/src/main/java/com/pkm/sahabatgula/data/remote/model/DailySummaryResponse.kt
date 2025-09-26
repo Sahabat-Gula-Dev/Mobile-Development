@@ -11,7 +11,7 @@ data class DailySummaryResponse(
 	val status: String? = null
 )
 
-data class SummaryData(
+data class SummaryData_(
 	// Pindahkan properti dari class 'Summary' yang lama ke sini
 	@SerializedName("date")
 	val date: String,

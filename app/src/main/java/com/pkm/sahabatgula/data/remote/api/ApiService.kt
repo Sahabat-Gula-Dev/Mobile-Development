@@ -63,7 +63,7 @@ interface ApiService {
     @GET("me")
     suspend fun getMyProfile(@Header("Authorization") token: String): Response<MyProfileResponse>
 
-    @GET("daily-summary")
+    @GET("summary")
     suspend fun getDailySummary(@Header ("Authorization") token: String): Response<DailySummaryResponse>
 
     @POST("log-foods")

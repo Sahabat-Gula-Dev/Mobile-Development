@@ -27,8 +27,8 @@ object DatabaseModule {
             AppDatabase::class.java,
             "sahabat_gula_db" // Nama file database
         )
-//            .fallbackToDestructiveMigration() // hanya untuk dev
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+            .fallbackToDestructiveMigration() // hanya untuk dev
+//            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
@@ -41,6 +41,8 @@ object DatabaseModule {
     fun provideDailySummaryDao(appDatabase: AppDatabase): DailySummaryDao {
         return appDatabase.dailySummaryDao()
     }
+
+
 
     // Jika ada DAO lain nanti (misal: FoodDao), tambahkan resepnya di sini
     // @Provides

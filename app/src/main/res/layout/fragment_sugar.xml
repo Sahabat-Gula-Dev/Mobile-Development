@@ -8,10 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.home.dailysugar.SugarConsumptionFragment">
+    tools:context=".ui.home.dailysugar.SugarFragment">
 
     <TextView
-        android:id="@+id/title_daily_carbo"
+        android:id="@+id/title_daily_sugar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Konsumsi Gula Harian"
@@ -24,14 +24,14 @@
         />
 
     <include
-        android:id="@+id/pi_log_food"
+        android:id="@+id/pi_daily_sugar"
         android:layout_width="221dp"
         android:layout_height="221dp"
         layout="@layout/component_consumption_circular_progress"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_daily_carbo"
+        app:layout_constraintTop_toBottomOf="@id/title_daily_sugar"
         />
 
     <include
@@ -40,13 +40,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/pi_log_food"
+        app:layout_constraintTop_toBottomOf="@id/pi_daily_sugar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- di sini ganti kontennya dengan konten reminder untuk minum air -->
     <include
-        android:id="@+id/card_water_intake"
+        android:id="@+id/card_sugar_action"
         layout="@layout/component_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
         android:textStyle="bold"
         android:textColor="@color/md_theme_onSurface"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/card_water_intake"
+        app:layout_constraintTop_toBottomOf="@id/card_sugar_action"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

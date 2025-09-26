@@ -96,23 +96,23 @@ class HomeFragment : Fragment() {
         }
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
         summary: DailySummaryResponse
     ) {
 //        val summaryData = summary.data
         val nutrients = summary.data?.nutrients
-        binding.userName.text = profile.username?: "Pengguna"
+
+        var username = profile.username
+        username = username?.replaceFirstChar { it.uppercase() }
+
+        binding.userName.text = username
         val caloriesConsumed = nutrients?.calories
         val carbsConsumed = summary.data?.nutrients?.carbs
         val proteinConsumed = summary.data?.nutrients?.protein
         val fatConsumed = summary.data?.nutrients?.fat
         val sugarConsumed = summary.data?.nutrients?.sugar?:0
-        val sodiumConsumed = summary.data?.nutrients?.sodium?:0
-        val fiberConsumed = summary.data?.nutrients?.fiber?:0
-        val potassiumConsumed = summary.data?.nutrients?.potassium?:0
-        val burned = summary.data?.activities?.burned?:0
         val steps = summary.data?.steps?:0
         val waterIntake = summary.data?.water?:0
         val maxCalories = profile.max_calories?:0
@@ -120,9 +120,6 @@ class HomeFragment : Fragment() {
         val maxProtein = profile.max_protein?:0
         val maxFat = profile.max_fat?:0
         val maxSugar = profile.max_sugar?:0
-        val maxSodium = profile.max_natrium?:0
-        val maxFiber = profile.max_fiber?:0
-        val maxPotassium = profile.max_potassium?:0
 
         // risk index
         val riskIndex = profile.risk_index
@@ -140,8 +137,8 @@ class HomeFragment : Fragment() {
             icProgress.setImageResource(R.drawable.ic_sugar_candy)
             tvNumberOfConsumption.text = anyToZeroInt(sugarConsumed)
             tvTitleProgress.text = "Konsumsi Gula Hari Ini"
-            tvNumberOfTotalNutrition.text = " dari $maxSugar gr"
-            tvNumberOfPercentage.text = "${sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())}"
+            tvNumberOfTotalNutrition.text = " dari ${maxSugar.toInt()} gr"
+            tvNumberOfPercentage.text = sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())
         }
 
         // carbo
@@ -149,7 +146,7 @@ class HomeFragment : Fragment() {
             icProgress.setImageResource(R.drawable.carbo)
             tvNumberOfConsumption.text = DoubleToZeroInt(carbsConsumed)
             tvTitleProgress.text = "Karbohidrat"
-            tvNumberOfTotalNutrition.text = " dari $maxCarbs gr"
+            tvNumberOfTotalNutrition.text = " dari ${maxCarbs.toInt()} gr"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.yellow_carbo)
             tvNumberOfPercentage.text = "${carbsConsumed?.toPercentage(maxCarbs.toInt())}"
         }
@@ -159,7 +156,7 @@ class HomeFragment : Fragment() {
             icProgress.setImageResource(R.drawable.ic_fat)
             tvNumberOfConsumption.text = DoubleToZeroInt(fatConsumed)
             tvTitleProgress.text = "Lemak"
-            tvNumberOfTotalNutrition.text = " dari $maxFat gr"
+            tvNumberOfTotalNutrition.text = " dari ${maxFat.toInt()} gr"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_fat)
             tvNumberOfPercentage.text = "${fatConsumed?.toPercentage(maxFat.toInt())}"
         }
@@ -169,7 +166,7 @@ class HomeFragment : Fragment() {
             icProgress.setImageResource(R.drawable.ic_protein)
             tvNumberOfConsumption.text = DoubleToZeroInt(proteinConsumed)
             tvTitleProgress.text = "Protein"
-            tvNumberOfTotalNutrition.text = " dari $maxProtein gr"
+            tvNumberOfTotalNutrition.text = " dari ${maxProtein.toInt()} gr"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.brown_protein)
             tvNumberOfPercentage.text = "${proteinConsumed?.toPercentage(maxProtein.toInt())}"
         }
