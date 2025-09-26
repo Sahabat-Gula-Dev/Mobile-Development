@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.data.remote.api
 
-import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
