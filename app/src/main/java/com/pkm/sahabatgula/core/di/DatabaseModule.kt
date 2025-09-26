@@ -3,11 +3,11 @@ package com.pkm.sahabatgula.core.di
 import android.content.Context
 import androidx.room.Room
 import com.pkm.sahabatgula.data.local.room.AppDatabase
-import com.pkm.sahabatgula.data.local.room.DailySummaryDao
 import com.pkm.sahabatgula.data.local.room.MIGRATION_1_2
 import com.pkm.sahabatgula.data.local.room.MIGRATION_2_3
 import com.pkm.sahabatgula.data.local.room.MIGRATION_3_4
 import com.pkm.sahabatgula.data.local.room.ProfileDao
+import com.pkm.sahabatgula.data.local.room.SummaryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,8 +38,8 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideDailySummaryDao(appDatabase: AppDatabase): DailySummaryDao {
-        return appDatabase.dailySummaryDao()
+    fun provideSummaryDao(appDatabase: AppDatabase): SummaryDao {
+        return appDatabase.SummaryDao()
     }
 
 

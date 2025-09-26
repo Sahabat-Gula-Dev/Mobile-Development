@@ -1,7 +1,6 @@
 package com.pkm.sahabatgula.data.remote.model
 
 import com.google.gson.annotations.SerializedName
-import com.pkm.sahabatgula.data.local.room.DailySummaryEntity
 
 data class FoodItemRequest(
     @SerializedName("food_id")

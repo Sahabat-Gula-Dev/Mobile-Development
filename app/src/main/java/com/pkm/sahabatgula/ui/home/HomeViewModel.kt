@@ -1,15 +1,15 @@
 package com.pkm.sahabatgula.ui.home
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.data.local.room.DailySummaryEntity
-import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
-import com.pkm.sahabatgula.data.remote.model.Nutrients
+import com.pkm.sahabatgula.data.local.room.SummaryEntity
+import com.pkm.sahabatgula.data.remote.model.SummaryActivities
+import com.pkm.sahabatgula.data.remote.model.SummaryDaily
 import com.pkm.sahabatgula.data.remote.model.SummaryData
+import com.pkm.sahabatgula.data.remote.model.SummaryNutrients
+import com.pkm.sahabatgula.data.remote.model.SummaryResponse
 import com.pkm.sahabatgula.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,12 +18,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -102,7 +100,7 @@ class HomeViewModel @Inject constructor(val homeRepository: HomeRepository) : Vi
             }
 
             // Ambil ringkasan harian dari API
-            when (val summaryResponse = homeRepository.getDailySummary()) {
+            when (val summaryResponse = homeRepository.getSummary()) {
                 is Resource.Success -> {
                     // Jika sukses, langsung kirim data (profile dan summary) ke UI
                     val summaryData = summaryResponse.data!!
@@ -119,27 +117,31 @@ class HomeViewModel @Inject constructor(val homeRepository: HomeRepository) : Vi
     }
 }
 
-fun DailySummaryEntity.toResponse(): DailySummaryResponse {
-    return DailySummaryResponse(
-        status = "succes_from_local",
+fun SummaryEntity.toResponse(): SummaryResponse {
+    return SummaryResponse(
+        status = "success_from_local",
         data = SummaryData(
-            nutrients = Nutrients(
-                calories = calories?.toDouble(),
-                carbs = carbs,
-                protein = protein,
-                fat = fat,
-                sugar = sugar,
-                sodium = sodium,
-                fiber = fiber,
-                potassium = potassium
+            daily = SummaryDaily(
+                date = date,
+                steps = steps,
+                water = water,
+                nutrients = SummaryNutrients(
+                    calories = calories,
+                    carbs = carbs,
+                    protein = protein,
+                    fat = fat,
+                    sugar = sugar,
+                    sodium = sodium,
+                    fiber = fiber,
+                    potassium = potassium
                 ),
-            activities = com.pkm.sahabatgula.data.remote.model.Activities(
-                burned = burned
-
+                activities = SummaryActivities(
+                    burned = burned
+                )
             ),
-            date = date,
-            steps = steps,
-            water = water
+            weekly = null,   // biarin null karena ga ada data di entity ini
+            monthly = null   // sama, null
         )
     )
 }
+

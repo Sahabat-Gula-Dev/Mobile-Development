@@ -18,6 +18,7 @@ import com.pkm.sahabatgula.data.remote.model.ResendOtpRequest
 import com.pkm.sahabatgula.data.remote.model.ResendOtpResponse
 import com.pkm.sahabatgula.data.remote.model.ResetPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ResetPasswordResponse
+import com.pkm.sahabatgula.data.remote.model.SummaryResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpRequest
@@ -64,7 +65,7 @@ interface ApiService {
     suspend fun getMyProfile(@Header("Authorization") token: String): Response<MyProfileResponse>
 
     @GET("summary")
-    suspend fun getDailySummary(@Header ("Authorization") token: String): Response<DailySummaryResponse>
+    suspend fun getSummary(@Header ("Authorization") token: String): Response<SummaryResponse>
 
     @POST("log-foods")
     suspend fun logFood(

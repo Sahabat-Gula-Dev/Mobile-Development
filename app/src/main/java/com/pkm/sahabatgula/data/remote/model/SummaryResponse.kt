@@ -32,7 +32,7 @@ data class SummaryNutrients(
 	val fat: Double? = null,
 
 	@field:SerializedName("calories")
-	val calories: Int,
+	val calories: Double?,
 
 	@field:SerializedName("sugar")
 	val sugar: Double? = null
@@ -41,19 +41,19 @@ data class SummaryNutrients(
 data class SummaryDaily(
 
 	@field:SerializedName("date")
-	val date: String,
+	val date: String?,
 
 	@field:SerializedName("activities")
-	val activities: Activities,
+	val activities: SummaryActivities,
 
 	@field:SerializedName("steps")
-	val steps: Int,
+	val steps: Int?,
 
 	@field:SerializedName("water")
-	val water: Int,
+	val water: Int?,
 
 	@field:SerializedName("nutrients")
-	val nutrients: Nutrients
+	val nutrients: SummaryNutrients
 )
 
 data class SummaryMonthlyItem(
@@ -62,7 +62,7 @@ data class SummaryMonthlyItem(
 	val date: String,
 
 	@field:SerializedName("activities")
-	val activities: Activities,
+	val activities: SummaryActivities,
 
 	@field:SerializedName("steps")
 	val steps: Int,
@@ -71,13 +71,13 @@ data class SummaryMonthlyItem(
 	val water: Int,
 
 	@field:SerializedName("nutrients")
-	val nutrients: Nutrients
+	val nutrients: SummaryNutrients
 )
 
 data class SummaryActivities(
 
 	@field:SerializedName("burned")
-	val burned: Int
+	val burned: Int?
 )
 
 data class SummaryData(
@@ -86,10 +86,10 @@ data class SummaryData(
 	val daily: SummaryDaily,
 
 	@field:SerializedName("monthly")
-	val monthly: List<SummaryMonthlyItem>,
+	val monthly: List<SummaryMonthlyItem>?,
 
 	@field:SerializedName("weekly")
-	val weekly: List<SummaryWeeklyItem>
+	val weekly: List<SummaryWeeklyItem>?
 )
 
 data class SummaryWeeklyItem(
@@ -98,7 +98,7 @@ data class SummaryWeeklyItem(
 	val date: String,
 
 	@field:SerializedName("activities")
-	val activities: Activities,
+	val activities: SummaryActivities,
 
 	@field:SerializedName("steps")
 	val steps: Int,
@@ -107,5 +107,5 @@ data class SummaryWeeklyItem(
 	val water: Int,
 
 	@field:SerializedName("nutrients")
-	val nutrients: Nutrients
+	val nutrients: SummaryNutrients
 )

@@ -30,19 +30,24 @@ data class ProfileEntity(
     val max_potassium: Double?
 )
 
-@Entity(tableName = "daily_summary")
-data class DailySummaryEntity(
-    @PrimaryKey val date: String,
-    val calories: Int?,
-    val carbs: Double,
-    val protein: Double,
-    val fat: Double,
-    val sugar: Double,
-    val sodium: Double,
-    val fiber: Double,
-    val potassium: Double,
-    val burned: Int,
-    val steps: Int,
-    val water: Int
+@Entity(tableName = "summary")
+data class SummaryEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
 
+    val type: String, // "DAILY", "WEEKLY", "MONTHLY"
+    val date: String?,
+
+    val calories: Double?,
+    val carbs: Double?,
+    val protein: Double?,
+    val fat: Double?,
+    val sugar: Double?,
+    val sodium: Double?,
+    val fiber: Double?,
+    val potassium: Double?,
+
+    val burned: Int?,
+    val steps: Int?,
+    val water: Int?
 )

@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.core.utils.RiskCategory
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
+import com.pkm.sahabatgula.data.remote.model.SummaryResponse
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -99,22 +100,22 @@ class HomeFragment : Fragment() {
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
-        summary: DailySummaryResponse
+        summary: SummaryResponse
     ) {
 //        val summaryData = summary.data
-        val nutrients = summary.data?.nutrients
+        val nutrients = summary.data?.daily?.nutrients
 
         var username = profile.username
         username = username?.replaceFirstChar { it.uppercase() }
 
         binding.userName.text = username
         val caloriesConsumed = nutrients?.calories
-        val carbsConsumed = summary.data?.nutrients?.carbs
-        val proteinConsumed = summary.data?.nutrients?.protein
-        val fatConsumed = summary.data?.nutrients?.fat
-        val sugarConsumed = summary.data?.nutrients?.sugar?:0
-        val steps = summary.data?.steps?:0
-        val waterIntake = summary.data?.water?:0
+        val carbsConsumed = summary.data?.daily?.nutrients?.carbs
+        val proteinConsumed = summary.data?.daily?.nutrients?.protein
+        val fatConsumed = summary.data?.daily?.nutrients?.fat
+        val sugarConsumed = summary.data?.daily?.nutrients?.sugar?:0
+        val steps = summary.data?.daily?.steps?:0
+        val waterIntake = summary.data?.daily?.water?:0
         val maxCalories = profile.max_calories?:0
         val maxCarbs = profile.max_carbs?:0
         val maxProtein = profile.max_protein?:0

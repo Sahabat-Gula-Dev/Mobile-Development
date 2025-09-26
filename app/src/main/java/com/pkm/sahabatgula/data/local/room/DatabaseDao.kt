@@ -32,10 +32,22 @@ interface ProfileDao {
 }
 
 @Dao
-interface DailySummaryDao {
-    @Query("SELECT * FROM daily_summary WHERE date = :date LIMIT 1")
-    fun getSummaryByDate(date: String): Flow<DailySummaryEntity?>
+interface SummaryDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(summary: List<SummaryEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(summary: DailySummaryEntity)
+    suspend fun upsertAll(summaries: List<SummaryEntity>)
+
+    @Query("SELECT * FROM summary WHERE type = :type ORDER BY date DESC")
+    fun getSummaryByType(type: String): Flow<List<SummaryEntity>>
+
+    @Query("DELETE FROM summary WHERE type = :type")
+    suspend fun clearByType(type: String)
+
+    @Query("SELECT * FROM summary WHERE type = :type AND date = :date LIMIT 1")
+    fun getSummaryByDate(type: String, date: String): Flow<SummaryEntity?>
+
+
+    companion object
 }
