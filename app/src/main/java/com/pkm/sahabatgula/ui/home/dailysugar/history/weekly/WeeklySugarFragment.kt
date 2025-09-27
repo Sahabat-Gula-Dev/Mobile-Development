@@ -2,6 +2,7 @@ package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentWeeklyHistoryBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +32,7 @@ class WeeklySugarFragment : Fragment() {
     private var _binding: FragmentWeeklyHistoryBinding? = null
     private val binding get() = _binding!!
     private val viewModel: WeeklySugarViewModel by viewModels()
+    private var selectedEntry: BarEntry? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +46,17 @@ class WeeklySugarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeUiState()
+
+        binding.weeklyChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                selectedEntry = e as? BarEntry
+                binding.weeklyChart.invalidate()
+            }
+            override fun onNothingSelected() {
+                selectedEntry = null
+                binding.weeklyChart.invalidate()
+            }
+        })
     }
 
     private fun observeUiState() {
@@ -55,7 +71,6 @@ class WeeklySugarFragment : Fragment() {
                         setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                     }
                     is WeeklySugarState.Error -> {
-                        // Tampilkan pesan error
                     }
                 }
             }
@@ -71,6 +86,7 @@ class WeeklySugarFragment : Fragment() {
         chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
+        chart.setExtraOffsets(0f, 0f, 0f, 8f)
 
         // Konfigurasi umum
         chart.description.isEnabled = false

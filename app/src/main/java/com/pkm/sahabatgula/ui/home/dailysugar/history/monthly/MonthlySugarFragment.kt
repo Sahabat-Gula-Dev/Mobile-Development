@@ -83,7 +83,7 @@ class MonthlySugarFragment : Fragment() {
 
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-
+        chart.setExtraOffsets(0f, 0f, 0f, 8f)
         // Mengatur font
         val jakartaSans: Typeface? = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
 
@@ -93,6 +93,7 @@ class MonthlySugarFragment : Fragment() {
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
+        xAxis.setAvoidFirstLastClipping(true)
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
                 return xAxisLabels.getOrNull(value.toInt()) ?: ""

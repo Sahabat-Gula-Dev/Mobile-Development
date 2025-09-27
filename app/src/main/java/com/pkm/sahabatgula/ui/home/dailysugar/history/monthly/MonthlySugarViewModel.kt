@@ -77,7 +77,7 @@ class MonthlySugarViewModel @Inject constructor(
         val entries = ArrayList<BarEntry>()
         val barColors = ArrayList<Int>()
 
-        val currentMonthColor = "#FF5F91".toColorInt()
+        val currentMonthColor = "#FF3776".toColorInt()
         val previousMonthColor = "#FFDFE9".toColorInt()
 
         monthSlots.forEachIndexed { index, yearMonth ->
