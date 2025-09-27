@@ -8,4 +8,5 @@ sealed class SugarState {
     ): SugarState() {
         val remainingSugar: Double get() = maxSugar - currentSugar
     }
+    data class Error(val message: String): SugarState()
 }

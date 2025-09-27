@@ -18,7 +18,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.core.utils.RiskCategory
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
-import com.pkm.sahabatgula.data.remote.model.DailySummaryResponse
 import com.pkm.sahabatgula.data.remote.model.SummaryResponse
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +62,7 @@ class HomeFragment : Fragment() {
     private fun observeUiEffect() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { effect ->
+                viewModel.effect.collect { effect ->
                     when(effect) {
                         is HomeEffect.ShowToast -> {
                             Toast.makeText(requireContext(), effect.message, Toast.LENGTH_LONG).show()
@@ -103,24 +102,24 @@ class HomeFragment : Fragment() {
         summary: SummaryResponse
     ) {
 //        val summaryData = summary.data
-        val nutrients = summary.data?.daily?.nutrients
+        val nutrients = summary.data.daily.nutrients
 
         var username = profile.username
         username = username?.replaceFirstChar { it.uppercase() }
 
         binding.userName.text = username
-        val caloriesConsumed = nutrients?.calories
-        val carbsConsumed = summary.data?.daily?.nutrients?.carbs
-        val proteinConsumed = summary.data?.daily?.nutrients?.protein
-        val fatConsumed = summary.data?.daily?.nutrients?.fat
-        val sugarConsumed = summary.data?.daily?.nutrients?.sugar?:0
-        val steps = summary.data?.daily?.steps?:0
-        val waterIntake = summary.data?.daily?.water?:0
+        val caloriesConsumed = nutrients.calories
+        val carbsConsumed = summary.data.daily.nutrients.carbs
+        val proteinConsumed = summary.data.daily.nutrients.protein
+        val fatConsumed = summary.data.daily.nutrients.fat
+        val sugarConsumed = summary.data.daily.nutrients.sugar?:0.0
+        val steps = summary.data.daily.steps?:0
+        val waterIntake = summary.data.daily.water?:0
         val maxCalories = profile.max_calories?:0
-        val maxCarbs = profile.max_carbs?:0
-        val maxProtein = profile.max_protein?:0
-        val maxFat = profile.max_fat?:0
-        val maxSugar = profile.max_sugar?:0
+        val maxCarbs = profile.max_carbs?:0.0
+        val maxProtein = profile.max_protein?:0.0
+        val maxFat = profile.max_fat?:0.0
+        val maxSugar = profile.max_sugar?:0.0
 
         // risk index
         val riskIndex = profile.risk_index
@@ -136,7 +135,7 @@ class HomeFragment : Fragment() {
         // sugar
         binding.sugarConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_sugar_candy)
-            tvNumberOfConsumption.text = anyToZeroInt(sugarConsumed)
+            tvNumberOfConsumption.text = String.format("%.1f", sugarConsumed)
             tvTitleProgress.text = "Konsumsi Gula Hari Ini"
             tvNumberOfTotalNutrition.text = " dari ${maxSugar.toInt()} gr"
             tvNumberOfPercentage.text = sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())
@@ -256,23 +255,23 @@ class HomeFragment : Fragment() {
 
     private fun getRiskCategory(riskIndex: Int?): RiskCategory {
         return when(riskIndex) {
-            in 0..5 -> RiskCategory(
+            in 0..3 -> RiskCategory(
                 title = "Risiko Sangat Rendah",
                 subtitle = "Pertahankan gaya hidup aktif dan pola makan seimbang",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.green_dark_low)
             )
-            in 6..10 -> RiskCategory(
-                title = "Risiko Rendah",
+            in 4..8 -> RiskCategory(
+                title = "Risiko Diabetes Rendah",
                 subtitle = "Kondisi cukup baik, jaga pola makan dan aktivitas harian",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.green_dark_low)
             )
-            in 11..15 -> RiskCategory(
-                title = "Risiko Sedang",
+            in 9..12 -> RiskCategory(
+                title = "Risiko Diabetes Sedang",
                 subtitle = "Waktunya lebih aktif dan evaluasi kebiasaan makan",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.yellow_moderate)
             )
-            in 16..20 -> RiskCategory(
-                title = "Risiko Tinggi",
+            in 13..20 -> RiskCategory(
+                title = "Risiko Diabetes Tinggi",
                 subtitle = "Gaya hidup dan riwayat kesehatan menunjukkan risiko tinggi",
                 colorRes = ContextCompat.getColor(requireContext(), R.color.red_high)
             )

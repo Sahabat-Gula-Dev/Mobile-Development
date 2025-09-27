@@ -3,36 +3,53 @@ package com.pkm.sahabatgula.ui.home.dailysugar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.data.repository.HomeRepository
+import com.pkm.sahabatgula.core.utils.DateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class SugarViewModel @Inject constructor(homeRepository: HomeRepository): ViewModel(){
 
-    private val _sugarState = MutableStateFlow<SugarState>(SugarState.Loading)
-    val sugarState: StateFlow<SugarState> = _sugarState
+    val sugarState: StateFlow<SugarState> =
+        // Gabungkan data dari database
+        homeRepository.observeProfile()
+            .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
 
-    init{
-        val today = LocalDate.now(ZoneId.of("Asia/Makassar"))
-            .format(DateTimeFormatter.ISO_DATE)
-        val summaryFlow = homeRepository.observeDailySummary(today)
-        val profileFlow = homeRepository.observeProfile()
+                if (profile == null) {
+                    // Jika profil tidak ada, ini adalah kondisi error
+                    SugarState.Error("Profil tidak ditemukan.")
+                } else if (summary == null) {
+                    // Jika profil ada tapi summary belum ada di DB, tampilkan LOADING
+                    // sambil menunggu proses refresh dari server selesai.
+                    SugarState.Loading
+                } else {
+                    // Jika keduanya ada, tampilkan data yang sebenarnya
+                    SugarState.Success(
+                        currentSugar = summary.sugar ?: 0.0,
+                        maxSugar = profile.max_sugar ?: 36.0 // Beri default yang aman
+                    )
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = SugarState.Loading // Nilai awal saat Flow pertama kali dibuat
+            )
 
+    init {
+        // Cukup panggil refresh sekali saat ViewModel dibuat
+        refreshData(homeRepository)
+    }
+
+    private fun refreshData(homeRepository: HomeRepository) {
         viewModelScope.launch {
-            combine(summaryFlow, profileFlow) { summary, profile ->
-                val currentSugar = summary?.sugar ?: 0.0
-                val maxSugar = profile?.max_sugar ?: 2000.0
-                SugarState.Success(currentSugar, maxSugar)
-            }.collect {
-                _sugarState.value = it
-            }
+            homeRepository.refreshDailySummary()
+            // Kita tidak perlu menangani hasilnya di sini,
+            // karena Flow di atas akan otomatis mendeteksi perubahan di database.
         }
     }
 

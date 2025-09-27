@@ -34,20 +34,31 @@ interface ProfileDao {
 @Dao
 interface SummaryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(summary: List<SummaryEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertAll(summaries: List<SummaryEntity>)
-
-    @Query("SELECT * FROM summary WHERE type = :type ORDER BY date DESC")
-    fun getSummaryByType(type: String): Flow<List<SummaryEntity>>
-
-    @Query("DELETE FROM summary WHERE type = :type")
-    suspend fun clearByType(type: String)
+    suspend fun upsert(summaries: List<SummaryEntity>)
 
     @Query("SELECT * FROM summary WHERE type = :type AND date = :date LIMIT 1")
     fun getSummaryByDate(type: String, date: String): Flow<SummaryEntity?>
 
+    @Query("SELECT * FROM summary WHERE type = :type ORDER BY date DESC")
+    fun getSummaryByType(type: String): Flow<List<SummaryEntity>>
+
+    @Query("SELECT * FROM summary WHERE type = 'DAILY' ORDER BY date DESC LIMIT 1")
+    fun getLatestDailySummary(): Flow<SummaryEntity?>
+
+    @Query("SELECT * FROM summary")
+    suspend fun getAll(): List<SummaryEntity>
+
+    @Query("DELETE FROM summary WHERE type = :type")
+    suspend fun clearByType(type: String)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(summaries: List<SummaryEntity>)
+
+    @Query("SELECT * FROM summary WHERE type = 'WEEKLY' ORDER BY date ASC")
+    fun getAllWeeklySummary(): Flow<List<SummaryEntity>>
+
+    @Query("SELECT * FROM summary WHERE type = 'MONTHLY' ORDER BY date ASC")
+    fun getAllMonthlySummary(): Flow<List<SummaryEntity>>
 
     companion object
 }

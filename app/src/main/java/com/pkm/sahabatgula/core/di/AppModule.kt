@@ -2,7 +2,6 @@ package com.pkm.sahabatgula.core.di
 
 import android.content.Context
 import com.pkm.sahabatgula.data.local.TokenManager
-import com.pkm.sahabatgula.data.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
