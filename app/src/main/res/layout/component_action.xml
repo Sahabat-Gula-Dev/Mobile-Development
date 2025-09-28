@@ -6,8 +6,7 @@
     app:cardElevation="0dp"
     app:contentPadding="16dp"
     app:cardCornerRadius="2dp"
-    app:strokeWidth="0dp"
-    android:backgroundTint="#F4E3CD">
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="37dp"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintStart_toEndOf="@id/ic_action"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ic_action"

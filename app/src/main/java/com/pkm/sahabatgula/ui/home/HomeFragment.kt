@@ -209,10 +209,11 @@ class HomeFragment : Fragment() {
             icAction.setImageResource(R.drawable.ic_activity_dumble)
             tvTitleAction.text = "Sudah Bergerak Hari Ini?"
             tvSubtitleAction.text = "Aktivitas fisik bantu bakar kalori dan jaga kadar gula tetap stabil"
+            root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory_background))
         }
 
         binding.circularProgressCalories.root.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_log_activity)
+            findNavController().navigate(R.id.action_home_to_log_food)
         }
         binding.sugarConsumption.root.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_log_sugar)

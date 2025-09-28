@@ -54,18 +54,18 @@ class ProteinFragment : Fragment() {
                     is ProteinState.Success -> {
                         binding.piProtein .apply {
                             tvRemaining.text = state.totalProtein.toInt().toString()
-                            tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_text))
+                            tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_protein_text))
                             tvFormat.text = "gram tersisa"
-                            icObject.setImageResource(R.drawable.ic_carbo_rice_filled)
+                            icObject.setImageResource(R.drawable.ic_protein_unfilled)
                             val progressProtein = (state.totalProtein/ (state.maxProtein))
                             circularProgressView.apply {
                                 progress = progressProtein.toInt()
-                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo))
-                                trackColor = ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background)
+                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_protein))
+                                trackColor = ContextCompat.getColor(requireContext(), R.color.brown_protein_background)
                             }
                             circularProgressBackground.apply {
-                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background))
-                                trackColor = ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background)
+                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_protein_background))
+                                trackColor = ContextCompat.getColor(requireContext(), R.color.brown_protein_background)
                             }
                         }
 

@@ -47,14 +47,14 @@
             layout="@layout/component_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/pi_fat"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- card information -->
         <include
-            android:id="@+id/card_daily_carbo_information"
+            android:id="@+id/card_did_you_know"
             layout="@layout/component_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/card_daily_carbo_information"
+            app:layout_constraintTop_toBottomOf="@id/card_did_you_know"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -87,7 +87,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- tambahkan grafik histori Karbohiodrat mingguan dan bulanan -->
+        <!--  history chart -->
+        <LinearLayout
+            android:id="@+id/layout_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="16dp"
+            app:tabTextColor="@color/md_theme_onSurface"
+            app:layout_constraintTop_toBottomOf="@id/title_fat_history"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@color/green_card"
+                app:tabIndicatorFullWidth="true"
+                app:tabMode="fixed"
+                app:tabIndicator="@drawable/tab_indicator"
+                app:tabGravity="fill"
+                android:backgroundTint="@android:color/transparent"
+                app:tabIndicatorHeight="3dp"/>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

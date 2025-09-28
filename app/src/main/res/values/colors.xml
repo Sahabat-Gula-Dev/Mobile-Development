@@ -175,13 +175,18 @@
     <color name="yellow_carbo_text">#E59A51</color>
     <color name="red_fat">#FF5023</color>
     <color name="brown_protein">#B35408</color>
+    <color name="brown_protein_background">#F0DDCE</color>
+    <color name="brown_protein_text">#92513B</color>
     <color name="blue_water">#2196F3</color>
     <color name="blue_steps">#2196F3</color>
     <color name="brown_card_action">#F4E3CD</color>
     <color name="green_card_action">#CEE8CE</color>
+    <color name="brown_action_background">#E8E6CE</color>
     <color name="blue_water_background">#D3EAFD</color>
     <color name="brown_activity_calory">#C77504</color>
     <color name="brown_activity_calory_background">#F4E3CD</color>
+    <color name="brown_fat">#DF5B39</color>
+    <color name="brown_fat_background">#F9DED7</color>
 
 
 

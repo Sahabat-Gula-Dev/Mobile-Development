@@ -31,7 +31,7 @@ class SugarViewModel @Inject constructor(homeRepository: HomeRepository): ViewMo
                     // Jika keduanya ada, tampilkan data yang sebenarnya
                     SugarState.Success(
                         currentSugar = summary.sugar ?: 0.0,
-                        maxSugar = profile.max_sugar ?: 36.0 // Beri default yang aman
+                        maxSugar = profile.max_sugar ?: 0.0 // Beri default yang aman
                     )
                 }
             }.stateIn(

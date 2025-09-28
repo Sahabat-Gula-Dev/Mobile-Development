@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentActivityBinding
 import com.pkm.sahabatgula.ui.home.dailyactivity.activity.history.ActivityChartPagerAdapter
-import com.pkm.sahabatgula.ui.home.dailysugar.history.SugarChartPagerAdapter
+import com.pkm.sahabatgula.ui.home.dailyfood.charthistory.FoodChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -51,13 +51,13 @@ class ActivityFragment : Fragment() {
                 when (state) {
                     is ActivityState.Success -> {
                         binding.piLogCalories.apply {
-                            tvRemaining.text = state.totalCalories.toInt().toString()
+                            tvRemaining.text = state.burned.toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory))
-                            val progressCalories = (state.totalCalories/ (state.maxCalories?.toDouble() ?: 0.0))
+                            val progressCalories = (state.burned?.div(state.maxBurned?:0))?.times(100)
                             tvFormat.text = "kkal"
                             icObject.setImageResource(R.drawable.ic_activity_dumble_circle)
                             circularProgressView.apply {
-                                progress = progressCalories.toInt()
+                                progress = progressCalories?:0
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory))
                                 trackColor = ContextCompat.getColor(requireContext(), R.color.brown_activity_calory_background)
                             }
