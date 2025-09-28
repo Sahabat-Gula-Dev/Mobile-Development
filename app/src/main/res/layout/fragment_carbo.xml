@@ -104,7 +104,7 @@
                 android:id="@+id/tab_layout_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabIndicatorColor="#FF3776"
+                app:tabIndicatorColor="@color/yellow_carbo"
                 app:tabIndicatorFullWidth="true"
                 app:tabMode="fixed"
                 app:tabIndicator="@drawable/tab_indicator"
