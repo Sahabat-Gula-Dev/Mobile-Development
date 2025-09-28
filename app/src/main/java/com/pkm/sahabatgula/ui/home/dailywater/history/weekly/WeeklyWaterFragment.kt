@@ -1,12 +1,10 @@
-package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
+package com.pkm.sahabatgula.ui.home.dailywater.history.weekly
 
-import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,7 +12,6 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -26,11 +23,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WeeklySugarFragment : Fragment() {
+class WeeklyWaterFragment : Fragment() {
 
     private var _binding: FragmentWeeklyHistoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: WeeklySugarViewModel by viewModels()
+    private val viewModel: WeeklyWaterViewModel by viewModels()
     private var selectedEntry: BarEntry? = null
 
     override fun onCreateView(
@@ -62,14 +59,14 @@ class WeeklySugarFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
-                    is WeeklySugarState.Loading -> {
+                    is WeeklyWaterState.Loading -> {
                         // Tampilkan loading indicator
                     }
-                    is WeeklySugarState.Success -> {
+                    is WeeklyWaterState.Success -> {
                         // Panggil fungsi setup grafik dengan data dari ViewModel
                         setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                     }
-                    is WeeklySugarState.Error -> {
+                    is WeeklyWaterState.Error -> {
                     }
                 }
             }
@@ -77,7 +74,6 @@ class WeeklySugarFragment : Fragment() {
     }
 
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
-
         chart.data = data
 
         // Nonaktifkan interaksi
@@ -86,7 +82,7 @@ class WeeklySugarFragment : Fragment() {
         chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
-        chart.setExtraOffsets(0f, 0f, 0f, 8f)
+        chart.setExtraOffsets(7f, 0f, 0f, 8f)
 
         // Konfigurasi umum
         chart.description.isEnabled = false
@@ -113,7 +109,6 @@ class WeeklySugarFragment : Fragment() {
         yAxisLeft.typeface = font
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.setDrawAxisLine(false)
-
 
         // Sumbu Y Kanan
         chart.axisRight.isEnabled = false

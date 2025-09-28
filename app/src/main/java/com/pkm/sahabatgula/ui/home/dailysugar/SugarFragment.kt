@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
-import com.pkm.sahabatgula.ui.home.dailysugar.history.ChartPagerAdapter
+import com.pkm.sahabatgula.ui.home.dailysugar.history.SugarChartPagerAdapter
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.SugarConsumedLevel
 import com.pkm.sahabatgula.databinding.FragmentSugarBinding
@@ -38,7 +38,7 @@ class SugarFragment : Fragment() {
 
         val tabLayoutHistory = binding.tabLayoutHistory
         val viewPager = binding.viewPager
-        viewPager.adapter = ChartPagerAdapter(this)
+        viewPager.adapter = SugarChartPagerAdapter(this)
 
         TabLayoutMediator(tabLayoutHistory, viewPager) { tab, position ->
             when (position) {
@@ -60,7 +60,7 @@ class SugarFragment : Fragment() {
 
                         val progressSugar = (state.currentSugar / state.maxSugar) * 100
 
-                        binding.piDailySugar.piCircularProgress.progress = progressSugar.toInt()
+                        binding.piDailySugar.circularProgressView.progress = progressSugar.toInt()
 
                         binding.cardSugarConsumptionLevel.apply {
                             icSugarConsumedLevel.setImageDrawable(ContextCompat.getDrawable(requireContext(), getSugarConsumedLevel(progressSugar.toInt()).icon))

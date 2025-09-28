@@ -194,6 +194,8 @@ class HomeFragment : Fragment() {
         binding.tvCaloriesConsumed.text = caloriesConsumed?.toInt().toString()
         binding.tvCaloriesNeeded.text = maxCalories.toString()
 
+
+        // circular progress calories
         val progressCalories = (caloriesConsumed!! / maxCalories.toDouble()) * 100
         binding.circularProgressCalories.piCircularProgress.progress = progressCalories.toInt()
         binding.circularProgressCalories.tvRemaining.text = (maxCalories.toDouble()- caloriesConsumed).toInt().toString()

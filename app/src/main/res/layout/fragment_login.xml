@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
+    android:paddingHorizontal="16dp"
     tools:context=".ui.auth.login.LoginFragment">
 
     <LinearLayout
@@ -17,7 +16,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="79.43dp"
+            android:layout_width="80dp"
             android:layout_height="105dp"
             android:contentDescription="@string/logo_sahabat_gula"
             android:src="@drawable/ic_sahabat_gula_app"
@@ -26,10 +25,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/plus_jakarta_sans_medium"
             android:text="@string/login_title"
             android:textSize="28sp"
-            android:textColor="@color/black"
+            android:textColor="@color/md_theme_onSurface"
             android:textStyle="bold"
             android:layout_marginBottom="6dp"/>
 

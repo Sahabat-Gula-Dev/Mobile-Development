@@ -22,6 +22,7 @@ import com.pkm.sahabatgula.data.remote.model.VerifyOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpResponse
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.runCatching
@@ -154,6 +155,9 @@ class AuthRepository @Inject constructor(
         } catch (e: Exception) {
             Resource.Error(e.message ?: "Terjadi kesalahan jaringan")
         }
+    }
+    fun observeProfile(): Flow<ProfileEntity?> {
+        return profileDao.observeProfile()
     }
 }
 

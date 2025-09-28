@@ -103,6 +103,9 @@ class RegisterFragment : Fragment() {
                             val bundle = bundleOf("email" to effect.email)
                             findNavController().navigate(R.id.register_to_otp_verification, bundle)
                         }
+                        is RegisterEffect.NavigateToHome -> {
+                            findNavController().navigate(R.id.register_to_home)
+                        }
                     }
                 }
             }

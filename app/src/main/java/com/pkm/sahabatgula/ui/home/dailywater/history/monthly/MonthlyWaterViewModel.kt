@@ -1,6 +1,8 @@
-package com.pkm.sahabatgula.ui.home.dailysugar.history.monthly
+package com.pkm.sahabatgula.ui.home.dailywater.history.monthly
 
 
+import android.app.Application
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarData
@@ -13,49 +15,46 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.util.Locale
 import javax.inject.Inject
 import androidx.core.graphics.toColorInt
+import com.pkm.sahabatgula.R
 import java.time.YearMonth
-import java.time.ZoneId
 
 
 // Sealed class untuk menampung state UI, termasuk data grafik
 
-sealed class MonthlySugarState {
-    object Loading : MonthlySugarState()
+sealed class MonthlyWaterState {
+    object Loading : MonthlyWaterState()
     data class Success(
         val barData: BarData,
         val xAxisLabels: List<String>
-    ) : MonthlySugarState()
-    data class Error(val message: String) : MonthlySugarState()
+    ) : MonthlyWaterState()
+    data class Error(val message: String) : MonthlyWaterState()
 }
 
 
 @HiltViewModel
-class MonthlySugarViewModel @Inject constructor(
+class MonthlyWaterViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<MonthlySugarState>(MonthlySugarState.Loading)
-    val uiState: StateFlow<MonthlySugarState> = _uiState
-
+    private val _uiState = MutableStateFlow<MonthlyWaterState>(MonthlyWaterState.Loading)
+    val uiState: StateFlow<MonthlyWaterState> = _uiState
     init {
-        loadMonthlySugarData()
+        loadMonthlyWaterData()
     }
 
-    private fun loadMonthlySugarData() {
+    private fun loadMonthlyWaterData() {
         viewModelScope.launch {
-            _uiState.value = MonthlySugarState.Loading
+            _uiState.value = MonthlyWaterState.Loading
 
             // Ambil data bulanan dari repository
             val monthlyData = homeRepository.observeMonthlySummary().firstOrNull()
 
             if (monthlyData.isNullOrEmpty()) {
-                _uiState.value = MonthlySugarState.Error("Data bulanan tidak ditemukan.")
+                _uiState.value = MonthlyWaterState.Error("Data bulanan tidak ditemukan.")
                 return@launch
             }
 
@@ -77,8 +76,9 @@ class MonthlySugarViewModel @Inject constructor(
         val entries = ArrayList<BarEntry>()
         val barColors = ArrayList<Int>()
 
-        val currentMonthColor = "#FF3776".toColorInt()
-        val previousMonthColor = "#FFDFE9".toColorInt()
+
+        val currentMonthColor = "#2196F3".toColorInt()
+        val previousMonthColor = "#D3EAFD".toColorInt()
 
         monthSlots.forEachIndexed { index, yearMonth ->
             // Format "yyyy-MM" untuk mencocokkan dengan data dari API/DB
@@ -90,8 +90,8 @@ class MonthlySugarViewModel @Inject constructor(
                 entity.date.let { YearMonth.parse(it, monthFormatter) } == yearMonth
             }
 
-            val sugarAmount = dataForMonth?.sugar ?: 0.0
-            entries.add(BarEntry(index.toFloat(), sugarAmount.toFloat()))
+            val waterAmount = dataForMonth?.water ?: 0
+            entries.add(BarEntry(index.toFloat(), waterAmount.toFloat()))
 
             // Logika pewarnaan dinamis
             if (yearMonth == currentMonth) {
@@ -108,6 +108,6 @@ class MonthlySugarViewModel @Inject constructor(
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f
 
-        _uiState.value = MonthlySugarState.Success(barData, xAxisLabels)
+        _uiState.value = MonthlyWaterState.Success(barData, xAxisLabels)
     }
 }

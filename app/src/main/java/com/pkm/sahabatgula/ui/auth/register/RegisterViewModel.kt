@@ -47,17 +47,40 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
         }
     }
 
-    fun signInWithGoogle(idToken: String?){
+    fun signInWithGoogle(idToken: String) { // Sebaiknya idToken non-nullable
         viewModelScope.launch {
             _registerViewState.value = RegisterViewState.Loading
+
+            // 1. Lakukan autentikasi Google dengan backend
             repo.googleAuth(GoogleAuthRequest(idToken))
                 .onSuccess { response ->
-                    _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
-                    _registerViewState.value = RegisterViewState.Idle
+                    val accessToken = response.data?.accessToken
+                    if (accessToken.isNullOrEmpty()) {
+                        _effect.send(RegisterEffect.ShowToast("Token tidak valid dari server"))
+                        _registerViewState.value = RegisterViewState.Error("Token tidak valid dari server")
+                        return@onSuccess
+                    }
+
+                    // 2. Simpan token yang diterima
+                    tokenManager.saveAccessToken(accessToken)
+
+                    // 3. PANGGIL FUNGSI UNTUK MENGAMBIL & MENYIMPAN PROFIL
+                    repo.observeProfile()
+                        .collect { profile ->
+                            if (profile == null) {
+                                _effect.send(RegisterEffect.ShowToast("Profil tidak ditemukan"))
+                                _registerViewState.value = RegisterViewState.Error("Profil tidak ditemukan")
+                                return@collect
+                            }
+                            // 4. JIKA PROFIL SUKSES DISIMPAN, BARU NAVIGASI
+                            _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
+                            _effect.send(RegisterEffect.NavigateToHome)
+                            _registerViewState.value = RegisterViewState.Idle
+                        }
                 }
-                .onFailure { e ->
-                    _effect.send(RegisterEffect.ShowToast(e.message ?: "Gagal masuk dengan Google"))
-                    _registerViewState.value = RegisterViewState.Error(e.message ?: "Gagal masuk dengan Google")
+                .onFailure { authError ->
+                    _effect.send(RegisterEffect.ShowToast(authError.message ?: "Gagal masuk dengan Google"))
+                    _registerViewState.value = RegisterViewState.Error(authError.message ?: "Gagal masuk dengan Google")
                 }
         }
     }

@@ -20,21 +20,21 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     @Provides
-    @Singleton // Kita hanya butuh satu instance database untuk seluruh aplikasi
+    @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "sahabat_gula_db" // Nama file database
+            "sahabat_gula_db"
         )
             .fallbackToDestructiveMigration() // hanya untuk dev
 //            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
-    @Provides // DAO tidak perlu @Singleton karena AppDatabase sudah singleton
+    @Provides
     fun provideProfileDao(appDatabase: AppDatabase): ProfileDao {
-        return appDatabase.profileDao() // Resep untuk membuat ProfileDao
+        return appDatabase.profileDao()
     }
 
     @Provides

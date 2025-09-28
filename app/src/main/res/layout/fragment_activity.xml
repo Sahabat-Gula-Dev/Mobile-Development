@@ -15,7 +15,7 @@
         android:id="@+id/title_daily_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Konsumsi Gula Harian"
+        android:text="Total Pembakaran Kalori Harian"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/md_theme_onSurface"

@@ -6,6 +6,7 @@
 
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/circular_progress_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:progress="100"
@@ -20,7 +21,7 @@
 
     <!-- progress circle -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/pi_circular_progress"
+        android:id="@+id/circular_progress_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:max="100"
@@ -40,13 +41,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/pi_circular_progress"
-        app:layout_constraintEnd_toEndOf="@id/pi_circular_progress"
-        app:layout_constraintStart_toStartOf="@id/pi_circular_progress"
-        app:layout_constraintTop_toTopOf="@id/pi_circular_progress">
+        app:layout_constraintBottom_toBottomOf="@id/circular_progress_view"
+        app:layout_constraintEnd_toEndOf="@id/circular_progress_view"
+        app:layout_constraintStart_toStartOf="@id/circular_progress_view"
+        app:layout_constraintTop_toTopOf="@id/circular_progress_view">
 
         <ImageView
-            android:id="@+id/ic_circular_progress"
+            android:id="@+id/ic_object"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:src="@drawable/ic_sugar_candy_unfilled"/>

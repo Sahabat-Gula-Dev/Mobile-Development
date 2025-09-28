@@ -27,12 +27,12 @@ object NetworkModule {
     }
 
     @Provides
-    @Singleton // Memastikan hanya ada satu instance Retrofit
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL) // Mengambil Base URL dari BuildConfig
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient) // Menggunakan OkHttpClient yang sudah kita buat di atas
+            .client(okHttpClient)
             .build()
     }
 

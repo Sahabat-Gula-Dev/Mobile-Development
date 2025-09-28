@@ -31,6 +31,11 @@
         <action
             android:id="@+id/register_to_login"
             app:destination="@id/login_fragment" />
+        <action
+            android:id="@+id/register_to_home"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment

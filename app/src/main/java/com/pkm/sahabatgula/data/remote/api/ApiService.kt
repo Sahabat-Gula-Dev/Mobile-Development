@@ -6,6 +6,8 @@ import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
 import com.pkm.sahabatgula.data.remote.model.LogFoodRequest
 import com.pkm.sahabatgula.data.remote.model.LogFoodResponse
+import com.pkm.sahabatgula.data.remote.model.LogWaterRequest
+import com.pkm.sahabatgula.data.remote.model.LogWaterResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
 import com.pkm.sahabatgula.data.remote.model.LoginResponse
 import com.pkm.sahabatgula.data.remote.model.MyProfileResponse
@@ -71,4 +73,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body body: LogFoodRequest
     ): Response<LogFoodResponse>
+
+    @POST("log-water")
+    suspend fun logWater(
+        @Header("Authorization") token: String,
+        @Body body: LogWaterRequest
+    ): Response<LogWaterResponse>
+
 }

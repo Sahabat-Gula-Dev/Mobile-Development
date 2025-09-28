@@ -1,6 +1,7 @@
-package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
+package com.pkm.sahabatgula.ui.home.dailywater.history.weekly
 
 
+import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarData
@@ -18,41 +19,40 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 import javax.inject.Inject
-import androidx.core.graphics.toColorInt
 
 
 // Sealed class untuk menampung state UI, termasuk data grafik
-sealed class WeeklySugarState {
-    object Loading : WeeklySugarState()
+sealed class WeeklyWaterState {
+    object Loading : WeeklyWaterState()
     data class Success(
         val barData: BarData,
         val xAxisLabels: List<String>
-    ) : WeeklySugarState()
-    data class Error(val message: String) : WeeklySugarState()
+    ) : WeeklyWaterState()
+    data class Error(val message: String) : WeeklyWaterState()
 }
 
 @HiltViewModel
-class WeeklySugarViewModel @Inject constructor(
+class WeeklyWaterViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<WeeklySugarState>(WeeklySugarState.Loading)
-    val uiState: StateFlow<WeeklySugarState> = _uiState
+    private val _uiState = MutableStateFlow<WeeklyWaterState>(WeeklyWaterState.Loading)
+    val uiState: StateFlow<WeeklyWaterState> = _uiState
 
     init {
-        loadWeeklySugarData()
+        loadWeeklyWaterData()
     }
 
-    private fun loadWeeklySugarData() {
+    private fun loadWeeklyWaterData() {
         viewModelScope.launch {
-            _uiState.value = WeeklySugarState.Loading
+            _uiState.value = WeeklyWaterState.Loading
 
             // Ambil data mingguan dari database (melalui Flow)
             // .firstOrNull() mengambil nilai saat ini dari Flow sekali saja
             val weeklyData = homeRepository.observeWeeklySummary().firstOrNull()
 
             if (weeklyData.isNullOrEmpty()) {
-                _uiState.value = WeeklySugarState.Error("Data mingguan tidak ditemukan.")
+                _uiState.value = WeeklyWaterState.Error("Data mingguan tidak ditemukan.")
                 return@launch
             }
 
@@ -75,17 +75,18 @@ class WeeklySugarViewModel @Inject constructor(
         val barColors = ArrayList<Int>() // <-- 1. Buat daftar kosong untuk warna
 
         // Definisikan warna yang Anda inginkan
-        val todayColor = "#FF3776".toColorInt()
-        val previousDaysColor = "#FFDFE9".toColorInt()
+        val todayColor = "#2196F3".toColorInt()
+        val previousDaysColor = "#D3EAFD".toColorInt()
+
 
         dateSlots.forEachIndexed { index, date ->
             val dataForDay = weeklyData.find {
                 LocalDate.parse(it.date, DateTimeFormatter.ISO_LOCAL_DATE) == date
             }
 
-            val sugarAmount = dataForDay?.sugar ?: 0.0
+            val waterAmount = dataForDay?.water ?: 0
             entries.add(
-                BarEntry(index.toFloat(), sugarAmount.toFloat())
+                BarEntry(index.toFloat(), waterAmount.toFloat())
             )
 
             // --- LOGIKA PEWARNAAN DINAMIS ---
@@ -97,13 +98,14 @@ class WeeklySugarViewModel @Inject constructor(
             }
         }
 
-        val dataSet = BarDataSet(entries, "Konsumsi Gula Mingguan")
+        val dataSet = BarDataSet(entries, "Asupan Air Mingguan")
         dataSet.setDrawValues(false)
         dataSet.colors = barColors // <-- 3. Terapkan daftar warna ke dataset
         dataSet.isHighlightEnabled = false
+
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f
 
-        _uiState.value = WeeklySugarState.Success(barData, xAxisLabels)
+        _uiState.value = WeeklyWaterState.Success(barData, xAxisLabels)
     }
 }
