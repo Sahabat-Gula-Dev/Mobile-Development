@@ -48,8 +48,6 @@ class SugarViewModel @Inject constructor(homeRepository: HomeRepository): ViewMo
     private fun refreshData(homeRepository: HomeRepository) {
         viewModelScope.launch {
             homeRepository.refreshDailySummary()
-            // Kita tidak perlu menangani hasilnya di sini,
-            // karena Flow di atas akan otomatis mendeteksi perubahan di database.
         }
     }
 

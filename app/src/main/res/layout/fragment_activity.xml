@@ -1,76 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- tambahkan arrow left dan icon share -->
-<!-- lalu di sini tambahkan tab layout -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
+    android:scrollbars="none"
     tools:context=".ui.home.dailyactivity.activity.ActivityFragment">
 
-    <TextView
-        android:id="@+id/title_daily_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Pembakaran Kalori Harian"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/md_theme_onSurface"
-        android:layout_marginTop="17dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <!--  circular progress -->
-    <include
-        android:id="@+id/pi_log_calories"
-        android:layout_width="221dp"
-        android:layout_height="221dp"
-        layout="@layout/component_consumption_circular_progress"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_daily_activity"
-        />
-
-    <!-- card "did u know?"   -->
-    <include
-        android:id="@+id/card_information"
-        layout="@layout/component_information"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/pi_log_calories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_height="wrap_content">
 
-    <!-- di sini ganti kontennya dengan konten daily step progress -->
-    <include
-        android:id="@+id/card_daily_step_progress"
-        layout="@layout/component_progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/card_information"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/title_daily_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Pembakaran Kalori"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_onSurface"
+            android:layout_marginTop="17dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
-    <TextView
-        android:id="@+id/title_history_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Riwayat Konsumsi Gula"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/md_theme_onSurface"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/card_daily_step_progress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <!--  circular progress -->
+        <include
+            android:id="@+id/pi_log_calories"
+            android:layout_width="221dp"
+            android:layout_height="221dp"
+            layout="@layout/component_consumption_circular_progress"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_daily_activity"
+            />
 
-    <!-- tambahkan grafik konsumsi gula mingguan dan bulanan -->
+        <!-- card "did u know?"   -->
+        <include
+            android:id="@+id/card_information"
+            layout="@layout/component_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/pi_log_calories"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- di sini ganti kontennya dengan konten daily step progress -->
+        <include
+            android:id="@+id/card_daily_step_progress"
+            layout="@layout/component_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/card_information"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/title_history_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Riwayat Konsumsi Gula"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_onSurface"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/card_daily_step_progress"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!--  history chart -->
+        <LinearLayout
+            android:id="@+id/layout_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="16dp"
+            app:tabTextColor="@color/md_theme_onSurface"
+            app:layout_constraintTop_toBottomOf="@id/title_history_activity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@color/brown_activity_calory"
+                app:tabIndicatorFullWidth="true"
+                app:tabMode="fixed"
+                app:tabIndicator="@drawable/tab_indicator"
+                app:tabGravity="fill"
+                android:backgroundTint="@android:color/transparent"
+                app:tabIndicatorHeight="3dp"/>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

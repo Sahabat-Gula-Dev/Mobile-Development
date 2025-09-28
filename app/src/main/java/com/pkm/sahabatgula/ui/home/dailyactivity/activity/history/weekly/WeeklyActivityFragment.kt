@@ -1,12 +1,9 @@
-package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
+package com.pkm.sahabatgula.ui.home.dailyactivity.activity.history.weekly
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,7 +11,6 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -26,11 +22,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WeeklySugarFragment : Fragment() {
+class WeeklyActivityFragment : Fragment() {
 
     private var _binding: FragmentWeeklyHistoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: WeeklySugarViewModel by viewModels()
+    private val viewModel: WeeklyActivityViewModel by viewModels()
     private var selectedEntry: BarEntry? = null
 
     override fun onCreateView(
@@ -62,14 +58,14 @@ class WeeklySugarFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
-                    is WeeklySugarState.Loading -> {
+                    is WeeklyActivityState.Loading -> {
                         // Tampilkan loading indicator
                     }
-                    is WeeklySugarState.Success -> {
+                    is WeeklyActivityState.Success -> {
                         // Panggil fungsi setup grafik dengan data dari ViewModel
                         setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                     }
-                    is WeeklySugarState.Error -> {
+                    is WeeklyActivityState.Error -> {
                     }
                 }
             }

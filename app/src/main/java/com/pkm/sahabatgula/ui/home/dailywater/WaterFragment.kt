@@ -18,7 +18,6 @@ import com.pkm.sahabatgula.databinding.FragmentWaterBinding
 import com.pkm.sahabatgula.ui.home.dailywater.history.WaterChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlin.compareTo
 
 @AndroidEntryPoint
 class WaterFragment : Fragment() {
@@ -70,11 +69,17 @@ class WaterFragment : Fragment() {
                         }
                         is WaterState.Success -> {
 
-
+                            binding.cardDidYouKnow.apply {
+                                icInfo.setImageResource(R.drawable.ic_question)
+                                tvTitleInfo.text = "Tahukah Kamu?"
+                                tvSubtitleInfo.text = "Satu ikon gelas mewakili 250 ml air. Cukup minum 8 gelas untuk capai target harianmu"
+                            }
 
                             binding.piDailyWater.apply {
+                                tvFormat.text = "ml tersisa"
                                 icObject.setImageResource(R.drawable.ic_water_circular)
                                 tvRemaining.text = state.remainingWater.toString()
+                                tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_water))
                                 circularProgressView.apply {
                                     trackColor = ContextCompat.getColor(requireContext(), R.color.blue_water_background)
                                     setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.blue_water))

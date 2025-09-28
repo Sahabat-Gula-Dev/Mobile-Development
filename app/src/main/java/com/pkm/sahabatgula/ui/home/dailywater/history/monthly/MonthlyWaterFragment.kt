@@ -70,7 +70,7 @@ class MonthlyWaterFragment : Fragment() {
 
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-        chart.setExtraOffsets(0f, 0f, 0f, 8f)
+        chart.setExtraOffsets(10f, 0f, 0f, 8f)
         // Mengatur font
         val jakartaSans: Typeface? = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
 

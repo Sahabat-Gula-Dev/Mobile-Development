@@ -1,12 +1,12 @@
-package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
+package com.pkm.sahabatgula.ui.home.dailyactivity.activity.history.monthly
 
-import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.toColorInt
+import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,62 +14,44 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.pkm.sahabatgula.R
-import com.pkm.sahabatgula.databinding.FragmentWeeklyHistoryBinding
+import com.pkm.sahabatgula.databinding.FragmentMonthlyHistoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WeeklySugarFragment : Fragment() {
+class MonthlyActivityFragment : Fragment() {
 
-    private var _binding: FragmentWeeklyHistoryBinding? = null
+    private var _binding: FragmentMonthlyHistoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: WeeklySugarViewModel by viewModels()
-    private var selectedEntry: BarEntry? = null
+    private val viewModel: MonthlyActivityViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentWeeklyHistoryBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentMonthlyHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeUiState()
-
-        binding.weeklyChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                selectedEntry = e as? BarEntry
-                binding.weeklyChart.invalidate()
-            }
-            override fun onNothingSelected() {
-                selectedEntry = null
-                binding.weeklyChart.invalidate()
-            }
-        })
     }
 
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
-                    is WeeklySugarState.Loading -> {
-                        // Tampilkan loading indicator
+                    is MonthlyActivityState.Loading -> {
+                        // Opsional: Tampilkan loading indicator
                     }
-                    is WeeklySugarState.Success -> {
-                        // Panggil fungsi setup grafik dengan data dari ViewModel
-                        setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
+                    is MonthlyActivityState.Success -> {
+                        setupBarChart(binding.monthlyChart, state.barData, state.xAxisLabels)
                     }
-                    is WeeklySugarState.Error -> {
+                    is MonthlyActivityState.Error -> {
+                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -77,30 +59,28 @@ class WeeklySugarFragment : Fragment() {
     }
 
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
-
         chart.data = data
 
-        // Nonaktifkan interaksi
+        // Nonaktifkan interaksi zoom
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false
-        chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
+        chart.setScaleEnabled(false)
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
-        chart.setExtraOffsets(10f, 0f, 0f, 8f)
 
-        // Konfigurasi umum
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
-
-        // font
-        val font = resources.getFont(R.font.jakarta_sans_family)
+        chart.setExtraOffsets(10f, 0f, 0f, 8f)
+        // Mengatur font
+        val jakartaSans: Typeface? = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
 
         // Sumbu X (Horizontal)
         val xAxis = chart.xAxis
-        xAxis.typeface = font
+        xAxis.typeface = jakartaSans
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
+        xAxis.setAvoidFirstLastClipping(true)
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
                 return xAxisLabels.getOrNull(value.toInt()) ?: ""
@@ -109,16 +89,15 @@ class WeeklySugarFragment : Fragment() {
 
         // Sumbu Y Kiri (Vertikal)
         val yAxisLeft = chart.axisLeft
+        yAxisLeft.typeface = jakartaSans
         yAxisLeft.axisMinimum = 0f
-        yAxisLeft.typeface = font
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.setDrawAxisLine(false)
 
-
-        // Sumbu Y Kanan
+        // Sumbu Y Kanan (dinonaktifkan)
         chart.axisRight.isEnabled = false
 
-        // Refresh grafik untuk menampilkan data
+        // Memuat ulang tampilan grafik
         chart.invalidate()
     }
 

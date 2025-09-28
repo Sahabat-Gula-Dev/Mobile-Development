@@ -82,7 +82,7 @@ class WeeklyWaterFragment : Fragment() {
         chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
-        chart.setExtraOffsets(7f, 0f, 0f, 8f)
+        chart.setExtraOffsets(10f, 0f, 0f, 8f)
 
         // Konfigurasi umum
         chart.description.isEnabled = false
