@@ -83,9 +83,9 @@ class WeeklyActivityViewModel @Inject constructor(
                 LocalDate.parse(it.date, DateTimeFormatter.ISO_LOCAL_DATE) == date
             }
 
-            val activityAmount = dataForDay?.calories ?: 0.0
+            val burnedAmount = dataForDay?.burned ?: 0
             entries.add(
-                BarEntry(index.toFloat(), activityAmount.toFloat())
+                BarEntry(index.toFloat(), burnedAmount.toFloat())
             )
 
             // --- LOGIKA PEWARNAAN DINAMIS ---

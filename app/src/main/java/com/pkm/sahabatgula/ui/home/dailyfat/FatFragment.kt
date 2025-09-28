@@ -5,56 +5,99 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.databinding.FragmentFatBinding
+import com.pkm.sahabatgula.databinding.FragmentProteinBinding
+import com.pkm.sahabatgula.ui.home.dailycarbo.CarboState
+import com.pkm.sahabatgula.ui.home.dailyfat.history.FatChartPagerAdapter
+import com.pkm.sahabatgula.ui.home.dailyprotein.history.ProteinChartPagerAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlin.getValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FatFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class FatFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentFatBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: FatViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fat, container, false)
+        _binding = FragmentFatBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FatFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FatFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val tabLayoutHistory = binding.tabLayoutHistory
+        val viewPager = binding.viewPager
+        viewPager.adapter = FatChartPagerAdapter(this)
+
+        TabLayoutMediator(tabLayoutHistory, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Mingguan"
+                1 -> tab.text = "Bulanan"
+            }
+        }.attach()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.fatState.collect { state ->
+                when (state) {
+                    is FatState.Success -> {
+                        binding.piFat .apply {
+                            tvRemaining.text = state.totalFat.toInt().toString()
+                            tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_fat))
+                            tvFormat.text = "gram tersisa"
+                            icObject.setImageResource(R.drawable.ic_protein_unfilled)
+                            val progressFat = (state.totalFat/ (state.maxFat))
+                            circularProgressView.apply {
+                                progress = progressFat.toInt()
+                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_fat))
+                                trackColor = ContextCompat.getColor(requireContext(), R.color.brown_fat_background)
+                            }
+                            circularProgressBackground.apply {
+                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_fat_background))
+                                trackColor = ContextCompat.getColor(requireContext(), R.color.brown_fat_background)
+                            }
+                        }
+
+                        binding.cardDailyFatTips.apply {
+                            icInfo.setImageResource(R.drawable.ic_information)
+                            tvTitleInfo.text = "Tips Buat Kamu?"
+                            tvSubtitleInfo.text = "Hindari konsumsi makanan kemasan atau gorengan berulang kali"
+                        }
+
+                        binding.cardDidYouKnow.apply {
+                            icInfo.setImageResource(R.drawable.ic_question)
+                            tvTitleInfo.text = "Tahukah Kamu?"
+                            tvSubtitleInfo.text = "Lemak mengandung 2 kali lipat kalori dibanding karbohidrat dan protein per gram"
+                        }
+
+                        binding.cardHistoryFat.apply {
+                            icAction.setImageResource(R.drawable.ic_history)
+                            tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
+                            tvSubtitleAction.text = "Cek ulang makananmu dan pastikan kamu tetap dalam jalur sehat"
+                        }
+
+                        binding.cardHistoryFat.root.setOnClickListener {
+                            findNavController().navigate(R.id.action_log_protein_to_log_food)
+                        }
+
+                    }
+                    else -> {}
                 }
             }
+        }
     }
+
 }

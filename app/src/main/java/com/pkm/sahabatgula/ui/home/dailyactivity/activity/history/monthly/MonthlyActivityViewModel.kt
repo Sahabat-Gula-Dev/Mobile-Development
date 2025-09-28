@@ -87,8 +87,8 @@ class MonthlyActivityViewModel @Inject constructor(
                 entity.date.let { YearMonth.parse(it, monthFormatter) } == yearMonth
             }
 
-            val caloriesAmount = dataForMonth?.calories ?: 0.0
-            entries.add(BarEntry(index.toFloat(), caloriesAmount.toFloat()))
+            val burnedAmount = dataForMonth?.burned ?: 0
+            entries.add(BarEntry(index.toFloat(), burnedAmount.toFloat()))
 
             // Logika pewarnaan dinamis
             if (yearMonth == currentMonth) {

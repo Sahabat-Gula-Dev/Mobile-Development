@@ -15,7 +15,10 @@ import javax.inject.Inject
 
 sealed class ActivityState {
     object Loading: ActivityState()
-    data class Success(val totalCalories: Double, val maxCalories: Int?): ActivityState()
+    data class Success(val burned: Int?, val maxCalories: Int?): ActivityState() {
+        val maxBurned = maxCalories?.div(2)
+        val remainingBurned = maxBurned?.minus(burned?:0)
+    }
     data class Error(val message: String): ActivityState()
 }
 
@@ -31,7 +34,7 @@ class ActivityViewModel @Inject constructor(private val homeRepository: HomeRepo
                     ActivityState.Loading
                 } else {
                     ActivityState.Success(
-                        totalCalories = summary.calories ?: 0.0,
+                        burned = summary.burned ?: 0,
                         maxCalories = profile.max_calories ?: 0
                     )
                 }

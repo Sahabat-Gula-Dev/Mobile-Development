@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.ui.home.dailysugar.history.SugarChartPagerAdapter
 import com.pkm.sahabatgula.R
@@ -66,6 +67,17 @@ class SugarFragment : Fragment() {
                             icSugarConsumedLevel.setImageDrawable(ContextCompat.getDrawable(requireContext(), getSugarConsumedLevel(progressSugar.toInt()).icon))
                             tvTitleSugarConsumedLevel.text = getSugarConsumedLevel(progressSugar.toInt()).title
                             tvSubtitleSugarConsumedLevel.text = getSugarConsumedLevel(progressSugar.toInt()).subtitle
+                        }
+
+                        binding.cardSugarAction.apply {
+                            icAction.setImageResource(R.drawable.ic_water_rectangle_filled)
+                            tvTitleAction.text = "Jangan Lupa Minum Air! "
+                            tvSubtitleAction.text = "Air membantu proses metabolisme gula dalam tubuh"
+
+                            root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.blue_water_background))
+                            root.setOnClickListener {
+                                findNavController().navigate(R.id.action_log_sugar_to_log_water)
+                            }
                         }
                     }
                     else -> {}

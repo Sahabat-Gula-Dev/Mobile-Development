@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.splashscreen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.pkm.sahabatgula.databinding.FragmentSplashScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
 
