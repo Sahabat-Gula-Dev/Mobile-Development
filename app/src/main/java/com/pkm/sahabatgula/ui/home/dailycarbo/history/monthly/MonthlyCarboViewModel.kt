@@ -1,8 +1,6 @@
-package com.pkm.sahabatgula.ui.home.dailywater.history.monthly
+package com.pkm.sahabatgula.ui.home.dailycarbo.history.monthly
 
 
-import android.app.Application
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarData
@@ -19,55 +17,45 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
 import androidx.core.graphics.toColorInt
-import com.pkm.sahabatgula.R
 import java.time.YearMonth
 
-
-// Sealed class untuk menampung state UI, termasuk data grafik
-
-sealed class MonthlyWaterState {
-    object Loading : MonthlyWaterState()
+sealed class MonthlyCarboState {
+    object Loading : MonthlyCarboState()
     data class Success(
         val barData: BarData,
         val xAxisLabels: List<String>
-    ) : MonthlyWaterState()
-    data class Error(val message: String) : MonthlyWaterState()
+    ) : MonthlyCarboState()
+    data class Error(val message: String) : MonthlyCarboState()
 }
 
 
 @HiltViewModel
-class MonthlyWaterViewModel @Inject constructor(
+class MonthlyCarboViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<MonthlyWaterState>(MonthlyWaterState.Loading)
-    val uiState: StateFlow<MonthlyWaterState> = _uiState
+    private val _uiState = MutableStateFlow<MonthlyCarboState>(MonthlyCarboState.Loading)
+    val uiState: StateFlow<MonthlyCarboState> = _uiState
+
     init {
-        loadMonthlyWaterData()
+        loadMonthlyCarboData()
     }
 
-    private fun loadMonthlyWaterData() {
+    private fun loadMonthlyCarboData() {
         viewModelScope.launch {
-            _uiState.value = MonthlyWaterState.Loading
-
-            // Ambil data bulanan dari repository
+            _uiState.value = MonthlyCarboState.Loading
             val monthlyData = homeRepository.observeMonthlySummary().firstOrNull()
-
             if (monthlyData.isNullOrEmpty()) {
-                _uiState.value = MonthlyWaterState.Error("Data bulanan tidak ditemukan.")
+                _uiState.value = MonthlyCarboState.Error("Data bulanan tidak ditemukan.")
                 return@launch
             }
-
             processDataForChart(monthlyData)
         }
     }
 
     private fun processDataForChart(monthlyData: List<SummaryEntity>) {
-        // Menggunakan YearMonth untuk bekerja dengan bulan
         val currentMonth = YearMonth.now()
         val locale = Locale.forLanguageTag("id-ID")
-
-        // 1. Buat 7 slot untuk 7 bulan terakhir, diakhiri dengan bulan ini
         val monthSlots = (0..6).map { currentMonth.minusMonths(it.toLong()) }.reversed()
         val xAxisLabels = monthSlots.map {
             it.format(DateTimeFormatter.ofPattern("MMM", locale))
@@ -76,24 +64,16 @@ class MonthlyWaterViewModel @Inject constructor(
         val entries = ArrayList<BarEntry>()
         val barColors = ArrayList<Int>()
 
-
-        val currentMonthColor = "#2196F3".toColorInt()
-        val previousMonthColor = "#D3EAFD".toColorInt()
+        val currentMonthColor = "#C89632".toColorInt()
+        val previousMonthColor = "#F4EAD6".toColorInt()
 
         monthSlots.forEachIndexed { index, yearMonth ->
-            // Format "yyyy-MM" untuk mencocokkan dengan data dari API/DB
             val monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
-
-            // Cari data yang cocok dengan slot bulan
             val dataForMonth = monthlyData.find { entity ->
-                // Pastikan date tidak null dan parse ke YearMonth
                 entity.date.let { YearMonth.parse(it, monthFormatter) } == yearMonth
             }
-
-            val waterAmount = dataForMonth?.water ?: 0
-            entries.add(BarEntry(index.toFloat(), waterAmount.toFloat()))
-
-            // Logika pewarnaan dinamis
+            val carboAmount = dataForMonth?.carbs ?: 0.0
+            entries.add(BarEntry(index.toFloat(), carboAmount.toFloat()))
             if (yearMonth == currentMonth) {
                 barColors.add(currentMonthColor)
             } else {
@@ -107,7 +87,6 @@ class MonthlyWaterViewModel @Inject constructor(
         dataSet.isHighlightEnabled = false
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f
-
-        _uiState.value = MonthlyWaterState.Success(barData, xAxisLabels)
+        _uiState.value = MonthlyCarboState.Success(barData, xAxisLabels)
     }
 }

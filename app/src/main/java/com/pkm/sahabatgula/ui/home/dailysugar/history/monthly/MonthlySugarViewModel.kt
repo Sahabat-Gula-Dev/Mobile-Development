@@ -66,7 +66,7 @@ class MonthlySugarViewModel @Inject constructor(
     private fun processDataForChart(monthlyData: List<SummaryEntity>) {
         // Menggunakan YearMonth untuk bekerja dengan bulan
         val currentMonth = YearMonth.now()
-        val locale = Locale("id", "ID") // Locale Indonesia untuk nama bulan
+        val locale = Locale.forLanguageTag("id-ID")
 
         // 1. Buat 7 slot untuk 7 bulan terakhir, diakhiri dengan bulan ini
         val monthSlots = (0..6).map { currentMonth.minusMonths(it.toLong()) }.reversed()

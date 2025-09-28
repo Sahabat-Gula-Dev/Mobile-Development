@@ -171,6 +171,8 @@
 
 
     <color name="yellow_carbo">#C89632</color>
+    <color name="yellow_carbo_background">#F4EAD6</color>
+    <color name="yellow_carbo_text">#E59A51</color>
     <color name="red_fat">#FF5023</color>
     <color name="brown_protein">#B35408</color>
     <color name="blue_water">#2196F3</color>

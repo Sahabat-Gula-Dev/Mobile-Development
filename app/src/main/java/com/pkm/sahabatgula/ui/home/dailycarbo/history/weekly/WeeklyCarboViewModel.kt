@@ -1,7 +1,6 @@
-package com.pkm.sahabatgula.ui.home.dailywater.history.weekly
+package com.pkm.sahabatgula.ui.home.dailycarbo.history.weekly
 
 
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarData
@@ -19,40 +18,36 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 import javax.inject.Inject
+import androidx.core.graphics.toColorInt
 
-
-// Sealed class untuk menampung state UI, termasuk data grafik
-sealed class WeeklyWaterState {
-    object Loading : WeeklyWaterState()
+sealed class WeeklyCarboState {
+    object Loading : WeeklyCarboState()
     data class Success(
         val barData: BarData,
         val xAxisLabels: List<String>
-    ) : WeeklyWaterState()
-    data class Error(val message: String) : WeeklyWaterState()
+    ) : WeeklyCarboState()
+    data class Error(val message: String) : WeeklyCarboState()
 }
 
 @HiltViewModel
-class WeeklyWaterViewModel @Inject constructor(
+class WeeklyCarboViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<WeeklyWaterState>(WeeklyWaterState.Loading)
-    val uiState: StateFlow<WeeklyWaterState> = _uiState
+    private val _uiState = MutableStateFlow<WeeklyCarboState>(WeeklyCarboState.Loading)
+    val uiState: StateFlow<WeeklyCarboState> = _uiState
 
     init {
-        loadWeeklyWaterData()
+        loadWeeklyCarboData()
     }
 
-    private fun loadWeeklyWaterData() {
+    private fun loadWeeklyCarboData() {
         viewModelScope.launch {
-            _uiState.value = WeeklyWaterState.Loading
-
-            // Ambil data mingguan dari database (melalui Flow)
-            // .firstOrNull() mengambil nilai saat ini dari Flow sekali saja
+            _uiState.value = WeeklyCarboState.Loading
             val weeklyData = homeRepository.observeWeeklySummary().firstOrNull()
 
             if (weeklyData.isNullOrEmpty()) {
-                _uiState.value = WeeklyWaterState.Error("Data mingguan tidak ditemukan.")
+                _uiState.value = WeeklyCarboState.Error("Data mingguan tidak ditemukan.")
                 return@launch
             }
 
@@ -70,42 +65,37 @@ class WeeklyWaterViewModel @Inject constructor(
             it.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
         }
 
-        // Siapkan BarEntry dan daftar warna
+
         val entries = ArrayList<BarEntry>()
-        val barColors = ArrayList<Int>() // <-- 1. Buat daftar kosong untuk warna
+        val barColors = ArrayList<Int>()
 
-        // Definisikan warna yang Anda inginkan
-        val todayColor = "#2196F3".toColorInt()
-        val previousDaysColor = "#D3EAFD".toColorInt()
-
+        val todayColor = "#C89632".toColorInt()
+        val previousDaysColor = "#F4EAD6".toColorInt()
 
         dateSlots.forEachIndexed { index, date ->
             val dataForDay = weeklyData.find {
                 LocalDate.parse(it.date, DateTimeFormatter.ISO_LOCAL_DATE) == date
             }
 
-            val waterAmount = dataForDay?.water ?: 0
+            val carboAmount = dataForDay?.carbs ?: 0.0
             entries.add(
-                BarEntry(index.toFloat(), waterAmount.toFloat())
+                BarEntry(index.toFloat(), carboAmount.toFloat())
             )
 
-            // --- LOGIKA PEWARNAAN DINAMIS ---
-            // 2. Cek apakah tanggal saat ini adalah 'today'
             if (date == today) {
-                barColors.add(todayColor) // Jika ya, gunakan warna "hari ini"
+                barColors.add(todayColor)
             } else {
-                barColors.add(previousDaysColor) // Jika tidak, gunakan warna "hari sebelumnya"
+                barColors.add(previousDaysColor)
             }
         }
 
-        val dataSet = BarDataSet(entries, "Asupan Air Mingguan")
+        val dataSet = BarDataSet(entries, "Konsumsi Gula Mingguan")
         dataSet.setDrawValues(false)
-        dataSet.colors = barColors // <-- 3. Terapkan daftar warna ke dataset
+        dataSet.colors = barColors
         dataSet.isHighlightEnabled = false
-
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f
 
-        _uiState.value = WeeklyWaterState.Success(barData, xAxisLabels)
+        _uiState.value = WeeklyCarboState.Success(barData, xAxisLabels)
     }
 }

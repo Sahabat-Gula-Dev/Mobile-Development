@@ -63,7 +63,7 @@ class WeeklyActivityViewModel @Inject constructor(
 
     private fun processDataForChart(weeklyData: List<SummaryEntity>) {
         val today = LocalDate.now()
-        val locale = Locale("id", "ID")
+        val locale = Locale.forLanguageTag("id-ID")
 
         val dateSlots = (0..6).map { today.minusDays(it.toLong()) }.reversed()
         val xAxisLabels = dateSlots.map {

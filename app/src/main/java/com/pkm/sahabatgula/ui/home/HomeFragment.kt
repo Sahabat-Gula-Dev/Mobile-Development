@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.pkm.sahabatgula.R
-import android.icu.text.DecimalFormat
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -96,7 +95,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
         summary: SummaryResponse
@@ -143,7 +141,7 @@ class HomeFragment : Fragment() {
 
         // carbo
         binding.carboConsumption.apply {
-            icProgress.setImageResource(R.drawable.carbo)
+            icProgress.setImageResource(R.drawable.ic_carbo_rice)
             tvNumberOfConsumption.text = DoubleToZeroInt(carbsConsumed)
             tvTitleProgress.text = "Karbohidrat"
             tvNumberOfTotalNutrition.text = " dari ${maxCarbs.toInt()} gr"
