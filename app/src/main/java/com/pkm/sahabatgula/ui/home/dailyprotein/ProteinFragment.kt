@@ -5,56 +5,97 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.databinding.FragmentProteinBinding
+import com.pkm.sahabatgula.ui.home.dailycarbo.CarboState
+import com.pkm.sahabatgula.ui.home.dailyprotein.history.ProteinChartPagerAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlin.getValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProteinFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ProteinFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentProteinBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: ProteinViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_protein, container, false)
+        _binding = FragmentProteinBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProteinFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProteinFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val tabLayoutHistory = binding.tabLayoutHistory
+        val viewPager = binding.viewPager
+        viewPager.adapter = ProteinChartPagerAdapter(this)
+
+        TabLayoutMediator(tabLayoutHistory, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Mingguan"
+                1 -> tab.text = "Bulanan"
+            }
+        }.attach()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.proteinState.collect { state ->
+                when (state) {
+                    is ProteinState.Success -> {
+                        binding.piProtein .apply {
+                            tvRemaining.text = state.totalProtein.toInt().toString()
+                            tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_text))
+                            tvFormat.text = "gram tersisa"
+                            icObject.setImageResource(R.drawable.ic_carbo_rice_filled)
+                            val progressProtein = (state.totalProtein/ (state.maxProtein))
+                            circularProgressView.apply {
+                                progress = progressProtein.toInt()
+                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo))
+                                trackColor = ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background)
+                            }
+                            circularProgressBackground.apply {
+                                setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background))
+                                trackColor = ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background)
+                            }
+                        }
+
+                        binding.cardDailyProteinTips.apply {
+                            icInfo.setImageResource(R.drawable.ic_information)
+                            tvTitleInfo.text = "Tips Buat Kamu?"
+                            tvSubtitleInfo.text = "Padukan sumber hewani dan nabati untuk asupan protein yang lengkap"
+                        }
+
+                        binding.cardDidYouKnow.apply {
+                            icInfo.setImageResource(R.drawable.ic_question)
+                            tvTitleInfo.text = "Tahukah Kamu?"
+                            tvSubtitleInfo.text = "Protein adalah komponen penting pembentuk otot, hormon, dan sistem imun"
+                        }
+
+                        binding.cardHistoryFood.apply {
+                            icAction.setImageResource(R.drawable.ic_history)
+                            tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
+                            tvSubtitleAction.text = "Cek ulang makananmu dan pastikan kamu tetap dalam jalur sehat"
+                        }
+
+                        binding.cardHistoryFood.root.setOnClickListener {
+                            findNavController().navigate(R.id.action_log_protein_to_log_food)
+                        }
+
+                    }
+                    else -> {}
                 }
             }
+        }
     }
+
 }
