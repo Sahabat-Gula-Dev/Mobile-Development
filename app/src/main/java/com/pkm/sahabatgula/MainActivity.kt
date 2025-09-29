@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
+        binding.navView.visibility = View.GONE
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val parentGraphId = destination.parent?.id
             val destId = destination.id

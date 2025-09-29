@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -120,6 +122,10 @@ dependencies {
 
     // chart
     implementation(libs.mpandroidchart)
+
+    // glide
+    implementation(libs.glide)
+    ksp(libs.compiler)
 
 
 }

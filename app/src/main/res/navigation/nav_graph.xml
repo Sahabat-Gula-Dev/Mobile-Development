@@ -30,7 +30,7 @@
         android:name="com.pkm.sahabatgula.ui.home.HomeFragment" />
     <fragment
         android:id="@+id/navigation_scan"
-        android:name="com.pkm.sahabatgula.ui.scan.ScanFragment"/>
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment"/>
     <fragment
         android:id="@+id/navigation_explore"
         android:name="com.pkm.sahabatgula.ui.explore.ExploreFragment"/>

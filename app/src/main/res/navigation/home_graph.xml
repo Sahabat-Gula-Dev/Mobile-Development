@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_home_to_log_step"
             app:destination="@id/log_step_fragment"/>
+        <action
+            android:id="@+id/action_home_to_add_log_food"
+            app:destination="@id/add_log_food_fragment"/>
     </fragment>
 
     <!-- log sugar   -->
@@ -113,15 +116,22 @@
 
     <!-- Food Scan   -->
     <fragment
-        android:id="@+id/scan_fragment"
-        android:name="com.pkm.sahabatgula.ui.scan.ScanFragment">
+        android:id="@+id/add_log_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment">
+        <action
+            android:id="@+id/action_add_log_food_to_scan_result_fragment"
+            app:destination="@id/result_scan_food_fragment">
+            <argument
+                android:name="uri"
+                app:argType="string"/>
+        </action>
 
     </fragment>
 
     <!-- food scan result   -->
     <fragment
         android:id="@+id/scan_result_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.scanning.ResultScanFoodFragment">
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
 
     </fragment>
 
@@ -130,7 +140,7 @@
     <!-- log manual custom food   -->
     <fragment
         android:id="@+id/log_manual_custom_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.customfood.search.ResultSearchManualCustomFoodFragment">
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.search.ResultSearchManualCustomFoodFragment">
 
     </fragment>
 
@@ -139,6 +149,21 @@
         android:id="@+id/result_search_activity_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.search.ResultSearchActivityFragment">
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/scan_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.FoodScanFragment">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/result_scan_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
+
+        <argument
+            android:name="uri"
+            app:argType="string" />
     </fragment>
 
 <!-- TAMBAH FRAGMENT UNTUK CHATBOTNYA JUGA   -->

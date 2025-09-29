@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.dailyfood.scanning
+package com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.search
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,10 +14,11 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ResultScanFoodFragment.newInstance] factory method to
+ * Use the [ResultSearchFoodFragment.newInstance] factory method to
  * create an instance of this fragment.
+ *
  */
-class ResultScanFoodFragment : Fragment() {
+class ResultSearchFoodFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +36,7 @@ class ResultScanFoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_result_scan_food, container, false)
+        return inflater.inflate(R.layout.fragment_result_search_food, container, false)
     }
 
     companion object {
@@ -45,12 +46,12 @@ class ResultScanFoodFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment ResultScanFoodFragment.
+         * @return A new instance of fragment ResultSearchFoodFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ResultScanFoodFragment().apply {
+            ResultSearchFoodFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

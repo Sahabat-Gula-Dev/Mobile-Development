@@ -11,6 +11,7 @@ import com.pkm.sahabatgula.data.remote.model.LogWaterResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
 import com.pkm.sahabatgula.data.remote.model.LoginResponse
 import com.pkm.sahabatgula.data.remote.model.MyProfileResponse
+import com.pkm.sahabatgula.data.remote.model.PredictionResponse
 import com.pkm.sahabatgula.data.remote.model.ProfileData
 import com.pkm.sahabatgula.data.remote.model.SetupProfileResponse
 import com.pkm.sahabatgula.data.remote.model.RegisterRequest
@@ -24,11 +25,15 @@ import com.pkm.sahabatgula.data.remote.model.VerifyOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 
 interface ApiService {
 
@@ -68,11 +73,6 @@ interface ApiService {
     @GET("summary")
     suspend fun getSummary(@Header ("Authorization") token: String): Response<SummaryResponse>
 
-    @POST("log-foods")
-    suspend fun logFood(
-        @Header("Authorization") token: String,
-        @Body body: LogFoodRequest
-    ): Response<LogFoodResponse>
 
     @POST("log-water")
     suspend fun logWater(
@@ -80,4 +80,15 @@ interface ApiService {
         @Body body: LogWaterRequest
     ): Response<LogWaterResponse>
 
+    @Multipart
+    @POST("predictions")
+    suspend fun predictImage(
+        @Part image: MultipartBody.Part
+    ): PredictionResponse
+
+    @POST("log-foods")
+    suspend fun logFood(
+        @Header("Authorization") token: String,
+        @Body body: LogFoodRequest
+    ): Response<LogFoodResponse>
 }

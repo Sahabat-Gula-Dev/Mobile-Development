@@ -1,10 +1,11 @@
-package com.pkm.sahabatgula.ui.home.dailyfood.customfood
+package com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.search.SearchBar
 import com.pkm.sahabatgula.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -14,10 +15,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [LogManualCustomFoodFragment.newInstance] factory method to
+ * Use the [LogManualFoodFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LogManualCustomFoodFragment : Fragment() {
+class LogManualFoodFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +36,14 @@ class LogManualCustomFoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log_manual_custom_food, container, false)
+        return inflater.inflate(R.layout.fragment_log_manual_food, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val searchBar = view.findViewById<SearchBar>(R.id.search_bar_food)
+        searchBar.navigationIcon = null
     }
 
     companion object {
@@ -45,12 +53,12 @@ class LogManualCustomFoodFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment LogManualCustomFoodFragment.
+         * @return A new instance of fragment LogManualFoodFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LogManualCustomFoodFragment().apply {
+            LogManualFoodFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

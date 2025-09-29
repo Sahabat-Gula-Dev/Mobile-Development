@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.home.dailyfood.scanning.ResultScanFoodFragment">
+    tools:context=".ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
 
     <TextView
         android:id="@+id/tv_header_result_scan_food"
@@ -29,6 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

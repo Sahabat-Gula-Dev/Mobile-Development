@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.scan.ScanFragment">
+    tools:context=".ui.home.dailyfood.logfood.LogFoodFragment">
 
     <!-- Tab layout   -->
     <com.google.android.material.tabs.TabLayout
@@ -15,6 +15,8 @@
         app:tabIndicatorFullWidth="true"
         app:tabGravity="fill"
         app:tabMode="fixed"
+        app:tabTextColor="@color/md_theme_onSurface"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
