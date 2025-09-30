@@ -45,6 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <ImageView
+                    android:id="@+id/img_food"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
@@ -66,6 +67,7 @@
 
 
             <TextView
+                android:id="@+id/tv_calories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="203 kkal"
@@ -109,7 +111,8 @@
                 layout="@layout/component_nutrinet_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/tv_food_nutritions"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_food_nutritions"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <include
@@ -174,10 +177,10 @@
         android:paddingVertical="16dp">
 
         <Button
+            android:id="@+id/btn_log_this_food"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Catat Konsumsi"
-            android:lineSpacingExtra="4sp"
             android:letterSpacing="0.01"
             android:textStyle="bold"
             android:textSize="14sp"

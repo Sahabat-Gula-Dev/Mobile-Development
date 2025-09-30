@@ -19,6 +19,7 @@ import com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.ScanUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
+import androidx.navigation.findNavController
 
 @AndroidEntryPoint
 class ResultScanFoodFragment : Fragment() {
@@ -44,16 +45,6 @@ class ResultScanFoodFragment : Fragment() {
         Log.d("DEBUG_NAV", "ResultScanFoodFragment: Berhasil dibuat dan ditampilkan (onViewCreated).")
 
         setupRecyclerView()
-//        parentFragmentManager.setFragmentResultListener("scanResultKey", viewLifecycleOwner) { _, bundle ->
-//            val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                bundle.getParcelable("uri", Uri::class.java)
-//            } else {
-//                bundle.getParcelable("uri")
-//            }
-//            if (uri != null) {
-//                viewModel.predictImage(uri)
-//            }
-//        }
 
         val uri = arguments?.getString("uri")?.toUri()
         viewModel.predictImage(uri)
@@ -63,13 +54,8 @@ class ResultScanFoodFragment : Fragment() {
 
     private fun setupRecyclerView() {
         resultScanAdapter = ResultScanAdapter { foodItem ->
-            // Aksi saat item di-klik: Navigasi ke Detail
-//            val foodItem = arguments?.getParcelable<FoodsItem>("food_item")
-//            val bundle = Bundle().apply {
-//                putParcelable("food_item", foodItem)
-//            }
-//            parentFragmentManager.setFragmentResult("foodItemKey", bundle)
-//            findNavController().navigate(R.id.)
+            val action = ResultScanFoodFragmentDirections.actionResultFoodScanToDetailFoodFragment(foodItem)
+            view?.findNavController()?.navigate(action)
 
         }
         binding.rvResult.apply {

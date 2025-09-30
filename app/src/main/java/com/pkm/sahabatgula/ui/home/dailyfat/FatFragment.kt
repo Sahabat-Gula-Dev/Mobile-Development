@@ -55,11 +55,11 @@ class FatFragment : Fragment() {
                 when (state) {
                     is FatState.Success -> {
                         binding.piFat .apply {
-                            tvRemaining.text = state.totalFat.toInt().toString()
+                            tvRemaining.text = state.remainingFat.toInt().toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_fat))
                             tvFormat.text = "gram tersisa"
                             icObject.setImageResource(R.drawable.ic_protein_unfilled)
-                            val progressFat = (state.totalFat/ (state.maxFat))
+                            val progressFat = (state.totalFat/ (state.maxFat))*100
                             circularProgressView.apply {
                                 progress = progressFat.toInt()
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_fat))

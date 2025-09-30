@@ -14,7 +14,9 @@ import javax.inject.Inject
 
 sealed class CarboState{
     object Loading: CarboState()
-    data class Success(val totalCarbo: Double, val maxCarbo: Double): CarboState()
+    data class Success(val totalCarbo: Double, val maxCarbo: Double): CarboState() {
+        val carboRemaining = maxCarbo - totalCarbo
+    }
     data class Error(val message: String): CarboState()
 }
 

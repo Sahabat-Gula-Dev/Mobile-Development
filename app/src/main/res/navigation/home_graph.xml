@@ -120,7 +120,7 @@
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment">
         <action
             android:id="@+id/action_add_log_food_to_scan_result_fragment"
-            app:destination="@id/result_scan_food_fragment">
+            app:destination="@id/result_food_scan_fragment">
             <argument
                 android:name="uri"
                 app:argType="string"/>
@@ -130,9 +130,21 @@
 
     <!-- food scan result   -->
     <fragment
-        android:id="@+id/scan_result_fragment"
+        android:id="@+id/result_food_scan_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
 
+        <action
+            android:id="@+id/action_result_food_scan_to_detail_food_fragment"
+            app:destination="@id/detail_food_fragment"/>
+    </fragment>
+
+    <!-- detail food   -->
+    <fragment
+        android:id="@+id/detail_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment">
+        <argument
+            android:name="foodItem"
+            app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem" />
     </fragment>
 
     <!-- log manual food  ini refers ke tab layout yang  kedua -->
@@ -157,14 +169,7 @@
     </fragment>
 
 
-    <fragment
-        android:id="@+id/result_scan_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
 
-        <argument
-            android:name="uri"
-            app:argType="string" />
-    </fragment>
 
 <!-- TAMBAH FRAGMENT UNTUK CHATBOTNYA JUGA   -->
 

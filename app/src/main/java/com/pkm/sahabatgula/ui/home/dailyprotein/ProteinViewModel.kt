@@ -14,7 +14,10 @@ import javax.inject.Inject
 
 sealed class ProteinState{
     object Loading: ProteinState()
-    data class Success(val totalProtein: Double, val maxProtein: Double): ProteinState()
+    data class Success(val totalProtein: Double, val maxProtein: Double): ProteinState() {
+        val remainingProtein: Double
+            get() = maxProtein - totalProtein
+    }
     data class Error(val message: String): ProteinState()
 }
 

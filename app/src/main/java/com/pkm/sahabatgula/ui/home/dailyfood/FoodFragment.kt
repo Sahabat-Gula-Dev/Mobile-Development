@@ -52,7 +52,7 @@ class FoodFragment : Fragment() {
                         binding.piLogFood .apply {
                             tvRemaining.text = state.remainingCalories.toInt().toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_card))
-                            val progressCalories = (state.totalCalories/ (state.maxCalories?.toDouble() ?: 0.0))
+                            val progressCalories = (state.totalCalories/ (state.maxCalories?.toDouble() ?: 0.0))*100
                             tvFormat.text = "kkal tersisa"
                             icObject.setImageResource(R.drawable.ic_food_circular)
                             circularProgressView.apply {

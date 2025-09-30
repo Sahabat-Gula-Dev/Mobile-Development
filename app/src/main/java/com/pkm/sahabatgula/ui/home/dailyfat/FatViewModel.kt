@@ -14,7 +14,10 @@ import javax.inject.Inject
 
 sealed class FatState{
     object Loading: FatState()
-    data class Success(val totalFat: Double, val maxFat: Double): FatState()
+    data class Success(val totalFat: Double, val maxFat: Double): FatState() {
+        val remainingFat: Double
+            get() = maxFat - totalFat
+    }
     data class Error(val message: String): FatState()
 }
 

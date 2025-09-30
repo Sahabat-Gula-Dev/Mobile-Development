@@ -40,25 +40,18 @@ class WaterViewModel @Inject constructor(private val homeRepository: HomeReposit
 
     init {
         viewModelScope.launch {
-            // Gunakan .collect untuk "mendengarkan" data dari Flow
             homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())
-                .collect { summaryEntity -> // 'summaryEntity' adalah datanya, BUKAN Flow-nya
-
+                .collect { summaryEntity ->
                     if (summaryEntity == null) {
-                        // Jika data yang datang null (belum ada entri hari ini)
-                        // Cek ini agar tidak menimpa state yang sudah ada dengan 0
                         if (_waterState.value is WaterState.Loading) {
                             _waterState.value = WaterState.Success(filledGlasses = 0)
                         }
                     } else {
-                        // Jika ada data, hitung jumlah gelas
-                        // SEKARANG Anda bisa mengakses .water dengan aman
                         val initialFilledGlasses = (summaryEntity.water ?: 0) / 250
                         _waterState.value = WaterState.Success(filledGlasses = initialFilledGlasses)
                     }
                 }
         }
-        // refreshData tetap dipanggil untuk sinkronisasi dengan server
         refreshData()
     }
 

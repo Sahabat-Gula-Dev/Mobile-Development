@@ -53,11 +53,11 @@ class ProteinFragment : Fragment() {
                 when (state) {
                     is ProteinState.Success -> {
                         binding.piProtein .apply {
-                            tvRemaining.text = state.totalProtein.toInt().toString()
+                            tvRemaining.text = state.remainingProtein.toInt().toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_protein_text))
                             tvFormat.text = "gram tersisa"
                             icObject.setImageResource(R.drawable.ic_protein_unfilled)
-                            val progressProtein = (state.totalProtein/ (state.maxProtein))
+                            val progressProtein = (state.totalProtein/ (state.maxProtein))*100
                             circularProgressView.apply {
                                 progress = progressProtein.toInt()
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_protein))
@@ -86,6 +86,7 @@ class ProteinFragment : Fragment() {
                             tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
                             tvSubtitleAction.text = "Cek ulang makananmu dan pastikan kamu tetap dalam jalur sehat"
                         }
+                        binding.cardHistoryFood.root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_action_background))
 
                         binding.cardHistoryFood.root.setOnClickListener {
                             findNavController().navigate(R.id.action_log_protein_to_log_food)

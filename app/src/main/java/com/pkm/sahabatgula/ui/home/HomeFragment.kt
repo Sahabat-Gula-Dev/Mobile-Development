@@ -169,14 +169,14 @@ class HomeFragment : Fragment() {
             tvNumberOfPercentage.text = "${proteinConsumed?.toPercentage(maxProtein.toInt())}"
         }
 
-        // protein
+        // water
         binding.waterIntakeCard.apply {
             icProgress.setImageResource(R.drawable.ic_water_intake_glass)
             tvNumberOfConsumption.text = waterIntake.toString()
             tvTitleProgress.text = "Asupan Air"
             tvNumberOfTotalNutrition.text = " dari 2000 ML"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.blue_water)
-            tvNumberOfPercentage.text = "${waterIntake.toDouble()?.toPercentage(total = 2500)}"
+            tvNumberOfPercentage.text = "${waterIntake.toDouble()?.toPercentage(total = 2000)}"
         }
 
         // step
@@ -285,7 +285,6 @@ class HomeFragment : Fragment() {
 
     }
 
-    @SuppressLint("DefaultLocale")
     infix fun Double.toPercentage(total: Int?): String {
         if (total?.toDouble() == 0.0) return "0%"
         val result = (this / total?.toDouble()!!) * 100

@@ -52,11 +52,11 @@ class CarboFragment : Fragment() {
                 when (state) {
                     is CarboState.Success -> {
                         binding.piLogFood.apply {
-                            tvRemaining.text = state.totalCarbo.toInt().toString()
+                            tvRemaining.text = state.carboRemaining.toInt().toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_text))
                             tvFormat.text = "gram tersisa"
                             icObject.setImageResource(R.drawable.ic_carbo_rice_filled)
-                            val progressCarbo = (state.totalCarbo/ (state.maxCarbo))
+                            val progressCarbo = (state.totalCarbo/ (state.maxCarbo))*100
                             circularProgressView.apply {
                                 progress = progressCarbo.toInt()
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo))

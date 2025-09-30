@@ -17,16 +17,6 @@ data class PredictionResponse(
 )
 
 @Parcelize
-data class FoodCategories(
-
-	@field:SerializedName("name")
-	val name: String? = null,
-
-	@field:SerializedName("id")
-	val id: Int? = null
-): Parcelable
-
-@Parcelize
 data class FoodsItem(
 
 	@field:SerializedName("serving_unit")
@@ -54,7 +44,7 @@ data class FoodsItem(
 	val createdAt: String? = null,
 
 	@field:SerializedName("id")
-	val id: String? = null,
+	val id: String,
 
 	@field:SerializedName("photo_url")
 	val photoUrl: String? = null,
@@ -62,8 +52,6 @@ data class FoodsItem(
 	@field:SerializedName("calories")
 	val calories: Int? = null,
 
-	@field:SerializedName("food_categories")
-	val foodCategories: FoodCategories? = null
 ): Parcelable
 
 data class PredictionData(
@@ -79,16 +67,4 @@ data class PredictionData(
 
 	@field:SerializedName("meta")
 	val meta: Meta? = null
-)
-
-data class Meta(
-
-	@field:SerializedName("total")
-	val total: Int? = null,
-
-	@field:SerializedName("limit")
-	val limit: Int? = null,
-
-	@field:SerializedName("page")
-	val page: Int? = null
 )

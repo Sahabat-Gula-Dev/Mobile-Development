@@ -1,5 +1,9 @@
 package com.pkm.sahabatgula.data.remote.api
 
+import com.pkm.sahabatgula.data.remote.model.CategoryListResponse
+import com.pkm.sahabatgula.data.remote.model.DetailFoodResponse
+import com.pkm.sahabatgula.data.remote.model.FoodCategories
+import com.pkm.sahabatgula.data.remote.model.FoodListResponse
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
@@ -34,6 +38,8 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.PartMap
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -91,4 +97,21 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body body: LogFoodRequest
     ): Response<LogFoodResponse>
+
+    @GET ("foods/{id}")
+    suspend fun getFoodDetailById(
+        @Path("id") id: String
+    ): Response<DetailFoodResponse>
+
+    @GET("foods")
+    suspend fun  getFoods(
+        @Query("page") page: Int,
+        @Query("limit") limit : Int = 20,
+        @Query("q") query: String? = null,
+        @Query("category_id") categoryId: Int? = null
+    ): Response<FoodListResponse>
+
+    @GET("food-categories")
+    suspend fun getFoodCategories(): Response<CategoryListResponse>
+
 }

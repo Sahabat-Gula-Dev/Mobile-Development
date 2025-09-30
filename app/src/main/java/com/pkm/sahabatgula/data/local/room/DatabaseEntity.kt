@@ -34,7 +34,6 @@ data class ProfileEntity(
 data class SummaryEntity(
     val date: String,
     val type: String, // "DAILY", "WEEKLY", "MONTHLY"
-
     val calories: Double?,
     val carbs: Double?,
     val protein: Double?,
@@ -43,7 +42,6 @@ data class SummaryEntity(
     val sodium: Double?,
     val fiber: Double?,
     val potassium: Double?,
-
     val burned: Int?,
     val steps: Int?,
     val water: Int?

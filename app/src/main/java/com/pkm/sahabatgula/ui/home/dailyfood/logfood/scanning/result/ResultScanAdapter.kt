@@ -42,7 +42,6 @@ class ResultScanAdapter(private val onItemClicked: (FoodsItem) -> Unit) :
         }
     }
 
-
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FoodsItem>() {
             override fun areItemsTheSame(oldItem: FoodsItem, newItem: FoodsItem): Boolean {

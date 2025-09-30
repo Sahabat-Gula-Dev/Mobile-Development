@@ -88,11 +88,7 @@ class WaterFragment : Fragment() {
                                     trackColor = ContextCompat.getColor(requireContext(), R.color.blue_water_background)
                                     setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.blue_water_background))
                                 }
-                                val progress = if (state.maxWater > 0) (state.currentWater.toDouble() / state.maxWater * 100).toInt() else 0
-                                Log.d("WaterCheck", "Glasses: ${state.filledGlasses}, " +
-                                        "CurrentWater: ${state.currentWater}, " +
-                                        "MaxWater: ${state.maxWater}, " +
-                                        "Progress: ${(state.currentWater.toDouble() / state.maxWater * 100)}")
+                                val progress = ((state.currentWater.toDouble() / state.maxWater) * 100).toInt()
                                 circularProgressView.progress = progress
                             }
 
