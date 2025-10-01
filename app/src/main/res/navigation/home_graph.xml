@@ -133,6 +133,9 @@
                 app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
                 app:nullable="true"/>
         </action>
+        <action
+            android:id="@+id/action_add_log_food_to_log_manual_custom_food_fragment"
+            app:destination="@id/log_manual_custom_food_fragment"/>
 
     </fragment>
 
@@ -181,13 +184,15 @@
                 app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
                 app:nullable="true"/>
         </action>
-
+        <action
+            android:id="@+id/action_log_manual_food_to_log_manual_custom_food_fragment"
+            app:destination="@id/log_manual_custom_food_fragment"/>
     </fragment>
 
     <!-- log manual custom food   -->
     <fragment
         android:id="@+id/log_manual_custom_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.search.ResultSearchManualCustomFoodFragment">
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment">
 
     </fragment>
 

@@ -76,7 +76,14 @@ data class FoodItem(
 	val calories: Double,
 
 	@field:SerializedName("food_categories")
-	val foodCategories: FoodCategories
+	val foodCategories: FoodCategories,
+
+	@Transient
+	var isExpanded: Boolean = false,
+
+	@Transient
+	var isSelected: Boolean = false
+
 ): Parcelable
 
 

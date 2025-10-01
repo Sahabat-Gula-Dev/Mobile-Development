@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:startIconDrawable="@drawable/ic_lock"
-            app:endIconMode="custom"
+            app:endIconMode="password_toggle"
             app:endIconTint="@color/red_error"
             app:boxStrokeColor="@color/red_error"
             app:boxStrokeErrorColor="@color/red_error">

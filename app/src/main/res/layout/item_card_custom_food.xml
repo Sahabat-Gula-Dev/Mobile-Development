@@ -1,144 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- Ketika preview makanan, contentpaddingnya diset menjadi 24dp-->
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:contentPadding="16dp"
-    android:elevation="0dp"
-    app:strokeWidth="0.1dp"
-    app:strokeColor="#DEDBDBDB"
+    android:layout_marginBottom="12dp"
     app:cardCornerRadius="4dp"
-    android:layout_marginBottom="16dp"
-    android:backgroundTint="@color/md_theme_onPrimary"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:strokeWidth="0.5dp"
+    app:cardBackgroundColor="@android:color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/ic_plus_add_food"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_plus_add_food"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/layout_tv_title_subtitle_food"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <TextView
-            android:id="@+id/tv_title_custom_food_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sate Ayam 1 Tusuk 15 gr"
-            android:textColor="@color/md_theme_onSurface"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:letterSpacing="0.02"
-            android:lineSpacingExtra="2sp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/ic_plus_add_food"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <ImageView
-            android:id="@+id/ic_arrow_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_arrow_down"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_img_food"
-            android:layout_width="0dp"
-            android:layout_height="222dp"
-            android:backgroundTint="@color/md_theme_onPrimary"
-            app:cardCornerRadius="4dp"
-            android:elevation="0dp"
-            app:strokeWidth="0dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_custom_food_card"
-            app:layout_constraintStart_toStartOf="@id/tv_title_custom_food_card">
-
-            <ImageView
-                android:id="@+id/img_food"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/img_chicken_satay"/>
-
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toTopOf="@id/layout_tv_title_subtitle_food"
+            tools:src="@drawable/ic_checked" />
 
         <LinearLayout
-            android:id="@+id/layout_calories"
-            android:layout_width="wrap_content"
+            android:id="@+id/layout_tv_title_subtitle_food"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/card_img_food"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/ic_food_salad_on_expand"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="6dp"
-                android:src="@drawable/ic_food_salad"/>
+            android:minHeight="36dp"
+            app:layout_constraintStart_toEndOf="@id/ic_plus_add_food"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="32dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_food_calories_on_expand"
+                android:id="@+id/tv_title_custom_food_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_onSurface"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                tools:text="Sate Ayam 1 Tusuk 15 gr" />
+
+            <TextView
+                android:id="@+id/tv_food_calories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="203 kkal"
-                android:textColor="#088D08"
-                android:textStyle="bold"/>
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/md_theme_onSurface"
+                android:textSize="12sp"
+                tools:text="203 kkal" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_desc_food"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:letterSpacing="0.03"
-            android:lineSpacingExtra="1sp"
-            android:visibility="gone"
-            android:text="Tinggi protein dan lemak, cocok dinikmati sesekali. Penderita kolesterol sebaiknya mengontrol jumlah konsumsinya."
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_calories" />
-
-
-        <TextView
-            android:id="@+id/tv_food_calories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="203 kkal"
-            android:textColor="@color/md_theme_onSurface"
-            android:lineSpacingExtra="1sp"
-            android:letterSpacing="0.03"
-            android:textSize="12sp"
-            android:visibility="visible"
-            android:layout_marginTop="6dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_custom_food_card"
-            app:layout_constraintStart_toStartOf="@id/tv_title_custom_food_card"/>
-
-
-        <!-- untuk preview dari detail makanan, ganti arrow berikut men jaid arrow bottom        -->
         <ImageView
             android:id="@+id/ic_arrow_right"
-            android:layout_width="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/layout_tv_title_subtitle_food"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/layout_tv_title_subtitle_food"/>
+
+
+        <LinearLayout
+            android:id="@+id/expanded_view"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_arrow_right"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_tv_title_subtitle_food"
+            tools:visibility="visible">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_food"
+                android:layout_width="match_parent"
+                android:layout_height="222dp"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/img_chicken_satay" />
+
+            <LinearLayout
+                android:layout_marginTop="22dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                >
+                <ImageView
+                    android:id="@+id/ic_food_salad_close_to_calories"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:src="@drawable/ic_food_salad"/>
+
+                <TextView
+                    android:id="@+id/tv_food_calories_on_expand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/green_card"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    tools:text="203 kkal" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_desc_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:justificationMode="inter_word"
+                android:ellipsize="none"
+                android:singleLine="false"
+                tools:text="Tinggi protein dan lemak, cocok dinikmati sesekali. Penderita kolesterol sebaiknya mengontrol jumlah konsumsinya." />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

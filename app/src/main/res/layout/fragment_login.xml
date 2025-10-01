@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:startIconDrawable="@drawable/ic_lock"
-            app:endIconMode="clear_text">
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_input_password"

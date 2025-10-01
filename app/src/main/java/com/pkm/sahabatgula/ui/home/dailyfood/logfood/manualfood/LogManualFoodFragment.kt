@@ -10,19 +10,25 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.databinding.FragmentLogManualFoodBinding
 import com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment
 import com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -33,6 +39,7 @@ class LogManualFoodFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: LogManualFoodViewModel by viewModels()
     private lateinit var pagingAdapter: FoodPagingAdapter
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,10 +54,21 @@ class LogManualFoodFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        binding.cardSuggestionFoodManuallyInput
+        binding.cardSuggestionFoodManuallyInput.apply {
+            icAction.setImageResource(R.drawable.ic_docs_add_log)
+            tvTitleAction.text = "Gak Nemu Menu Yang Pas?"
+            tvSubtitleAction.text = "Yuk, susun sendiri makanannya dari bahan yang tersedia"
+
+            root.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.green_card_action)
+            root.setOnClickListener {
+                findNavController().navigate(R.id.action_add_log_food_to_log_manual_custom_food_fragment)
+            }
+        }
+
         Log.d("FragmentLifecycle", "LogManualFoodFragment: onViewCreated CALLED")
 
         setupRecyclerView()
-        val uri = arguments?.getString("uri")?.toUri()
         observeViewModel()
         setupSearch()
     }
@@ -129,23 +147,47 @@ class LogManualFoodFragment : Fragment() {
     }
 
     private fun setupSearch() {
-        binding.searchView.setupWithSearchBar(binding.searchBarFood)
+        val editText = binding.searchEditText
 
-        binding.searchView
-            .getEditText()
-            .setOnEditorActionListener { textView, actionId, _ ->
-                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    val query = textView.text.toString().trim()
+        // 1. Listener untuk setiap kali teks berubah (termasuk saat dihapus oleh ikon 'x')
+        editText.addTextChangedListener { editable ->
+            // Batalkan job pencarian sebelumnya agar tidak menumpuk
+            searchJob?.cancel()
+            // Buat job baru dengan delay (debounce)
+            searchJob = MainScope().launch {
+                delay(300L) // Tunggu 300ms setelah user berhenti mengetik
+                editable?.let {
+                    val query = it.toString().trim()
+                    // Kirim null jika query kosong, ini akan me-reset list
                     viewModel.searchFood(query.ifEmpty { null })
-
-                    binding.searchView.hide()
-                    val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(textView.windowToken, 0)
-                    true
-                } else {
-                    false
                 }
             }
+        }
+
+        // 2. Listener untuk aksi keyboard "Search"
+        editText.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = textView.text.toString().trim()
+                viewModel.searchFood(query.ifEmpty { null })
+
+                // Sembunyikan keyboard
+                textView.hideKeyboard()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+
+        // Sembunyikan keyboard saat ikon 'x' diklik
+        binding.searchBarFood.setEndIconOnClickListener {
+            editText.text?.clear()
+            editText.hideKeyboard()
+        }
     }
+
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
 
 }

@@ -17,21 +17,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.search.SearchBar
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_bar_food"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
         android:hint="Cari Makanan"
-        android:paddingStart="20dp"
-        android:paddingEnd="0dp"
-        app:strokeColor="@color/md_theme_onSurfaceVariant"
-        app:strokeWidth="1dp"
-        app:navigationIcon="@null"
-        app:menu="@menu/search_menu"
+        app:boxCornerRadiusTopStart="28dp"
+        app:boxCornerRadiusTopEnd="28dp"
+        app:boxCornerRadiusBottomEnd="28dp"
+        app:boxCornerRadiusBottomStart="28dp"
         android:backgroundTint="@color/md_theme_onPrimary"
         app:layout_constraintTop_toBottomOf="@id/card_suggestion_food_manually_input"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:startIconDrawable="@drawable/ic_search"
+        app:hintEnabled="false"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:hint="Cari Makanan"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <HorizontalScrollView
         android:id="@+id/layout_chip_group_food_categories"
@@ -129,16 +145,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_card_food"/>
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/search_bar_food"
-        app:layout_anchorGravity="top"
-        android:backgroundTint="@color/md_theme_onPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
