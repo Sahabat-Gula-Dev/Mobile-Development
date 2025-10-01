@@ -1,6 +1,8 @@
 package com.pkm.sahabatgula.data.remote.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class FoodListResponse(
 
@@ -14,6 +16,7 @@ data class FoodListResponse(
 	val status: String
 )
 
+@Parcelize
 data class FoodCategories(
 
 	@field:SerializedName("name")
@@ -21,7 +24,8 @@ data class FoodCategories(
 
 	@field:SerializedName("id")
 	val id: Int
-)
+): Parcelable
+
 
 data class Meta(
 
@@ -35,6 +39,7 @@ data class Meta(
 	val page: Int
 )
 
+@Parcelize
 data class FoodItem(
 
 	@field:SerializedName("serving_unit")
@@ -68,11 +73,12 @@ data class FoodItem(
 	val photoUrl: String,
 
 	@field:SerializedName("calories")
-	val calories: Any,
+	val calories: Double,
 
 	@field:SerializedName("food_categories")
 	val foodCategories: FoodCategories
-)
+): Parcelable
+
 
 data class CategoryListResponse(
 	val data: List<FoodCategories>

@@ -64,8 +64,9 @@ class LogFoodRepository @Inject constructor(
     suspend fun getFoodCategories(): Resource<List<FoodCategories>> {
         return try {
             val response = apiService.getFoodCategories()
-            if (response.isSuccessful && response.body() != null) {
-                Resource.Success(response.body()!!.data)
+            if (response.isSuccessful) {
+                val data = response.body()?.data ?: emptyList()
+                Resource.Success(data)
             } else {
                 Resource.Error("Gagal mengambil kategori makanan: ${response.message()}")
             }

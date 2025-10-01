@@ -125,6 +125,14 @@
                 android:name="uri"
                 app:argType="string"/>
         </action>
+        <action
+            android:id="@+id/action_add_log_food_to_detail_food_fragment"
+            app:destination="@id/detail_food_fragment" >
+            <argument
+                android:name="foodItemManual"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+                app:nullable="true"/>
+        </action>
 
     </fragment>
 
@@ -135,19 +143,46 @@
 
         <action
             android:id="@+id/action_result_food_scan_to_detail_food_fragment"
-            app:destination="@id/detail_food_fragment"/>
+            app:destination="@id/detail_food_fragment">
+            <argument
+                android:name="foodItem"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
+                app:nullable="true"/>
+
+        </action>
     </fragment>
 
     <!-- detail food   -->
     <fragment
         android:id="@+id/detail_food_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment">
+
         <argument
             android:name="foodItem"
-            app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem" />
+            app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
+            app:nullable="true" />
+
+        <argument
+            android:name="foodItemManual"
+            app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+            app:nullable="true" />
     </fragment>
 
     <!-- log manual food  ini refers ke tab layout yang  kedua -->
+    <fragment
+        android:id="@+id/log_manual_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.LogManualFoodFragment">
+
+        <action
+            android:id="@+id/action_log_manual_food_to_detail_food_fragment"
+            app:destination="@id/detail_food_fragment">
+            <argument
+                android:name="foodItemManual"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+                app:nullable="true"/>
+        </action>
+
+    </fragment>
 
     <!-- log manual custom food   -->
     <fragment

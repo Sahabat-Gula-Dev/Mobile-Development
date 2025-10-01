@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pkm.sahabatgula.data.remote.api.ApiService
@@ -20,6 +21,8 @@ class FoodPagingSource(
                 query = query,
                 categoryId = categoryId
             )
+            Log.d("FoodPagingSource", "API response: ${response.code()} size=${response.body()?.data?.size}")
+
             val foods = response.body()?.data?:emptyList()
 
             LoadResult.Page(
@@ -28,6 +31,7 @@ class FoodPagingSource(
                 nextKey = if (foods.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
+            Log.e("FoodPagingSource", "Error load page=$page", e)
             LoadResult.Error(e)
         }
     }

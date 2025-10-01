@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.databinding.FragmentScanBinding
 class LogFoodFragment : Fragment() {
@@ -24,18 +25,24 @@ class LogFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("BindingCheck", "Apakah binding.viewPager null? -> ${binding.viewPager == null}")
+
         val tabLayoutLogFood = binding.tabLayoutLogFood
         val viewPager = binding.viewPager
         viewPager.adapter = LogFoodPagerAdapter(this)
         binding.viewPager.offscreenPageLimit = 2
+        viewPager.isUserInputEnabled = false
 
-        TabLayoutMediator(tabLayoutLogFood, viewPager){ tab, position ->
+
+        TabLayoutMediator(tabLayoutLogFood, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text ="Scan Makanan"
-                1 -> tab.text ="Catat Manual"
+                0 -> tab.text = "Scan Makanan"
+                1 -> tab.text = "Catat Manual"
             }
         }.attach()
 
+
+        // 0
         childFragmentManager.setFragmentResultListener(
             "scanResultKey",
             viewLifecycleOwner
@@ -50,7 +57,8 @@ class LogFoodFragment : Fragment() {
             }
 
             if (uri != null) {
-                val action = LogFoodFragmentDirections.actionAddLogFoodToScanResultFragment(uri.toString())
+                val action =
+                    LogFoodFragmentDirections.actionAddLogFoodToScanResultFragment(uri.toString())
                 findNavController().navigate(action)
             } else {
                 // TAMBAHKAN LOG 4 (jika uri null)
@@ -58,6 +66,9 @@ class LogFoodFragment : Fragment() {
             }
         }
     }
+
+        // 1
+
 
     override fun onDestroyView() {
         super.onDestroyView()

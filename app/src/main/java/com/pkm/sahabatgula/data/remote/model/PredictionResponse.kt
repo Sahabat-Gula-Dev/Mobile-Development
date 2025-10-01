@@ -50,7 +50,7 @@ data class FoodsItem(
 	val photoUrl: String? = null,
 
 	@field:SerializedName("calories")
-	val calories: Int? = null,
+	val calories: Double? = null,
 
 ): Parcelable
 

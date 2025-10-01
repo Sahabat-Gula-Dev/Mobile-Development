@@ -20,7 +20,9 @@ class DetailFoodFragment : Fragment() {
 
     private var _binding: FragmentDetailFoodBinding? = null
     private val binding get() = _binding!!
-    private val args: DetailFoodFragmentArgs by navArgs()
+    private val args by navArgs<DetailFoodFragmentArgs>()
+
+
     private val viewModel: DetailFoodViewModel by viewModels()
 
     override fun onCreateView(
@@ -34,99 +36,67 @@ class DetailFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("DEBUG_NAV", "DetailFoodFragment: Berhasil dibuat dan ditampilkan (onViewCreated).")
+        Log.d("DEBUG_NAV", "DetailFoodFragment: onViewCreated dipanggil")
 
-        val foodItem = args.foodItem
+        val foodsItem = args.foodItem
+        val foodItemManual = args.foodItemManual
 
-        val foodName = foodItem.name
-        val foodServingSize = foodItem.servingSize
-        val foodServingUnit = foodItem.servingUnit
-        val foodWeightSize = foodItem.weightSize
-        val foodWeightUnit = foodItem.weightUnit
-        val foodId = foodItem.id
+        // pilih sumber data sesuai asal fragment
+        val foodName = foodsItem?.name ?: foodItemManual?.name
+        val foodServingSize = foodsItem?.servingSize ?: foodItemManual?.servingSize
+        val foodServingUnit = foodsItem?.servingUnit ?: foodItemManual?.servingUnit
+        val foodWeightSize = foodsItem?.weightSize ?: foodItemManual?.weightSize
+        val foodWeightUnit = foodsItem?.weightUnit ?: foodItemManual?.weightUnit
+        val foodId = foodsItem?.id ?: foodItemManual?.id
+        val foodDesc = foodsItem?.description ?: foodItemManual?.description
+        val foodCalories = foodsItem?.calories ?: foodItemManual?.calories
+        val foodPhoto = foodsItem?.photoUrl ?: foodItemManual?.photoUrl
 
-        viewModel.fetchFoodDetail(foodId)
+        // fetch detail kalau ada id (scan case)
+        if (foodsItem != null) {
+            viewModel.fetchFoodDetail(foodId)
+        }
 
         binding.apply {
             tvTitleFood.text = "$foodName $foodServingSize $foodServingUnit $foodWeightSize $foodWeightUnit"
-            tvFoodDesc.text = foodItem.description
-            tvCalories.text = "${foodItem.calories} kkal"
+            tvFoodDesc.text = foodDesc ?: "-"
+            tvCalories.text = "${foodCalories ?: 0} kkal"
 
             Glide.with(requireContext())
-                .load(foodItem.photoUrl)
+                .load(foodPhoto)
                 .placeholder(R.drawable.image_placeholder)
                 .into(imgFood)
         }
 
-        //data makro dan mikro nutrient dari api
+        // kalau data dari API (scan), observe detail
         viewModel.foodDetail.observe(viewLifecycleOwner) { resource ->
-            when(resource) {
-                is Resource.Loading -> {}
+            when (resource) {
                 is Resource.Success -> {
                     val food = resource.data
-                    val fat = food?.fat
-                    val carbs = food?.carbs
-                    val protein = food?.protein
-                    val calories = food?.calories?.toDouble()
-
-                    val fatPercent = calories?.let { (fat?.times(9)?.div(it))?.times(100.0) }
-                    val carbsPercent = calories?.let { (carbs?.times(4)?.div(it))?.times(100.0) }
-                    val proteinPercent = calories?.let { (protein?.times(4)?.div(it))?.times(100.0) }
-
-                    Log.d("DEBUG_FAT", "onViewCreated: $fatPercent")
-                    Log.d("DEBUG_CARBS", "onViewCreated: $carbsPercent")
-                    Log.d("DEBUG_PROTEIN", "onViewCreated: $proteinPercent")
-
+                    // isi nutrisi dari API
                     binding.cardFoodNutritions.apply {
-                        tvNumberCarbo.text = "${carbs} gr"
-                        tvNumberFat.text = "${fat} gr"
-                        tvNumberProtein.text = "${protein} gr"
+                        tvNumberCarbo.text = "${food?.carbs} gr"
+                        tvNumberFat.text = "${food?.fat} gr"
+                        tvNumberProtein.text = "${food?.protein} gr"
                         tvNumberOfFiber.text = food?.fiber.toString()
-                        tvNumberOfPotasium.text = food?.sodium.toString()
+                        tvNumberOfPotasium.text = food?.potassium.toString()
                         tvNumberOfSugar.text = food?.sugar.toString()
                         tvNumberOfSalt.text = food?.sodium.toString()
-
-                    }
-
-                    binding.cardFoodNutritions.apply {
-                        fatPercent?.let { cpFatIndicator.progress = it.toInt() }
-                        Log.d("DEBUG_FAT_PROGRESS", "onViewCreated: ${cpFatIndicator.progress}")
-                        carbsPercent?.let { cpCarboIndicator.progress = it.toInt() }
-                        Log.d("DEBUG_CARBS_PROGRESS", "onViewCreated: ${cpCarboIndicator.progress}")
-                        proteinPercent?.let { cpProteinIndicator.progress = it.toInt() }
-                        Log.d("DEBUG_PROTEIN_PROGRESS", "onViewCreated: ${cpProteinIndicator.progress}")
                     }
                 }
                 else -> {}
             }
         }
 
-        binding.cardInformation.apply{
-            icInfo.setImageResource(R.drawable.ic_question)
-            tvTitleInfo.text = "Tahukah kamu?"
-            tvSubtitleInfo.text = "Gula & garam tersembunyi sering ada di saus, sambal, dan bumbu"
-
-        }
-
         binding.btnLogThisFood.setOnClickListener {
-            val portion = foodItem.servingSize
-
-            if(foodId!=null) {
-                viewModel.logThisFood(foodId, portion?:0)
+            val portion = foodServingSize ?: 0
+            if (foodId != null) {
+                viewModel.logThisFood(foodId, portion)
             } else {
                 Toast.makeText(context, "Food ID tidak valid", Toast.LENGTH_SHORT).show()
             }
         }
-
-        viewModel.logFoodStatus.observe(viewLifecycleOwner) { resource ->
-            when(resource) {
-                is Resource.Loading -> {}
-                is Resource.Success -> {
-                    Toast.makeText(context, "Makanan berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-                }
-                else -> {}
-            }
-        }
     }
+
 
 }

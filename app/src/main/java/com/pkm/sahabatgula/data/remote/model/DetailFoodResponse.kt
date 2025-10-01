@@ -29,7 +29,7 @@ data class Food(
 	val createdAt: String,
 
 	@field:SerializedName("calories")
-	val calories: Int,
+	val calories: Double,
 
 	@field:SerializedName("food_categories")
 	val foodCategories: DetailFoodCategories,

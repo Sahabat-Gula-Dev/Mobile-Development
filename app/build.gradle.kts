@@ -60,11 +60,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.paging.common)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.activity)
+
+    // paging
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.runtime.ktx)
 
     // card
     implementation(libs.androidx.cardview)

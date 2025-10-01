@@ -54,7 +54,9 @@ class ResultScanFoodFragment : Fragment() {
 
     private fun setupRecyclerView() {
         resultScanAdapter = ResultScanAdapter { foodItem ->
-            val action = ResultScanFoodFragmentDirections.actionResultFoodScanToDetailFoodFragment(foodItem)
+            val action = ResultScanFoodFragmentDirections.actionResultFoodScanToDetailFoodFragment(
+                foodItemManual = null,
+                foodItem = foodItem)
             view?.findNavController()?.navigate(action)
 
         }
@@ -63,7 +65,6 @@ class ResultScanFoodFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
-
 
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
