@@ -1,60 +1,199 @@
 package com.pkm.sahabatgula.ui.home.dailyactivity.logactivity
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.remote.model.ActivityCategories
+import com.pkm.sahabatgula.data.remote.model.FoodCategories
+import com.pkm.sahabatgula.databinding.FragmentLogActivityBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlin.collections.forEach
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LogActivityFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class LogActivityFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentLogActivityBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val viewModel: LogActivityViewModel by viewModels()
+    private lateinit var pagingAdapter: ActivityPagingAdapter
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log_activity, container, false)
+        _binding = FragmentLogActivityBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LogActivityFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LogActivityFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+        setupSearch()
+        setupChipsObserver()
+        setupPagingDataObserver()
+        setupButtonListener()
+        setupLogStatusObserver()
+    }
+
+    private fun setupRecyclerView() {
+    
+        pagingAdapter = ActivityPagingAdapter(
+            onSelectClick = { activityItem ->
+                viewModel.toggleActivitySelection(activityItem)
+            },
+            onExpandClick = { foodItem ->
+                viewModel.onExpandClicked(foodItem)
+            }
+        )
+    
+        binding.rvActivity .apply {
+            adapter = pagingAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+    
+    private fun setupPagingDataObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.activityPagingData.collectLatest { pagingData ->
+                pagingAdapter.submitData(pagingData)
+            }
+        }
+    }
+    
+    private fun setupChipsObserver() {
+        viewModel.categories.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    binding.chipGroupActivityCategories.removeAllViews() // Hapus chip statis
+                    addCategoryChips(resource.data)
+                }
+                is Resource.Error -> Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                is Resource.Loading -> { /* Tampilkan loading jika perlu */ }
+            }
+        }
+    }
+    
+    private fun addCategoryChips(categories: List<ActivityCategories>?) {
+        val chipGroup = binding.chipGroupActivityCategories
+        val allChip = Chip(context).apply {
+            text = "Semua"
+            isCheckable = true
+            isChecked = true
+            id = View.generateViewId()
+        }
+        chipGroup.addView(allChip)
+    
+        categories?.forEach { category ->
+            val chip = Chip(context).apply {
+                text = category.name
+                isCheckable = true
+                id = View.generateViewId()
+            }
+            chipGroup.addView(chip)
+        }
+    
+        chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                val selectedChip = group.findViewById<Chip>(checkedIds[0])
+                if (selectedChip.text == "Semua") {
+                    viewModel.setCategory(null)
+                } else {
+                    val selectedCategory = categories?.find { it.name == selectedChip.text }
+                    viewModel.setCategory(selectedCategory?.id)
                 }
             }
+        }
     }
+    
+    private fun setupSearch() {
+        val editText = binding.searchEditText
+        editText.addTextChangedListener { editable ->
+            searchJob?.cancel()
+            searchJob = MainScope().launch {
+                delay(300L)
+                editable?.let {
+                    val query = it.toString().trim()
+                    viewModel.searchActivity(query.ifEmpty { null })
+                }
+            }
+        }
+    
+        // 2. Listener untuk aksi keyboard "Search"
+        editText.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = textView.text.toString().trim()
+                viewModel.searchActivity(query.ifEmpty { null })
+    
+                // Sembunyikan keyboard
+                textView.hideKeyboard()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+    
+        // Sembunyikan keyboard saat ikon 'x' diklik
+        binding.searchBarActivity.setEndIconOnClickListener {
+            editText.text?.clear()
+            editText.hideKeyboard()
+        }
+    }
+    
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+    
+    private fun setupButtonListener() {
+        binding.btnLogThisActivity .setOnClickListener {
+            viewModel.logSelectedActivities()
+        }
+    }
+    
+    private fun setupLogStatusObserver() {
+        viewModel.logActivityStatus.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    // Tampilkan loading indicator
+    //                    binding.btnLogThisFood.isEnabled = false
+    //                    binding.btnLogThisFood.text = "Mencatat..."
+                }
+                is Resource.Success -> {
+                    binding.btnLogThisActivity.isEnabled = true
+                    binding.btnLogThisActivity.text = "Catat Aktivitas"
+                    Toast.makeText(context, "Makanan berhasil dicatat!", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Error -> {
+                    binding.btnLogThisActivity.isEnabled = true
+                    binding.btnLogThisActivity.text = "Catat Aktivitas"
+                    Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

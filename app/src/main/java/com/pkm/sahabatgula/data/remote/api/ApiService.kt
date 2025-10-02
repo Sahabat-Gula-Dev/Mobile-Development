@@ -1,5 +1,8 @@
 package com.pkm.sahabatgula.data.remote.api
 
+import com.pkm.sahabatgula.data.remote.model.ActivityCategories
+import com.pkm.sahabatgula.data.remote.model.ActivityCategoryListResponse
+import com.pkm.sahabatgula.data.remote.model.ActivityResponse
 import com.pkm.sahabatgula.data.remote.model.CategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.DetailFoodResponse
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
@@ -8,6 +11,8 @@ import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
+import com.pkm.sahabatgula.data.remote.model.LogActivityRequest
+import com.pkm.sahabatgula.data.remote.model.LogActivityResponse
 import com.pkm.sahabatgula.data.remote.model.LogFoodRequest
 import com.pkm.sahabatgula.data.remote.model.LogFoodResponse
 import com.pkm.sahabatgula.data.remote.model.LogWaterRequest
@@ -114,4 +119,20 @@ interface ApiService {
     @GET("food-categories")
     suspend fun getFoodCategories(): Response<CategoryListResponse>
 
+    @POST("log-activities")
+    suspend fun logActivity(
+        @Header("Authorization") token: String,
+        @Body body: LogActivityRequest
+    ): Response<LogActivityResponse>
+
+    @GET("activities")
+    suspend fun getActivities(
+        @Query("page") page: Int,
+        @Query("q") query: String? = null,
+        @Query("category_id") categoryId: Int? = null,
+        @Query("limit") limit: Int = 20
+    ): Response<ActivityResponse>
+
+    @GET("activity-categories")
+    suspend fun  getActivityCategories(): Response<ActivityCategoryListResponse>
 }

@@ -222,7 +222,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_to_add_log_food)
         }
         binding.haveMovementToday.root.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_log_activity)
+            findNavController().navigate(R.id.action_home_to_root_log_activity)
         }
         binding.carboConsumption.root.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_carbo)

@@ -25,8 +25,6 @@ class LogFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("BindingCheck", "Apakah binding.viewPager null? -> ${binding.viewPager == null}")
-
         val tabLayoutLogFood = binding.tabLayoutLogFood
         val viewPager = binding.viewPager
         viewPager.adapter = LogFoodPagerAdapter(this)
@@ -66,9 +64,6 @@ class LogFoodFragment : Fragment() {
             }
         }
     }
-
-        // 1
-
 
     override fun onDestroyView() {
         super.onDestroyView()

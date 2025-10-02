@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.search
+package com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood
 
 import android.view.LayoutInflater
 import android.view.View
@@ -44,26 +44,25 @@ class CustomFoodPagingAdapter (
         private var currentFood: FoodItem? = null
 
         init {
-            // Mengatur listener di init() lebih efisien karena hanya dijalankan sekali
             binding.icPlusAddFood.setOnClickListener {
                 currentFood?.let { onSelectClick(it) }
             }
-            binding.icArrowRight.setOnClickListener {
-                currentFood?.let { onExpandClick(it) }
+
+            val expandListener = View.OnClickListener {
+                if (currentFood?.isSelected == false) {
+                    currentFood?.let { onExpandClick(it) }
+                }
             }
-            binding.root.setOnClickListener {
-                currentFood?.let { onExpandClick(it) }
-            }
+
+            binding.icArrowRight.setOnClickListener(expandListener)
         }
 
         fun bind(food: FoodItem) {
             currentFood = food
 
-            // --- Mengisi data untuk state normal (collapsed) ---
             binding.tvTitleCustomFoodCard.text = "${food.name} ${food.servingSize} ${food.servingUnit} ${food.weightSize} ${food.weightUnit}"
             binding.tvFoodCalories.text = "${food.calories.toInt()} kkal"
 
-            // --- Mengelola state terpilih (selected) ---
             if (food.isSelected) {
                 binding.icPlusAddFood.setImageResource(R.drawable.ic_checked)
             } else {
@@ -71,43 +70,33 @@ class CustomFoodPagingAdapter (
             }
 
             if (food.isExpanded) {
-                // Prioritas 1: Jika item di-expand, panah selalu ke bawah.
-                binding.icArrowRight.setImageResource(R.drawable.ic_arrow_down)
-            } else {
-                // Prioritas 2: Jika tidak di-expand, baru cek status selection.
-                if (food.isSelected) {
-                    // Ini adalah kondisi yang Anda inginkan
-                    binding.icArrowRight.setImageResource(R.drawable.ic_food_salad)
-                    binding.icArrowRight.setSize(32)
-                } else {
-                    // State default: tidak di-expand dan tidak di-select.
-                    binding.icArrowRight.setImageResource(R.drawable.ic_arrow_right)
-                    binding.icArrowRight.setSize(18)
-                }
-            }
-
-            // --- Mengelola state expand/collapse ---
-            if (food.isExpanded) {
-                // Tampilkan grup expanded_view
                 binding.expandedView.visibility = View.VISIBLE
-                // Ubah ikon panah
-                binding.icArrowRight.setImageResource(R.drawable.ic_arrow_down)
-                binding.icArrowRight.setSize(18)
                 binding.tvFoodCalories.visibility = View.GONE
+                binding.icPlusAddFood.visibility = View.GONE
+
+                binding.icArrowRight.setImageResource(R.drawable.ic_arrow_down)
+                binding.icArrowRight.setSize(18) // Ukuran normal saat expand
 
                 // Isi data untuk view di dalam expanded_view
                 binding.tvFoodCaloriesOnExpand.text = "${food.calories.toInt()} kkal"
                 binding.tvDescFood.text = food.description
                 Glide.with(itemView.context)
                     .load(food.photoUrl)
-                    .placeholder(R.drawable.image_placeholder) // Ganti dengan placeholder Anda
+                    .placeholder(R.drawable.image_placeholder)
                     .into(binding.imgFood)
 
             } else {
-                // Sembunyikan grup expanded_view
                 binding.expandedView.visibility = View.GONE
-                // Tampilkan kembali kalori versi collapsed
                 binding.tvFoodCalories.visibility = View.VISIBLE
+                binding.icPlusAddFood.visibility = View.VISIBLE
+
+                if (food.isSelected) {
+                    binding.icArrowRight.setImageResource(R.drawable.ic_food_salad)
+                    binding.icArrowRight.setSize(32)
+                } else {
+                    binding.icArrowRight.setImageResource(R.drawable.ic_arrow_right)
+                    binding.icArrowRight.setSize(18)
+                }
             }
         }
     }

@@ -18,7 +18,7 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.databinding.FragmentLogManualCustomFoodBinding
-import com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.search.CustomFoodPagingAdapter
+import com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.CustomFoodPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -48,7 +48,7 @@ class LogManualCustomFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView() // Satu-satunya bagian yang direvisi
+        setupRecyclerView()
         setupSearch()
         setupChipsObserver()
         setupPagingDataObserver()

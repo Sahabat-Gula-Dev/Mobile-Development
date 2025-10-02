@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.core.utils.SearchParameters
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.data.remote.model.FoodItemRequest
@@ -58,14 +59,6 @@ class LogManualCustomFoodViewModel @Inject constructor(
                 }
             }
     }.cachedIn(viewModelScope) // 4. Terapkan cachedIn pada hasil AKHIR Flow
-
-    // Helper data class untuk membuat kode lebih bersih
-    private data class SearchParameters(
-        val query: String?,
-        val categoryId: Int?,
-        val selectedIds: Set<String>,
-        val expandedId: String?
-    )
 
     init {
         fetchCategories()

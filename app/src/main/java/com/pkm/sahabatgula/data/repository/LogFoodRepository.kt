@@ -80,33 +80,36 @@ class LogFoodRepository @Inject constructor(
 
         val currentSummary = summaryDao.getSummaryByDate("DAILY", today).firstOrNull()
 
-        val updatedSummary = currentSummary?.copy(
-            calories = newTotals.calories,
-            carbs = newTotals.carbs,
-            protein = newTotals.protein,
-            fat = newTotals.fat,
-            sugar = newTotals.sugar,
-            sodium = newTotals.sodium,
-            fiber = newTotals.fiber,
-            potassium = newTotals.potassium
-        ) ?:
+        if (currentSummary != null) {
+            val updatedSummary = currentSummary.copy(
+                calories = currentSummary.calories?.plus(newTotals.calories),
+                carbs = currentSummary.carbs?.plus(newTotals.carbs),
+                protein = currentSummary.protein?.plus(newTotals.protein),
+                fat = currentSummary.fat?.plus(newTotals.fat),
+                sugar = currentSummary.sugar?.plus(newTotals.sugar),
+                sodium = currentSummary.sodium?.plus(newTotals.sodium),
+                fiber = currentSummary.fiber?.plus(newTotals.fiber),
+                potassium = currentSummary.potassium?.plus(newTotals.potassium)
+            )
+            summaryDao.upsertAll(listOf(updatedSummary))
 
-        SummaryEntity(
-            date = today,
-            type = "DAILY",
-            calories = newTotals.calories,
-            carbs = newTotals.carbs,
-            protein = newTotals.protein,
-            fat = newTotals.fat,
-            sugar = newTotals.sugar,
-            sodium = newTotals.sodium,
-            fiber = newTotals.fiber,
-            potassium = newTotals.potassium,
-            burned = 0,
-            steps = 0,
-            water = 0
-        )
-
-        summaryDao.upsertAll(listOf(updatedSummary))
+        } else {
+            val newSummary = SummaryEntity(
+                date = today,
+                type = "DAILY",
+                calories = newTotals.calories,
+                carbs = newTotals.carbs,
+                protein = newTotals.protein,
+                fat = newTotals.fat,
+                sugar = newTotals.sugar,
+                sodium = newTotals.sodium,
+                fiber = newTotals.fiber,
+                potassium = newTotals.potassium,
+                burned = 0,
+                steps = 0,
+                water = 0
+            )
+            summaryDao.upsertAll(listOf(newSummary))
+        }
     }
 }

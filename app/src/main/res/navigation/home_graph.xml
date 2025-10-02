@@ -25,8 +25,8 @@
             android:id="@+id/action_home_to_log_protein"
             app:destination="@id/log_protein_fragment"/>
         <action
-            android:id="@+id/action_home_to_log_activity"
-            app:destination="@id/log_activity_fragment"/>
+            android:id="@+id/action_home_to_root_log_activity"
+            app:destination="@id/root_log_activity_fragment"/>
         <action
             android:id="@+id/action_home_to_log_water"
             app:destination="@id/log_water_fragment"/>
@@ -104,11 +104,11 @@
 
     <!-- log activity   -->
     <fragment
-        android:id="@+id/log_activity_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.activity.ActivityFragment">
+        android:id="@+id/root_log_activity_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.RootLogActivityFragment">
 
         <action
-            android:id="@+id/action_log_activity_to_log_step"
+            android:id="@+id/action_root_log_activity_to_log_step"
             app:destination="@id/log_step_fragment"/>
     </fragment>
 
