@@ -3,8 +3,10 @@ package com.pkm.sahabatgula.data.remote.api
 import com.pkm.sahabatgula.data.remote.model.ActivityCategories
 import com.pkm.sahabatgula.data.remote.model.ActivityCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.ActivityResponse
+import com.pkm.sahabatgula.data.remote.model.CarouselResponse
 import com.pkm.sahabatgula.data.remote.model.CategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.DetailFoodResponse
+import com.pkm.sahabatgula.data.remote.model.EventResponse
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodListResponse
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
@@ -135,4 +137,19 @@ interface ApiService {
 
     @GET("activity-categories")
     suspend fun  getActivityCategories(): Response<ActivityCategoryListResponse>
+
+    @GET("carousels")
+    suspend fun getCarousels(
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 5
+    ): Response<CarouselResponse>
+
+    @GET("events")
+    suspend fun getEvents(
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 10,
+        @Query("sort") sort: String = "created_at.desc",
+        @Query("q") searchQuery: String? = null
+    ): Response<EventResponse>
+
 }

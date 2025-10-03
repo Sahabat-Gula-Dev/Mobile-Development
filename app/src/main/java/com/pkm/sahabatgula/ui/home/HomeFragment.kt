@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula.ui.home
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.pkm.sahabatgula.R
 import android.util.Log
+import android.view.WindowInsetsController
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle

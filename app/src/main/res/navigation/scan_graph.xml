@@ -1,0 +1,42 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scan_graph"
+    app:startDestination="@id/log_food_fragment_destination">
+
+    <fragment
+        android:id="@+id/log_food_fragment_destination"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment"
+        android:label="LogFoodFragment">
+
+        <action
+            android:id="@+id/action_add_log_food_to_scan_result_fragment"
+            app:destination="@id/result_food_scan_fragment">
+            <argument
+                android:name="uri"
+                app:argType="string"/>
+        </action>
+        <action
+            android:id="@+id/action_add_log_food_to_detail_food_fragment_2"
+            app:destination="@id/detail_food_fragment" >
+            <argument
+                android:name="foodItemManual"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+                app:nullable="true"/>
+        </action>
+        <action
+            android:id="@+id/action_add_log_food_to_log_manual_custom_food_fragment"
+            app:destination="@id/log_manual_custom_food_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/result_food_scan_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment" />
+    <fragment
+        android:id="@+id/detail_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment" />
+    <fragment
+        android:id="@+id/log_manual_custom_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment" />
+
+</navigation>

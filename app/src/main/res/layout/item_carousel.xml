@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="4dp"
+    app:strokeWidth="0dp"
+    app:cardElevation="0dp">
+
+    <ImageView
+        android:id="@+id/img_carousel_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="Gambar Carousel"
+        android:src="@drawable/img_chicken_satay"/>
+
+</com.google.android.material.card.MaterialCardView>

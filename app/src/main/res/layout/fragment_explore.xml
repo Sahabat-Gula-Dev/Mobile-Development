@@ -1,14 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:fillViewport="true"
     tools:context=".ui.explore.ExploreFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" android:background="@color/md_theme_onPrimary">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tv_title_explore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jelajahi"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:textColor="@color/md_theme_onSurface"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle_explore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Temukan informasi terkini dan tips kesehatan"
+            android:lineSpacingExtra="1sp"
+            android:letterSpacing="0.03"
+            android:textSize="12dp"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_explore"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager_carousel"
+            android:layout_width="0dp"
+            android:layout_height="205dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_explore" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_pager_carousel"
+            app:tabBackground="@drawable/tab_selector_carousel"
+            app:tabGravity="center"
+            android:background="@color/md_theme_onPrimary"
+            app:tabIndicatorHeight="0dp" />
+
+        <TextView
+            android:id="@+id/tv_title_event_and_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event &amp; Aktivitas Terbaru"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/view_pager_carousel"
+            app:layout_constraintTop_toBottomOf="@id/tab_layout_indicator"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lihat semua"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/view_pager_carousel"
+            app:layout_constraintTop_toTopOf="@id/tv_title_event_and_activity"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_event_and_activity"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_events"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_event_and_activity"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintStart_toStartOf="@id/tv_title_event_and_activity"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

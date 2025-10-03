@@ -149,7 +149,7 @@
             android:id="@+id/btn_log_this_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Catat Konsumsi"
+            android:text="Catat Aktivitas"
             android:letterSpacing="0.01"
             android:textStyle="bold"
             android:textSize="14sp"

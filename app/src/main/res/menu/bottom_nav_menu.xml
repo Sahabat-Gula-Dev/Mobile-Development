@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home_fragment"
+        android:id="@+id/home_graph"
         android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/scan_fragment"
+        android:id="@+id/scan_graph"
         android:icon="@drawable/ic_scan"
         android:title="@string/title_scan" />
 
@@ -17,7 +17,7 @@
         android:title="@string/title_explore" />
 
     <item
-        android:id="@+id/settiings_graph"
+        android:id="@+id/settings_graph"
         android:icon="@drawable/ic_settings"
         android:title="@string/title_setting" />
 

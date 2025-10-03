@@ -14,10 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.ActivityCategories
-import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.databinding.FragmentLogActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -179,12 +177,12 @@ class LogActivityFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.btnLogThisActivity.isEnabled = true
-                    binding.btnLogThisActivity.text = "Catat Aktivitas"
-                    Toast.makeText(context, "Makanan berhasil dicatat!", Toast.LENGTH_SHORT).show()
+//                    binding.btnLogThisActivity.text = "Catat Aktivitas"
+                    Toast.makeText(context, "Aktivitas berhasil dicatat!", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Error -> {
                     binding.btnLogThisActivity.isEnabled = true
-                    binding.btnLogThisActivity.text = "Catat Aktivitas"
+//                    binding.btnLogThisActivity.text = "Catat Aktivitas"
                     Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
                 }
             }

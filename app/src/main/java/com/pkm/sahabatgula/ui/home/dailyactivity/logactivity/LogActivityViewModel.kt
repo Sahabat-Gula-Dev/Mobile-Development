@@ -102,7 +102,7 @@ class LogActivityViewModel @Inject constructor(
         viewModelScope.launch {
             val selectedIds = _selectedActivityIds.value
             if (selectedIds.isEmpty()) {
-                _logActivityStatus.value = Resource.Error("Pilih minimal satu makanan.")
+                _logActivityStatus.value = Resource.Error("Pilih minimal satu aktivitas.")
                 return@launch
             }
 

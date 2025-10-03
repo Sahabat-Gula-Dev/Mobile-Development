@@ -39,7 +39,7 @@
             <ImageView
                 android:id="@+id/ic_calendar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:src="@drawable/ic_calendar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -51,10 +51,11 @@
                 android:text="18 Agustus 2025"
                 android:letterSpacing="0.04"
                 android:lineSpacingExtra="2sp"
+                android:layout_marginBottom="3dp"
                 android:textSize="11sp"
                 android:textColor="@color/md_theme_onPrimary"
                 android:textStyle="bold"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="4dp"
                 app:layout_constraintStart_toEndOf="@id/ic_calendar"
                 app:layout_constraintTop_toTopOf="@id/ic_calendar"
                 app:layout_constraintBottom_toBottomOf="@id/ic_calendar"/>

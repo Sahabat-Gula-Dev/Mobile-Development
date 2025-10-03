@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_theme_primary"
+    android:fitsSystemWindows="true"
     android:clipChildren="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,12 +14,21 @@
         android:paddingBottom="25dp">
 
         <View
+            android:id="@+id/view_green"
             android:layout_width="0dp"
             android:layout_height="275dp"
             android:background="#006B5F"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/md_theme_onPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/calories_summary_card"

@@ -25,23 +25,10 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.pkm.sahabatgula.ui.home.HomeFragment" />
-    <fragment
-        android:id="@+id/navigation_scan"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment"/>
-    <fragment
-        android:id="@+id/navigation_explore"
-        android:name="com.pkm.sahabatgula.ui.explore.ExploreFragment"/>
-    <fragment
-        android:id="@+id/navigation_setting"
-        android:name="com.pkm.sahabatgula.ui.settings.SettingsFragment"/>
-
-
 
     <!-- Include graph -->
     <include app:graph="@navigation/auth_graph" />
     <include app:graph="@navigation/input_data_graph" />
     <include app:graph="@navigation/home_graph" />
+    <include app:graph="@navigation/explore_graph" />
 </navigation>
