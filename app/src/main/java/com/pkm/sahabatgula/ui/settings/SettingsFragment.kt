@@ -1,14 +1,18 @@
 package com.pkm.sahabatgula.ui.settings
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentSettingsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
@@ -31,7 +35,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Kelola informasi pribadi"
 
             root.setOnClickListener {
-                // ke user profile
+                findNavController().navigate(R.id.action_settings_fragment_to_user_profile_fragment)
             }
         }
 
@@ -70,7 +74,70 @@ class SettingsFragment : Fragment() {
 
         }
 
+        binding.cardUpgradePremium.apply {
+            icCardSetting.setImageResource(R.drawable.ic_upgrade_premium)
+            tvTitleSettingCard.text = "Upgrade Premium"
+            tvSubtitleSettingCard.text = "Nikmati fitur premium Sahabat Gula"
 
+            root.setOnClickListener {
+                // gluby dalam pengembangan
+            }
+        }
+
+        binding.cardNewFoodSuggestions.apply {
+            icAction.setImageResource(R.drawable.ic_suggestion_food)
+            tvTitleAction.text = "Ada Saran Makanan Baru? "
+            tvSubtitleAction.text = "Yuk, kasih tahu kami agar bisa kami tambahkan ke daftar"
+
+            root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_suggestion_food_background))
+            root.setOnClickListener {
+                // email untuk suggestion food
+            }
+        }
+
+        binding.cardPrivacyPolicy.apply {
+            icCardSetting.setImageResource(R.drawable.ic_privacy_policy)
+            tvTitleSettingCard.text = "Kebijakan Privasi"
+            tvSubtitleSettingCard.text = "Pelajari perizinan dan akses aplikasi"
+            root.setOnClickListener {
+                // ke privacy policy
+            }
+
+        }
+
+        binding.cardTermsAndConditions.apply {
+            icCardSetting.setImageResource(R.drawable.ic_term_condition)
+            tvTitleSettingCard.text = "Syarat dan Ketentuan"
+            tvSubtitleSettingCard.text = "Pelajari hak dan kewajiban pengguna"
+
+            root.setOnClickListener {
+                // ke terms and conditions
+            }
+        }
+
+        binding.cardAboutApp.apply {
+            icCardSetting.setImageResource(R.drawable.ic_about_app)
+            tvTitleSettingCard.text = "Tentang Aplikasi"
+            tvSubtitleSettingCard.text = "Versi aplikasi dan pengembangan"
+
+            root.setOnClickListener {
+                // ke about app
+            }
+        }
+
+        binding.cardLogout.apply {
+            icCardSetting.setImageResource(R.drawable.ic_logout)
+            icArrowRight.visibility = View.GONE
+            tvTitleSettingCard.text = "Logout"
+            tvSubtitleSettingCard.text = "Keluar dari akun"
+
+
+            root.strokeWidth = 0
+            root.strokeColor = 0
+            root.backgroundTintList = null
+            root.setBackgroundColor(Color.TRANSPARENT)
+
+        }
 
     }
 

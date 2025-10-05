@@ -52,7 +52,7 @@ class DetailEventFragment : Fragment() {
 
         binding.apply {
             tvTitleEvent.text = eventTitle
-//            tvEventOrganizer.text =
+            tvEventOrganizer.text = "Sahabat Gula"
 
             cardEventDate.tvTitleInfo.text = eventDate
             cardEventLocation.tvTitleInfo.text = eventLocation

@@ -31,12 +31,10 @@ class DetailArticleFragment : Fragment() {
 
     private var _binding: FragmentDetailArticleBinding? = null
     private val binding get() = _binding!!
-    private val args by navArgs<DetailArticleFragmentArgs>()
+    val args: DetailArticleFragmentArgs by navArgs()
 
     private lateinit var articleAdapter: ArticleOnExploreAdapter
     private val viewModel: DetailArticleViewModel by viewModels()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

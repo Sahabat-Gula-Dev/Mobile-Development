@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.core.utils.RiskCategory
+import com.pkm.sahabatgula.core.utils.getRiskCategory
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.SummaryResponse
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
@@ -124,7 +125,7 @@ class HomeFragment : Fragment() {
         // risk index
         val riskIndex = profile.risk_index
         // risk category
-        val riskCategory = getRiskCategory(riskIndex)
+        val riskCategory = getRiskCategory(requireContext(), riskIndex)
         val numberRisk = binding.compRiskIndex.tvNumberOfRisk
         // risk
         binding.compRiskIndex.bgNumberOfRisk.setCardBackgroundColor(riskCategory.colorRes)
@@ -254,37 +255,6 @@ class HomeFragment : Fragment() {
 
     private fun DoubleToZeroInt (a: Double?): String {
         return if (a == 0.0) a.toInt().toString() else a.toString()
-    }
-
-    private fun getRiskCategory(riskIndex: Int?): RiskCategory {
-        return when(riskIndex) {
-            in 0..3 -> RiskCategory(
-                title = "Risiko Sangat Rendah",
-                subtitle = "Pertahankan gaya hidup aktif dan pola makan seimbang",
-                colorRes = ContextCompat.getColor(requireContext(), R.color.green_dark_low)
-            )
-            in 4..8 -> RiskCategory(
-                title = "Risiko Diabetes Rendah",
-                subtitle = "Kondisi cukup baik, jaga pola makan dan aktivitas harian",
-                colorRes = ContextCompat.getColor(requireContext(), R.color.green_dark_low)
-            )
-            in 9..12 -> RiskCategory(
-                title = "Risiko Diabetes Sedang",
-                subtitle = "Waktunya lebih aktif dan evaluasi kebiasaan makan",
-                colorRes = ContextCompat.getColor(requireContext(), R.color.yellow_moderate)
-            )
-            in 13..20 -> RiskCategory(
-                title = "Risiko Diabetes Tinggi",
-                subtitle = "Gaya hidup dan riwayat kesehatan menunjukkan risiko tinggi",
-                colorRes = ContextCompat.getColor(requireContext(), R.color.red_high)
-            )
-            else -> RiskCategory(
-                title = "Risiko Sangat Tinggi",
-                subtitle = "Segera konsultasi dan ubah gaya hidup secara drastis",
-                colorRes = ContextCompat.getColor(requireContext(), R.color.red_high)
-            )
-        }
-
     }
 
     infix fun Double.toPercentage(total: Int?): String {

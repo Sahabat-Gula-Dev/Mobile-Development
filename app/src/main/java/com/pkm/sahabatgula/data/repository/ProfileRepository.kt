@@ -40,10 +40,6 @@ class ProfileRepository @Inject constructor(
 
                 profileDao.upsertProfile(profileEntity)
                 tokenManager.setProfileCompleted(true)
-
-                Log.d("PROFILE_SETUP", "Profile disimpan ke DB: $profileEntity")
-                Log.d("PROFILE_SETUP", "ProfileCompleted Flag diset ke true")
-
                 Resource.Success(profileResponse)
             } else {
                 val errorBody = response.errorBody()?.string()

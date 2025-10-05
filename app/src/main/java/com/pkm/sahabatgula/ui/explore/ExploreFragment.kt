@@ -30,8 +30,6 @@ class ExploreFragment : Fragment() {
 
     private lateinit var eventAdapter: EventOnExploreAdapter
     private lateinit var articleAdapter: ArticleOnExploreAdapter
-    private val args by navArgs<ExploreFragmentArgs>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

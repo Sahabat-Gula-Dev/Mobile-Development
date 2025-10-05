@@ -33,6 +33,11 @@ class HomeRepository @Inject constructor(
         return summaryDao.getAllWeeklySummary()
     }
 
+    // get profile entity
+    fun observeProfileEntity(): Flow<ProfileEntity?> {
+        return profileDao.observeProfile()
+    }
+
     fun observeMonthlySummary(): Flow<List<SummaryEntity>> {
         Log.d("HomeRepository", "Observing MONTHLY summary data from DB")
         return summaryDao.getAllMonthlySummary()

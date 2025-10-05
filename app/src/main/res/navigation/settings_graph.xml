@@ -9,6 +9,21 @@
         android:id="@+id/settings_fragment"
         android:name="com.pkm.sahabatgula.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_fragment_to_user_profile_fragment"
+            app:destination="@id/user_profile_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/user_profile_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.userprofile.UserProfileFragment">
+
+        <action
+            android:id="@+id/action_user_profile_fragment_to_input_data_graph"
+            app:destination="@id/input_data_graph"/>
+    </fragment>
+
+
 
 </navigation>

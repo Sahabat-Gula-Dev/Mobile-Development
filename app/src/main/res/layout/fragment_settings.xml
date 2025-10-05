@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="16dp"
         android:paddingHorizontal="16dp">
 
         <TextView
@@ -122,15 +123,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_help_center"/>
+            app:layout_constraintTop_toBottomOf="@id/card_upgrade_premium"/>
 
         <!-- Informasi Aplikasi   -->
         <TextView
             android:id="@+id/tv_app_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Akun &amp; Preferensi Pengguna"
-            app:layout_constraintTop_toBottomOf="@id/card_upgrade_premium"
+            android:text="Informasi Aplikasi"
+            app:layout_constraintTop_toBottomOf="@id/card_new_food_suggestions"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="24dp"
             android:textStyle="bold"

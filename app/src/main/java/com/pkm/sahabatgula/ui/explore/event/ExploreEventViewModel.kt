@@ -8,6 +8,7 @@ import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.EventCategory
 import com.pkm.sahabatgula.data.repository.ExploreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -34,6 +35,7 @@ class ExploreEventViewModel @Inject constructor(
         fetchEventCategories()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val events = combine(_searchQuery, _selectedCategoryId) { query, categoryId ->
         Pair(query, categoryId)
     }.flatMapLatest { (query, categoryId) ->
