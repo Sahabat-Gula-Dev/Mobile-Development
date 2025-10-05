@@ -4,7 +4,6 @@
     android:id="@+id/home_graph"
     app:startDestination="@id/home_fragment">
 
-    <!-- home -->
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.pkm.sahabatgula.ui.home.HomeFragment">
@@ -38,83 +37,58 @@
             app:destination="@id/add_log_food_fragment"/>
     </fragment>
 
-    <!-- log sugar   -->
     <fragment
         android:id="@+id/log_sugar_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailysugar.SugarFragment">
-
         <action
             android:id="@+id/action_log_sugar_to_log_water"
             app:destination="@id/log_water_fragment"/>
     </fragment>
 
-    <!-- log water   -->
-
     <fragment
         android:id="@+id/log_water_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailywater.WaterFragment">
+        android:name="com.pkm.sahabatgula.ui.home.dailywater.WaterFragment"/>
 
-    </fragment>
-
-    <!-- log step  -->
     <fragment
         android:id="@+id/log_step_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailystep.StepFragment">
-
-    </fragment>
-
-    <!-- log food   -->
+        android:name="com.pkm.sahabatgula.ui.home.dailystep.StepFragment"/>
 
     <fragment
         android:id="@+id/log_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.FoodFragment">
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.FoodFragment"/>
 
-
-    </fragment>
-
-    <!-- log carbo   -->
     <fragment
         android:id="@+id/log_carbo_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailycarbo.CarboFragment">
         <action
             android:id="@+id/action_log_carbo_to_log_food"
             app:destination="@id/log_food_fragment"/>
-
     </fragment>
 
-    <!-- log fat   -->
     <fragment
         android:id="@+id/log_fat_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfat.FatFragment">
-
         <action
             android:id="@+id/action_log_fat_to_log_food"
             app:destination="@id/log_food_fragment"/>
     </fragment>
 
-    <!-- log protein   -->
     <fragment
         android:id="@+id/log_protein_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyprotein.ProteinFragment">
-
         <action
             android:id="@+id/action_log_protein_to_log_food"
             app:destination="@id/log_food_fragment"/>
     </fragment>
 
-    <!-- log activity   -->
     <fragment
         android:id="@+id/root_log_activity_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyactivity.RootLogActivityFragment">
-
         <action
             android:id="@+id/action_root_log_activity_to_log_step"
             app:destination="@id/log_step_fragment"/>
     </fragment>
 
-
-
-    <!-- Food Scan   -->
     <fragment
         android:id="@+id/add_log_food_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragment">
@@ -136,84 +110,14 @@
         <action
             android:id="@+id/action_add_log_food_to_log_manual_custom_food_fragment"
             app:destination="@id/log_manual_custom_food_fragment"/>
-
     </fragment>
 
-    <!-- food scan result   -->
-    <fragment
-        android:id="@+id/result_food_scan_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
-
-        <action
-            android:id="@+id/action_result_food_scan_to_detail_food_fragment"
-            app:destination="@id/detail_food_fragment">
-            <argument
-                android:name="foodItem"
-                app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
-                app:nullable="true"/>
-
-        </action>
-    </fragment>
-
-    <!-- detail food   -->
-    <fragment
-        android:id="@+id/detail_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment">
-
-        <argument
-            android:name="foodItem"
-            app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
-            app:nullable="true" />
-
-        <argument
-            android:name="foodItemManual"
-            app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
-            app:nullable="true" />
-    </fragment>
-
-    <!-- log manual food  ini refers ke tab layout yang  kedua -->
-    <fragment
-        android:id="@+id/log_manual_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.LogManualFoodFragment">
-
-        <action
-            android:id="@+id/action_log_manual_food_to_detail_food_fragment"
-            app:destination="@id/detail_food_fragment">
-            <argument
-                android:name="foodItemManual"
-                app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
-                app:nullable="true"/>
-        </action>
-        <action
-            android:id="@+id/action_log_manual_food_to_log_manual_custom_food_fragment"
-            app:destination="@id/log_manual_custom_food_fragment"/>
-    </fragment>
-
-    <!-- log manual custom food   -->
-    <fragment
-        android:id="@+id/log_manual_custom_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment">
-
-    </fragment>
-
-    <!-- activity result   -->
     <fragment
         android:id="@+id/result_search_activity_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.search.ResultSearchActivityFragment">
-
-    </fragment>
+        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.search.ResultSearchActivityFragment"/>
 
     <fragment
         android:id="@+id/scan_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.FoodScanFragment">
-    </fragment>
-
-
-
-
-    <!-- TAMBAH FRAGMENT UNTUK CHATBOTNYA JUGA   -->
-
-
-
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.FoodScanFragment"/>
 
 </navigation>

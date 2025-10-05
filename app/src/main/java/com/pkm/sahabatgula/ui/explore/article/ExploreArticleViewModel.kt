@@ -1,4 +1,59 @@
 package com.pkm.sahabatgula.ui.explore.article
 
-class ExploreArticleViewModel {
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.remote.model.Article
+import com.pkm.sahabatgula.data.remote.model.ArticleCategory
+import com.pkm.sahabatgula.data.repository.ExploreRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ExploreArticleViewModel @Inject constructor(
+    private val repository: ExploreRepository
+) : ViewModel() {
+
+    // StateFlow untuk menampung query pencarian saat ini
+    private val _categories = MutableStateFlow<Resource<List<ArticleCategory>>>(Resource.Loading())
+    val categories: StateFlow<Resource<List<ArticleCategory>>> = _categories
+
+    private val _searchQuery = MutableStateFlow<String?>(null)
+    private val _selectedCategoryId = MutableStateFlow<Int?>(null)
+    val selectedCategoryId: StateFlow<Int?> = _selectedCategoryId
+
+    init {
+        fetchArticleCategories()
+    }
+
+    // Flow PagingData yang akan bereaksi setiap kali _searchQuery berubah
+    val articles = combine(_searchQuery, _selectedCategoryId) { query, categoryId ->
+        Pair(query, categoryId)
+    }.flatMapLatest { (query, categoryId) ->
+        repository.getArticlePagingData(query, categoryId).cachedIn(viewModelScope)
+    }
+
+    private fun fetchArticleCategories() {
+        viewModelScope.launch {
+            _categories.value = repository.getArticleCategories()
+        }
+    }
+
+    // Fungsi yang dipanggil oleh Fragment untuk mengubah pencarian
+    fun searchArticles(query: String?) {
+        _searchQuery.value = query
+    }
+
+    // Fungsi yang dipanggil oleh Fragment saat Chip kategori diklik
+    fun selectCategory(categoryId: Int?) {
+        _selectedCategoryId.value = categoryId
+    }
 }

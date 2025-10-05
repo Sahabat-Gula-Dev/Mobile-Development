@@ -72,6 +72,7 @@
             app:layout_constraintTop_toBottomOf="@id/tab_layout_indicator"/>
 
         <TextView
+            android:id="@+id/tv_see_all_events"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lihat semua"
@@ -90,6 +91,39 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             app:layout_constraintStart_toStartOf="@id/tv_title_event_and_activity"/>
+
+
+        <TextView
+            android:id="@+id/tv_title_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Artikel Kesehatan"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="@id/view_pager_carousel"
+            app:layout_constraintTop_toBottomOf="@id/rv_events"/>
+
+        <TextView
+            android:id="@+id/tv_see_all_articles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lihat semua"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/view_pager_carousel"
+            app:layout_constraintTop_toTopOf="@id/tv_title_article"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_article"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_articles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_article"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintStart_toStartOf="@id/tv_title_article"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

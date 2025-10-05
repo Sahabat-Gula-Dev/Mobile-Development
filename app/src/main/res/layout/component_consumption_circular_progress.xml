@@ -7,8 +7,8 @@
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/circular_progress_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="221dp"
+        android:layout_height="221dp"
         android:progress="100"
         app:indicatorColor="#FFDDE8"
         app:indicatorSize="221dp"
@@ -22,8 +22,8 @@
     <!-- progress circle -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/circular_progress_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="221dp"
+        android:layout_height="221dp"
         android:max="100"
         android:progress="0"
         app:indicatorColor="#FF3776"

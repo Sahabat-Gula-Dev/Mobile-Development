@@ -102,6 +102,18 @@
                 app:layout_constraintBottom_toTopOf="@id/card_article_author"
                 android:layout_marginBottom="18dp"/>
 
+<!--            <WebView-->
+<!--                android:id="@+id/webview_subtitle_article"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="3dp"-->
+<!--                android:layout_marginBottom="18dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_title_article"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintBottom_toTopOf="@id/card_article_author"-->
+<!--                android:background="@android:color/transparent" />-->
+
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_article_author"
                 android:layout_width="wrap_content"

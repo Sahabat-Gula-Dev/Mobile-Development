@@ -11,8 +11,9 @@ import com.pkm.sahabatgula.core.utils.formatEventDate
 import com.pkm.sahabatgula.data.remote.model.Event
 import com.pkm.sahabatgula.databinding.ComponentEventBinding
 
-class EventOnExploreAdapter: ListAdapter<Event, EventOnExploreAdapter.EventOnExploreViewHolder>(EVENT_COMPARATOR) {
-
+class EventOnExploreAdapter(
+    private val onItemClick: (Event) -> Unit
+) : ListAdapter<Event, EventOnExploreAdapter.EventOnExploreViewHolder>(EVENT_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventOnExploreViewHolder {
         val binding = ComponentEventBinding.inflate(
@@ -20,7 +21,19 @@ class EventOnExploreAdapter: ListAdapter<Event, EventOnExploreAdapter.EventOnExp
             parent,
             false
         )
-        return EventOnExploreViewHolder(binding)
+        val holder = EventOnExploreViewHolder(binding)
+
+        // 2. SET ONCLICKLISTENER PADA ITEMVIEW DI SINI
+        holder.itemView.setOnClickListener {
+            val position = holder.bindingAdapterPosition
+            // Pastikan posisi valid sebelum mengambil item
+            if (position != RecyclerView.NO_POSITION) {
+                val event = getItem(position)
+                // Panggil lambda dengan data event yang di-klik
+                onItemClick(event)
+            }
+        }
+        return holder
     }
 
     override fun onBindViewHolder(holder: EventOnExploreViewHolder, position: Int) {
@@ -29,26 +42,23 @@ class EventOnExploreAdapter: ListAdapter<Event, EventOnExploreAdapter.EventOnExp
             holder.bind(currentItem)
         }
     }
+
     class EventOnExploreViewHolder(private val binding: ComponentEventBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(event: Event) {
             binding.apply {
-                // Load gambar dengan Glide
                 Glide.with(itemView.context)
                     .load(event.coverUrl)
-                    .placeholder(R.drawable.img_event) // Gambar default saat loading
-                    .error(R.drawable.img_event) // Gambar jika terjadi error
+                    .placeholder(R.drawable.img_event)
+                    .error(R.drawable.img_event)
                     .into(imgArticle)
 
-                // Set data ke TextViews
                 tvDateToday.text = formatEventDate(event.eventDate)
                 tvTitleEvent.text = event.title
                 tvEventOrganizer.text = event.location
-
-                // API tidak menyediakan subtitle.
-                tvSubtitleEvent.text = "Deskripsi acara akan ditampilkan di sini" // Placeholder
-                }
+                tvSubtitleEvent.text = "Deskripsi acara akan ditampilkan di sini"
+            }
         }
     }
 
@@ -62,4 +72,3 @@ class EventOnExploreAdapter: ListAdapter<Event, EventOnExploreAdapter.EventOnExp
         }
     }
 }
-

@@ -7,7 +7,115 @@
     <fragment
         android:id="@+id/explore_fragment"
         android:name="com.pkm.sahabatgula.ui.explore.ExploreFragment">
+        <action
+            android:id="@+id/action_explore_to_detail_article"
+            app:destination="@id/detail_article_fragment">
+            <argument
+                android:name="articleItemFromExplore"
+                app:argType="com.pkm.sahabatgula.data.remote.model.Article"/>
+        </action>
+        <action
+            android:id="@+id/action_explore_to_detail_event"
+            app:destination="@id/detail_event_fragment">
+            <argument
+                android:name="eventItemFromExplore"
+                app:argType="com.pkm.sahabatgula.data.remote.model.Event"/>
+        </action>
+        <action
+            android:id="@+id/action_explore_to_explore_article"
+            app:destination="@id/explore_article_fragment"/>
+        <action
+            android:id="@+id/action_explore_to_explore_event"
+            app:destination="@id/explore_event_fragment"/>
+    </fragment>
 
+    <fragment
+        android:id="@+id/explore_article_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.article.ExploreArticleFragment">
+        <action
+            android:id="@+id/action_explore_article_to_detail_article"
+            app:destination="@id/detail_article_fragment">
+            <argument
+                android:name="articleItemFromExplore"
+                app:argType="com.pkm.sahabatgula.data.remote.model.Article"/>
+        </action>
+        <action
+            android:id="@+id/action_exploreArticle_to_resultSearchArticle"
+            app:destination="@id/article_result_search_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/explore_event_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.event.ExploreEventFragment">
+        <action
+            android:id="@+id/action_explore_event_to_detail_event"
+            app:destination="@id/detail_event_fragment">
+            <argument
+                android:name="eventItemFromExplore"
+                app:argType="com.pkm.sahabatgula.data.remote.model.Event"/>
+        </action>
+        <action
+            android:id="@+id/action_explore_event_to_result_search_event"
+            app:destination="@id/event_result_search_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_event_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.event.detailevent.DetailEventFragment"
+        android:label="DetailEventFragment">
+        <argument
+            android:name="eventItemFromExplore"
+            app:argType="com.pkm.sahabatgula.data.remote.model.Event"
+            app:nullable="true"/>
+        <action
+            android:id="@+id/action_detail_event_self"
+            app:destination="@id/detail_event_fragment">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_article_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.article.detailarticle.DetailArticleFragment">
+        <argument
+            android:name="articleItemFromExplore"
+            app:argType="com.pkm.sahabatgula.data.remote.model.Article"
+            app:nullable="true"/>
+        <action
+            android:id="@+id/action_detail_to_detail_article"
+            app:destination="@id/detail_article_fragment">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/article_result_search_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.article.searchresult.ArticleResultSearchFragment"
+        android:label="ArticleResultSearchFragment">
+        <argument
+            android:name="searchQuery"
+            app:argType="string" />
+        <argument
+            android:name="categoryId"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_article_result_search_to_detail_article"
+            app:destination="@id/detail_article_fragment">
+            <argument
+                android:name="articleItemFromExplore"
+                app:argType="com.pkm.sahabatgula.data.remote.model.Article"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_result_search_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.event.searchresult.EventResultSearchFragment"
+        android:label="ArticleResultSearchFragment">
+        <action
+            android:id="@+id/action_event_result_search_to_detail_event"
+            app:destination="@id/detail_event_fragment">
+            <argument
+                android:name="eventItemFromExplore"
+                app:argType="com.pkm.sahabatgula.data.remote.model.Event"/>
+        </action>
     </fragment>
 
 </navigation>

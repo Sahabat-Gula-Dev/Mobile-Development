@@ -9,6 +9,7 @@
     android:layout_width="match_parent"
     android:paddingHorizontal="16dp"
     android:layout_height="wrap_content"
+    android:scrollbars="none"
     tools:context=".ui.home.dailyfat.FatFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout

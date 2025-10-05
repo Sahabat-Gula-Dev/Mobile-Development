@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.Food
 import com.pkm.sahabatgula.data.remote.model.FoodItemRequest
-import com.pkm.sahabatgula.data.repository.HomeRepository
 import com.pkm.sahabatgula.data.repository.LogFoodRepository
 import com.pkm.sahabatgula.data.repository.ScanRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

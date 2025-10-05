@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashscreen_fragment">
 
@@ -25,10 +24,87 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <fragment
+        android:id="@+id/result_food_scan_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result.ResultScanFoodFragment">
+        <action
+            android:id="@+id/action_result_food_scan_to_detail_food_fragment"
+            app:destination="@id/detail_food_fragment">
+            <argument
+                android:name="foodItem"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
+                app:nullable="true"/>
+        </action>
+    </fragment>
 
-    <!-- Include graph -->
+    <fragment
+        android:id="@+id/log_manual_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.LogManualFoodFragment">
+        <action
+            android:id="@+id/action_log_manual_food_to_detail_food_fragment"
+            app:destination="@id/detail_food_fragment">
+            <argument
+                android:name="foodItemManual"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+                app:nullable="true"/>
+        </action>
+        <action
+            android:id="@+id/action_log_manual_food_to_log_manual_custom_food_fragment"
+            app:destination="@id/log_manual_custom_food_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment">
+        <argument
+            android:name="foodItem"
+            app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
+            app:nullable="true" />
+        <argument
+            android:name="foodItemManual"
+            app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+            app:nullable="true" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/explore_fragment"
+        android:name="com.pkm.sahabatgula.ui.explore.ExploreFragment">
+        <argument
+            android:name="articleItemFromExplore"
+            app:argType="com.pkm.sahabatgula.data.remote.model.Article"
+            app:nullable="true" />
+        <argument
+            android:name="eventItemFromExplore"
+            app:argType="com.pkm.sahabatgula.data.remote.model.Event"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_article"
+        android:name="com.pkm.sahabatgula.ui.explore.article.detailarticle.DetailArticleFragment">
+        <argument
+            android:name="articleItemFromExplore"
+            app:argType="com.pkm.sahabatgula.data.remote.model.Article"
+            app:nullable="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_event"
+        android:name="com.pkm.sahabatgula.ui.explore.article.detailarticle.DetailArticleFragment">
+        <argument
+            android:name="eventItemFromExplore"
+            app:argType="com.pkm.sahabatgula.data.remote.model.Event"
+            app:nullable="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/log_manual_custom_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment" />
     <include app:graph="@navigation/auth_graph" />
+    <include app:graph="@navigation/scan_graph" />
     <include app:graph="@navigation/input_data_graph" />
     <include app:graph="@navigation/home_graph" />
     <include app:graph="@navigation/explore_graph" />
+
 </navigation>

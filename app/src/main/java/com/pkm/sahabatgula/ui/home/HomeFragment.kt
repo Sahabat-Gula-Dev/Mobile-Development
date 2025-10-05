@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
         // sugar
         binding.sugarConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_sugar_candy)
-            tvNumberOfConsumption.text = String.format("%.1f", sugarConsumed)
+            tvNumberOfConsumption.text = DoubleToZeroInt(sugarConsumed)
             tvTitleProgress.text = "Konsumsi Gula Hari Ini"
             tvNumberOfTotalNutrition.text = " dari ${maxSugar.toInt()} gr"
             tvNumberOfPercentage.text = sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())

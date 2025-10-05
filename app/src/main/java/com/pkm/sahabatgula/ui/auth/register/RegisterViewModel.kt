@@ -10,6 +10,8 @@ import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -64,19 +66,24 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
                     // 2. Simpan token yang diterima
                     tokenManager.saveAccessToken(accessToken)
 
-                    // 3. PANGGIL FUNGSI UNTUK MENGAMBIL & MENYIMPAN PROFIL
-                    repo.observeProfile()
-                        .collect { profile ->
-                            if (profile == null) {
-                                _effect.send(RegisterEffect.ShowToast("Profil tidak ditemukan"))
-                                _registerViewState.value = RegisterViewState.Error("Profil tidak ditemukan")
-                                return@collect
-                            }
-                            // 4. JIKA PROFIL SUKSES DISIMPAN, BARU NAVIGASI
-                            _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
-                            _effect.send(RegisterEffect.NavigateToHome)
-                            _registerViewState.value = RegisterViewState.Idle
-                        }
+                    try {
+                        // 1. Picu observe, abaikan nilai null, dan tunggu nilai pertama yang valid.
+                        val profile = repo.observeProfile().filterNotNull().first()
+
+                        // 2. Jika kode sampai di sini, artinya profile sudah berhasil didapat dan tidak null
+                        _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
+
+                        // Anda bisa menambahkan pengecekan kelengkapan profil di sini jika perlu
+                        // val isCompleted = ... (cek dari object profile)
+
+                        _effect.send(RegisterEffect.NavigateToHome) // Atau ke halaman Input Data
+                        _registerViewState.value = RegisterViewState.Idle
+
+                    } catch (e: Exception) {
+                        // Menangani jika Flow selesai tanpa ada data (jarang terjadi jika API benar)
+                        _effect.send(RegisterEffect.ShowToast("Gagal mengambil data profil: ${e.message}"))
+                        _registerViewState.value = RegisterViewState.Error("Gagal mengambil data profil")
+                    }
                 }
                 .onFailure { authError ->
                     _effect.send(RegisterEffect.ShowToast(authError.message ?: "Gagal masuk dengan Google"))

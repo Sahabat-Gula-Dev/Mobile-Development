@@ -1,22 +1,19 @@
 package com.pkm.sahabatgula.ui.explore
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TableLayout
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.HorizontalSpaceItemDecoration
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
@@ -32,6 +29,9 @@ class ExploreFragment : Fragment() {
     private val viewModel: ExploreViewModel by viewModels()
 
     private lateinit var eventAdapter: EventOnExploreAdapter
+    private lateinit var articleAdapter: ArticleOnExploreAdapter
+    private val args by navArgs<ExploreFragmentArgs>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,39 +63,80 @@ class ExploreFragment : Fragment() {
 
         setupExplore()
         observeEventState()
+
+        setupArticle()
+        observeArticleState()
     }
+
+    private fun observeArticleState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.articleState.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {  }
+                        is Resource.Success -> {
+
+                            articleAdapter.submitList(resource.data)
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupArticle() {
+        articleAdapter = ArticleOnExploreAdapter{ article ->
+            val action = ExploreFragmentDirections.actionExploreToDetailArticle(article)
+            view?.findNavController()?.navigate(action)
+        }
+        binding.rvArticles.apply {
+            adapter = articleAdapter
+            layoutManager = LinearLayoutManager(context)
+//            isNestedScrollingEnabled = false
+        }
+    }
+
     private fun setupCarousel(carouselItems: List<CarouselItem>?) {
         if(carouselItems.isNullOrEmpty()) return
 
         val adapter = CarouselAdapter(carouselItems) { item ->
-            if(item.targetUrl != null) {
-                openTargetUrl(item.targetUrl)
-            } else {
-                Toast.makeText(context, "Link Kosong", Toast.LENGTH_SHORT).show()
-            }
+
         }
         binding.viewPagerCarousel.adapter = adapter
         TabLayoutMediator(binding.tabLayoutIndicator, binding.viewPagerCarousel) {
-            tab, position ->
+                tab, position ->
         }.attach()
     }
 
-    private fun openTargetUrl(targetUrl: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(targetUrl))
-        startActivity(intent)
-    }
-
     private fun setupExplore() {
-        eventAdapter = EventOnExploreAdapter()
-        binding.rvEvents.apply { // <-- Ganti ID RecyclerView
+
+        eventAdapter = EventOnExploreAdapter(
+            onItemClick = { event ->
+                val action = ExploreFragmentDirections.actionExploreToDetailEvent(event )
+                view?.findNavController()?.navigate(action)
+            }
+        )
+        binding.rvEvents.apply {
             adapter = eventAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) // atau VERTICAL
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             if (itemDecorationCount > 0) {
                 removeItemDecorationAt(0)
             }
 
             addItemDecoration(HorizontalSpaceItemDecoration(12))
+        }
+        binding.tvSeeAllArticles.setOnClickListener {
+            val action = ExploreFragmentDirections.actionExploreToExploreArticle()
+            view?.findNavController()?.navigate(action)
+
+        }
+        binding.tvSeeAllEvents.setOnClickListener {
+            val action = ExploreFragmentDirections.actionExploreToExploreEvent()
+            view?.findNavController()?.navigate(action)
         }
 
 

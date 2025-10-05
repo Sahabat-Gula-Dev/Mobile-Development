@@ -15,11 +15,13 @@ class SessionManager @Inject constructor(
 ) {
     suspend fun getCurrentUser(): ProfileEntity? {
         val token = tokenManager.getAccessToken()
-        if (token.isNullOrEmpty()) {
+        if (token.isNullOrEmpty() || tokenManager.isAccessTokenExpired()) {
+            clearSession()
             return null
         }
         return profileDao.getProfile()
     }
+
 
     fun setProfileCompleted(completed: Boolean) {
         Log.d("PROFILE_SETUP", " SET - ProfileCompleted Flag diset ke $completed")
@@ -34,27 +36,39 @@ class SessionManager @Inject constructor(
 
     suspend fun isLoggedIn(): Boolean {
         val token = tokenManager.getAccessToken()
-        return !token.isNullOrEmpty()
+        return !token.isNullOrEmpty() && !tokenManager.isAccessTokenExpired()
     }
+
 
     suspend fun getOrFetchProfile(apiService: ApiService): ProfileEntity? {
         val token = tokenManager.getAccessToken() ?: return null
-
-        // cek apakah sudah ada di Room
-        val localProfile = profileDao.getProfile()
-        if (localProfile != null) {
-            return localProfile
+        if (tokenManager.isAccessTokenExpired()) {
+            clearSession()
+            return null
         }
 
-        // kalau Room kosong → fetch dari server
+        val localProfile = profileDao.getProfile()
+        if (localProfile != null) return localProfile
+
         val response = apiService.getMyProfile("Bearer $token")
         if (response.isSuccessful && response.body()?.data?.myProfile != null) {
             val profile = response.body()!!.data.myProfile.toProfileEntity()
-            profileDao.upsertProfile(profile) // simpan ke Room
+            profileDao.upsertProfile(profile)
             return profile
+        } else {
+            // Bisa karena token expired di server
+            clearSession()
+            return null
         }
-
-        return null
     }
+
+    suspend fun clearSession() {
+        tokenManager.clearAccessToken()
+        tokenManager.clearProfileCompleted()
+        profileDao.clearAll() // buat fungsi ini di DAO untuk clear profile table
+        Log.d("SessionManager", "Session cleared")
+    }
+
+
 
 }

@@ -56,6 +56,9 @@
     <string name="title_weight_input">Beratmu Berapa?</string>
     <string name="number_selected_weight">19</string>
     <string name="format_kg_weight">kg</string>
+    <string name="search_result_subtitle">
+        <![CDATA[Kami berhasil menemukan beberapa pilihan untuk kata kunci <b>"%1$s"</b>]]>
+    </string>
 
 
 </resources>

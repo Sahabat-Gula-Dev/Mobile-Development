@@ -5,56 +5,141 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.text.HtmlCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.core.utils.HorizontalSpaceItemDecoration
+import com.pkm.sahabatgula.databinding.FragmentDetailArticleBinding
+import com.pkm.sahabatgula.ui.explore.ArticleOnExploreAdapter
+import com.pkm.sahabatgula.ui.explore.EventOnExploreAdapter
+import com.pkm.sahabatgula.ui.explore.ExploreFragmentDirections
+import com.pkm.sahabatgula.ui.explore.ExploreViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailArticleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class DetailArticleFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentDetailArticleBinding? = null
+    private val binding get() = _binding!!
+    private val args by navArgs<DetailArticleFragmentArgs>()
+
+    private lateinit var articleAdapter: ArticleOnExploreAdapter
+    private val viewModel: DetailArticleViewModel by viewModels()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_article, container, false)
+
+        _binding = FragmentDetailArticleBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailArticleFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailArticleFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val articleItem = args.articleItemFromExplore
+
+        val articleTitle = articleItem?.title
+        val articleCover = articleItem?.coverUrl
+        val articleContent = articleItem?.content
+        val articleDate = articleItem?.createdAt
+        val articleAuthor = "Sahabat Gula"
+
+
+        binding.apply {
+            tvTitleArticle.text = articleTitle
+            tvArticleDate.text = articleDate
+            tvArticleAuthor.text = articleAuthor
+
+            val htmlContent = """
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        font-family: jakarta-sans_family;
+                        font-size: 14px;
+                        line-height: 1.6;
+                        letter-spacing: 0.02em;
+                        text-align: justify;
+                        padding: 0;
+                        margin: 0;
+                    }
+                </style>
+            </head>
+            <body>
+                $articleContent
+                </body>
+            </html>
+            """.trimIndent()
+
+            binding.tvArticleDesc.settings.javaScriptEnabled = false
+            binding.tvArticleDesc.loadDataWithBaseURL(
+                null,
+                htmlContent,
+                "text/html",
+                "utf-8",
+                null
+            )
+
+
+
+        }
+        articleAdapter = ArticleOnExploreAdapter{ article ->
+            val action = DetailArticleFragmentDirections.actionDetailToDetailArticle(article)
+            view.findNavController().navigate(action)
+        }
+
+
+        binding.rvArticles.apply {
+            adapter = articleAdapter
+            layoutManager = LinearLayoutManager(context)
+            isNestedScrollingEnabled = false
+        }
+        observeArticleState()
+
+        Glide.with(requireContext())
+            .load(articleCover)
+            .placeholder(R.drawable.image_placeholder)
+            .into(binding.imgArticle)
+
+        viewModel.loadRelatedArticles(articleItem!!.id)
+
+    }
+
+    private fun observeArticleState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.relatedArticles.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {  }
+                        is Resource.Success -> {
+
+                            articleAdapter.submitList(resource.data)
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

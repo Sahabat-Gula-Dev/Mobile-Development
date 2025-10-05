@@ -12,13 +12,10 @@ import com.pkm.sahabatgula.data.local.room.SummaryEntity
 import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.remote.model.ActivitiesDataItem
 import com.pkm.sahabatgula.data.remote.model.ActivityCategories
-import com.pkm.sahabatgula.data.remote.model.FoodCategories
-import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.data.remote.model.LogActivityData
 import com.pkm.sahabatgula.data.remote.model.LogActivityItemRequest
 import com.pkm.sahabatgula.data.remote.model.LogActivityRequest
 import com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.ActivityPagingSource
-import com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.FoodPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject

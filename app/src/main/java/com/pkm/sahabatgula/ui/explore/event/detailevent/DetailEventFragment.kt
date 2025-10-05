@@ -5,56 +5,136 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.remote.model.Event
+import com.pkm.sahabatgula.databinding.FragmentDetailEventBinding
+import com.pkm.sahabatgula.ui.explore.EventOnExploreAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailEventFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class DetailEventFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentDetailEventBinding? = null
+    private val binding get() = _binding!!
+    private val args by navArgs<DetailEventFragmentArgs>()
+    private val viewModel: DetailEventViewModel by viewModels()
+    private lateinit var eventAdapter: EventOnExploreAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_event, container, false)
+    ): View {
+        _binding = FragmentDetailEventBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailEventFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailEventFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val eventItem = args.eventItemFromExplore
+        val eventTitle = eventItem?.title
+        val eventCover = eventItem?.coverUrl
+        val eventContent = eventItem?.content
+        val eventDate = eventItem?.createdAt
+        val eventLocation = eventItem?.location
+
+        binding.apply {
+            tvTitleEvent.text = eventTitle
+//            tvEventOrganizer.text =
+
+            cardEventDate.tvTitleInfo.text = eventDate
+            cardEventLocation.tvTitleInfo.text = eventLocation
+
+            val htmlContent = """
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        font-family: jakarta-sans_family;
+                        font-size: 14px;
+                        line-height: 1.6;
+                        letter-spacing: 0.02em;
+                        text-align: justify;
+                        padding: 0;
+                        margin: 0;
+                    }
+                </style>
+            </head>
+            <body>
+                $eventContent
+                </body>
+            </html>
+            """.trimIndent()
+
+            binding.tvEventDesc.settings.javaScriptEnabled = false
+            binding.tvEventDesc.loadDataWithBaseURL(
+                null,
+                htmlContent,
+                "text/html",
+                "utf-8",
+                null
+            )
+
+            Glide.with(requireContext())
+                .load(eventCover)
+                .placeholder(R.drawable.image_placeholder)
+                .into(imgEvent)
+        }
+
+        setupRecyclerView(view)
+        observeRelatedEvents()
+
+        viewModel.loadRelatedEvents(eventItem!!.id)
+    }
+
+
+    private fun setupRecyclerView(view: View) {
+
+        eventAdapter = EventOnExploreAdapter { event ->
+            val action = DetailEventFragmentDirections.actionDetailEventSelf(event)
+            view.findNavController().navigate(action)
+        }
+
+        binding.rvEvents.apply {
+            adapter = eventAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            isNestedScrollingEnabled = false
+        }
+    }
+
+    private fun observeRelatedEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.relatedEvents.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {  }
+                        is Resource.Success -> {
+                            eventAdapter.submitList(resource.data)
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

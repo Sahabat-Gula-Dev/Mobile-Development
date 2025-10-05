@@ -8,7 +8,7 @@
     tools:context=".ui.home.dailyfood.logfood.manualfood.search.ResultSearchFoodFragment">
 
     <TextView
-        android:id="@+id/tv_header_result_manual_food"
+        android:id="@+id/tv_header_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hasil Pencarian"
@@ -19,21 +19,23 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/tv_subtitle_result_manual_food"
+        android:id="@+id/tv_subtitle_result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Kami berhasil menemukan beberapa pilihan untuk kata kunci Sate"
-        app:layout_constraintTop_toBottomOf="@id/tv_header_result_manual_food"
+        android:text="Kami berhasil menemukan beberapa pilihan untuk kata kunci "
+        app:layout_constraintTop_toBottomOf="@id/tv_header_result"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_result_manual_food"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_result"
         tools:listitem="@layout/item_card_food"
         android:layout_marginTop="24dp"/>
 

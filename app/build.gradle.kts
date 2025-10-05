@@ -131,5 +131,4 @@ dependencies {
     implementation(libs.glide)
     ksp(libs.compiler)
 
-
 }

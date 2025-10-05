@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyCustomChipStyle" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+
+        <item name="android:textColor">@color/chip_text_color</item>
+
+        <item name="chipStrokeColor">@color/md_theme_outline</item>
+        <item name="chipStrokeWidth">1dp</item>
+
+        <item name="checkedIconVisible">false</item>
+
+        <item name="chipCornerRadius">8dp</item>
+    </style>
+</resources>

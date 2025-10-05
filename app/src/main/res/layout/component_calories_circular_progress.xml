@@ -9,8 +9,8 @@
 
     <!-- background circle -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +25,8 @@
     <!-- progress circle -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/pi_circular_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

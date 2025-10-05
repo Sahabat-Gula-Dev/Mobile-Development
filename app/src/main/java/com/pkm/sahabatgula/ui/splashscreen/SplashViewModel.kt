@@ -10,14 +10,13 @@ import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.data.remote.api.ApiService
 import kotlinx.coroutines.launch
+import java.io.IOException
 
-
-// Enum untuk merepresentasikan tujuan navigasi
 enum class SplashDestination {
-    AUTH_FLOW,          // Arahkan ke Login/Register
-    INPUT_DATA_FLOW,    // Arahkan ke pengisian profil
-    HOME_FLOW,          // Arahkan ke halaman utama
-    LOADING             // Masih dalam proses pengecekan
+    AUTH_FLOW,
+    INPUT_DATA_FLOW,
+    HOME_FLOW,
+    LOADING
 }
 
 @HiltViewModel
@@ -37,42 +36,42 @@ class SplashViewModel @Inject constructor(
 
     private fun checkUserSession() {
         viewModelScope.launch {
-            kotlinx.coroutines.delay(1500)
+            try {
+                kotlinx.coroutines.delay(1200)
 
-            val user = sessionManager.getCurrentUser()
-            val token = sessionManager.isProfileCompleted()
-
-            Log.d("DARI SPLASH", "user dari db: $user")
-            Log.d("DARI SPLASH", "token dari db: $token")
-            Log.d("DARI SPLASH", "profile completed flag: ${sessionManager.isProfileCompleted()}")
-
-            if (user == null) {
-                _destination.value = SplashDestination.AUTH_FLOW
-            } else {
-                if (!sessionManager.isProfileCompleted()) {
-                    _destination.value = SplashDestination.INPUT_DATA_FLOW
-                } else {
-                    _destination.value = SplashDestination.HOME_FLOW
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            if (sessionManager.isLoggedIn()) {
-                // coba ambil dari Room atau fetch ulang kalau kosong
-                val profile = sessionManager.getOrFetchProfile(apiService)
-                if (profile != null) {
-                    // langsung ke Home
-                    _destination.value = SplashDestination.HOME_FLOW
-                } else {
-                    // token ada tapi gagal fetch profile → fallback ke login
+                if (!sessionManager.isLoggedIn()) {
                     _destination.value = SplashDestination.AUTH_FLOW
+                    return@launch
                 }
-            } else {
-                // tidak ada token → ke login
+
+                val profile = sessionManager.getOrFetchProfile(apiService)
+                if (profile == null) {
+                    _destination.value = SplashDestination.AUTH_FLOW
+                    return@launch
+                }
+
+                if (sessionManager.isProfileCompleted()) {
+                    _destination.value = SplashDestination.HOME_FLOW
+                } else {
+                    _destination.value = SplashDestination.INPUT_DATA_FLOW
+                }
+
+            } catch (e: IOException) {
+                Log.w("SplashViewModel", "Network error. Relying on local session flags.")
+                Log.e("SplashViewModel", "Network error. Relying on local session flags.")
+
+                if (sessionManager.isProfileCompleted()) {
+                    _destination.value = SplashDestination.HOME_FLOW
+                } else {
+                    _destination.value = SplashDestination.INPUT_DATA_FLOW
+                }
+
+            } catch (e: Exception) {
+                Log.e("SplashViewModel", "Unexpected error. Logging out for safety.", e)
+                sessionManager.clearSession()
                 _destination.value = SplashDestination.AUTH_FLOW
             }
         }
-
     }
+
 }

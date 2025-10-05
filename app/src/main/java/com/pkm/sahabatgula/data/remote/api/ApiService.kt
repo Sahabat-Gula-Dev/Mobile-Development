@@ -3,9 +3,13 @@ package com.pkm.sahabatgula.data.remote.api
 import com.pkm.sahabatgula.data.remote.model.ActivityCategories
 import com.pkm.sahabatgula.data.remote.model.ActivityCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.ActivityResponse
+import com.pkm.sahabatgula.data.remote.model.ArticleCategoryListResponse
+import com.pkm.sahabatgula.data.remote.model.ArticleResponse
 import com.pkm.sahabatgula.data.remote.model.CarouselResponse
 import com.pkm.sahabatgula.data.remote.model.CategoryListResponse
+import com.pkm.sahabatgula.data.remote.model.DetailArticleResponse
 import com.pkm.sahabatgula.data.remote.model.DetailFoodResponse
+import com.pkm.sahabatgula.data.remote.model.EventCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.EventResponse
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodListResponse
@@ -148,8 +152,29 @@ interface ApiService {
     suspend fun getEvents(
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 10,
+        @Query("category_id") categoryId: Int? = null,
         @Query("sort") sort: String = "created_at.desc",
         @Query("q") searchQuery: String? = null
     ): Response<EventResponse>
+
+    @GET("articles")
+    suspend fun getArticles(
+        @Query("limit") limit: Int = 10,
+        @Query("page") page: Int = 1,
+        @Query("q") searchQuery: String? = null,
+        @Query("category_id") categoryId: Int? = null,
+        @Query("sort") sort: String = "created_at.desc"
+    ): Response<ArticleResponse>
+
+    @GET("article-categories")
+    suspend fun getArticleCategories(): Response<ArticleCategoryListResponse>
+
+    @GET("event-categories")
+    suspend fun getEventCategories(): Response<EventCategoryListResponse>
+
+    @GET("articles/{id}")
+    suspend fun getArticleDetail(
+        @Path("id") id: String
+    ): Response<DetailArticleResponse>
 
 }

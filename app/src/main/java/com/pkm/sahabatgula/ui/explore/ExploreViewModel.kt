@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
 import com.pkm.sahabatgula.data.remote.model.Event
 import com.pkm.sahabatgula.data.repository.ExploreRepository
@@ -26,9 +27,14 @@ class ExploreViewModel @Inject constructor(
     private val _eventState = MutableStateFlow<Resource<List<Event>>>(Resource.Loading())
     val eventState: StateFlow<Resource<List<Event>>> = _eventState
 
+    private val _articleState = MutableStateFlow<Resource<List<Article>>>(Resource.Loading())
+    val articleState: StateFlow<Resource<List<Article>>> = _articleState
+
+
     init {
         fetchCarousels()
         fetchEvents()
+        fetchArticles(limit = 3)
     }
 
     private fun fetchCarousels() {
@@ -44,6 +50,14 @@ class ExploreViewModel @Inject constructor(
                 .collect { resource ->
                     _eventState.value = resource
                 }
+        }
+    }
+
+    fun fetchArticles(limit: Int) {
+        viewModelScope.launch {
+            repository.getArticles(limit).collect { result ->
+                _articleState.value = result
+            }
         }
     }
 
