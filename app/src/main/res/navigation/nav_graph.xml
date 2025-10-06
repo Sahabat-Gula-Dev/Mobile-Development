@@ -38,6 +38,19 @@
     </fragment>
 
     <fragment
+        android:id="@+id/food_result_search_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.search.FoodResultSearchFragment">
+        <action
+            android:id="@+id/action_food_result_search_to_detail_food_fragment"
+            app:destination="@id/detail_food_fragment">
+            <argument
+                android:name="foodItemManual"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+                app:nullable="true"/>
+        </action>
+    </fragment>
+
+    <fragment
         android:id="@+id/log_manual_food_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.LogManualFoodFragment">
         <action

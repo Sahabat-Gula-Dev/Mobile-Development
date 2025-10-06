@@ -44,6 +44,7 @@ class ExploreEventViewModel @Inject constructor(
 
     private fun fetchEventCategories() {
         viewModelScope.launch {
+            _categories.value = Resource.Loading()
             _categories.value = repository.getEventCategories()
         }
     }

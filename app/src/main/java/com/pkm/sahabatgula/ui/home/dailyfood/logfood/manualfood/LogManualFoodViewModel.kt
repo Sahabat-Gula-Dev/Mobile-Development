@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -26,6 +27,10 @@ class LogManualFoodViewModel @Inject constructor(
 
     private val _categories = MutableLiveData<Resource<List<FoodCategories>>>()
     val categories: LiveData<Resource<List<FoodCategories>>> = _categories
+
+    private val _searchQuery = MutableStateFlow<String?>(null)
+    private val _selectedCategoryId = MutableStateFlow<Int?>(null)
+    val selectedCategoryId: StateFlow<Int?> = _selectedCategoryId
 
     private val _currentQuery= MutableStateFlow<String?>(null)
     val _currentCategory = MutableStateFlow<Int?>(null)

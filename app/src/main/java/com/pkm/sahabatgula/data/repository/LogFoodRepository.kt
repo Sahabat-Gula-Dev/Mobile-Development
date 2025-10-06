@@ -9,11 +9,14 @@ import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.data.local.room.SummaryDao
 import com.pkm.sahabatgula.data.local.room.SummaryEntity
 import com.pkm.sahabatgula.data.remote.api.ApiService
+import com.pkm.sahabatgula.data.remote.model.Article
+import com.pkm.sahabatgula.data.remote.model.Food
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.data.remote.model.FoodItemRequest
 import com.pkm.sahabatgula.data.remote.model.LogFoodRequest
 import com.pkm.sahabatgula.data.remote.model.Totals
+import com.pkm.sahabatgula.ui.explore.article.ArticlePagingSource
 import com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.FoodPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -53,6 +56,18 @@ class LogFoodRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                FoodPagingSource(apiService, query, categoryId)
+            }
+        ).flow
+    }
+
+    fun getFoodPagingData(query: String?, categoryId: Int?): Flow<PagingData<FoodItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {

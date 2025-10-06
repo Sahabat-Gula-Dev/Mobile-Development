@@ -63,6 +63,27 @@ class LogFoodFragment : Fragment() {
                 Log.e("DEBUG_NAV", "LogFoodFragment: Listener dipanggil, TAPI URI null!")
             }
         }
+
+        // 1
+        childFragmentManager.setFragmentResultListener(
+            "manualSearchKey",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            Log.d("DEBUG_NAV", "LogFoodFragment: Listener Search Menerima Hasil!")
+
+            val query = bundle.getString("searchQuery") ?: ""
+            val categoryId = bundle.getString("categoryId") ?: ""
+
+            val resultBundle = Bundle().apply {
+                putString("searchQuery", query)
+                putString("categoryId", categoryId)
+            }
+
+            findNavController().navigate(
+                com.pkm.sahabatgula.R.id.action_add_log_food_to_result_search_food_fragment,
+                resultBundle
+            )
+        }
     }
 
     override fun onDestroyView() {

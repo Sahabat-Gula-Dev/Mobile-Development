@@ -121,8 +121,16 @@
                 app:nullable="true"/>
         </action>
         <action
+            android:id="@+id/action_add_log_food_to_result_search_food_fragment"
+            app:destination="@id/food_result_search_fragment" />
+        <action
             android:id="@+id/action_add_log_food_to_log_manual_custom_food_fragment"
             app:destination="@id/log_manual_custom_food_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/food_result_search_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.search.FoodResultSearchFragment">
     </fragment>
 
     <fragment
@@ -132,5 +140,6 @@
     <fragment
         android:id="@+id/scan_food_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.FoodScanFragment"/>
+
 
 </navigation>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.data.remote.model.Event
 import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.databinding.ItemCardFoodBinding
 
@@ -23,6 +24,13 @@ class FoodPagingAdapter(
         val foodItem = getItem(position)
         if (foodItem != null) {
             holder.bind(foodItem)
+        }
+        holder.itemView.setOnClickListener {
+            val position = holder.bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val food: FoodItem? = getItem(position)
+                onItemClick(food?: return@setOnClickListener)
+            }
         }
     }
 

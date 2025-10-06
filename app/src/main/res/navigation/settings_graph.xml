@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/privacy_policy_fragment"
-        android:name="com.pkm.sahabatgula.ui.settings.helpcenter.HelpCenterFragment"/>
+        android:name="com.pkm.sahabatgula.ui.settings.appinfo.PrivacyPolicyFragment"/>
 
 <!--    terms and condition -->
     <fragment

@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_add_log_food_to_log_manual_custom_food_fragment"
             app:destination="@id/log_manual_custom_food_fragment"/>
+        <action
+            android:id="@+id/action_add_log_food_to_result_search_food_fragment"
+            app:destination="@id/food_result_search_fragment" />
     </fragment>
 
 </navigation>

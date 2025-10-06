@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventResultSearchViewModel @Inject constructor(
     private val repository: ExploreRepository,
-    savedStateHandle: SavedStateHandle // Hilt akan menyediakan ini secara otomatis
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val query: String = savedStateHandle["searchQuery"] ?: ""

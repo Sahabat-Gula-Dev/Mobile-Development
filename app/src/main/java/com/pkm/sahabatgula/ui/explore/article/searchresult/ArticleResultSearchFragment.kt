@@ -26,7 +26,7 @@ class ArticleResultSearchFragment : Fragment() {
     private var _binding: FragmentResultSearchBinding ? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ResultSearchArticleViewModel by viewModels()
+    private val viewModel: ArticleResultSearchViewModel by viewModels()
     private val args:ArticleResultSearchFragment by navArgs()
     private lateinit var articleAdapter: ArticlePagingDataAdapter
 
