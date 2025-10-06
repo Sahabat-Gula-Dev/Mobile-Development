@@ -1,3 +1,13 @@
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val geminiApiKey: String = localProperties.getProperty("GEMINI_API_KEY") ?: ""
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -25,6 +35,11 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://api-service.sahabatgula.com/\"")
+            buildConfigField(
+                "String",
+                "GEMINI_API_KEY",
+                "\"$geminiApiKey\""
+            )
         }
 
         release {
@@ -34,6 +49,11 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"https://api-service.sahabatgula.com/\"")
+            buildConfigField(
+                "String",
+                "GEMINI_API_KEY",
+                "\"$geminiApiKey\""
+            )
 
         }
     }
@@ -130,5 +150,8 @@ dependencies {
     // glide
     implementation(libs.glide)
     ksp(libs.compiler)
+
+    // gemini ai
+    implementation(libs.generativeai)
 
 }

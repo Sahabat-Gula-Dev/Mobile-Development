@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -20,8 +21,8 @@ import javax.inject.Inject
 sealed class UserProfileState {
     object Loading : UserProfileState()
     data class Success(
-        val height: Double?,
-        val weight: Double?,
+        val height: Int?,
+        val weight: Int?,
         val bmi: Double?,
         val diabetesRiskIndex: Int?
     ) : UserProfileState()
@@ -30,18 +31,17 @@ sealed class UserProfileState {
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
-    private val tokenManager: TokenManager
+    val homeRepository: HomeRepository
 ) : ViewModel() {
 
     val userProfileState: StateFlow<UserProfileState> =
         homeRepository.observeProfileEntity()
-            .map { entity ->
+            .mapNotNull { entity ->
                 if (entity == null) {
                     UserProfileState.Loading
                 } else {
-                    val height = entity.height?.toDouble()
-                    val weight = entity.weight?.toDouble()
+                    val height = entity.height
+                    val weight = entity.weight
                     val bmi = entity.bmi_score
                     val riskIndex = entity.risk_index
                     UserProfileState.Success(height, weight, bmi, riskIndex)

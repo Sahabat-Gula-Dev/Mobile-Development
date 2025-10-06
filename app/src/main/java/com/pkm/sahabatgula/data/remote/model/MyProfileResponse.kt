@@ -30,6 +30,12 @@ data class MyProfile(
 	@field:SerializedName("bmi_score")
 	val bmiScore: Double,
 
+	@field:SerializedName("height")
+	val height: Int,
+
+	@field:SerializedName("weight")
+	val weight: Int,
+
 	@field:SerializedName("max_sugar")
 	val maxSugar: Double,
 

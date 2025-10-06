@@ -24,7 +24,9 @@ enum class ActivityLevel(val value: String) {
 data class ProfileData(
     val gender: String? = null,
     val age: Int? = null,
+    @SerializedName("height")
     val height: Int? = null,
+    @SerializedName("weight")
     val weight: Int? = null,
     @SerializedName("waist_circumference")
     val waistCircumference: Int? = null,

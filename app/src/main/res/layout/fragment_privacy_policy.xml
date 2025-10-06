@@ -43,7 +43,7 @@
                 android:id="@+id/tv_last_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Terakhir diperbarui 13 Agustus 2025"
+                android:text="Terakhir diperbarui 6 Oktober 2025"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:letterSpacing="0.02"

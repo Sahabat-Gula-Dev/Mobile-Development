@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:justificationMode="inter_word"
                 android:lineSpacingExtra="2sp"
-                android:text="Untuk pertanyaan, saran, atau keluhan terkait Sahabat Gula, Anda dapat menghubungi kami melalui sahabatgula@gmail.com."
+                android:text="Untuk pertanyaan, saran, atau keluhan terkait Sahabat Gula, Anda dapat menghubungi kami melalui info@sahabatgula.com."
                 android:textSize="14sp" />
 
             <TextView

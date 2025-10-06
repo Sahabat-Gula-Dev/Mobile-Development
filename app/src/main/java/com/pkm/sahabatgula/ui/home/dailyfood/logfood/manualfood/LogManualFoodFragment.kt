@@ -77,7 +77,7 @@ class LogManualFoodFragment : Fragment() {
         pagingAdapter = FoodPagingAdapter { foodItemManual ->
 //            val navController = requireParentFragment().findNavController()
             val action = LogFoodFragmentDirections.actionAddLogFoodToDetailFoodFragment(
-                foodItemManual)
+                null, foodItemManual)
 //            navController.navigate(action)
             findNavController().navigate(action)
 

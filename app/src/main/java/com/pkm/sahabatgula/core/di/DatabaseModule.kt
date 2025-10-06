@@ -3,6 +3,7 @@ package com.pkm.sahabatgula.core.di
 import android.content.Context
 import androidx.room.Room
 import com.pkm.sahabatgula.data.local.room.AppDatabase
+import com.pkm.sahabatgula.data.local.room.ChatDao
 import com.pkm.sahabatgula.data.local.room.MIGRATION_1_2
 import com.pkm.sahabatgula.data.local.room.MIGRATION_2_3
 import com.pkm.sahabatgula.data.local.room.MIGRATION_3_4
@@ -41,6 +42,13 @@ object DatabaseModule {
     fun provideSummaryDao(appDatabase: AppDatabase): SummaryDao {
         return appDatabase.SummaryDao()
     }
+
+    @Provides
+    fun provideChatDao(appDatabase: AppDatabase): ChatDao {
+        return appDatabase.ChatDao()
+    }
+
+
 
 
 

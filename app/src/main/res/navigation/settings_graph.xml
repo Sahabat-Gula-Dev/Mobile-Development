@@ -5,6 +5,7 @@
     android:id="@+id/settings_graph"
     app:startDestination="@id/settings_fragment">
 
+<!--    settings -->
     <fragment
         android:id="@+id/settings_fragment"
         android:name="com.pkm.sahabatgula.ui.settings.SettingsFragment"
@@ -13,8 +14,27 @@
         <action
             android:id="@+id/action_settings_fragment_to_user_profile_fragment"
             app:destination="@id/user_profile_fragment"/>
+
+        <action
+            android:id="@+id/action_settings_fragment_to_help_center_fragment"
+            app:destination="@id/help_center_fragment"/>
+
+        <action
+            android:id="@+id/action_settings_fragment_to_terms_and_conditions_fragment"
+            app:destination="@id/terms_and_conditions_fragment"/>
+        <action
+            android:id="@+id/action_settings_fragment_to_privacy_policy_fragment"
+            app:destination="@id/privacy_policy_fragment"/>
+
+        <action
+            android:id="@+id/action_settings_fragment_to_about_app_fragment"
+            app:destination="@id/about_app_fragment"/>
+
+
+
     </fragment>
 
+<!--    user profile -->
     <fragment
         android:id="@+id/user_profile_fragment"
         android:name="com.pkm.sahabatgula.ui.settings.userprofile.UserProfileFragment">
@@ -24,6 +44,26 @@
             app:destination="@id/input_data_graph"/>
     </fragment>
 
+<!--    help center -->
 
+    <fragment
+        android:id="@+id/help_center_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.helpcenter.HelpCenterFragment"/>
+
+<!--    privacy policy -->
+
+    <fragment
+        android:id="@+id/privacy_policy_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.helpcenter.HelpCenterFragment"/>
+
+<!--    terms and condition -->
+    <fragment
+        android:id="@+id/terms_and_conditions_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.appinfo.TermsAndConditionsFragment"/>
+
+<!--       terms and condition -->
+    <fragment
+        android:id="@+id/about_app_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.appinfo.AboutFragment"/>
 
 </navigation>

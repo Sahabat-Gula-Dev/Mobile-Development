@@ -69,7 +69,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Panduan umum untuk pengguna"
 
             root.setOnClickListener {
-                // ke help center
+                findNavController().navigate(R.id.action_settings_fragment_to_help_center_fragment)
             }
 
         }
@@ -84,6 +84,15 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        val recipient = "info@sahabatgula.com"
+        val subject = "Saran Data Makanan Baru"
+        val message = "Halo tim Sahabat Gula, saya ingin memberikan saran terkait data makanan baru"
+        val intent = android.content.Intent(android.content.Intent.ACTION_SENDTO).apply {
+            data = android.net.Uri.parse("mailto:$recipient")
+            putExtra(android.content.Intent.EXTRA_SUBJECT, subject)
+            putExtra(android.content.Intent.EXTRA_TEXT, message)
+        }
+
         binding.cardNewFoodSuggestions.apply {
             icAction.setImageResource(R.drawable.ic_suggestion_food)
             tvTitleAction.text = "Ada Saran Makanan Baru? "
@@ -91,7 +100,11 @@ class SettingsFragment : Fragment() {
 
             root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_suggestion_food_background))
             root.setOnClickListener {
-                // email untuk suggestion food
+                try {
+                    startActivity(intent)
+                } catch (e: android.content.ActivityNotFoundException) {
+                    android.widget.Toast.makeText(requireContext(), "Tidak ada aplikasi email yang terinstall", android.widget.Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -100,7 +113,7 @@ class SettingsFragment : Fragment() {
             tvTitleSettingCard.text = "Kebijakan Privasi"
             tvSubtitleSettingCard.text = "Pelajari perizinan dan akses aplikasi"
             root.setOnClickListener {
-                // ke privacy policy
+                findNavController().navigate(R.id.action_settings_fragment_to_privacy_policy_fragment)
             }
 
         }
@@ -111,7 +124,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Pelajari hak dan kewajiban pengguna"
 
             root.setOnClickListener {
-                // ke terms and conditions
+                findNavController().navigate(R.id.action_settings_fragment_to_terms_and_conditions_fragment)
             }
         }
 
@@ -121,7 +134,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Versi aplikasi dan pengembangan"
 
             root.setOnClickListener {
-                // ke about app
+                findNavController().navigate(R.id.action_settings_fragment_to_about_app_fragment)
             }
         }
 

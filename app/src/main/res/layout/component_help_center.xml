@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,23 +13,62 @@
     android:layout_marginBottom="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clickable_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_title_setting_card"
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:letterSpacing="0.02"
-            android:lineSpacingExtra="2sp"
-            android:text="Bagaimana cara membuat akun baru?"
+            android:layout_marginEnd="16dp"
+            android:text="Bagaimana cara masuk ke akun yang sudah ada?"
             android:textColor="@color/md_theme_onSurface"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginEnd="24dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@id/ic_arrow_expand"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ic_arrow_right"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/ic_arrow_expand"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/keyboard_arrow_down"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:tint="@color/black" />
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#EDEDED"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="4sp"
+            android:text="Buka aplikasi, pilih Masuk, lalu masukkan email dan kata sandi terdaftar. Tekan Masuk untuk mengakses akun."
+            android:textSize="14sp"
+            android:textColor="@color/md_theme_onSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_line" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/expandable_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="view_line,tv_description,ic_arrow_expand"/>
 
         <ImageView
             android:id="@+id/ic_arrow_right"
@@ -36,9 +76,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             android:src="@drawable/ic_keyboard_arrow_right"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </com.google.android.material.card.MaterialCardView>

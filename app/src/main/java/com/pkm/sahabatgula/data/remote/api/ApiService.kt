@@ -11,12 +11,14 @@ import com.pkm.sahabatgula.data.remote.model.DetailArticleResponse
 import com.pkm.sahabatgula.data.remote.model.DetailFoodResponse
 import com.pkm.sahabatgula.data.remote.model.EventCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.EventResponse
+import com.pkm.sahabatgula.data.remote.model.FaqCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodListResponse
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
+import com.pkm.sahabatgula.data.remote.model.HelpCenterResponse
 import com.pkm.sahabatgula.data.remote.model.LogActivityRequest
 import com.pkm.sahabatgula.data.remote.model.LogActivityResponse
 import com.pkm.sahabatgula.data.remote.model.LogFoodRequest
@@ -176,5 +178,19 @@ interface ApiService {
     suspend fun getArticleDetail(
         @Path("id") id: String
     ): Response<DetailArticleResponse>
+
+    @GET("faqs")
+    suspend fun getFaqs(
+        @Query("q") quary: String? = null,
+        @Query("category_id") categoryId: Int? = null,
+        @Query("category_name") categoryName: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20,
+        @Query("sort") sort: String = "created_at.desc"
+    ): Response<HelpCenterResponse>
+
+
+    @GET("faq-categories")
+    suspend fun getFaqCategories(): Response<FaqCategoryListResponse>
 
 }

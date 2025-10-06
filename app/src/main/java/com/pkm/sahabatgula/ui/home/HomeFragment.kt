@@ -242,6 +242,10 @@ class HomeFragment : Fragment() {
         binding.cardTotalSteps.root.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_log_step)
         }
+
+        binding.icInsight.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_insight)
+        }
     }
 
     override fun onDestroyView() {

@@ -42,6 +42,9 @@ interface SummaryDao {
     @Query("SELECT * FROM summary WHERE type = :type AND date = :date LIMIT 1")
     fun getSummaryByDate(type: String, date: String): Flow<SummaryEntity?>
 
+    @Query("SELECT * FROM summary WHERE type = :type AND date = :date LIMIT 1")
+    suspend fun getSummaryByDateForInsight(type: String, date: String): SummaryEntity
+
     @Query("SELECT * FROM summary WHERE type = :type ORDER BY date DESC")
     fun getSummaryByType(type: String): Flow<List<SummaryEntity>>
 
@@ -64,4 +67,21 @@ interface SummaryDao {
     fun getAllMonthlySummary(): Flow<List<SummaryEntity>>
 
     companion object
+}
+
+@Dao
+interface ChatDao {
+
+    // Fungsi untuk memasukkan pesan baru ke database
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMessage(message: ChatMessageEntity)
+
+    // Fungsi untuk mengambil semua pesan, diurutkan dari yang paling lama
+    // Menggunakan Flow agar UI bisa update secara otomatis saat ada pesan baru
+    @Query("SELECT * FROM chat_messages ORDER BY timestamp ASC")
+    fun getAllMessages(): Flow<List<ChatMessageEntity>>
+
+    // (Opsional) Fungsi untuk menghapus riwayat percakapan
+    @Query("DELETE FROM chat_messages")
+    suspend fun clearHistory()
 }

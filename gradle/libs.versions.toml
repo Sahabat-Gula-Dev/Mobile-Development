@@ -41,6 +41,7 @@ ksp = "2.0.21-1.0.27"
 navigation = "2.7.7"
 pagingCommon = "3.3.6"
 pagingRuntimeKtx = "3.3.6"
+generativeai = "0.9.0"
 
 [libraries]
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
@@ -89,6 +90,7 @@ retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", v
 mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "pagingCommon" }
 androidx-paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
+generativeai = { group = "com.google.ai.client.generativeai", name = "generativeai", version.ref = "generativeai" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

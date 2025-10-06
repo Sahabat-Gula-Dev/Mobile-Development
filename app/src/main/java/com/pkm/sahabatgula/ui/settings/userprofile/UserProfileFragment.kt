@@ -37,8 +37,8 @@ class UserProfileFragment : Fragment() {
             viewModel.userProfileState.collect { state ->
                 when (state) {
                     is UserProfileState.Success -> {
-                        binding.tvNumberHeight.text = state.height?.toInt().toString()
-                        binding.tvNumberWeight.text = state.weight?.toInt().toString()
+                        binding.tvNumberHeight.text = state.height.toString()
+                        binding.tvNumberWeight.text = state.weight.toString()
                         binding.tvNumberBmi.text = state.bmi.toString()
                         val riskIndex = state.diabetesRiskIndex
                         val riskCategory = getRiskCategory(requireContext(), riskIndex)

@@ -35,6 +35,10 @@
         <action
             android:id="@+id/action_home_to_add_log_food"
             app:destination="@id/add_log_food_fragment"/>
+        <action
+            android:id="@+id/action_home_to_insight"
+            app:destination="@id/insight_fragment"/>
+
     </fragment>
 
     <fragment
@@ -48,6 +52,11 @@
     <fragment
         android:id="@+id/log_water_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailywater.WaterFragment"/>
+
+    <fragment
+        android:id="@+id/insight_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.insight.InsightFragment"/>
+
 
     <fragment
         android:id="@+id/log_step_fragment"
@@ -102,6 +111,10 @@
         <action
             android:id="@+id/action_add_log_food_to_detail_food_fragment"
             app:destination="@id/detail_food_fragment" >
+            <argument
+                android:name="foodItem"
+                app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
+                app:nullable="true"/>
             <argument
                 android:name="foodItemManual"
                 app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
