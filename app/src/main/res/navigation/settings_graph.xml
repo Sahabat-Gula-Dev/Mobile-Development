@@ -16,6 +16,10 @@
             app:destination="@id/user_profile_fragment"/>
 
         <action
+            android:id="@+id/action_settings_fragment_to_log_history_fragment"
+            app:destination="@id/log_history_fragment"/>
+
+        <action
             android:id="@+id/action_settings_fragment_to_help_center_fragment"
             app:destination="@id/help_center_fragment"/>
 
@@ -65,5 +69,11 @@
     <fragment
         android:id="@+id/about_app_fragment"
         android:name="com.pkm.sahabatgula.ui.settings.appinfo.AboutFragment"/>
+
+    <!--       terms and condition -->
+    <fragment
+        android:id="@+id/log_history_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.loghistory.UserHistoryFragment"/>
+
 
 </navigation>

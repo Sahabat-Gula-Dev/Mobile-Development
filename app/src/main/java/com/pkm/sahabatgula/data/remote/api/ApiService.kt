@@ -19,6 +19,7 @@ import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.remote.model.GoogleAuthResponse
 import com.pkm.sahabatgula.data.remote.model.HelpCenterResponse
+import com.pkm.sahabatgula.data.remote.model.HistoryResponse
 import com.pkm.sahabatgula.data.remote.model.LogActivityRequest
 import com.pkm.sahabatgula.data.remote.model.LogActivityResponse
 import com.pkm.sahabatgula.data.remote.model.LogFoodRequest
@@ -189,8 +190,11 @@ interface ApiService {
         @Query("sort") sort: String = "created_at.desc"
     ): Response<HelpCenterResponse>
 
-
     @GET("faq-categories")
     suspend fun getFaqCategories(): Response<FaqCategoryListResponse>
 
+    @GET("history-log")
+    suspend fun getUserHistory(
+        @Header("Authorization") token: String,
+    ): Response<HistoryResponse>
 }

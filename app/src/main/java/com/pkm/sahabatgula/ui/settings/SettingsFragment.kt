@@ -59,7 +59,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Lihat kembali catatan harianmu"
 
             root.setOnClickListener {
-                // ke history konsumsi dan aktivitas
+                findNavController().navigate(R.id.action_settings_fragment_to_log_history_fragment)
             }
         }
 

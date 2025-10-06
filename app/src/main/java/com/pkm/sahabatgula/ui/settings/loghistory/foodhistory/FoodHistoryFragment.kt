@@ -1,60 +1,68 @@
 package com.pkm.sahabatgula.ui.settings.loghistory.foodhistory
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pkm.sahabatgula.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.local.TokenManager
+import com.pkm.sahabatgula.databinding.FragmentFoodHistoryBinding
+import com.pkm.sahabatgula.ui.settings.loghistory.ParentFoodHistoryAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FoodHistoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class FoodHistoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var _binding: FragmentFoodHistoryBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: FoodHistoryViewModel by viewModels()
+    @Inject
+    lateinit var tokenManager: TokenManager
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentFoodHistoryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        tokenManager = TokenManager(requireContext())
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val token = tokenManager.getAccessToken()
+        if (token.isNullOrEmpty()) return
+
+        binding.rvParentFood.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.fetchHistory(token)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.historyState.collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        binding.rvParentFood.adapter = ParentFoodHistoryAdapter(resource.data)
+                    }
+                    is Resource.Error -> {
+                        Log.e("DEBUG_NAV", "FoodHistoryFragment: ${resource.message}")
+                    }
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_food_history, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FoodHitoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FoodHistoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
