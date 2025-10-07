@@ -52,12 +52,20 @@ class ActivityFragment : Fragment() {
                     is ActivityState.Success -> {
                         binding.piLogCalories.apply {
                             tvRemaining.text = state.burned.toString()
+
+                            val burned = state.burned ?: 0
+                            val maxBurned = state.maxBurned ?: 0
+
+                            val progressCalories = if (maxBurned > 0) {
+                                (burned.toDouble() / maxBurned.toDouble()) * 100
+                            } else {
+                                0.0
+                            }
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory))
-                            val progressCalories = (state.burned?.div(state.maxBurned?:0))?.times(100)
                             tvFormat.text = "kkal"
                             icObject.setImageResource(R.drawable.ic_activity_dumble_circle)
                             circularProgressView.apply {
-                                progress = progressCalories?:0
+                                progress = progressCalories.toInt()
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory))
                                 trackColor = ContextCompat.getColor(requireContext(), R.color.brown_activity_calory_background)
                             }

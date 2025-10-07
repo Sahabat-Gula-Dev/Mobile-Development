@@ -82,16 +82,24 @@ class ExploreArticleFragment : Fragment() {
         val chipGroup = binding.chipGroupArticleCategories
         chipGroup.removeAllViews()
 
-        val customTypefaceRegular = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_regular)
-        val customTypefaceBold = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
+        val customTypefaceRegular =
+            ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_regular)
+        val customTypefaceBold =
+            ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
 
         val backgroundStates = arrayOf(
             intArrayOf(android.R.attr.state_checked), // Saat terpilih
             intArrayOf(-android.R.attr.state_checked) // Saat normal (tidak terpilih)
         )
         val backgroundColors = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.md_theme_primary), // Warna solid saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_surface)  // Warna putih/surface saat normal
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.md_theme_primary
+            ), // Warna solid saat terpilih
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.md_theme_surface
+            )  // Warna putih/surface saat normal
         )
         val backgroundColorStateList = ColorStateList(backgroundStates, backgroundColors)
 
@@ -101,8 +109,14 @@ class ExploreArticleFragment : Fragment() {
             intArrayOf(-android.R.attr.state_checked) // Saat normal
         )
         val textColors = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary), // Warna putih saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant)   // Warna abu-abu saat normal
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.md_theme_onPrimary
+            ), // Warna putih saat terpilih
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.md_theme_onSurfaceVariant
+            )   // Warna abu-abu saat normal
         )
         val textColorStateList = ColorStateList(textStates, textColors)
 

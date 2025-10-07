@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.ui.home.dailysugar.history.SugarChartPagerAdapter
 import com.pkm.sahabatgula.R
@@ -25,6 +26,7 @@ class SugarFragment : Fragment() {
     private var _binding: FragmentSugarBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SugarViewModel by viewModels()
+    private var hasShownOverLimitDialog = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +61,15 @@ class SugarFragment : Fragment() {
                         // berapa sugar saat ini
                         Log.d("SugarFragment", "Current Sugar: ${state.currentSugar}")
 
-                        val progressSugar = (state.currentSugar / state.maxSugar) * 100
+                        val progressSugar = ((state.currentSugar / state.maxSugar) * 100).coerceIn(0.0, 100.0)
+
+                        if (progressSugar >= 100 && !hasShownOverLimitDialog) {
+                            showOverLimitDialog()
+                            hasShownOverLimitDialog = true
+                        } else if (progressSugar < 100) {
+                            // Reset flag supaya popup muncul lagi kalau besok over lagi
+                            hasShownOverLimitDialog = false
+                        }
 
                         binding.piDailySugar.circularProgressView.progress = progressSugar.toInt()
 
@@ -110,5 +120,15 @@ class SugarFragment : Fragment() {
             )
 
         }
+    }
+
+    private fun showOverLimitDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Batas Gula Terlampaui")
+            .setMessage("Konsumsi gulamu sudah melebihi batas harian. Kurangi konsumsi makanan/minuman manis untuk menjaga kesehatanmu.")
+            .setPositiveButton("Oke") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

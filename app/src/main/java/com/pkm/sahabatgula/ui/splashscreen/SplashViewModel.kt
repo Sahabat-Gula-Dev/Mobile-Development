@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.data.remote.api.ApiService
+import com.pkm.sahabatgula.data.repository.OnboardingRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 enum class SplashDestination {
+    ONBOARDING_FLOW,
     AUTH_FLOW,
     INPUT_DATA_FLOW,
     HOME_FLOW,
@@ -22,7 +24,8 @@ enum class SplashDestination {
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val sessionManager: SessionManager,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val onboardingRepository: OnboardingRepository
 ): ViewModel() {
 
     private val _destination = MutableStateFlow(SplashDestination.LOADING)
@@ -38,6 +41,17 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 kotlinx.coroutines.delay(1200)
+
+                if (onboardingRepository.isFirstTime()) {
+                    _destination.value = SplashDestination.ONBOARDING_FLOW
+                    return@launch // Hentikan pengecekan lebih lanjut
+                }
+
+                // Jika onboarding sudah selesai, lanjutkan ke logika session yang ada
+                if (!sessionManager.isLoggedIn()) {
+                    _destination.value = SplashDestination.AUTH_FLOW
+                    return@launch
+                }
 
                 if (!sessionManager.isLoggedIn()) {
                     _destination.value = SplashDestination.AUTH_FLOW

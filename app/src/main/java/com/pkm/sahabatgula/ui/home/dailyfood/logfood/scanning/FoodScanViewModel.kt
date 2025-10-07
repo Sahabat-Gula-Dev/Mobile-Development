@@ -31,22 +31,34 @@ class FoodScanViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ScanUiState>(ScanUiState.Loading)
     val uiState: StateFlow<ScanUiState> = _uiState
 
+    private val CONFIDENCE_THRESHOLD = 0.7
+
     fun predictImage(imageUri: Uri?) {
         viewModelScope.launch {
             _uiState.value = ScanUiState.Loading
 
             val imageFile = uriToFile(imageUri, context)
-            if(imageFile == null) {
+            if (imageFile == null) {
                 _uiState.value = ScanUiState.Error("Image file is null")
                 return@launch
             }
             try {
-
                 when (val result = scanRepository.predictImage(imageFile)) {
                     is Resource.Success -> {
-                        val foodList = result.data?.data?.foods ?: emptyList()
-                        Log.d("FoodScanViewModel", "Parsing Sukses. Jumlah makanan: ${foodList.size}")
-                        _uiState.value = ScanUiState.Success(foodList)
+                        val predictionData = result.data?.data
+                        val confidence = predictionData?.predictionConfidence ?: 0.0
+
+                        Log.d("FoodScanViewModel", "Confidence prediction: $confidence")
+
+                        if (confidence >= CONFIDENCE_THRESHOLD) {
+                            val foodList = predictionData?.foods ?: emptyList()
+                            _uiState.value = ScanUiState.Success(foodList)
+                            Log.d("FoodScanViewModel", "Prediksi valid, jumlah food items: ${foodList.size}")
+                        } else {
+                            _uiState.value = ScanUiState.Error(
+                                "Confidence terlalu rendah (${String.format("%.2f", confidence)}). Minimal $CONFIDENCE_THRESHOLD"
+                            )
+                        }
                     }
                     is Resource.Error -> {
                         _uiState.value = ScanUiState.Error(result.message ?: "Error")
@@ -54,7 +66,6 @@ class FoodScanViewModel @Inject constructor(
                     else -> {}
                 }
             } finally {
-
                 if (imageFile.exists()) {
                     if (imageFile.delete()) {
                         Log.d("FileCleanup", "File temporer berhasil dihapus: ${imageFile.path}")

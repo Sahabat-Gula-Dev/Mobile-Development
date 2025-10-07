@@ -29,6 +29,9 @@ interface ProfileDao {
     @Query("SELECT * FROM user_profile LIMIT 1")
     fun observeProfile(): Flow<ProfileEntity?>
 
+    @Query("SELECT * FROM user_profile LIMIT 1")
+    fun getLocalProfile(): ProfileEntity?
+
     @Query("DELETE FROM user_profile")
     suspend fun clearAll()
 

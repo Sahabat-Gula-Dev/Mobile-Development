@@ -10,6 +10,7 @@ import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.remote.model.ProfileData
 import com.pkm.sahabatgula.data.remote.model.SetupProfileResponse
 import com.pkm.sahabatgula.data.repository.ProfileRepository
+import com.pkm.sahabatgula.data.repository.toProfileEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class InputDataViewModel @Inject constructor(private val  profileRepository: ProfileRepository, private val sessionManager: SessionManager) : ViewModel(){
+class InputDataViewModel @Inject constructor(private val  profileRepository: ProfileRepository, private val sessionManager: SessionManager, private val profileDao: ProfileDao) : ViewModel(){
 
     private val _profileData = MutableStateFlow(ProfileData())
     val profileData: StateFlow<ProfileData> = _profileData
@@ -135,11 +136,28 @@ class InputDataViewModel @Inject constructor(private val  profileRepository: Pro
         viewModelScope.launch {
             Log.d("PROFILE_SETUP", "Submit profile data dipanggil")
             _setupResult.value = Resource.Loading()
-            _setupResult.value = profileRepository.setupProfile(_profileData.value)
+
+            val result = profileRepository.setupProfile(_profileData.value)
+            _setupResult.value = result
             if (_setupResult.value is Resource.Success) {
                 sessionManager.setProfileCompleted(true)
             }
+
+            when (result) {
+                is Resource.Success -> {
+                    // Profil sudah sukses setup → fetch ulang profil untuk isi Room
+                    profileRepository.fetchMyProfileAndCache()
+                    Log.d("PROFILE_SETUP", "Profil berhasil disimpan di server dan lokal")
+                }
+                is Resource.Error -> {
+                    Log.e("PROFILE_SETUP", "Gagal setup profil: ${result.message}")
+                }
+                else -> {}
+            }
+
         }
     }
+
+
 
 }

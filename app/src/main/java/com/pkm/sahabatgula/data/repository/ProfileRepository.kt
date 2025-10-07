@@ -59,6 +59,20 @@ class ProfileRepository @Inject constructor(
             Resource.Error(e.message ?: "Terjadi Kesalahan")
         }
     }
+
+    suspend fun fetchMyProfileAndCache() {
+        val token = tokenManager.getAccessToken() ?: return
+        val response = apiService.getMyProfile("Bearer $token")
+        if (response.isSuccessful) {
+            val myProfile = response.body()?.data?.myProfile
+            if (myProfile != null) {
+                profileDao.upsertProfile(myProfile.toProfileEntity())
+            }
+        } else {
+            Log.e("ProfileRepository", "Gagal fetch profil ulang: ${response.message()}")
+        }
+    }
+
 }
 
 fun ProfileData.toProfileEntity(

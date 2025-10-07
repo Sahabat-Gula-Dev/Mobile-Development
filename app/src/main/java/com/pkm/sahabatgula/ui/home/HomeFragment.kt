@@ -240,7 +240,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_to_log_water)
         }
         binding.cardTotalSteps.root.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_log_step)
+            Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
         }
 
         binding.icInsight.setOnClickListener {

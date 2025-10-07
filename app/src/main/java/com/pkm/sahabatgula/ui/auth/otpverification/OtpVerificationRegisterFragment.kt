@@ -93,7 +93,7 @@ class OtpVerificationRegisterFragment : Fragment() {
                                 Log.d("OTP", "Token saved: ${tokenManager.getAccessToken()}")
                                 findNavController().navigate(R.id.otp_to_welcome_screen)
                             }
-                            // TAMBAHKAN CABANG 'ELSE' DI SINI
+
                             else -> {
                                 // Biarkan kosong jika tidak ada aksi lain yang perlu dilakukan
                                 // Atau bisa untuk logging jika ada effect tak terduga

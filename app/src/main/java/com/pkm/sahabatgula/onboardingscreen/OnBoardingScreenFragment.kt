@@ -1,60 +1,135 @@
 package com.pkm.sahabatgula.onboardingscreen
 
+import android.content.res.Resources
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.databinding.FragmentOnBoardingScreenBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [OnBoardingScreenFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class OnBoardingScreenFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentOnBoardingScreenBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: OnboardingViewModel by viewModels()
+
+    @Inject
+    lateinit var sessionManager: com.pkm.sahabatgula.data.local.SessionManager
+    @Inject lateinit var apiService: com.pkm.sahabatgula.data.remote.api.ApiService
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentOnBoardingScreenBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.items.observe(viewLifecycleOwner) { onboardingItems ->
+            val adapter = OnboardingAdapter(this, onboardingItems)
+            binding.viewPagerContent.adapter = adapter
+
+            TabLayoutMediator(binding.tabLayoutDots, binding.viewPagerContent) { tab, _ ->
+                tab.setCustomView(R.layout.component_tab_dot)
+            }.attach()
+
+            (binding.tabLayoutDots.getChildAt(0) as? ViewGroup)?.let { strip ->
+                for (i in 0 until strip.childCount) {
+                    val tabView = strip.getChildAt(i)
+                    tabView.setPadding(0, -72, 0, 0)
+                    tabView.minimumWidth = 0
+                }
+            }
+
+            fun resizeDot(tab: TabLayout.Tab, selected: Boolean) {
+                val dot = tab.customView?.findViewById<View>(R.id.dot) ?: return
+                val lp = dot.layoutParams
+                if (selected) {
+                    lp.width = 24.dp; lp.height = 8.dp
+                } else {
+                    lp.width = 8.dp; lp.height = 8.dp
+                }
+                dot.layoutParams = lp
+                dot.isSelected = selected
+                dot.requestLayout()
+            }
+
+            binding.tabLayoutDots.post {
+                val selectedPos = binding.tabLayoutDots.selectedTabPosition.coerceAtLeast(0)
+                for (i in 0 until binding.tabLayoutDots.tabCount) {
+                    binding.tabLayoutDots.getTabAt(i)?.let { resizeDot(it, i == selectedPos) }
+                }
+            }
+
+            binding.tabLayoutDots.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) = resizeDot(tab, true)
+                override fun onTabUnselected(tab: TabLayout.Tab) = resizeDot(tab, false)
+                override fun onTabReselected(tab: TabLayout.Tab) {}
+            })
+
+            binding.buttonNext.setOnClickListener {
+                val currentItem = binding.viewPagerContent.currentItem
+                val lastIndex = onboardingItems.lastIndex
+                if (currentItem < lastIndex) {
+                    binding.viewPagerContent.currentItem = currentItem + 1
+                } else {
+                    viewModel.completeOnboarding()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        handlePostOnboardingNavigation()
+                    }
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_on_boarding_screen, container, false)
+    private suspend fun handlePostOnboardingNavigation() {
+        // Kalau belum login → Auth
+        if (!sessionManager.isLoggedIn()) {
+            findNavController().navigate(R.id.action_onboarding_to_auth)
+            return
+        }
+
+        // Kalau sudah login → ambil profile dulu (sync dari API/local)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val profile = sessionManager.getOrFetchProfile(apiService)
+
+            if (profile == null) {
+                // Token expired atau gagal fetch → ke auth
+                sessionManager.clearSession()
+                findNavController().navigate(R.id.action_onboarding_to_auth)
+                return@launch
+            }
+
+            if (sessionManager.isProfileCompleted()) {
+                findNavController().navigate(R.id.action_onboarding_to_home)
+            } else {
+                findNavController().navigate(R.id.action_onboarding_to_input_data)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MonitorDailyIntakeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OnBoardingScreenFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    private val Int.dp: Int
+        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

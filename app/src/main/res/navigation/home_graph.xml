@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_log_carbo_to_log_food"
             app:destination="@id/log_food_fragment"/>
+        <action
+            android:id="@+id/action_log_carbo_to_log_history"
+            app:destination="@id/log_history_fragment"/>
     </fragment>
 
     <fragment
@@ -80,14 +83,17 @@
         <action
             android:id="@+id/action_log_fat_to_log_food"
             app:destination="@id/log_food_fragment"/>
+        <action
+            android:id="@+id/action_log_fat_to_log_history"
+            app:destination="@id/log_history_fragment"/>
     </fragment>
 
     <fragment
         android:id="@+id/log_protein_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyprotein.ProteinFragment">
         <action
-            android:id="@+id/action_log_protein_to_log_food"
-            app:destination="@id/log_food_fragment"/>
+            android:id="@+id/action_log_protein_to_log_history"
+            app:destination="@id/log_history_fragment"/>
     </fragment>
 
     <fragment

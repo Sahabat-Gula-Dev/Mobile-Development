@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_register"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textColor="@color/md_theme_onSurface"
             android:textStyle="bold"
             android:layout_marginBottom="6dp"/>
@@ -91,8 +91,6 @@
             android:layout_marginTop="24dp"
             app:startIconDrawable="@drawable/ic_lock"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/red_error"
-            app:boxStrokeColor="@color/red_error"
             app:boxStrokeErrorColor="@color/red_error">
 
             <!-- untuk custom warning ketika error dilakukan pada logic ui -->

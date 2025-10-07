@@ -7,25 +7,37 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pkm.sahabatgula.data.remote.model.HistoryItem
 import com.pkm.sahabatgula.databinding.ItemParentDateBinding
 
-class ParentActivityHistoryAdapter(private val items: List<HistoryItem>?) :
-    RecyclerView.Adapter<ParentActivityHistoryAdapter.ViewHolder>() {
+class ParentActivityHistoryAdapter(
+    private val historyList: List<HistoryItem>?
+) : RecyclerView.Adapter<ParentActivityHistoryAdapter.ParentViewHolder>() {
 
-    inner class ViewHolder(val binding: ItemParentDateBinding) :
+    inner class ParentViewHolder(val binding: ItemParentDateBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
         val binding = ItemParentDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ParentViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val historyItem = items?.get(position)
+    override fun onBindViewHolder(holder: ParentViewHolder, position: Int) {
+        val historyItem = historyList?.get(position)
         with(holder.binding) {
             tvDate.text = historyItem?.date
+
+            var childAdapter: ChildActivityAdapter? = null
+
+            childAdapter =
+                ChildActivityAdapter(historyItem?.activities?.toMutableList()!!) { pos, item ->
+                childAdapter?.collapseAllExcept(pos)
+                item.isExpanded = !item.isExpanded
+                childAdapter?.updateItem(pos, item)
+            }
+
             rvChild.layoutManager = LinearLayoutManager(root.context)
-            rvChild.adapter = ChildActivityAdapter(historyItem?.activities?: emptyList())
+            rvChild.adapter = childAdapter
+
         }
     }
 
-    override fun getItemCount(): Int = items?.size?:0
+    override fun getItemCount(): Int = historyList!!.size
 }

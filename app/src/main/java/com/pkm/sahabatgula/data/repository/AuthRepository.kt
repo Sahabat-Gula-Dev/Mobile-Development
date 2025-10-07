@@ -22,7 +22,9 @@ import com.pkm.sahabatgula.data.remote.model.VerifyOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyOtpResponse
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpRequest
 import com.pkm.sahabatgula.data.remote.model.VerifyResetOtpResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.runCatching
@@ -159,6 +161,10 @@ class AuthRepository @Inject constructor(
     fun observeProfile(): Flow<ProfileEntity?> {
         return profileDao.observeProfile()
     }
+    suspend fun getLocalProfile(): ProfileEntity? = withContext(Dispatchers.IO) {
+        profileDao.getProfile()
+    }
+
 }
 
 fun MyProfile.toProfileEntity(): ProfileEntity {

@@ -66,5 +66,9 @@ data class PredictionData(
 	val imageUrl: String? = null,
 
 	@field:SerializedName("meta")
-	val meta: Meta? = null
+	val meta: Meta? = null,
+
+	@field:SerializedName("prediction_confidence")
+	val predictionConfidence: Double? = null
+
 )

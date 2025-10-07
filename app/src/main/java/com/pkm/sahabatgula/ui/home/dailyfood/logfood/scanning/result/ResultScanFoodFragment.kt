@@ -70,12 +70,13 @@ class ResultScanFoodFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
 
+                // treshold
+
                 binding.rvResult.isVisible = state is ScanUiState.Success
 
                 when (state) {
                     is ScanUiState.Success -> {
                         if (state.foodItems.isEmpty()) {
-                            // nanti ganti pake state
                             Toast.makeText(requireContext(), "Tidak ada makanan yang ditemukan", Toast.LENGTH_SHORT).show()
                         } else {
                             Log.d("ResultScanFragment", "Mengirim data ke adapter. Jumlah: ${state.foodItems.size}")

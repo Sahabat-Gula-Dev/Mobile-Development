@@ -38,11 +38,14 @@ class MainActivity : AppCompatActivity() {
 
         // Logika Anda untuk menyembunyikan BottomNav sudah benar dan bisa tetap di sini
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val isAuthFlow = destination.parent?.id == R.id.auth_graph ||
-                    destination.parent?.id == R.id.input_data_graph ||
-                    destination.id == R.id.splashscreen_fragment
+            val isThisFlow =
+                destination.parent?.id == R.id.auth_graph ||
+                destination.parent?.id == R.id.input_data_graph ||
+                destination.id == R.id.splashscreen_fragment ||
+                destination.id == R.id.onboarding_fragment
 
-            if (isAuthFlow) {
+
+            if (isThisFlow) {
                 binding.navView.visibility = View.GONE
             } else {
                 binding.navView.visibility = View.VISIBLE
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.home_fragment -> setStatusBarGreen()  // Khusus fragment A
+                R.id.home_fragment, R.id.onboarding_fragment -> setStatusBarGreen()  // Khusus fragment A
                 else -> setStatusBarDefault()         // Semua fragment lainnya
             }
         }

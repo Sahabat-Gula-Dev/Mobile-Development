@@ -35,6 +35,11 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 splashViewModel.destination.collect { destination ->
                     when (destination) {
+                        SplashDestination.ONBOARDING_FLOW -> {
+                            if (findNavController().currentDestination?.id == R.id.splashscreen_fragment) {
+                                findNavController().navigate(R.id.action_splash_to_onboarding)
+                            }
+                        }
                         SplashDestination.AUTH_FLOW -> {
                             if (findNavController().currentDestination?.id == R.id.splashscreen_fragment) {
                                 findNavController().navigate(R.id.action_splash_to_auth)
@@ -56,6 +61,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
             }
         }
     }
+
 
 
 }

@@ -46,6 +46,7 @@ class ActivityHistoryFragment : Fragment() {
         val token = tokenManager.getAccessToken()
         if (token.isNullOrEmpty()) return
 
+
         binding.rvParentActivity.layoutManager = LinearLayoutManager(requireContext())
         viewModel.fetchHistory(token)
 

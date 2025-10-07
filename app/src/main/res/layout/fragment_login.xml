@@ -43,6 +43,7 @@
             android:layout_marginBottom="24dp"/>
 
         <include
+            android:id="@+id/comp_sign_in_with_google"
             layout="@layout/component_google_button"
             android:layout_width="match_parent"
             android:layout_height="56dp"

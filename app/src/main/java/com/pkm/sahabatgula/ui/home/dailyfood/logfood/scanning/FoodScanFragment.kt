@@ -157,14 +157,20 @@ class FoodScanFragment : Fragment() {
         requireContext(), Manifest.permission.CAMERA
     ) == PackageManager.PERMISSION_GRANTED
 
-    private fun sendUriToParent(uri: Uri) {
-        Log.d("DEBUG_NAV", "FoodScanFragment: Mengirim URI ke parent. URI: $uri")
+    private fun sendUriToParent(uri: Uri?) {
+        if (uri == null) {
+            Toast.makeText(requireContext(), "Gambar tidak ditemukan. Coba lagi.", Toast.LENGTH_SHORT).show()
+            Log.d("DEBUG_NAV", "FoodScanFragment: URI null, tidak ada gambar yang dikirim.")
+            return
+        }
 
-        val bundle = Bundle().apply{
+        Log.d("DEBUG_NAV", "FoodScanFragment: Mengirim URI ke parent. URI: $uri")
+        val bundle = Bundle().apply {
             putParcelable("uri", uri)
         }
         parentFragmentManager.setFragmentResult("scanResultKey", bundle)
     }
+
 
     private fun imageProxyToBitmap(image: ImageProxy): Bitmap {
         val planeProxy = image.planes[0]

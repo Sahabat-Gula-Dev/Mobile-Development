@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_graph"
-    app:startDestination="@id/register_fragment">
-
-<!--    <fragment-->
-<!--        android:id="@+id/splashscreen_fragment"-->
-<!--        android:name="com.pkm.sahabatgula.ui.splashscreen.SplashScreenFragment"-->
-<!--        tools:layout="@layout/fragment_scan">-->
-<!--        <action-->
-<!--            android:id="@+id/splashscreen_to_onboarding"-->
-<!--            app:destination="@id/onboarding_screen_fragment"/>-->
-<!--    </fragment>-->
+    app:startDestination="@id/login_fragment">
 
     <fragment
         android:id="@+id/onboarding_screen_fragment"
@@ -45,19 +35,24 @@
             android:id="@+id/login_to_register"
             app:destination="@id/register_fragment" />
         <action
-            android:id="@+id/action_login_to_home"
+            android:id="@+id/action_login_to_home_graph"
             app:destination="@id/home_graph"
-            app:popUpTo="@id/auth_graph"
-            app:popUpToInclusive="true"/>
-        <action
-            android:id="@+id/action_login_to_input_data"
-            app:destination="@id/input_data_graph"
             app:popUpTo="@id/auth_graph"
             app:popUpToInclusive="true"/>
 
         <action
+            android:id="@+id/action_login_to_welcome_screen"
+            app:destination="@id/welcome_screen_fragment"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_login_to_forgot_password"
             app:destination="@id/input_email_forgot_password_fragment"/>
+
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register_fragment" />
+
     </fragment>
 
     <fragment
@@ -101,6 +96,19 @@
     <fragment
         android:id="@+id/welcome_screen_fragment"
         android:name="com.pkm.sahabatgula.welcomescreen.WelcomeScreenFragment">
+
+        <action
+            android:id="@+id/action_welcome_screen_to_home_graph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_welcome_screen_to_input_data_graph"
+            app:destination="@id/input_data_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
 </navigation>

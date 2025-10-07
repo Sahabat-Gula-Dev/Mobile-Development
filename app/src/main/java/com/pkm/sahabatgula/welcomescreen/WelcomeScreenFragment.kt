@@ -5,56 +5,68 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.databinding.FragmentWelcomeScreenBinding
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [WelcomeScreenFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WelcomeScreenFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentWelcomeScreenBinding? = null
+    private val binding get() = _binding!!
+
+    @Inject
+    lateinit var sessionManager: com.pkm.sahabatgula.data.local.SessionManager
+    @Inject lateinit var apiService: com.pkm.sahabatgula.data.remote.api.ApiService
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_welcome_screen, container, false)
+
+        _binding = FragmentWelcomeScreenBinding.inflate(inflater, container, false)
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WelcomeScreenFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WelcomeScreenFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnNext.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                binding.btnNext.isEnabled = false
+                try {
+                    // ambil profil terbaru; kalau offline, getOrFetchProfile bisa balikin cache kamu
+                    val profile = sessionManager.getOrFetchProfile(apiService)
+
+                    val goHome = profile != null && sessionManager.isProfileCompleted()
+                    if (goHome) {
+                        safeNavigate(R.id.action_welcome_screen_to_home_graph)
+                    } else {
+                        safeNavigate(R.id.action_welcome_screen_to_input_data_graph)
+                    }
+                } catch (_: Exception) {
+                    // kalau gagal fetch profile, anggap belum lengkap ➜ ke input data
+                    safeNavigate(R.id.action_welcome_screen_to_input_data_graph)
+                } finally {
+                    binding.btnNext.isEnabled = true
                 }
             }
+        }
+    }
+
+    private fun safeNavigate(actionId: Int) {
+        val nav = findNavController()
+        if (nav.currentDestination?.id == R.id.welcome_screen_fragment) {
+            nav.navigate(actionId)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

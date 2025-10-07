@@ -89,7 +89,7 @@ class ProteinFragment : Fragment() {
                         binding.cardHistoryFood.root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_action_background))
 
                         binding.cardHistoryFood.root.setOnClickListener {
-                            findNavController().navigate(R.id.action_log_protein_to_log_food)
+                            findNavController().navigate(R.id.action_log_protein_to_log_history)
                         }
 
                     }

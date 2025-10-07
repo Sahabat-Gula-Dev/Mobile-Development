@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula.core.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.pkm.sahabatgula.data.local.TokenManager
 import dagger.Module
 import dagger.Provides
@@ -17,5 +18,13 @@ object AppModule {
     @Singleton
     fun provideTokenManager(@ApplicationContext context: Context): TokenManager {
         return TokenManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
+        return context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     }
 }

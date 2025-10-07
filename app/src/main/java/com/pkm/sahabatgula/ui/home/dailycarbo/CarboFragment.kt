@@ -81,7 +81,7 @@ class CarboFragment : Fragment() {
                         }
 
                         binding.cardHistoryFood.root.setOnClickListener {
-                            findNavController().navigate(R.id.action_log_carbo_to_log_food)
+                            findNavController().navigate(R.id.action_log_carbo_to_log_history)
                         }
 
                     }

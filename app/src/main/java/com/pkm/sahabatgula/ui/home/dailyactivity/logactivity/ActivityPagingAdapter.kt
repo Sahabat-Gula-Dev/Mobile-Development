@@ -63,6 +63,7 @@ class ActivityPagingAdapter(
             binding.tvTitleCustomFoodCard.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
             binding.tvFoodCalories.text = "${activity.caloriesBurned.toInt()} kkal"
 
+            binding.icPlusAddFood.setImageResource(R.drawable.ic_calories)
             if (activity.isSelected) {
                 binding.icPlusAddFood.setImageResource(R.drawable.ic_checked)
             } else {
@@ -91,7 +92,7 @@ class ActivityPagingAdapter(
                 binding.icPlusAddFood.visibility = View.VISIBLE
 
                 if (activity.isSelected) {
-                    binding.icArrowRight.setImageResource(R.drawable.ic_food_salad)
+                    binding.icArrowRight.setImageResource(R.drawable.ic_calories)
                     binding.icArrowRight.setSize(32)
                 } else {
                     binding.icArrowRight.setImageResource(R.drawable.ic_arrow_right)

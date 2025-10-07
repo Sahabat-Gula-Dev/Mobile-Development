@@ -7,6 +7,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
 import com.pkm.sahabatgula.core.utils.formatEventDate
 import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.databinding.ComponentArticleBinding
@@ -47,7 +48,7 @@ class ArticlePagingDataAdapter(
                     .load(article.coverUrl)
                     .into(imgArticle)
 
-                tvDateToday.text = formatEventDate(article.createdAt)
+                tvDateToday.text = convertIsoToIndonesianDateArticle(article.createdAt)
                 tvTitleArticle.text = article.title
                 tvArticleAuthor.text = "Sahabat Gula"
 

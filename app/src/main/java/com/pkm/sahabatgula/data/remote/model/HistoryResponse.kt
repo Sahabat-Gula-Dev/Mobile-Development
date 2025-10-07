@@ -33,7 +33,9 @@ data class FoodLog(
     @field:SerializedName("portion")
     val portion: Int,
     @field:SerializedName("time")
-    val time: String
+    val time: String,
+    @Transient
+    var isExpanded: Boolean = false
 )
 
 data class ActivityLog(
@@ -50,5 +52,7 @@ data class ActivityLog(
     @field:SerializedName("duration")
     val duration: Int,
     @field:SerializedName("time")
-    val time: String
+    val time: String,
+    @Transient
+    var isExpanded: Boolean = false
 )

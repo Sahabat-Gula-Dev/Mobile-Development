@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -23,6 +24,9 @@ object NetworkModule {
         }
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(20, TimeUnit.SECONDS) // waktu maksimal koneksi
+            .readTimeout(30, TimeUnit.SECONDS)    // waktu maksimal membaca response
+            .writeTimeout(30, TimeUnit.SECONDS)   // waktu maksimal kirim request body (misalnya upload)
             .build()
     }
 

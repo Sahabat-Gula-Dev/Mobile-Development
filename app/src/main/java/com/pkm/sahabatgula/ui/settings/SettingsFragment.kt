@@ -6,17 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.data.local.SessionManager
 import com.pkm.sahabatgula.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+    @Inject
+    lateinit var sessionManager: SessionManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +57,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Kelola pengingat dan informasi penting"
 
             root.setOnClickListener {
-                // ke gluby dalam pengembangan
+                Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -80,7 +88,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Nikmati fitur premium Sahabat Gula"
 
             root.setOnClickListener {
-                // gluby dalam pengembangan
+                Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -150,8 +158,39 @@ class SettingsFragment : Fragment() {
             root.backgroundTintList = null
             root.setBackgroundColor(Color.TRANSPARENT)
 
+            root.setOnClickListener {
+                showLogoutConfirmationDialog()
+            }
+
         }
 
     }
+
+    private fun showLogoutConfirmationDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Konfirmasi Logout")
+            .setMessage("Apakah kamu yakin ingin logout dari akun ini?")
+            .setPositiveButton("Ya") { dialog, _ ->
+                performLogout()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun performLogout() {
+        // Jalankan di background thread karena clear session menyentuh database
+        lifecycleScope.launch {
+            sessionManager.clearSession()
+
+            // Navigasi balik ke login (atau splash)
+            findNavController().navigate(R.id.action_settings_fragment_to_auth_graph)
+            Toast.makeText(requireContext(), "Berhasil logout", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
 }

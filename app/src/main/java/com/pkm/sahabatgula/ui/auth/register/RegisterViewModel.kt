@@ -34,7 +34,6 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
 
             result.fold(
                 onSuccess = { response ->
-                    // jika sukses, kirim effect, bukan ubah state
                     _effect.send(RegisterEffect.ShowToast(response.message?: "Registrasi Berhasil"))
                     _effect.send(RegisterEffect.NavigateToOtpVerification(email))
                     // kembalikan statenya ke idle

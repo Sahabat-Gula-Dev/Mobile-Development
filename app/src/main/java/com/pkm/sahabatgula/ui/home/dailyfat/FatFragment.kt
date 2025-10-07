@@ -90,7 +90,7 @@ class FatFragment : Fragment() {
                         }
 
                         binding.cardHistoryFat.root.setOnClickListener {
-                            findNavController().navigate(R.id.action_log_protein_to_log_food)
+                            findNavController().navigate(R.id.action_log_fat_to_log_history)
                         }
 
                     }
