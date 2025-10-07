@@ -1,21 +1,26 @@
 package com.pkm.sahabatgula.ui.home.dailycarbo
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentCarboBinding
 import com.pkm.sahabatgula.ui.home.dailycarbo.history.CarboChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import kotlin.math.max
 
 @AndroidEntryPoint
 class CarboFragment : Fragment() {
@@ -23,6 +28,7 @@ class CarboFragment : Fragment() {
     private var _binding: FragmentCarboBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CarboViewModel by viewModels()
+    private var hasShownOverLimitDialog = false
 
 
     override fun onCreateView(
@@ -33,6 +39,7 @@ class CarboFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,7 +59,9 @@ class CarboFragment : Fragment() {
                 when (state) {
                     is CarboState.Success -> {
                         binding.piLogFood.apply {
-                            tvRemaining.text = state.carboRemaining.toInt().toString()
+
+                            val remaining = max(0, (state.carboRemaining).toInt())
+                            tvRemaining.text = remaining.toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_text))
                             tvFormat.text = "gram tersisa"
                             icObject.setImageResource(R.drawable.ic_carbo_rice_filled)
@@ -66,6 +75,29 @@ class CarboFragment : Fragment() {
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background))
                                 trackColor = ContextCompat.getColor(requireContext(), R.color.yellow_carbo_background)
                             }
+
+                            val indicatorColor = if ( state.totalCarbo > state.maxCarbo) {
+                                "#FF0000".toColorInt() // merah
+                            } else {
+                                "#006B5F".toColorInt() // hijau
+                            }
+
+                            tvRemaining.setTextColor(indicatorColor)
+                            circularProgressView.setIndicatorColor(indicatorColor)
+
+                            if (progressCarbo >= 100 && !hasShownOverLimitDialog) {
+                                showNutrientExceededDialog(
+                                    context = requireContext(),
+                                    title = "Batas Karbohidrat Terlampaui",
+                                    consumed = state.totalCarbo.toInt(),
+                                    max = state.maxCarbo.toInt(),
+                                    suggestion = "Karbohidratmu sudah melebihi batas harian. Kurangi porsi nasi, roti, atau camilan manis supaya asupanmu lebih seimbang"
+                                )
+                                hasShownOverLimitDialog = true
+                            } else if (progressCarbo < 100) {
+                                hasShownOverLimitDialog = false
+                            }
+
                         }
 
                         binding.cardDidYouKnow.apply {

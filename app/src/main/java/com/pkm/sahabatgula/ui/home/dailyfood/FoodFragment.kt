@@ -1,15 +1,19 @@
 package com.pkm.sahabatgula.ui.home.dailyfood
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentFoodBinding
 import com.pkm.sahabatgula.ui.home.dailyfood.charthistory.FoodChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +25,7 @@ class FoodFragment : Fragment() {
     private var _binding: FragmentFoodBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FoodViewModel by viewModels()
+    private var hasShownOverLimitDialog = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +36,7 @@ class FoodFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,6 +70,34 @@ class FoodFragment : Fragment() {
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.green_card_action))
                                 trackColor = ContextCompat.getColor(requireContext(), R.color.green_card_action)
                             }
+
+                            if (progressCalories >= 100 && !hasShownOverLimitDialog) {
+                                state?.maxCalories?.let {
+                                    showNutrientExceededDialog(
+                                        context = requireContext(),
+                                        title = "Batas Gula Terlampaui",
+                                        consumed = state.totalCalories.toInt(),
+                                        max = it,
+                                        suggestion = "Konsumsi gulamu sudah melebihi batas harian. Kurangi minuman atau camilan manis agar tubuhmu tidak kewalahan"
+                                    )
+                                }
+
+                                hasShownOverLimitDialog = true
+                            } else if (progressCalories < 100) {
+                                hasShownOverLimitDialog = false
+                            }
+
+                            val indicatorColor = state.maxCalories?.let {
+                                if ( state.totalCalories > it) {
+                                    "#FF0000".toColorInt() // merah
+                                } else {
+                                    "#006B5F".toColorInt() // hijau
+                                }
+                            }
+
+                            tvRemaining.setTextColor(indicatorColor!!)
+                            circularProgressView.setIndicatorColor(indicatorColor)
+
                         }
 
                         binding.cardDailyFoodTips.apply {

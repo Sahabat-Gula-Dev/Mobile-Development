@@ -26,12 +26,10 @@ sealed interface ScanUiState{
 class FoodScanViewModel @Inject constructor(
     private val scanRepository: ScanRepository,
     @ApplicationContext private val context: Context
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ScanUiState>(ScanUiState.Loading)
     val uiState: StateFlow<ScanUiState> = _uiState
-
-    private val CONFIDENCE_THRESHOLD = 0.7
 
     fun predictImage(imageUri: Uri?) {
         viewModelScope.launch {
@@ -45,29 +43,26 @@ class FoodScanViewModel @Inject constructor(
             try {
                 when (val result = scanRepository.predictImage(imageFile)) {
                     is Resource.Success -> {
-                        val predictionData = result.data?.data
-                        val confidence = predictionData?.predictionConfidence ?: 0.0
-
-                        Log.d("FoodScanViewModel", "Confidence prediction: $confidence")
-
-                        if (confidence >= CONFIDENCE_THRESHOLD) {
-                            val foodList = predictionData?.foods ?: emptyList()
-                            _uiState.value = ScanUiState.Success(foodList)
-                            Log.d("FoodScanViewModel", "Prediksi valid, jumlah food items: ${foodList.size}")
-                        } else {
-                            _uiState.value = ScanUiState.Error(
-                                "Confidence terlalu rendah (${String.format("%.2f", confidence)}). Minimal $CONFIDENCE_THRESHOLD"
-                            )
-                        }
+                        val foodList = result.data?.data?.foods ?: emptyList()
+                        Log.d(
+                            "FoodScanViewModel",
+                            "Prediksi berhasil. Jumlah makanan terdeteksi: ${foodList.size}"
+                        )
+                        _uiState.value = ScanUiState.Success(foodList)
                     }
                     is Resource.Error -> {
-                        _uiState.value = ScanUiState.Error(result.message ?: "Error")
+                        Log.e("FoodScanViewModel", "Prediksi gagal: ${result.message}")
+                        _uiState.value = ScanUiState.Error(result.message ?: "Terjadi kesalahan")
                     }
-                    else -> {}
+                    is Resource.Loading -> {
+                        Log.d("FoodScanViewModel", "Sedang memproses gambar...")
+                        _uiState.value = ScanUiState.Loading
+                    }
                 }
             } finally {
                 if (imageFile.exists()) {
-                    if (imageFile.delete()) {
+                    val deleted = imageFile.delete()
+                    if (deleted) {
                         Log.d("FileCleanup", "File temporer berhasil dihapus: ${imageFile.path}")
                     } else {
                         Log.e("FileCleanup", "Gagal menghapus file temporer: ${imageFile.path}")

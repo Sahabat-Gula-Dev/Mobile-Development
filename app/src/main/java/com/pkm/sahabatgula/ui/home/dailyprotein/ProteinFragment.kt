@@ -1,22 +1,28 @@
 package com.pkm.sahabatgula.ui.home.dailyprotein
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentProteinBinding
 import com.pkm.sahabatgula.ui.home.dailycarbo.CarboState
 import com.pkm.sahabatgula.ui.home.dailyprotein.history.ProteinChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import kotlin.math.max
 
 @AndroidEntryPoint
 class ProteinFragment : Fragment() {
@@ -24,6 +30,7 @@ class ProteinFragment : Fragment() {
     private var _binding: FragmentProteinBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ProteinViewModel by viewModels()
+    private var hasShownOverLimitDialog = false
 
 
     override fun onCreateView(
@@ -34,6 +41,7 @@ class ProteinFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,7 +61,8 @@ class ProteinFragment : Fragment() {
                 when (state) {
                     is ProteinState.Success -> {
                         binding.piProtein .apply {
-                            tvRemaining.text = state.remainingProtein.toInt().toString()
+                            val remaining = max(0, (state.remainingProtein).toInt())
+                            tvRemaining.text = remaining.toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_protein_text))
                             tvFormat.text = "gram tersisa"
                             icObject.setImageResource(R.drawable.ic_protein_unfilled)
@@ -67,6 +76,29 @@ class ProteinFragment : Fragment() {
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_protein_background))
                                 trackColor = ContextCompat.getColor(requireContext(), R.color.brown_protein_background)
                             }
+
+                            if (progressProtein >= 100 && !hasShownOverLimitDialog) {
+                                showNutrientExceededDialog(
+                                    requireContext(),
+                                    "Batas Protein Terlampaui",
+                                    state.totalProtein.toInt(),
+                                    state.maxProtein.toInt(),
+                                    "Asupan proteinmu sudah berlebihan. Yuk, kendalikan porsimu agar tetap seimbang"
+                                )
+                                hasShownOverLimitDialog = true
+                            } else if (progressProtein < 100) {
+                                hasShownOverLimitDialog = false
+                            }
+
+                            val indicatorColor = if ( state.totalProtein > state.maxProtein) {
+                                "#FF0000".toColorInt() // merah
+                            } else {
+                                "#006B5F".toColorInt() // hijau
+                            }
+
+                            tvRemaining.setTextColor(indicatorColor)
+                            circularProgressView.setIndicatorColor(indicatorColor)
+
                         }
 
                         binding.cardDailyProteinTips.apply {

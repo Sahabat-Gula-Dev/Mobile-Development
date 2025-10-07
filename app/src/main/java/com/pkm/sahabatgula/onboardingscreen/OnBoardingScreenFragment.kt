@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
@@ -40,6 +41,10 @@ class OnBoardingScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch {
+            sessionManager.clearSession()
+        }
 
         viewModel.items.observe(viewLifecycleOwner) { onboardingItems ->
             val adapter = OnboardingAdapter(this, onboardingItems)
@@ -83,6 +88,20 @@ class OnBoardingScreenFragment : Fragment() {
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
 
+            binding.viewPagerContent.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    val lastIndex = onboardingItems.lastIndex
+                    if (position == lastIndex) {
+                        binding.buttonNext.text = "Mulai"
+                        binding.buttonSkip.visibility = View.GONE
+                    } else {
+                        binding.buttonNext.text = "Lanjut"
+                        binding.buttonSkip.visibility = View.VISIBLE
+                    }
+                }
+            })
+
             binding.buttonNext.setOnClickListener {
                 val currentItem = binding.viewPagerContent.currentItem
                 val lastIndex = onboardingItems.lastIndex
@@ -95,27 +114,29 @@ class OnBoardingScreenFragment : Fragment() {
                     }
                 }
             }
+
+            binding.buttonSkip.setOnClickListener {
+                viewModel.completeOnboarding()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    handlePostOnboardingNavigation()
+                }
+            }
         }
     }
 
     private suspend fun handlePostOnboardingNavigation() {
-        // Kalau belum login → Auth
         if (!sessionManager.isLoggedIn()) {
-            findNavController().navigate(R.id.action_onboarding_to_auth)
+            findNavController().navigate(R.id.action_onboarding_to_register)
             return
         }
-
-        // Kalau sudah login → ambil profile dulu (sync dari API/local)
         viewLifecycleOwner.lifecycleScope.launch {
             val profile = sessionManager.getOrFetchProfile(apiService)
 
             if (profile == null) {
-                // Token expired atau gagal fetch → ke auth
                 sessionManager.clearSession()
-                findNavController().navigate(R.id.action_onboarding_to_auth)
+                findNavController().navigate(R.id.action_onboarding_to_register)
                 return@launch
             }
-
             if (sessionManager.isProfileCompleted()) {
                 findNavController().navigate(R.id.action_onboarding_to_home)
             } else {
@@ -123,7 +144,6 @@ class OnBoardingScreenFragment : Fragment() {
             }
         }
     }
-
 
     private val Int.dp: Int
         get() = (this * Resources.getSystem().displayMetrics.density).toInt()

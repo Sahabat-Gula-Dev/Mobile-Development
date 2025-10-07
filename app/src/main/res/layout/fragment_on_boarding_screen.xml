@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tab_layout_dots"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="0dp"
         android:backgroundTint="@color/white"/>
 
     <com.google.android.material.tabs.TabLayout
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_next"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"/>
 
     <Button
@@ -59,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_skip"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

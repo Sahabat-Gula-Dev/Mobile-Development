@@ -1,6 +1,8 @@
 package com.pkm.sahabatgula.ui.home
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,21 +12,23 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.pkm.sahabatgula.R
 import android.util.Log
-import android.view.WindowInsetsController
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.pkm.sahabatgula.core.utils.RiskCategory
 import com.pkm.sahabatgula.core.utils.getRiskCategory
+import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.SummaryResponse
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.math.max
 import kotlin.math.roundToInt
+import androidx.core.graphics.toColorInt
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -32,6 +36,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<HomeViewModel>()
+    var isCalorieDialogShown = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +47,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,6 +56,7 @@ class HomeFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -76,6 +83,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun handleState(state: HomeState) {
         binding.root.apply {
             alpha = if (state is HomeState.Loading) 0.5f else 1.0f
@@ -98,6 +106,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
         summary: SummaryResponse
@@ -122,6 +131,8 @@ class HomeFragment : Fragment() {
         val maxFat = profile.max_fat?:0.0
         val maxSugar = profile.max_sugar?:0.0
 
+        updateCaloriesUI(caloriesConsumed?.toInt(), maxCalories)
+
         // risk index
         val riskIndex = profile.risk_index
         // risk category
@@ -136,7 +147,7 @@ class HomeFragment : Fragment() {
         // sugar
         binding.sugarConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_sugar_candy)
-            tvNumberOfConsumption.text = DoubleToZeroInt(sugarConsumed)
+            tvNumberOfConsumption.text = doubleToZeroInt(sugarConsumed)
             tvTitleProgress.text = "Konsumsi Gula Hari Ini"
             tvNumberOfTotalNutrition.text = " dari ${maxSugar.toInt()} gr"
             tvNumberOfPercentage.text = sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())
@@ -145,7 +156,7 @@ class HomeFragment : Fragment() {
         // carbo
         binding.carboConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_carbo_rice)
-            tvNumberOfConsumption.text = DoubleToZeroInt(carbsConsumed)
+            tvNumberOfConsumption.text = doubleToZeroInt(carbsConsumed)
             tvTitleProgress.text = "Karbohidrat"
             tvNumberOfTotalNutrition.text = " dari ${maxCarbs.toInt()} gr"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.yellow_carbo)
@@ -155,7 +166,7 @@ class HomeFragment : Fragment() {
         // fat
         binding.fatConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_fat)
-            tvNumberOfConsumption.text = DoubleToZeroInt(fatConsumed)
+            tvNumberOfConsumption.text = doubleToZeroInt(fatConsumed)
             tvTitleProgress.text = "Lemak"
             tvNumberOfTotalNutrition.text = " dari ${maxFat.toInt()} gr"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.red_fat)
@@ -165,7 +176,7 @@ class HomeFragment : Fragment() {
         // protein
         binding.proteinConsumption.apply {
             icProgress.setImageResource(R.drawable.ic_protein)
-            tvNumberOfConsumption.text = DoubleToZeroInt(proteinConsumed)
+            tvNumberOfConsumption.text = doubleToZeroInt(proteinConsumed)
             tvTitleProgress.text = "Protein"
             tvNumberOfTotalNutrition.text = " dari ${maxProtein.toInt()} gr"
             icGraphicOfProgress.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.brown_protein)
@@ -195,11 +206,22 @@ class HomeFragment : Fragment() {
         binding.tvCaloriesConsumed.text = caloriesConsumed?.toInt().toString()
         binding.tvCaloriesNeeded.text = maxCalories.toString()
 
-
         // circular progress calories
-        val progressCalories = (caloriesConsumed!! / maxCalories.toDouble()) * 100
+        val progressCalories = ((caloriesConsumed!! / maxCalories.toDouble()) * 100)
+            .coerceIn(0.0, 100.0)
         binding.circularProgressCalories.piCircularProgress.progress = progressCalories.toInt()
-        binding.circularProgressCalories.tvRemaining.text = (maxCalories.toDouble()- caloriesConsumed).toInt().toString()
+        val remaining = max(0, (maxCalories.toDouble() - caloriesConsumed).toInt())
+        binding.circularProgressCalories.tvRemaining.text = remaining.toString()
+
+        val indicatorColor = if (caloriesConsumed > maxCalories) {
+            "#FF0000".toColorInt() // merah
+        } else {
+            "#006B5F".toColorInt() // hijau
+        }
+
+        binding.circularProgressCalories.piCircularProgress.setIndicatorColor(indicatorColor)
+        binding.circularProgressCalories.tvRemaining.setTextColor(indicatorColor)
+
 
         binding.noConsumptionToday.root.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.green_card_action)
         binding.noConsumptionToday.apply {
@@ -246,6 +268,7 @@ class HomeFragment : Fragment() {
         binding.icInsight.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_insight)
         }
+
     }
 
     override fun onDestroyView() {
@@ -253,14 +276,32 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun anyToZeroInt (a: Any): String {
-        return if (a == 0.0) "0" else a.toString()
+
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun updateCaloriesUI(caloriesConsumed: Int?, maxCalories: Int) {
+        binding.circularProgressCalories.tvRemaining.text =
+            caloriesConsumed?.let { max(0, (maxCalories - it)) }.toString()
+
+        if (caloriesConsumed != null) {
+            if (caloriesConsumed >= maxCalories && !isCalorieDialogShown) {
+                showNutrientExceededDialog(
+                    context = requireContext(),
+                    title = "Batas Kalori Terlampaui",
+                    consumed = caloriesConsumed,
+                    max = maxCalories,
+                    suggestion = "Asupan kalorimu sudah melebihi batas harian. Kurangi konsumsi makanan tinggi kalori untuk menjaga keseimbangan energi tubuhmu."
+                )
+                isCalorieDialogShown = true
+            }
+        }
     }
 
-    private fun DoubleToZeroInt (a: Double?): String {
+    private fun doubleToZeroInt (a: Double?): String {
         return if (a == 0.0) a.toInt().toString() else a.toString()
     }
 
+    @SuppressLint("DefaultLocale")
     infix fun Double.toPercentage(total: Int?): String {
         if (total?.toDouble() == 0.0) return "0%"
         val result = (this / total?.toDouble()!!) * 100

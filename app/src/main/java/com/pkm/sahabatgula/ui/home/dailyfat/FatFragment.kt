@@ -1,16 +1,20 @@
 package com.pkm.sahabatgula.ui.home.dailyfat
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentFatBinding
 import com.pkm.sahabatgula.databinding.FragmentProteinBinding
 import com.pkm.sahabatgula.ui.home.dailycarbo.CarboState
@@ -19,6 +23,7 @@ import com.pkm.sahabatgula.ui.home.dailyprotein.history.ProteinChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import kotlin.math.max
 
 @AndroidEntryPoint
 class FatFragment : Fragment() {
@@ -26,6 +31,8 @@ class FatFragment : Fragment() {
     private var _binding: FragmentFatBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FatViewModel by viewModels()
+    private var hasShownOverLimitDialog = false
+
 
 
     override fun onCreateView(
@@ -36,6 +43,7 @@ class FatFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,7 +63,8 @@ class FatFragment : Fragment() {
                 when (state) {
                     is FatState.Success -> {
                         binding.piFat .apply {
-                            tvRemaining.text = state.remainingFat.toInt().toString()
+                            val remaining = max(0, (state.remainingFat).toInt())
+                            tvRemaining.text = remaining.toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.brown_fat))
                             tvFormat.text = "gram tersisa"
                             icObject.setImageResource(R.drawable.ic_protein_unfilled)
@@ -69,6 +78,29 @@ class FatFragment : Fragment() {
                                 setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.brown_fat_background))
                                 trackColor = ContextCompat.getColor(requireContext(), R.color.brown_fat_background)
                             }
+
+                            if (progressFat >= 100 && !hasShownOverLimitDialog) {
+                                showNutrientExceededDialog(
+                                    context = requireContext(),
+                                    title = "Batas Karbohidrat Terlampaui",
+                                    consumed = state.totalFat.toInt(),
+                                    max = state.maxFat.toInt(),
+                                    suggestion = "Karbohidratmu sudah melebihi batas harian. Kurangi porsi nasi, roti, atau camilan manis supaya asupanmu lebih seimbang"
+                                )
+                                hasShownOverLimitDialog = true
+                            } else if (progressFat < 100) {
+                                hasShownOverLimitDialog = false
+                            }
+
+                            val indicatorColor = if ( state.totalFat > state.maxFat) {
+                                "#FF0000".toColorInt() // merah
+                            } else {
+                                "#006B5F".toColorInt() // hijau
+                            }
+
+                            tvRemaining.setTextColor(indicatorColor)
+                            circularProgressView.setIndicatorColor(indicatorColor)
+
                         }
 
                         binding.cardDailyFatTips.apply {

@@ -16,7 +16,6 @@ class OnboardingViewModel @Inject constructor(
     val items: LiveData<List<OnboardingItem>> get() = _items
 
     private val _isFirstTime = MutableLiveData<Boolean>()
-    val isFirstTime: LiveData<Boolean> get() = _isFirstTime
 
     init {
         _items.value = listOf(
@@ -36,8 +35,6 @@ class OnboardingViewModel @Inject constructor(
                 "Cari artikel, event, dan berita kesehatan yang menarik dan bermanfaat"
             )
         )
-
-        // cek apakah ini first time
         _isFirstTime.value = repository.isFirstTime()
     }
 

@@ -41,6 +41,64 @@
         <action
             android:id="@+id/action_onboarding_to_home"
             app:destination="@id/home_graph"/>
+
+        <action
+            android:id="@+id/action_onboarding_to_register"
+            app:destination="@id/register_fragment"
+            app:popUpTo="@id/onboarding_fragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/register_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.register.RegisterFragment">
+        <action
+            android:id="@+id/register_to_otp_verification"
+            app:destination="@id/otp_verification_fragment"/>
+        <action
+            android:id="@+id/register_to_login"
+            app:destination="@id/login_fragment" />
+        <action
+            android:id="@+id/register_to_home"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.login.LoginFragment">
+        <action
+            android:id="@+id/login_to_register"
+            app:destination="@id/register_fragment" />
+        <action
+            android:id="@+id/action_login_to_home_graph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_login_to_welcome_screen"
+            app:destination="@id/welcome_screen_fragment"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_login_to_forgot_password"
+            app:destination="@id/input_email_forgot_password_fragment"/>
+
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/otp_verification_fragment"
+        android:name="com.pkm.sahabatgula.ui.auth.otpverification.OtpVerificationRegisterFragment">
+        <action
+            android:id="@+id/otp_to_welcome_screen"
+            app:destination="@id/welcome_screen_fragment"/>
     </fragment>
 
     <fragment

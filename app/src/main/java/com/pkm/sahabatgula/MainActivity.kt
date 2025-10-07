@@ -28,29 +28,83 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // -> TAMBAHKAN BARIS PENTING INI DI SINI
         binding.navView.setupWithNavController(navController)
 
-        // Logika Anda untuk menyembunyikan BottomNav sudah benar dan bisa tetap di sini
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val isThisFlow =
-                destination.parent?.id == R.id.auth_graph ||
-                destination.parent?.id == R.id.input_data_graph ||
-                destination.id == R.id.splashscreen_fragment ||
-                destination.id == R.id.onboarding_fragment
+            val hideNavDestinations = listOf(
+                // start
+                R.id.splashscreen_fragment,
+                R.id.onboarding_fragment,
 
+                // auth
+                R.id.register_fragment,
+                R.id.login_fragment,
+                R.id.verify_otp_forgot_password_fragment,
+                R.id.reset_password_fragment,
+                R.id.otp_verification_fragment,
+                R.id.input_email_forgot_password_fragment,
+                R.id.welcome_screen_fragment,
 
-            if (isThisFlow) {
+                // input data
+                R.id.input_data_graph,
+                R.id.input_data_gender_fragment,
+                R.id.input_data_age_fragment,
+                R.id.input_data_height_fragment,
+                R.id.input_data_heavy_fragment,
+                R.id.input_data_waist_circumferences_fragment,
+                R.id.input_data_blood_pressure_fragment,
+                R.id.input_data_high_blood_glucose_fragment,
+                R.id.input_data_daily_consumption_fragment,
+                R.id.input_data_history_family_fragment,
+                R.id.input_data_user_activity_fragment,
+
+                // home
+                R.id.log_sugar_fragment,
+                R.id.log_food_fragment,
+                R.id.log_water_fragment,
+                R.id.log_history_fragment,
+                R.id.log_carbo_fragment,
+                R.id.log_fat_fragment,
+                R.id.log_protein_fragment,
+                R.id.root_log_activity_fragment,
+
+                // scan and log food
+                R.id.log_food_fragment,
+                R.id.scan_food_fragment,
+                R.id.log_food_fragment_destination,
+                R.id.log_manual_food_fragment,
+                R.id.result_food_scan_fragment,
+                R.id.log_manual_custom_food_fragment,
+                R.id.food_result_search_fragment,
+                R.id.detail_food_fragment,
+
+                // explore
+                R.id.article_result_search_fragment,
+                R.id.event_result_search_fragment,
+                R.id.detail_article,
+                R.id.detail_event,
+
+                // setting
+                R.id.user_profile_fragment,
+                R.id.log_history_fragment,
+                R.id.help_center_fragment,
+                R.id.about_app_fragment,
+                R.id.privacy_policy_fragment,
+                R.id.terms_and_conditions_fragment,
+
+            )
+
+            if (destination.id in hideNavDestinations) {
                 binding.navView.visibility = View.GONE
             } else {
                 binding.navView.visibility = View.VISIBLE
             }
         }
+
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

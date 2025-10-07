@@ -1,12 +1,15 @@
 package com.pkm.sahabatgula.ui.home.dailysugar
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,9 +18,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.ui.home.dailysugar.history.SugarChartPagerAdapter
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.SugarConsumedLevel
+import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentSugarBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.math.max
 
 
 @AndroidEntryPoint
@@ -36,6 +41,7 @@ class SugarFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -54,22 +60,32 @@ class SugarFragment : Fragment() {
             viewModel.sugarState.collect { state ->
                 when (state) {
                     is SugarState.Success -> {
-                        binding.piDailySugar.tvRemaining.text = state.remainingSugar.toInt().toString()
-                        Log.d("SugarFragment", "Remaining Sugar: ${state.remainingSugar}")
-                        // berapa max sugar
-                        Log.d("SugarFragment", "Max Sugar: ${state.maxSugar}")
-                        // berapa sugar saat ini
-                        Log.d("SugarFragment", "Current Sugar: ${state.currentSugar}")
-
+                        val remaining = max(0, (state.remainingSugar).toInt())
+                        binding.piDailySugar.tvRemaining.text = remaining.toString()
                         val progressSugar = ((state.currentSugar / state.maxSugar) * 100).coerceIn(0.0, 100.0)
 
                         if (progressSugar >= 100 && !hasShownOverLimitDialog) {
-                            showOverLimitDialog()
+                            showNutrientExceededDialog(
+                                context = requireContext(),
+                                title = "Batas Gula Terlampaui",
+                                consumed = state.currentSugar.toInt(),
+                                max = state.maxSugar.toInt(),
+                                suggestion = "Konsumsi gulamu sudah melebihi batas harian. Kurangi minuman atau camilan manis agar tubuhmu tidak kewalahan"
+                            )
+
                             hasShownOverLimitDialog = true
                         } else if (progressSugar < 100) {
-                            // Reset flag supaya popup muncul lagi kalau besok over lagi
                             hasShownOverLimitDialog = false
                         }
+
+                        val indicatorColor = if ( state.currentSugar > state.maxSugar) {
+                            "#FF0000".toColorInt() // merah
+                        } else {
+                            "#006B5F".toColorInt() // hijau
+                        }
+
+                        binding.piDailySugar.tvRemaining.setTextColor(indicatorColor)
+                        binding.piDailySugar.circularProgressView.setIndicatorColor(indicatorColor)
 
                         binding.piDailySugar.circularProgressView.progress = progressSugar.toInt()
 
