@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
-import com.pkm.sahabatgula.core.utils.formatEventDate
 import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.databinding.ComponentArticleBinding
-import com.pkm.sahabatgula.ui.explore.ArticleOnExploreAdapter.ArticleViewHolder
 
 class ArticlePagingDataAdapter(
     private val onItemClick: (Article) -> Unit

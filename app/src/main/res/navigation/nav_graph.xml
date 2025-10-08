@@ -64,6 +64,47 @@
             app:destination="@id/home_graph"
             app:popUpTo="@id/auth_graph"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/register_to_welcome_screen"
+            app:destination="@id/welcome_screen_fragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/register_to_terms_and_condition"
+            app:destination="@id/terms_and_conditions_fragment" />
+        <action
+            android:id="@+id/register_to_privacy_policy"
+            app:destination="@id/privacy_policy_fragment" />
+    </fragment>
+
+    <!--    privacy policy -->
+
+    <fragment
+        android:id="@+id/privacy_policy_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.appinfo.PrivacyPolicyFragment"/>
+
+    <!--    terms and condition -->
+    <fragment
+        android:id="@+id/terms_and_conditions_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.appinfo.TermsAndConditionsFragment"/>
+
+
+    <fragment
+        android:id="@+id/welcome_screen_fragment"
+        android:name="com.pkm.sahabatgula.welcomescreen.WelcomeScreenFragment">
+
+        <action
+            android:id="@+id/action_welcome_screen_to_home_graph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_welcome_screen_to_input_data_graph"
+            app:destination="@id/input_data_graph"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
     <fragment

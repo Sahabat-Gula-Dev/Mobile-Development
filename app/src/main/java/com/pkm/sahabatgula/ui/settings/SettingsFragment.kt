@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.settings
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -111,7 +112,7 @@ class SettingsFragment : Fragment() {
                 try {
                     startActivity(intent)
                 } catch (e: android.content.ActivityNotFoundException) {
-                    android.widget.Toast.makeText(requireContext(), "Tidak ada aplikasi email yang terinstall", android.widget.Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Tidak ada aplikasi email yang terinstall", android.widget.Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -167,7 +168,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showLogoutConfirmationDialog() {
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle("Konfirmasi Logout")
             .setMessage("Apakah kamu yakin ingin logout dari akun ini?")
             .setPositiveButton("Ya") { dialog, _ ->

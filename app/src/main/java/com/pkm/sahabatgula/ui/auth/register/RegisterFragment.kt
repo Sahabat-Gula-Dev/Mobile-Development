@@ -1,16 +1,27 @@
 package com.pkm.sahabatgula.ui.auth.register
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +31,9 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.pkm.sahabatgula.BuildConfig
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.Validator
 import com.pkm.sahabatgula.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,9 +56,32 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val etUsername = binding.editInputUsername
-        val etEmail = binding.editInputEmail
-        val etPassword = binding.editInputPasswordRegister
+        val fullText = getString(R.string.text_checkbox_register)
+        val spannable = SpannableString(fullText)
+        val termsText = "Syarat & Ketentuan"
+        val termsStart = fullText.indexOf(termsText)
+        val termsEnd = termsStart + termsText.length
+        val primaryColor = ContextCompat.getColor(requireContext(), R.color.md_theme_primary)
+
+        val termsClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                findNavController().navigate(R.id.register_to_terms_and_condition)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+
+        spannable.setSpan(termsClickableSpan, termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(StyleSpan(Typeface.BOLD), termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(ForegroundColorSpan(primaryColor), termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.checkbox.text = spannable
+        binding.checkbox.movementMethod = LinkMovementMethod.getInstance()
+        binding.checkbox.highlightColor = android.graphics.Color.TRANSPARENT
+
         val btnRegister = binding.btnRegister
         val compSignInWithGoogle = binding.compSignInWithGoogle
 
@@ -54,11 +90,21 @@ class RegisterFragment : Fragment() {
         }
 
         btnRegister.setOnClickListener {
-            registerViewModel.register(
-                etUsername.text.toString(),
-                etEmail.text.toString(),
-                etPassword.text.toString()
-            )
+            val username = binding.inputUsername.editText?.text.toString().trim()
+            val email = binding.inputEmail.editText?.text.toString().trim()
+            val password = binding.inputPasswordRegister.editText?.text.toString()
+
+            val usernameError = Validator.validateUsername(username)
+            val emailError = Validator.validateEmail(email)
+            val passwordError = Validator.validatePassword(password)
+
+            binding.inputUsername.error = usernameError
+            binding.inputEmail.error = emailError
+            binding.inputPasswordRegister.error = passwordError
+
+            if (usernameError == null && emailError == null && passwordError == null) {
+                registerViewModel.register(username, email, password)
+            }
         }
 
         binding.checkbox.setOnCheckedChangeListener { _, _ ->
@@ -76,9 +122,8 @@ class RegisterFragment : Fragment() {
     private fun updateButtonState() {
         val isChecked = binding.checkbox.isChecked
         val isLoading = registerViewModel.registerViewState.value is RegisterViewState.Loading
-
-        // tombol register hanya bisa di klik jika checkbox di pilih dan tidak sedang loading
-        binding.btnRegister.isEnabled = isChecked && !isLoading
+        val isNotEmpty = binding.inputUsername.editText?.text.toString().isNotEmpty() && binding.inputEmail.editText?.text.toString().isNotEmpty() && binding.inputPasswordRegister.editText?.text.toString().isNotEmpty()
+        binding.btnRegister.isEnabled = isChecked && !isLoading && isNotEmpty
     }
 
     private fun observeState(){
@@ -106,6 +151,9 @@ class RegisterFragment : Fragment() {
                         is RegisterEffect.NavigateToHome -> {
                             findNavController().navigate(R.id.register_to_home)
                         }
+                        is RegisterEffect.NavigateToWelcomeScreen -> {
+                            findNavController().navigate(R.id.register_to_welcome_screen)
+                        }
                     }
                 }
             }
@@ -117,7 +165,7 @@ class RegisterFragment : Fragment() {
 
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(getString(R.string.default_web_client_id)) //  Web Client ID dari google-services.json
+            .setServerClientId(getString(R.string.default_web_client_id))
             .build()
 
         val request = GetCredentialRequest.Builder()
@@ -136,14 +184,17 @@ class RegisterFragment : Fragment() {
                             val googleIdTokenCredential =
                                 GoogleIdTokenCredential.createFrom(credential.data)
                             val googleIdToken = googleIdTokenCredential.idToken
-
-                            // login ke Firebase dengan Google ID Token
                             firebaseAuthWithGoogle(googleIdToken)
                         }
                     }
                 }
+            } catch (e: GetCredentialCancellationException) {
+                if (BuildConfig.DEBUG) {
+                    Log.d("GoogleSignIn", "User canceled sign-in")
+                }
             } catch (e: Exception) {
-                Log.e("GoogleSignIn", "Error: ${e.message}")
+                Log.e("GoogleSignIn", "Unexpected error: ${e.message}", e)
+                Toast.makeText(requireContext(), "Terjadi kesalahan. Coba lagi nanti.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -158,21 +209,23 @@ class RegisterFragment : Fragment() {
                     user?.getIdToken(true)?.addOnCompleteListener { tokenTask ->
                         if (tokenTask.isSuccessful) {
                             val firebaseIdToken = tokenTask.result?.token
-                            Log.d("FIREBASE_ID_TOKEN", "Firebase ID Token: $firebaseIdToken")
-
-                            // kirim Firebase ID Token ke backend via ViewModel
                             firebaseIdToken?.let {
                                 registerViewModel.signInWithGoogle(it)
                             }
                         } else {
-                            Log.e("FirebaseAuth", "Gagal ambil Firebase ID Token", tokenTask.exception)
+                            if (BuildConfig.DEBUG) {
+                                Log.e("FirebaseAuth", "Gagal ambil Firebase ID Token", tokenTask.exception)
+                            }
                         }
                     }
                 } else {
-                    Log.e("FirebaseAuth", "signInWithCredential gagal", task.exception)
+                    if (BuildConfig.DEBUG) {
+                        Log.e("FirebaseAuth", "signInWithCredential gagal", task.exception)
+                    }
                 }
             }
     }
+
 
 }
 

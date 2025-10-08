@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.auth.register
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.data.local.TokenManager
@@ -10,8 +11,6 @@ import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -22,7 +21,6 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
     private val _registerViewState = MutableStateFlow<RegisterViewState>(RegisterViewState.Idle)
     val registerViewState: StateFlow<RegisterViewState> = _registerViewState
 
-    // chanel untuk pengiriman effect
     private val _effect: Channel<RegisterEffect> = Channel()
     val effect = _effect.receiveAsFlow()
 
@@ -36,11 +34,9 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
                 onSuccess = { response ->
                     _effect.send(RegisterEffect.ShowToast(response.message?: "Registrasi Berhasil"))
                     _effect.send(RegisterEffect.NavigateToOtpVerification(email))
-                    // kembalikan statenya ke idle
                     _registerViewState.value = RegisterViewState.Idle
                 },
                 onFailure = { exception ->
-                    // jika gagal, kirim effect toast dan ubah state ke error
                     _effect.send(RegisterEffect.ShowToast(exception.message?: "Registrasi Gagal"))
                     _registerViewState.value = RegisterViewState.Error(exception.message?: "Registrasi Gagal")
                 }
@@ -48,13 +44,13 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
         }
     }
 
-    fun signInWithGoogle(idToken: String) { // Sebaiknya idToken non-nullable
+    fun signInWithGoogle(idToken: String) {
         viewModelScope.launch {
             _registerViewState.value = RegisterViewState.Loading
 
-            // 1. Lakukan autentikasi Google dengan backend
             repo.googleAuth(GoogleAuthRequest(idToken))
                 .onSuccess { response ->
+                    _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
                     val accessToken = response.data?.accessToken
                     if (accessToken.isNullOrEmpty()) {
                         _effect.send(RegisterEffect.ShowToast("Token tidak valid dari server"))
@@ -62,24 +58,23 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
                         return@onSuccess
                     }
 
-                    // 2. Simpan token yang diterima
                     tokenManager.saveAccessToken(accessToken)
 
                     try {
-                        // 1. Picu observe, abaikan nilai null, dan tunggu nilai pertama yang valid.
-                        val profile = repo.observeProfile().filterNotNull().first()
+                        val profile = repo.getMyProfile(accessToken)
+                        val bmi = profile?.bmiScore
+                        Log.d("RegisterViewModel", "BMI: $bmi")
 
-                        // 2. Jika kode sampai di sini, artinya profile sudah berhasil didapat dan tidak null
-                        _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
+                        if ( bmi == null || bmi == 0.0) {
 
-                        // Anda bisa menambahkan pengecekan kelengkapan profil di sini jika perlu
-                        // val isCompleted = ... (cek dari object profile)
+                            _effect.send(RegisterEffect.NavigateToWelcomeScreen)
+                        } else {
+                            _effect.send(RegisterEffect.NavigateToHome)
+                        }
 
-                        _effect.send(RegisterEffect.NavigateToHome) // Atau ke halaman Input Data
-                        _registerViewState.value = RegisterViewState.Idle
+                    _registerViewState.value = RegisterViewState.Idle
 
                     } catch (e: Exception) {
-                        // Menangani jika Flow selesai tanpa ada data (jarang terjadi jika API benar)
                         _effect.send(RegisterEffect.ShowToast("Gagal mengambil data profil: ${e.message}"))
                         _registerViewState.value = RegisterViewState.Error("Gagal mengambil data profil")
                     }

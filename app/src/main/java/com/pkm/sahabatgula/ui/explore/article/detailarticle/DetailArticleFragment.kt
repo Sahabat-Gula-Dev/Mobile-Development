@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.HorizontalSpaceItemDecoration
+import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
 import com.pkm.sahabatgula.databinding.FragmentDetailArticleBinding
 import com.pkm.sahabatgula.ui.explore.ArticleOnExploreAdapter
 import com.pkm.sahabatgula.ui.explore.EventOnExploreAdapter
@@ -53,7 +54,7 @@ class DetailArticleFragment : Fragment() {
         val articleTitle = articleItem?.title
         val articleCover = articleItem?.coverUrl
         val articleContent = articleItem?.content
-        val articleDate = articleItem?.createdAt
+        val articleDate = convertIsoToIndonesianDateArticle(articleItem?.createdAt)
         val articleAuthor = "Sahabat Gula"
 
 

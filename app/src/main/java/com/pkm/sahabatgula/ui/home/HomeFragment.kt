@@ -1,8 +1,6 @@
 package com.pkm.sahabatgula.ui.home
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -264,7 +262,6 @@ class HomeFragment : Fragment() {
         binding.cardTotalSteps.root.setOnClickListener {
             Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
         }
-
         binding.icInsight.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_insight)
         }
@@ -276,23 +273,24 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun updateCaloriesUI(caloriesConsumed: Int?, maxCalories: Int) {
         binding.circularProgressCalories.tvRemaining.text =
             caloriesConsumed?.let { max(0, (maxCalories - it)) }.toString()
 
-        if (caloriesConsumed != null) {
-            if (caloriesConsumed >= maxCalories && !isCalorieDialogShown) {
-                showNutrientExceededDialog(
-                    context = requireContext(),
-                    title = "Batas Kalori Terlampaui",
-                    consumed = caloriesConsumed,
-                    max = maxCalories,
-                    suggestion = "Asupan kalorimu sudah melebihi batas harian. Kurangi konsumsi makanan tinggi kalori untuk menjaga keseimbangan energi tubuhmu."
-                )
-                isCalorieDialogShown = true
+        if (caloriesConsumed != 0 && maxCalories != 0) {
+            if (caloriesConsumed != null) {
+                if (caloriesConsumed >= maxCalories && !isCalorieDialogShown) {
+                    showNutrientExceededDialog(
+                        context = requireContext(),
+                        title = "Batas Kalori Terlampaui",
+                        consumed = caloriesConsumed,
+                        max = maxCalories,
+                        suggestion = "Asupan kalorimu sudah melebihi batas harian. Kurangi konsumsi makanan tinggi kalori untuk menjaga keseimbangan energi tubuhmu."
+                    )
+                    isCalorieDialogShown = true
+
+                }
             }
         }
     }
@@ -307,5 +305,10 @@ class HomeFragment : Fragment() {
         val result = (this / total?.toDouble()!!) * 100
         return String.format("%d%%", result.roundToInt())
     }
+
+    fun refreshData() {
+        viewModel.refreshData()
+    }
+
 
 }

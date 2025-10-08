@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula.data.repository
 
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.core.utils.isProfileCompleted
 import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.data.local.room.ProfileDao
@@ -62,13 +63,14 @@ class AuthRepository @Inject constructor(
                     if (myProfile != null) {
                         val profileEntity = myProfile.toProfileEntity()
                         profileDao.upsertProfile(profileEntity)
+                        val isCompleted = isProfileCompleted(myProfile)
+                        tokenManager.setProfileCompleted(isCompleted)
                     } else {
                         return Resource.Error("Gagal mengambil data profil")
                     }
                 }
                 Resource.Success(otpResponse)
             } else {
-                // Implementasikan error handling yang lebih baik di sini
                 Resource.Error("Gagal mengambil data profile: ${response.message()}")
             }
         } catch (e: Exception) {
@@ -91,6 +93,8 @@ class AuthRepository @Inject constructor(
                     if(myProfile != null){
                         val profileEntity = myProfile.toProfileEntity()
                         profileDao.upsertProfile(profileEntity)
+                        val isCompleted = isProfileCompleted(myProfile)
+                        tokenManager.setProfileCompleted(isCompleted)
 
                     } else {
                         return Resource.Error("Gagal mengambil data profil")
@@ -163,6 +167,19 @@ class AuthRepository @Inject constructor(
     }
     suspend fun getLocalProfile(): ProfileEntity? = withContext(Dispatchers.IO) {
         profileDao.getProfile()
+    }
+
+    suspend fun getMyProfile(token: String?): MyProfile {
+        val myProfileResponse = apiService.getMyProfile("Bearer $token")
+        if (myProfileResponse.isSuccessful) {
+            val body = myProfileResponse.body()
+            val myProfile = body?.data?.myProfile
+            if (myProfile != null) {
+                val profileEntity = myProfile.toProfileEntity()
+                profileDao.upsertProfile(profileEntity)
+            }
+        }
+        return myProfileResponse.body()?.data?.myProfile ?: throw IllegalStateException("Response body is null (getMyProfile)")
     }
 
 }

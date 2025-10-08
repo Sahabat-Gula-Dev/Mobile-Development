@@ -61,14 +61,11 @@ class SessionManager @Inject constructor(
             return null
         }
     }
-
+    
     suspend fun clearSession() {
         tokenManager.clearAccessToken()
         tokenManager.clearProfileCompleted()
-        profileDao.clearAll() // buat fungsi ini di DAO untuk clear profile table
+        profileDao.clearAll()
         Log.d("SessionManager", "Session cleared")
     }
-
-
-
 }

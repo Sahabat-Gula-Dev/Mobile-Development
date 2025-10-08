@@ -12,4 +12,5 @@ sealed interface RegisterEffect{
     data class ShowToast(val message: String): RegisterEffect
     data class NavigateToOtpVerification(val email: String): RegisterEffect
     data object NavigateToHome : RegisterEffect
+    data object NavigateToWelcomeScreen: RegisterEffect
 }

@@ -56,7 +56,7 @@ class LoginFragment : Fragment() {
         val compSignInWithGoogle = binding.compSignInWithGoogle
 
         compSignInWithGoogle.btnGoogleSignIn.setOnClickListener {
-//            signInWithGoogle()
+            signInWithGoogle()
         }
 
         btnLogin.setOnClickListener {
@@ -121,64 +121,64 @@ class LoginFragment : Fragment() {
         }
     }
 
-//    private fun signInWithGoogle() {
-//        val credentialManager = CredentialManager.create(requireContext())
-//
-//        val googleIdOption = GetGoogleIdOption.Builder()
-//            .setFilterByAuthorizedAccounts(false)
-//            .setServerClientId(getString(R.string.default_web_client_id))
-//            .build()
-//
-//        val request = GetCredentialRequest.Builder()
-//            .addCredentialOption(googleIdOption)
-//            .build()
-//
-//        lifecycleScope.launch {
-//            try {
-//                val result = credentialManager.getCredential(
-//                    request = request,
-//                    context = requireContext()
-//                )
-//                when (val credential = result.credential) {
-//                    is CustomCredential -> {
-//                        if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-//                            val googleIdTokenCredential =
-//                                GoogleIdTokenCredential.createFrom(credential.data)
-//                            val googleIdToken = googleIdTokenCredential.idToken
-//
-//                            firebaseAuthWithGoogle(googleIdToken)
-//                        }
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                Log.e("GoogleSignIn", "Error: ${e.message}")
-//            }
-//        }
-//    }
-//
-//    private fun firebaseAuthWithGoogle(idToken: String) {
-//        val credential = GoogleAuthProvider.getCredential(idToken, null)
-//        FirebaseAuth.getInstance().signInWithCredential(credential)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    val user = FirebaseAuth.getInstance().currentUser
-//                    user?.getIdToken(true)?.addOnCompleteListener { tokenTask ->
-//                        if (tokenTask.isSuccessful) {
-//                            val firebaseIdToken = tokenTask.result?.token
-//                            Log.d("FIREBASE_ID_TOKEN", "Firebase ID Token: $firebaseIdToken")
-//
-//                            // kirim Firebase ID Token ke backend via ViewModel
-//                            firebaseIdToken?.let {
-//                                loginViewModel.signInWithGoogle(it)
-//                            }
-//                        } else {
-//                            Log.e("FirebaseAuth", "Gagal ambil Firebase ID Token", tokenTask.exception)
-//                        }
-//                    }
-//                } else {
-//                    Log.e("FirebaseAuth", "signInWithCredential gagal", task.exception)
-//                }
-//            }
-//    }
+    private fun signInWithGoogle() {
+        val credentialManager = CredentialManager.create(requireContext())
+
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(getString(R.string.default_web_client_id))
+            .build()
+
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = requireContext()
+                )
+                when (val credential = result.credential) {
+                    is CustomCredential -> {
+                        if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                            val googleIdTokenCredential =
+                                GoogleIdTokenCredential.createFrom(credential.data)
+                            val googleIdToken = googleIdTokenCredential.idToken
+
+                            firebaseAuthWithGoogle(googleIdToken)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("GoogleSignIn", "Error: ${e.message}")
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = FirebaseAuth.getInstance().currentUser
+                    user?.getIdToken(true)?.addOnCompleteListener { tokenTask ->
+                        if (tokenTask.isSuccessful) {
+                            val firebaseIdToken = tokenTask.result?.token
+                            Log.d("FIREBASE_ID_TOKEN", "Firebase ID Token: $firebaseIdToken")
+
+                            // kirim Firebase ID Token ke backend via ViewModel
+                            firebaseIdToken?.let {
+                                loginViewModel.signInWithGoogle(it)
+                            }
+                        } else {
+                            Log.e("FirebaseAuth", "Gagal ambil Firebase ID Token", tokenTask.exception)
+                        }
+                    }
+                } else {
+                    Log.e("FirebaseAuth", "signInWithCredential gagal", task.exception)
+                }
+            }
+    }
 
 }

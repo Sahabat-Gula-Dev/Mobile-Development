@@ -10,3 +10,9 @@ sealed interface LoginViewState {
     data class Success(val data: LoginResponse?): LoginViewState, OtpViewState
     data class Error(val message: String?): LoginViewState, OtpViewState
 }
+
+sealed interface LoginEffect {
+    data class ShowToast(val message: String): LoginEffect
+    object NavigateToHome : LoginEffect
+    object NavigateToWelcome : LoginEffect
+}

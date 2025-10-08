@@ -26,6 +26,22 @@
             app:destination="@id/home_graph"
             app:popUpTo="@id/auth_graph"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/register_to_welcome_screen"
+            app:destination="@id/welcome_screen_fragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/register_to_input_data"
+            app:destination="@id/input_data_graph"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/register_to_terms_and_condition"
+            app:destination="@id/terms_and_conditions_fragment" />
+        <action
+            android:id="@+id/register_to_privacy_policy"
+            app:destination="@id/privacy_policy_fragment" />
     </fragment>
 
     <fragment

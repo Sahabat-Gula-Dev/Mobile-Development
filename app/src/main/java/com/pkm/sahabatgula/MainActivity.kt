@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.pkm.sahabatgula.databinding.ActivityMainBinding
+import com.pkm.sahabatgula.ui.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -108,11 +109,23 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.home_fragment, R.id.onboarding_fragment -> setStatusBarGreen()  // Khusus fragment A
-                else -> setStatusBarDefault()         // Semua fragment lainnya
+                R.id.home_fragment, R.id.onboarding_fragment -> setStatusBarGreen()
+                else -> setStatusBarDefault()
             }
         }
+
+        binding.navView.setOnItemReselectedListener { item ->
+            if (item.itemId == R.id.home_graph) {
+                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                val currentFragment = navHostFragment?.childFragmentManager?.fragments?.firstOrNull()
+                if (currentFragment is HomeFragment) {
+                    currentFragment.refreshData()
+                }
+            }
+        }
+
     }
+
 
     private fun setStatusBarDefault() {
         val window = window

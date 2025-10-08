@@ -44,10 +44,9 @@ class SplashViewModel @Inject constructor(
 
                 if (onboardingRepository.isFirstTime()) {
                     _destination.value = SplashDestination.ONBOARDING_FLOW
-                    return@launch // Hentikan pengecekan lebih lanjut
+                    return@launch
                 }
 
-                // Jika onboarding sudah selesai, lanjutkan ke logika session yang ada
                 if (!sessionManager.isLoggedIn()) {
                     _destination.value = SplashDestination.AUTH_FLOW
                     return@launch

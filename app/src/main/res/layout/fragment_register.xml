@@ -58,13 +58,13 @@
                 android:id="@+id/edit_input_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:hint="@string/username"
                 android:importantForAutofill="yes"
+                android:autofillHints="username"
+                android:imeOptions="actionNext"
                 tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
-        </com.google.android.material.textfield.TextInputLayout >
-
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_email"
@@ -78,32 +78,35 @@
                 android:id="@+id/edit_input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
                 android:hint="@string/email"
+                android:inputType="textEmailAddress"
                 android:importantForAutofill="yes"
+                android:autofillHints="emailAddress"
+                android:imeOptions="actionNext"
                 tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
-        </com.google.android.material.textfield.TextInputLayout >
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_password_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:startIconDrawable="@drawable/ic_lock"
             app:endIconMode="password_toggle"
-            app:boxStrokeErrorColor="@color/red_error">
+            app:boxStrokeErrorColor="@color/red_error"
+            app:errorEnabled="true">
 
-            <!-- untuk custom warning ketika error dilakukan pada logic ui -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_input_password_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:hint="@string/password"
+                android:inputType="textPassword"
+                android:autofillHints="password"
                 android:importantForAutofill="yes"
-                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
+                android:imeOptions="actionDone" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox"

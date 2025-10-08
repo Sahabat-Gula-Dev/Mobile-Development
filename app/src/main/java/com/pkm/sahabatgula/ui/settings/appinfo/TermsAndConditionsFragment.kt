@@ -5,16 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.databinding.FragmentTermsAndConditionsBinding
 
 class TermsAndConditionsFragment : Fragment() {
+
+    private var _binding: FragmentTermsAndConditionsBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_terms_and_conditions, container, false)
+        _binding = FragmentTermsAndConditionsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+        val navIconView = binding.topAppBar
+        navIconView.isClickable = true
+        navIconView.background = null
     }
 
 }

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="16dp"
+    android:clipToPadding="false"
+    android:paddingBottom="80dp"
     android:scrollbars="none"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.appinfo.TermsAndConditionsFragment">
@@ -12,6 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:titleTextColor="@color/black"
+            app:navigationIconTint="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TextView
             android:id="@+id/tv_title_terms_conditions"
             android:layout_width="0dp"
@@ -19,9 +31,11 @@
             android:text="Syarat &amp; Ketentuan"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:textColor="@color/md_theme_onSurface"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="-12dp"
+            android:textColor="@color/md_theme_onSurface_highContrast"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
         <TextView
             android:id="@+id/tv_subtitle_terms_conditions"
@@ -36,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginHorizontal="16dp"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle_terms_conditions"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -171,10 +186,9 @@
                 android:layout_height="wrap_content"
                 android:justificationMode="inter_word"
                 android:lineSpacingExtra="2sp"
-                android:text="Untuk pertanyaan atau keluhan terkait privasi, silakan hubungi kami melalui email sahabatgula@gmail.com."
+                android:text="Untuk pertanyaan atau keluhan terkait privasi, silakan hubungi kami melalui email info@sahabatgula.com."
                 android:textSize="14sp" />
 
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
