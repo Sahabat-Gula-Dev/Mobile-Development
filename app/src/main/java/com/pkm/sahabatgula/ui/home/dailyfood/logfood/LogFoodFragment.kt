@@ -25,6 +25,11 @@ class LogFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         val tabLayoutLogFood = binding.tabLayoutLogFood
         val viewPager = binding.viewPager
         viewPager.adapter = LogFoodPagerAdapter(this)

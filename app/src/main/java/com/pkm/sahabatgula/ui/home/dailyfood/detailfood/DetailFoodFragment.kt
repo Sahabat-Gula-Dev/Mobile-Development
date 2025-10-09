@@ -53,7 +53,7 @@ class DetailFoodFragment : Fragment() {
         val foodPhoto = foodsItem?.photoUrl ?: foodItemManual?.photoUrl
 
         // fetch detail kalau ada id (scan case)
-        if (foodsItem != null) {
+        if (foodsItem != null || foodItemManual !=null) {
             viewModel.fetchFoodDetail(foodId)
         }
 

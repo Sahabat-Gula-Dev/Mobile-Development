@@ -7,44 +7,49 @@ import com.pkm.sahabatgula.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ForgotPasswordEmailViewModel @Inject constructor(private val authRepository: AuthRepository): ViewModel() {
+class ForgotPasswordEmailViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ForgotPasswordEmailState>(ForgotPasswordEmailState.Idle)
-    val uiState: StateFlow<ForgotPasswordEmailState> = _uiState.asStateFlow()
+    val uiState = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<ForgotPasswordEmailEffect>()
     val effect = _effect.asSharedFlow()
 
-    fun requestOtp(email: String){
+    fun requestOtp(email: String) {
+        // Validasi email dulu
         if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             viewModelScope.launch {
-                _effect.emit(ForgotPasswordEmailEffect.ShowToast("Email tidak valid"))
-                return@launch
+                _effect.emit(ForgotPasswordEmailEffect.ShowError("Email tidak valid"))
             }
+            return
         }
+
         viewModelScope.launch {
             _uiState.value = ForgotPasswordEmailState.Loading
-            val result = authRepository.forgotPasswordInputEmail(email)
-            when (result) {
+
+            when (val result = authRepository.forgotPasswordInputEmail(email)) {
                 is Resource.Success -> {
                     _uiState.value = ForgotPasswordEmailState.Success(result.data?.message)
                     _effect.emit(ForgotPasswordEmailEffect.NavigateToOtpVerification(email))
                 }
-                is Resource.Error-> {
-                    _uiState.value = ForgotPasswordEmailState.Idle
-                    _uiState.value = ForgotPasswordEmailState.Error(result.message ?: "Terjadi Kesalahan")
-                    _effect.emit(ForgotPasswordEmailEffect.ShowToast(result.message ?: "Terjadi Kesalahan"))
+
+                is Resource.Error -> {
+                    _uiState.value = ForgotPasswordEmailState.Error(result.message ?: "Terjadi kesalahan")
+                    _effect.emit(ForgotPasswordEmailEffect.ShowError(result.message ?: "Terjadi kesalahan"))
                 }
-                is Resource.Loading -> {}
+
+                is Resource.Loading -> {
+                    _uiState.value = ForgotPasswordEmailState.Loading
+                }
             }
         }
-
     }
 }

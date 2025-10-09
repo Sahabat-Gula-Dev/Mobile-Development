@@ -107,7 +107,19 @@ class MonthlyWaterViewModel @Inject constructor(
         dataSet.isHighlightEnabled = false
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f
-
         _uiState.value = MonthlyWaterState.Success(barData, xAxisLabels)
     }
+
+    fun reloadMonthlyData() {
+        viewModelScope.launch {
+            homeRepository.refreshDailySummary()
+            val monthlyData = homeRepository.observeMonthlySummary().firstOrNull()
+            if (monthlyData.isNullOrEmpty()) {
+                _uiState.value = MonthlyWaterState.Error("Data bulanan tidak ditemukan.")
+            } else {
+                processDataForChart(monthlyData)
+            }
+        }
+    }
+
 }

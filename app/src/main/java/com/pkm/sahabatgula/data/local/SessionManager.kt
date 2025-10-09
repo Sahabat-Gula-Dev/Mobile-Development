@@ -3,6 +3,7 @@ package com.pkm.sahabatgula.data.local
 import android.util.Log
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
+import com.pkm.sahabatgula.data.local.room.SummaryDao
 import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.repository.toProfileEntity
 import javax.inject.Inject
@@ -11,7 +12,8 @@ import javax.inject.Singleton
 @Singleton
 class SessionManager @Inject constructor(
     private val tokenManager: TokenManager,
-    private val profileDao: ProfileDao
+    private val profileDao: ProfileDao,
+    private val summaryDao: SummaryDao,
 ) {
     suspend fun getCurrentUser(): ProfileEntity? {
         val token = tokenManager.getAccessToken()
@@ -66,6 +68,7 @@ class SessionManager @Inject constructor(
         tokenManager.clearAccessToken()
         tokenManager.clearProfileCompleted()
         profileDao.clearAll()
+        summaryDao.clearAllSumary()
         Log.d("SessionManager", "Session cleared")
     }
 }

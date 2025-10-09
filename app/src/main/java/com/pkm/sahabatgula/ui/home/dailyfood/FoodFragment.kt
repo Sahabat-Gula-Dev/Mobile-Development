@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
@@ -39,6 +40,11 @@ class FoodFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         val tabLayoutHistory = binding.tabLayoutHistory
         val viewPager = binding.viewPager
@@ -75,10 +81,10 @@ class FoodFragment : Fragment() {
                                 state?.maxCalories?.let {
                                     showNutrientExceededDialog(
                                         context = requireContext(),
-                                        title = "Batas Gula Terlampaui",
+                                        title = "Batas Kalori Terlampaui",
                                         consumed = state.totalCalories.toInt(),
                                         max = it,
-                                        suggestion = "Konsumsi gulamu sudah melebihi batas harian. Kurangi minuman atau camilan manis agar tubuhmu tidak kewalahan"
+                                        suggestion = "Konsumsi kalorimu sudah melebihi batas harian"
                                     )
                                 }
 

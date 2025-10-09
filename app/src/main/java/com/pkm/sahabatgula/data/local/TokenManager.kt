@@ -66,7 +66,6 @@ class TokenManager(context: Context) {
         sharedPreferences.edit { remove(ACCESS_TOKEN_KEY) }
     }
 
-    // 🧠 Optional: Check if JWT expired locally
     @OptIn(ExperimentalEncodingApi::class)
     fun isAccessTokenExpired(): Boolean {
         val token = getAccessToken() ?: return true
@@ -83,7 +82,6 @@ class TokenManager(context: Context) {
         }
     }
 
-    // === PROFILE FLAG ===
     fun setProfileCompleted(completed: Boolean) {
         sharedPreferences.edit { putBoolean(PROFILE_COMPLETED_KEY, completed) }
     }

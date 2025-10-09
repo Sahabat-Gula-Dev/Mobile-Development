@@ -43,23 +43,32 @@ class WeeklyWaterViewModel @Inject constructor(
         loadWeeklyWaterData()
     }
 
+//    private fun loadWeeklyWaterData() {
+//        viewModelScope.launch {
+//            _uiState.value = WeeklyWaterState.Loading
+//            val weeklyData = homeRepository.observeWeeklySummary().firstOrNull()
+//
+//            if (weeklyData.isNullOrEmpty()) {
+//                _uiState.value = WeeklyWaterState.Error("Data mingguan tidak ditemukan.")
+//                return@launch
+//            } else {
+//                processDataForChart(weeklyData)
+//            }
+//        }
+//    }
+
     private fun loadWeeklyWaterData() {
         viewModelScope.launch {
-            _uiState.value = WeeklyWaterState.Loading
-
-            // Ambil data mingguan dari database (melalui Flow)
-            // .firstOrNull() mengambil nilai saat ini dari Flow sekali saja
-            val weeklyData = homeRepository.observeWeeklySummary().firstOrNull()
-
-            if (weeklyData.isNullOrEmpty()) {
-                _uiState.value = WeeklyWaterState.Error("Data mingguan tidak ditemukan.")
-                return@launch
+            homeRepository.observeWeeklySummary().collect { weeklyData ->
+                if (weeklyData.isNullOrEmpty()) {
+                    _uiState.value = WeeklyWaterState.Error("Data mingguan tidak ditemukan.")
+                } else {
+                    processDataForChart(weeklyData)
+                }
             }
-
-            // Proses data untuk grafik
-            processDataForChart(weeklyData)
         }
     }
+
 
     private fun processDataForChart(weeklyData: List<SummaryEntity>) {
         val today = LocalDate.now()
@@ -108,4 +117,18 @@ class WeeklyWaterViewModel @Inject constructor(
 
         _uiState.value = WeeklyWaterState.Success(barData, xAxisLabels)
     }
+
+    fun reloadWeeklyData() {
+        viewModelScope.launch {
+            homeRepository.refreshDailySummary() // kalau data weekly bergantung daily
+            homeRepository.observeWeeklySummary().collect { weeklyData ->
+                if (weeklyData.isNullOrEmpty()) {
+                    _uiState.value = WeeklyWaterState.Error("Data mingguan tidak ditemukan.")
+                } else {
+                    processDataForChart(weeklyData)
+                }
+            }
+        }
+    }
+
 }

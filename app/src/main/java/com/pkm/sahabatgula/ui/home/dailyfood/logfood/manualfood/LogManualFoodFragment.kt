@@ -76,7 +76,7 @@ class LogManualFoodFragment : Fragment() {
     private fun setupRecyclerView() {
         pagingAdapter = FoodPagingAdapter { foodItemManual ->
 //            val navController = requireParentFragment().findNavController()
-            val action = LogFoodFragmentDirections.actionAddLogFoodToResultSearchFoodFragment()
+            val action = LogFoodFragmentDirections.actionAddLogFoodToDetailFoodFragment(foodItemManual=foodItemManual, foodItem = null)
 //            navController.navigate(action)
             findNavController().navigate(action)
 

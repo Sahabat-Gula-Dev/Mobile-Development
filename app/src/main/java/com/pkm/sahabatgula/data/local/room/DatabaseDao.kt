@@ -69,7 +69,9 @@ interface SummaryDao {
     @Query("SELECT * FROM summary WHERE type = 'MONTHLY' ORDER BY date ASC")
     fun getAllMonthlySummary(): Flow<List<SummaryEntity>>
 
-    companion object
+    // clear
+    @Query("DELETE FROM summary")
+    suspend fun clearAllSumary()
 }
 
 @Dao

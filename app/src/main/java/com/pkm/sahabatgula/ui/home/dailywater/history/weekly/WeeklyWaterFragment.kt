@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -57,24 +58,34 @@ class WeeklyWaterFragment : Fragment() {
 
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                when (state) {
-                    is WeeklyWaterState.Loading -> {
-                        // Tampilkan loading indicator
-                    }
-                    is WeeklyWaterState.Success -> {
-                        // Panggil fungsi setup grafik dengan data dari ViewModel
-                        setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
-                    }
-                    is WeeklyWaterState.Error -> {
+            viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is WeeklyWaterState.Loading -> {
+                            // tampilkan loading
+                        }
+                        is WeeklyWaterState.Success -> {
+                            setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
+                        }
+                        is WeeklyWaterState.Error -> {
+                            // tampilkan pesan error
+                        }
                     }
                 }
             }
         }
     }
 
+
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
-        chart.data = data
+        if (chart.data != null) {
+            chart.data = data
+            chart.notifyDataSetChanged()  // Penting: beri tahu chart ada data baru
+            chart.invalidate()            // Render ulang chart
+        } else {
+            chart.data = data
+            chart.invalidate()
+        }
 
         // Nonaktifkan interaksi
         chart.setTouchEnabled(true)
@@ -116,6 +127,11 @@ class WeeklyWaterFragment : Fragment() {
         // Refresh grafik untuk menampilkan data
         chart.invalidate()
     }
+
+    fun refreshChartData() {
+        viewModel.reloadWeeklyData()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

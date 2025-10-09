@@ -27,6 +27,12 @@
             app:destination="@id/onboarding_fragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splash_welcome"
+            app:destination="@id/welcome_screen_fragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <fragment

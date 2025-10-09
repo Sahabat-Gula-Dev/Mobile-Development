@@ -59,7 +59,14 @@ class MonthlyWaterFragment : Fragment() {
     }
 
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
-        chart.data = data
+        if (chart.data != null) {
+            chart.data = data
+            chart.notifyDataSetChanged()
+            chart.invalidate()
+        } else {
+            chart.data = data
+            chart.invalidate()
+        }
 
         // Nonaktifkan interaksi zoom
         chart.setTouchEnabled(true)
@@ -100,6 +107,11 @@ class MonthlyWaterFragment : Fragment() {
         // Memuat ulang tampilan grafik
         chart.invalidate()
     }
+
+    fun refreshChartData() {
+        viewModel.reloadMonthlyData()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

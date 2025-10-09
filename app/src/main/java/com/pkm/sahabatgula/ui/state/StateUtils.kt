@@ -1,6 +1,8 @@
 package com.pkm.sahabatgula.ui.state
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import com.pkm.sahabatgula.R
 
 fun GlobalUiState.toBundle(): Bundle {
     val b = Bundle()
@@ -42,4 +44,26 @@ fun Bundle.toState(): GlobalUiState {
         )
         else -> GlobalUiState.None
     }
+}
+
+
+fun GlobalUiState.Companion.NoInternet(): GlobalUiState.Error {
+    return GlobalUiState.Error(
+        title = "Koneksi Internet Terputus",
+        message = "Pastikan kamu terhubung ke internet untuk melanjutkan penggunaan aplikasi.",
+        imageRes = R.drawable.glubby_error // ilustrasi glubby sedih/error
+    )
+}
+
+
+fun Fragment.showNoInternetDialogAndExit() {
+    val dialog = StateDialogFragment.newInstance(
+        GlobalUiState.Error(
+            title = "Koneksi Internet Terputus",
+            message = "Pastikan kamu terhubung ke internet untuk melanjutkan.",
+            imageRes = R.drawable.glubby_error
+        )
+    )
+    dialog.dismissListener = { requireActivity().finishAffinity() }
+    dialog.show(parentFragmentManager, "NoInternetDialog")
 }

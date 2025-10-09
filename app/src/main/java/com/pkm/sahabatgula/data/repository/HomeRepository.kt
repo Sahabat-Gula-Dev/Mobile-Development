@@ -149,7 +149,7 @@ fun SummaryData.toEntity(): List<SummaryEntity> {
         entities.add(
             SummaryEntity(
                 type = "WEEKLY",
-                date = w.date,
+                date = DateConverter.getTodayLocalFormatted(),
                 calories = w.nutrients.calories,
                 carbs = w.nutrients.carbs,
                 protein = w.nutrients.protein,

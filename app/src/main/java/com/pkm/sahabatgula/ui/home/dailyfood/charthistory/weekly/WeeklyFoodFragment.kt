@@ -74,8 +74,6 @@ class WeeklyFoodFragment : Fragment() {
 
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
 
-        chart.data = data
-
         // Nonaktifkan interaksi
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false

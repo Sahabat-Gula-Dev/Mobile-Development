@@ -25,7 +25,6 @@ fun showNutrientExceededDialog(
     max: Int,
     suggestion: String
 ) {
-
     val titleText = "$title\n\n$consumed g  dari  $max g"
     val spannable = SpannableString(titleText)
 
@@ -54,26 +53,46 @@ fun showNutrientExceededDialog(
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
+    val imageView = android.widget.ImageView(context).apply {
+        setImageResource(R.drawable.glubby_error)
+        adjustViewBounds = true
+        scaleType = android.widget.ImageView.ScaleType.CENTER_INSIDE
+        val size = context.resources.getDimensionPixelSize(R.dimen.dialog_image_size)
+        layoutParams = android.widget.LinearLayout.LayoutParams(size, size).apply {
+            gravity = Gravity.CENTER
+            bottomMargin = 16
+            topMargin = 32
+        }
+    }
+
     val titleView = TextView(context).apply {
         text = spannable
         gravity = Gravity.CENTER
-        setPadding(16, 48, 16, 12)
+        setPadding(16, 0, 16, 8)
         textSize = 18f
     }
 
     val customFont = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_regular)
     val messageView = TextView(context).apply {
         text = suggestion
-        setPadding(64, 24, 64, 16)
+        setPadding(32, 16, 32, 0)
         textSize = 14f
         typeface = customFont
         textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
         justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
     }
 
+    val container = android.widget.LinearLayout(context).apply {
+        orientation = android.widget.LinearLayout.VERTICAL
+        gravity = Gravity.CENTER_HORIZONTAL
+        setPadding(24, 24, 24, 16)
+        addView(imageView)
+        addView(titleView)
+        addView(messageView)
+    }
+
     val dialog = AlertDialog.Builder(context)
-        .setCustomTitle(titleView)
-        .setView(messageView)
+        .setView(container)
         .setPositiveButton("OK", null)
         .create()
 

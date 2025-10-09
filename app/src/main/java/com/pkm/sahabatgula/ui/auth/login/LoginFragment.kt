@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -49,33 +50,54 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val compSignInWithGoogle = binding.compSignInWithGoogle
+        val btnLogin = binding.btnLogin
         val etEmail = binding.editInputEmail
         val etPassword = binding.editInputPassword
-        val btnLogin = binding.btnLogin
 
-        val compSignInWithGoogle = binding.compSignInWithGoogle
+        btnLogin.isEnabled = false
+
+        fun updateLoginButtonState() {
+            val emailNotEmpty = etEmail.text.toString().isNotBlank()
+            val passwordNotEmpty = etPassword.text.toString().isNotBlank()
+            btnLogin.isEnabled = emailNotEmpty && passwordNotEmpty
+        }
+
+        etEmail.addTextChangedListener { updateLoginButtonState() }
+        etPassword.addTextChangedListener { updateLoginButtonState() }
+
+        btnLogin.setOnClickListener {
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString()
+
+            if (email.isEmpty() || password.isEmpty()) return@setOnClickListener
+
+            loginViewModel.login(email, password)
+        }
 
         compSignInWithGoogle.btnGoogleSignIn.setOnClickListener {
             signInWithGoogle()
         }
 
-        btnLogin.setOnClickListener {
-            loginViewModel.login(
-                etEmail.text.toString(),
-                etPassword.text.toString()
-            )
-        }
-
-        binding.tvForgotPasswordClickable.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_forgot_password)
-        }
-
-        binding.tvRegisterNow.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_register)
-        }
-
+        observeLoginState()
         observeState()
         observeEffect()
+    }
+
+    private fun observeLoginState(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                loginViewModel.loginState.collect {
+                    updateLoginButtonState()
+                }
+            }
+        }
+    }
+
+    fun updateLoginButtonState() {
+        val emailNotEmpty = binding.editInputEmail.text.toString().isNotBlank()
+        val passwordNotEmpty = binding.editInputPassword.text.toString().isNotBlank()
+        binding.btnLogin.isEnabled = emailNotEmpty && passwordNotEmpty
     }
 
     private fun observeState() {
@@ -120,6 +142,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
 
     private fun signInWithGoogle() {
         val credentialManager = CredentialManager.create(requireContext())

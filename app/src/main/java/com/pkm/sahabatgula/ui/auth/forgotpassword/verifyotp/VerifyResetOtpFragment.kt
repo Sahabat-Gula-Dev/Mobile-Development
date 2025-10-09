@@ -2,23 +2,21 @@ package com.pkm.sahabatgula.ui.auth.forgotpassword.verifyotp
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
-import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.databinding.FragmentOtpVerificationBinding
-import com.pkm.sahabatgula.ui.auth.otpverification.OtpViewState
+import com.pkm.sahabatgula.ui.state.GlobalUiState
+import com.pkm.sahabatgula.ui.state.StateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,87 +26,104 @@ class VerifyResetOtpFragment : Fragment() {
     private var _binding: FragmentOtpVerificationBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<VerifyOtpForgotPassViewModel>()
+    private var stateDialog: StateDialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         _binding = FragmentOtpVerificationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val emailFromArgs = arguments?.getString("email")
-        if (emailFromArgs != null) {
-            viewModel.setEmail(emailFromArgs)
-        } else {
-            Toast.makeText(requireContext(), "Email tidak ditemukan", Toast.LENGTH_SHORT).show()
+        arguments?.getString("email")?.let {
+            viewModel.email = it
+        }
+        if (viewModel.ui.value is OtpForgotPassViewState.Idle) viewModel.startTimer()
+        binding.editInputOtp.doAfterTextChanged {
+            binding.btnVerify.isEnabled = (it?.length == 6)
         }
 
         binding.btnVerify.setOnClickListener {
-            val email = viewModel.email
-            val otp = binding.editInputOtp.text.toString()
-            Log.d("OTP", "Verify clicked code='$otp'")
-            if (otp.isNotEmpty()) viewModel.verifyOtpReset(email, otp)
+            val code = binding.editInputOtp.text?.toString()?.trim().orEmpty()
+            showStateDialog(GlobalUiState.Loading("Tunggu sebentar..."))
+            viewModel.verify(code)
         }
 
         binding.tvResend.setOnClickListener {
-            if (viewModel.uiState.value is OtpForgotPassState.ReadyToResend) {
+            if (viewModel.ui.value is OtpForgotPassViewState.ReadyToResend) {
+                showStateDialog(GlobalUiState.Loading("Mengirim ulang kode"))
                 viewModel.resendOtp()
             }
-
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                val customFont = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
                 launch {
-                    val customFont = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
-                    viewModel.uiState.collect { state ->
+                    viewModel.ui.collect { state ->
                         when (state) {
-                            is OtpForgotPassState.Ticking -> {
+                            is OtpForgotPassViewState.Idle -> {
                                 binding.tvResend.isEnabled = false
-                                binding.tvResend.text = getString(R.string.resend_in_30_secs, state.remaining)
+                                binding.tvResend.text = getString(R.string.resend_in_30_secs)
                                 binding.tvResend.setTypeface(customFont)
-                                binding.btnVerify.isEnabled = binding.editInputOtp.text?.length == 6
                             }
-
-                            OtpForgotPassState.ReadyToResend -> {
+                            is OtpForgotPassViewState.Ticking -> {
+                                binding.tvResend.isEnabled = false
+                                binding.tvResend.text = "Kirim ulang dalam ${state.remaining} detik"
+                                binding.tvResend.setTypeface(customFont)
+                            }
+                            is OtpForgotPassViewState.ReadyToResend -> {
                                 binding.tvResend.isEnabled = true
-                                binding.tvResend.text = getString(R.string.otp_resend_ready)
                                 binding.tvResend.setTypeface(customFont, Typeface.BOLD)
-                                binding.btnVerify.isEnabled = binding.editInputOtp.text?.length == 6
+                                binding.tvResend.text = getString(R.string.otp_resend_ready)
                             }
-
-                            OtpForgotPassState.Loading -> {
-                                binding.btnVerify.isEnabled = false
+                            is OtpForgotPassViewState.Loading -> {
+                                binding.tvResend.isEnabled = false
+                                binding.tvResend.text = "Mengirim ulang..."
                             }
-
-                            OtpForgotPassState.Idle -> Unit
                         }
                     }
                 }
+
+
                 launch {
                     viewModel.effect.collect { effect ->
                         when (effect) {
-                            is OtpForgotPassEffect.ShowToast -> {
-                                Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT)
-                                    .show()
+                            is OtpForgotPassEffect.ShowVerifyError -> {
+                                stateDialog?.updateState(
+                                    GlobalUiState.Error(
+                                        title = "Verifikasi Gagal",
+                                        message = effect.message
+                                    )
+                                )
                             }
-
+                            is OtpForgotPassEffect.ShowResendInfo -> {
+                                stateDialog?.updateState(
+                                    GlobalUiState.Success(
+                                        title = "Kode telah dikirim ulang",
+                                        message = effect.message
+                                    )
+                                )
+                            }
                             is OtpForgotPassEffect.VerificationSuccess -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Verifikasi berhasil!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                val resetToken = effect.resetToken
-                                val bundle = Bundle()
-                                bundle.putString("resetToken", resetToken)
-                                findNavController().navigate(R.id.action_verify_otp_to_reset_password, bundle)
+                                stateDialog?.updateState(
+                                    GlobalUiState.Success(
+                                        title = "Verifikasi Berhasil",
+                                        message = "Silakan buat kata sandi baru untuk akunmu."
+                                    )
+                                )
+                                stateDialog?.dismissListener = {
+                                    val bundle = Bundle().apply {
+                                        putString("resetToken", effect.resetToken)
+                                    }
+                                    findNavController().navigate(
+                                        R.id.action_verify_otp_to_reset_password,
+                                        bundle
+                                    )
+                                }
                             }
                         }
                     }
@@ -117,4 +132,16 @@ class VerifyResetOtpFragment : Fragment() {
         }
     }
 
+    private fun showStateDialog(state: GlobalUiState) {
+        if (stateDialog?.dialog?.isShowing == true) {
+            stateDialog?.dismiss()
+        }
+        stateDialog = StateDialogFragment.newInstance(state)
+        stateDialog?.show(childFragmentManager, "StateDialog")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

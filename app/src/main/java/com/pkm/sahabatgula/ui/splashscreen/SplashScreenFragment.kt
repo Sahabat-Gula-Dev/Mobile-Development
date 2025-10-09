@@ -13,7 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.isNetworkAvailable
 import com.pkm.sahabatgula.databinding.FragmentSplashScreenBinding
+import com.pkm.sahabatgula.ui.state.GlobalUiState
+import com.pkm.sahabatgula.ui.state.StateDialogFragment
+import com.pkm.sahabatgula.ui.state.showNoInternetDialogAndExit
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -27,7 +31,18 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         observeDestination()
+        observeUiState()
+        observeDestination()
+        observeUiState()
+
+        if (!isNetworkAvailable(requireContext())) {
+            showNoInternetDialogAndExit()
+            return
+        }
+        splashViewModel.checkUserSession()
+
     }
 
     private fun observeDestination() {
@@ -45,9 +60,9 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                                 findNavController().navigate(R.id.action_splash_to_auth)
                             }
                         }
-                        SplashDestination.INPUT_DATA_FLOW -> {
+                        SplashDestination.WELCOME_FLOW -> {
                             if (findNavController().currentDestination?.id == R.id.splashscreen_fragment) {
-                                findNavController().navigate(R.id.action_splash_to_input_data)
+                                findNavController().navigate(R.id.action_splash_welcome)
                             }
                         }
                         SplashDestination.HOME_FLOW -> {
@@ -63,5 +78,28 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
     }
 
 
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                splashViewModel.uiState.collect { state ->
+                    when (state) {
+                        is GlobalUiState.Error -> {
+                            val dialog = StateDialogFragment.newInstance(state)
+                            dialog.dismissListener = {
+                                requireActivity().finishAffinity()
+                            }
+                            dialog.show(parentFragmentManager, "NoInternetDialog")
+                        }
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
 
 }
+

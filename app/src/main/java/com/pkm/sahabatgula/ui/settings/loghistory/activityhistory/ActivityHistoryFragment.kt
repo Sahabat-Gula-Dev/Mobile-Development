@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.getValue
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class ActivityHistoryFragment : Fragment() {
     private var _binding: FragmentActivityHistoryBinding? = null

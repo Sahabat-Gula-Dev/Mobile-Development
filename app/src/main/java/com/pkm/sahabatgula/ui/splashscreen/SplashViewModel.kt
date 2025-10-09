@@ -8,15 +8,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.isNetworkAvailable
+import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.data.remote.api.ApiService
+import com.pkm.sahabatgula.data.repository.AuthRepository
 import com.pkm.sahabatgula.data.repository.OnboardingRepository
+import com.pkm.sahabatgula.ui.auth.login.LoginEffect
+import com.pkm.sahabatgula.ui.auth.login.LoginViewState
+import com.pkm.sahabatgula.ui.state.GlobalUiState
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 enum class SplashDestination {
     ONBOARDING_FLOW,
     AUTH_FLOW,
-    INPUT_DATA_FLOW,
+    WELCOME_FLOW,
     HOME_FLOW,
     LOADING
 }
@@ -24,20 +31,18 @@ enum class SplashDestination {
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val sessionManager: SessionManager,
-    private val apiService: ApiService,
-    private val onboardingRepository: OnboardingRepository
+    private val onboardingRepository: OnboardingRepository,
+    private val authRepository: AuthRepository,
+    private val tokenManager: TokenManager
 ): ViewModel() {
 
     private val _destination = MutableStateFlow(SplashDestination.LOADING)
-    val destination= _destination.asStateFlow()
+    val destination = _destination.asStateFlow()
 
+    private val _uiState = MutableStateFlow<GlobalUiState>(GlobalUiState.None)
+    val uiState = _uiState.asStateFlow()
 
-
-    init {
-        checkUserSession()
-    }
-
-    private fun checkUserSession() {
+    fun checkUserSession() {
         viewModelScope.launch {
             try {
                 kotlinx.coroutines.delay(1200)
@@ -52,33 +57,30 @@ class SplashViewModel @Inject constructor(
                     return@launch
                 }
 
-                if (!sessionManager.isLoggedIn()) {
+                val accessToken = tokenManager.getAccessToken()
+                if (accessToken.isNullOrEmpty()) {
                     _destination.value = SplashDestination.AUTH_FLOW
                     return@launch
                 }
 
-                val profile = sessionManager.getOrFetchProfile(apiService)
-                if (profile == null) {
-                    _destination.value = SplashDestination.AUTH_FLOW
-                    return@launch
-                }
+                val profile = authRepository.getMyProfile(accessToken)
+                val bmi = profile?.bmiScore
 
-                if (sessionManager.isProfileCompleted()) {
-                    _destination.value = SplashDestination.HOME_FLOW
+                if (bmi == null || bmi == 0.0) {
+                    _destination.value = SplashDestination.WELCOME_FLOW
                 } else {
-                    _destination.value = SplashDestination.INPUT_DATA_FLOW
+                    _destination.value = SplashDestination.HOME_FLOW
                 }
 
             } catch (e: IOException) {
-                Log.w("SplashViewModel", "Network error. Relying on local session flags.")
-                Log.e("SplashViewModel", "Network error. Relying on local session flags.")
-
-                if (sessionManager.isProfileCompleted()) {
-                    _destination.value = SplashDestination.HOME_FLOW
+                // Offline mode fallback
+                val localProfile = authRepository.getLocalProfile()
+                val bmi = localProfile?.bmi_score
+                if (bmi == null || bmi == 0.0) {
+                    _destination.value = SplashDestination.WELCOME_FLOW
                 } else {
-                    _destination.value = SplashDestination.INPUT_DATA_FLOW
+                    _destination.value = SplashDestination.HOME_FLOW
                 }
-
             } catch (e: Exception) {
                 Log.e("SplashViewModel", "Unexpected error. Logging out for safety.", e)
                 sessionManager.clearSession()

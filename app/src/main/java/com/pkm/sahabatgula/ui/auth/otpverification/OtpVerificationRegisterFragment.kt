@@ -78,7 +78,7 @@ class OtpVerificationRegisterFragment : Fragment() {
                             }
                             is OtpViewState.Ticking -> {
                                 binding.tvResend.isEnabled = false
-                                binding.tvResend.text = "Kirim ulang dalam ${state.remaining}s"
+                                binding.tvResend.text = "Kirim ulang dalam ${state.remaining} detik"
                                 binding.tvResend.setTypeface(customFont)
                             }
                             is OtpViewState.ReadyToResend -> {
