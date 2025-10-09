@@ -33,8 +33,6 @@ class FatFragment : Fragment() {
     private val viewModel: FatViewModel by viewModels()
     private var hasShownOverLimitDialog = false
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +44,11 @@ class FatFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         val tabLayoutHistory = binding.tabLayoutHistory
         val viewPager = binding.viewPager

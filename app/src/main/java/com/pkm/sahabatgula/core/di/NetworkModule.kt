@@ -24,9 +24,9 @@ object NetworkModule {
         }
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(20, TimeUnit.SECONDS) // waktu maksimal koneksi
-            .readTimeout(30, TimeUnit.SECONDS)    // waktu maksimal membaca response
-            .writeTimeout(30, TimeUnit.SECONDS)   // waktu maksimal kirim request body (misalnya upload)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS) 
             .build()
     }
 

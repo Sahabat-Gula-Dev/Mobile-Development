@@ -40,6 +40,10 @@ class InputDataUserHistoryFamilyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (inputDataViewModel.profileData.value.diabetesFamily == null) {
+            inputDataViewModel.selectDiabetesFamily(DiabetesFamily.FIRSTFAM.value)
+        }
+
         setupClickListener()
         observeViewModel()
     }
@@ -65,6 +69,10 @@ class InputDataUserHistoryFamilyFragment : Fragment() {
         binding.chooseFirstFam.tvSubtitleChoice.text = "Seperti ayah, ibu, atau saudara kandung. Risiko genetik lebih tinggi"
         binding.chooseFirstFam.tvSubtitleChoice.visibility =
             if (isFirstSelected) View.VISIBLE else View.GONE
+
+        // memberikan nilai default true pada pilihan 1
+        binding.chooseFirstFam.radioButton.isChecked = true
+
 
         val isSecondSelected = selectedDiabetesFam == DiabetesFamily.SECONDFAM.value
         binding.chooseSecondFam.radioButton.isChecked = isSecondSelected
@@ -126,6 +134,13 @@ class InputDataUserHistoryFamilyFragment : Fragment() {
             else {
                 Toast.makeText(requireContext(), "Silakan Lengkapi Data Anda", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (inputDataViewModel.profileData.value.diabetesFamily == null) {
+            inputDataViewModel.selectDiabetesFamily(DiabetesFamily.FIRSTFAM.value)
         }
     }
 

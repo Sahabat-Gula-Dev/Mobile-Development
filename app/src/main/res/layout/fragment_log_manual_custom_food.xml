@@ -65,6 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleSelection="true"
+            android:paddingHorizontal="16dp"
+            app:chipSpacingHorizontal="8dp"
             app:singleLine="true">
 
             <com.google.android.material.chip.Chip

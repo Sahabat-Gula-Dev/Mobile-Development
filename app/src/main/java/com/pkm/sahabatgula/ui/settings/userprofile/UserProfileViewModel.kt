@@ -1,18 +1,12 @@
 package com.pkm.sahabatgula.ui.settings.userprofile
 
-import androidx.core.content.ContentProviderCompat.requireContext
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pkm.sahabatgula.core.utils.RiskCategory
-import com.pkm.sahabatgula.core.utils.getRiskCategory
-import com.pkm.sahabatgula.data.local.TokenManager
-import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject

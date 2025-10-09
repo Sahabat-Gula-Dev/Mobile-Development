@@ -4,18 +4,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.pkm.sahabatgula.databinding.ActivityMainBinding
 import com.pkm.sahabatgula.ui.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
@@ -72,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.log_fat_fragment,
                 R.id.log_protein_fragment,
                 R.id.root_log_activity_fragment,
+                R.id.insight_fragment,
 
                 // scan and log food
                 R.id.log_food_fragment,
@@ -125,7 +121,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 
     private fun setStatusBarDefault() {
         val window = window

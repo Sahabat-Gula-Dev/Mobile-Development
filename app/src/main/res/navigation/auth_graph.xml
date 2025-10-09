@@ -17,7 +17,9 @@
         android:name="com.pkm.sahabatgula.ui.auth.register.RegisterFragment">
         <action
             android:id="@+id/register_to_otp_verification"
-            app:destination="@id/otp_verification_fragment"/>
+            app:destination="@id/otp_verification_fragment"
+            app:popUpTo="@id/auth_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/register_to_login"
             app:destination="@id/login_fragment" />

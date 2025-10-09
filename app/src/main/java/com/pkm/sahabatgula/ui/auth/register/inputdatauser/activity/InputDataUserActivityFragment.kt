@@ -13,10 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.ActivityLevel
 import com.pkm.sahabatgula.databinding.FragmentInputDataUserActivityBinding
 import com.pkm.sahabatgula.databinding.FragmentInputDataUserGenderBinding
 import com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataViewModel
+import com.pkm.sahabatgula.ui.state.GlobalUiState
+import com.pkm.sahabatgula.ui.state.StateDialogFragment
 import kotlinx.coroutines.launch
 import kotlin.getValue
 
@@ -26,7 +29,7 @@ class InputDataUserActivityFragment : Fragment() {
     private var _binding: FragmentInputDataUserActivityBinding? = null
     private val binding get() = _binding!!
     private val inputDataViewModel: InputDataViewModel by activityViewModels()
-
+    private var stateDialog: StateDialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,43 @@ class InputDataUserActivityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (inputDataViewModel.profileData.value.activityLevel == null) {
+            inputDataViewModel.selectActivityLevel(ActivityLevel.INACTIVE.value)
+        }
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                inputDataViewModel.setupResult.collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            val calorieLimit = result.data?.setupProfileData?.maxCalories ?: 0
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = "Yey! Sudah Siap",
+                                    message = "Rekomendasi ini bersifat umum, konsultasikan dengan tenaga kesehatan untuk informasi lebih lanjut.",
+                                    calorieValue = calorieLimit
+                                )
+                            )
+                            stateDialog?.dismissListener = {
+                                findNavController().navigate(R.id.action_input_data_user_activity_to_home)
+                            }
+                        }
+                        is Resource.Error -> {
+                            stateDialog?.updateState(
+                                GlobalUiState.Error(
+                                    title = "Oops... Terjadi Kegagalan",
+                                    message = "Kami tidak dapat menyimpan data kamu saat ini. Silakan coba lagi dalam beberapa saat."
+                                )
+                            )
+                        }
+                        is Resource.Loading -> Unit
+                        null -> Unit
+                    }
+                }
+            }
+        }
 
         setupClickListener()
         observeViewModel()
@@ -161,12 +201,30 @@ class InputDataUserActivityFragment : Fragment() {
 
         binding.btnSubmitData.setOnClickListener {
             if (inputDataViewModel.profileData.value.activityLevel != null) {
+                showStateDialog(
+                    GlobalUiState.Loading(
+                        message = "Gluby sedang menganalisis data kamu, tunggu beberapa detik..."
+                    )
+                )
                 inputDataViewModel.submitProfileData()
-                Toast.makeText(requireContext(),"Data berhasil disimpan", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_input_data_user_activity_to_home)
             }
         }
 
 
+    }
+
+    private fun showStateDialog(state: GlobalUiState) {
+        if (stateDialog?.dialog?.isShowing == true) {
+            stateDialog?.dismiss()
+        }
+        stateDialog = StateDialogFragment.newInstance(state)
+        stateDialog?.show(childFragmentManager, "StateDialog")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (inputDataViewModel.profileData.value.activityLevel == null) {
+            inputDataViewModel.selectActivityLevel(ActivityLevel.INACTIVE.value)
+        }
     }
 }

@@ -5,6 +5,15 @@
     android:layout_height="wrap_content"
     android:paddingVertical="4dp">
 
+    <ImageView
+        android:id="@+id/ic_gluby"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/gluby_chat"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/tv_message"
         android:layout_width="0dp"
@@ -14,9 +23,11 @@
         android:paddingVertical="12dp"
         android:textColor="@color/md_theme_onSurface"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ic_gluby"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_max="wrap"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintWidth_percent="0.8"
+        android:layout_marginStart="4dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

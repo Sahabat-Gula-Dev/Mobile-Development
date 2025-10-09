@@ -59,6 +59,7 @@ class InputDataUserAgeFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 inputDataViewModel.profileData.collect { state ->
                     binding.btnContinueToHeight.isEnabled = state.age != null
+
                     binding.btnContinueToHeight.setOnClickListener {
                         findNavController().navigate(R.id.input_age_to_input_height)
                     }

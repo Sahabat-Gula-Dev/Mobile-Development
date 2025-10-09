@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentResultSearchBinding
 import com.pkm.sahabatgula.ui.explore.event.EventPagingDataAdapter
@@ -37,6 +38,7 @@ class EventResultSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
         setupUI()
         setupRecyclerView()
         observeEvents()

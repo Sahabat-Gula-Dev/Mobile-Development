@@ -1,10 +1,12 @@
+@file:Suppress("DEPRECATION")
+
 package com.pkm.sahabatgula.ui.explore.article
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -21,17 +24,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView // <<< TAMBAHKAN IMPORT INI
 import com.google.android.material.chip.Chip
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.ArticleCategory
-import com.pkm.sahabatgula.databinding.FragmentExploreArticleBinding // Pastikan nama file XML benar
-import com.pkm.sahabatgula.ui.explore.ArticleOnExploreAdapter
-import com.pkm.sahabatgula.ui.explore.ExploreFragmentDirections // Mungkin perlu diubah
+import com.pkm.sahabatgula.databinding.FragmentExploreArticleBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -43,8 +43,6 @@ class ExploreArticleFragment : Fragment() {
     private val viewModel: ExploreArticleViewModel by viewModels()
     private lateinit var articleAdapter: ArticlePagingDataAdapter
     private var searchJob: Job? = null
-    // explore article nav direction
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentExploreArticleBinding.inflate(inflater, container, false)
@@ -54,11 +52,52 @@ class ExploreArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupKeyboardListener()
         setupRecyclerView()
         setupSearchAndNavigate()
-//        setupSearch()
         observeArticles()
         observeCategories()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupKeyboardListener() {
+        val navView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            if (imeVisible) {
+                navView.visibility = View.GONE
+            }
+            binding.rvListArticles.setPadding(
+                binding.rvListArticles.paddingLeft,
+                binding.rvListArticles.paddingTop,
+                binding.rvListArticles.paddingRight,
+                if (imeVisible) imeHeight else 0
+            )
+
+            insets
+        }
+
+        binding.root.setOnClickListener {
+            if (binding.searchEditText.hasFocus()) {
+                binding.searchEditText.clearFocus()
+                hideKeyboard()
+            }
+        }
+
+        binding.rvListArticles.setOnTouchListener { _, _ ->
+            if (binding.searchEditText.hasFocus()) {
+                binding.searchEditText.clearFocus()
+                hideKeyboard()
+            }
+            false
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
     }
 
     private fun observeCategories() {
@@ -69,7 +108,6 @@ class ExploreArticleFragment : Fragment() {
                         setupChipGroup(resource.data)
                     }
                     is Resource.Error -> {
-                        // Tampilkan pesan error jika gagal memuat kategori
                         Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> { /* Tampilkan loading jika perlu */ }
@@ -88,63 +126,42 @@ class ExploreArticleFragment : Fragment() {
             ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
 
         val backgroundStates = arrayOf(
-            intArrayOf(android.R.attr.state_checked), // Saat terpilih
-            intArrayOf(-android.R.attr.state_checked) // Saat normal (tidak terpilih)
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
         )
         val backgroundColors = intArrayOf(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.md_theme_primary
-            ), // Warna solid saat terpilih
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.md_theme_surface
-            )  // Warna putih/surface saat normal
+            ContextCompat.getColor(requireContext(), R.color.md_theme_primary),
+            ContextCompat.getColor(requireContext(), R.color.md_theme_surface)
         )
         val backgroundColorStateList = ColorStateList(backgroundStates, backgroundColors)
 
-        // --- Aturan untuk Warna Teks ---
         val textStates = arrayOf(
-            intArrayOf(android.R.attr.state_checked), // Saat terpilih
-            intArrayOf(-android.R.attr.state_checked) // Saat normal
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
         )
         val textColors = intArrayOf(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.md_theme_onPrimary
-            ), // Warna putih saat terpilih
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.md_theme_onSurfaceVariant
-            )   // Warna abu-abu saat normal
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary),
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant)
         )
         val textColorStateList = ColorStateList(textStates, textColors)
 
-        // Fungsi kecil untuk membantu konversi DP ke Pixel
         fun Float.dpToPx(): Float = (this * resources.displayMetrics.density)
 
-        // --- Buat Chip "Semua" ---
         val allChip = Chip(context).apply {
             text = "Semua"
             isCheckable = true
             isChecked = true
-            id = View.generateViewId() // Atau View.NO_ID
+            id = View.generateViewId()
 
-            // Warna
             chipBackgroundColor = backgroundColorStateList
             setTextColor(textColorStateList)
-            setChipStrokeColorResource(R.color.md_theme_outline) // Warna outline
-            chipStrokeWidth = 1f.dpToPx() // Lebar outline 1dp
-
-            // Bentuk (sangat rounded)
+            setChipStrokeColorResource(R.color.md_theme_outline)
+            chipStrokeWidth = 1f.dpToPx()
             chipCornerRadius = 50f.dpToPx()
-
-            // Menghilangkan ikon centang saat terpilih
             isCheckedIconVisible = false
             typeface = customTypefaceBold
             textSize = 11f
             height = 36
-
         }
         chipGroup.addView(allChip)
         chipGroup.isSingleSelection = true
@@ -160,19 +177,16 @@ class ExploreArticleFragment : Fragment() {
                 tag = category.id
                 height = 36
 
-                // --- Terapkan Style yang sama ---
                 chipBackgroundColor = backgroundColorStateList
                 setTextColor(textColorStateList)
                 setChipStrokeColorResource(R.color.md_theme_outline)
                 chipStrokeWidth = 1f.dpToPx()
                 chipCornerRadius = 50f.dpToPx()
                 isCheckedIconVisible = false
-//                setTextAppearance(R.style.MyChipTextAppearance)
             }
             chipGroup.addView(chip)
         }
 
-        // Atur listener
         chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             if (checkedIds.isEmpty()) {
                 viewModel.selectCategory(null)
@@ -188,17 +202,17 @@ class ExploreArticleFragment : Fragment() {
 
             if (selectedId != null) {
                 val selectedChip = group.findViewById<Chip>(selectedId)
-                val categoryId = selectedChip?.tag as? Int  // ← Ambil ID dari tag, bukan dari ID view
+                val categoryId = selectedChip?.tag as? Int
                 viewModel.selectCategory(categoryId)
             }
         }
-
     }
+
     private fun setupSearchAndNavigate() {
         binding.searchEditText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = textView.text.toString().trim()
-                val categoryIdString = viewModel.selectedCategoryId.value.toString() ?: ""
+                val categoryIdString = viewModel.selectedCategoryId.value.toString()
 
                 val bundle = Bundle().apply {
                     putString("searchQuery", query)
@@ -217,11 +231,10 @@ class ExploreArticleFragment : Fragment() {
 
     private fun setupRecyclerView() {
         articleAdapter = ArticlePagingDataAdapter { article ->
-
-             val action = ExploreArticleFragmentDirections.actionExploreArticleToDetailArticle (article)
-             findNavController().navigate(action)
+            val action = ExploreArticleFragmentDirections.actionExploreArticleToDetailArticle(article)
+            findNavController().navigate(action)
         }
-        binding.rvListArticles.apply { // Ganti dengan ID RecyclerView dari XML Anda
+        binding.rvListArticles.apply {
             adapter = articleAdapter
             layoutManager = LinearLayoutManager(context)
             isNestedScrollingEnabled = false
@@ -230,10 +243,7 @@ class ExploreArticleFragment : Fragment() {
 
     private fun observeArticles() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // Bungkus collector di dalam repeatOnLifecycle
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                // Ganti .collect menjadi .collectLatest
                 viewModel.articles.collectLatest { pagingData ->
                     Log.d("SearchDebug", "Mencoba submit PagingData baru ke adapter...")
                     articleAdapter.submitData(pagingData)

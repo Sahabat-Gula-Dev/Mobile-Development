@@ -26,7 +26,6 @@ class SettingsFragment : Fragment() {
     @Inject
     lateinit var sessionManager: SessionManager
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

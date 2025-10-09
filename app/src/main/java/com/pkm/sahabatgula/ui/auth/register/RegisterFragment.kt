@@ -35,6 +35,8 @@ import com.pkm.sahabatgula.BuildConfig
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.Validator
 import com.pkm.sahabatgula.databinding.FragmentRegisterBinding
+import com.pkm.sahabatgula.ui.state.GlobalUiState
+import com.pkm.sahabatgula.ui.state.StateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -44,6 +46,7 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     private val registerViewModel by viewModels<RegisterViewModel>()
+    private var stateDialog: StateDialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,8 +89,14 @@ class RegisterFragment : Fragment() {
         val compSignInWithGoogle = binding.compSignInWithGoogle
 
         compSignInWithGoogle.btnGoogleSignIn.setOnClickListener {
+            showStateDialog(
+                GlobalUiState.Loading(
+                    message = "Kami sedang memproses akun Google-mu. Mohon tunggu sebentar…"
+                )
+            )
             signInWithGoogle()
         }
+
 
         btnRegister.setOnClickListener {
             val username = binding.inputUsername.editText?.text.toString().trim()
@@ -103,6 +112,11 @@ class RegisterFragment : Fragment() {
             binding.inputPasswordRegister.error = passwordError
 
             if (usernameError == null && emailError == null && passwordError == null) {
+                showStateDialog(
+                    GlobalUiState.Loading(
+                        message = "Gluby sedang menganalisis data kamu, tunggu beberapa detik"
+                    )
+                )
                 registerViewModel.register(username, email, password)
             }
         }
@@ -140,25 +154,55 @@ class RegisterFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.effect.collect { effect ->
-                    when(effect) {
-                        is RegisterEffect.ShowToast -> {
-                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_LONG).show()
+                    when (effect) {
+                        is RegisterEffect.ShowError -> {
+                            stateDialog?.updateState(
+                                GlobalUiState.Error(
+                                    title = "Registrasi Gagal",
+                                    message = "Terjadi kendala saat memproses pendaftaran. Periksa kembali data yang kamu masukkan"
+                                )
+                            )
+                        }
+                        is RegisterEffect.ShowInfo -> {
+                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is RegisterEffect.ShowSuccess -> {
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = "Berhasil",
+                                    message = effect.message
+                                )
+                            )
                         }
                         is RegisterEffect.NavigateToOtpVerification -> {
-                            val bundle = bundleOf("email" to effect.email)
-                            findNavController().navigate(R.id.register_to_otp_verification, bundle)
-                        }
-                        is RegisterEffect.NavigateToHome -> {
-                            findNavController().navigate(R.id.register_to_home)
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = "Berhasil Bergabung",
+                                    message = "Gluby telah mengirimkan kode OTP ke email kamu. Cek kotak masuk dan lanjutkan verifikasinya, ya!"
+                                )
+                            )
+                            stateDialog?.dismissListener = {
+                                val bundle = bundleOf("email" to effect.email)
+                                findNavController().navigate(R.id.register_to_otp_verification, bundle)
+                            }
                         }
                         is RegisterEffect.NavigateToWelcomeScreen -> {
-                            findNavController().navigate(R.id.register_to_welcome_screen)
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = "Login Berhasil",
+                                    message = "Akun Google-mu berhasil terhubung. Yuk, lengkapi profilmu dulu!"
+                                )
+                            )
+                            stateDialog?.dismissListener = {
+                                findNavController().navigate(R.id.register_to_welcome_screen)
+                            }
                         }
                     }
                 }
             }
         }
     }
+
 
     private fun signInWithGoogle() {
         val credentialManager = CredentialManager.create(requireContext())
@@ -192,9 +236,15 @@ class RegisterFragment : Fragment() {
                 if (BuildConfig.DEBUG) {
                     Log.d("GoogleSignIn", "User canceled sign-in")
                 }
+                stateDialog?.dismiss()
             } catch (e: Exception) {
                 Log.e("GoogleSignIn", "Unexpected error: ${e.message}", e)
-                Toast.makeText(requireContext(), "Terjadi kesalahan. Coba lagi nanti.", Toast.LENGTH_SHORT).show()
+                stateDialog?.updateState(
+                    GlobalUiState.Error(
+                        title = "Login Google Gagal",
+                        message = "Terjadi kendala saat menghubungkan akun Google. Silakan coba lagi."
+                    )
+                )
             }
         }
     }
@@ -216,16 +266,35 @@ class RegisterFragment : Fragment() {
                             if (BuildConfig.DEBUG) {
                                 Log.e("FirebaseAuth", "Gagal ambil Firebase ID Token", tokenTask.exception)
                             }
+                            stateDialog?.updateState(
+                                GlobalUiState.Error(
+                                    title = "Login Google Gagal",
+                                    message = "Kami tidak dapat memverifikasi akun Google-mu. Silakan coba lagi."
+                                )
+                            )
                         }
                     }
                 } else {
                     if (BuildConfig.DEBUG) {
                         Log.e("FirebaseAuth", "signInWithCredential gagal", task.exception)
                     }
+                    stateDialog?.updateState(
+                        GlobalUiState.Error(
+                            title = "Login Google Gagal",
+                            message = "Terjadi kesalahan saat masuk dengan Google. Silakan coba lagi."
+                        )
+                    )
                 }
             }
     }
 
+    private fun showStateDialog(state: GlobalUiState) {
+        if (stateDialog?.dialog?.isShowing == true) {
+            stateDialog?.dismiss()
+        }
+        stateDialog = StateDialogFragment.newInstance(state)
+        stateDialog?.show(childFragmentManager, "StateDialog")
+    }
 
 }
 

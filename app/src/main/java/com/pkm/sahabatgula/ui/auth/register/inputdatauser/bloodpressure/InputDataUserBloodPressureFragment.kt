@@ -35,6 +35,10 @@ class InputDataUserBloodPressureFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (inputDataViewModel.profileData.value.bloodPressure == null) {
+            inputDataViewModel.selectBloodPressure(true)
+        }
+
         setupClickListener()
         observeViewModel()
     }
@@ -43,6 +47,7 @@ class InputDataUserBloodPressureFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 inputDataViewModel.profileData.collect { profileData ->
+
 
                     // update pilihan yes/no
                     when (profileData.bloodPressure) {
@@ -77,6 +82,7 @@ class InputDataUserBloodPressureFragment : Fragment() {
     private fun updateBloodPressureSelection(selectedBloodPressure: Boolean) {
         val isYesSelected = selectedBloodPressure
         binding.chooseYesBloodPressure.radioButton.isChecked = isYesSelected
+        binding.chooseYesBloodPressure.tvSubtitleChoice.text = "Kondisi ini bisa memengaruhi kadar gula darah dan risiko diabetes."
         binding.chooseYesBloodPressure.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(),
                 if (isYesSelected) R.color.selected_card
@@ -88,6 +94,7 @@ class InputDataUserBloodPressureFragment : Fragment() {
 
         val isNoSelected = !selectedBloodPressure
         binding.chooseNoBloodPressure.radioButton.isChecked = isNoSelected
+        binding.chooseNoBloodPressure.tvSubtitleChoice.text = "Tekanan darah yang stabil bantu menjaga tubuh tetap sehat."
         binding.chooseNoBloodPressure.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(),
                 if (isNoSelected) R.color.selected_card
@@ -122,5 +129,13 @@ class InputDataUserBloodPressureFragment : Fragment() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (inputDataViewModel.profileData.value.bloodPressure == null) {
+            inputDataViewModel.selectBloodPressure(true)
+        }
+    }
+
 
 }

@@ -7,6 +7,7 @@ if (localPropertiesFile.exists()) {
 }
 
 val geminiApiKey: String = localProperties.getProperty("GEMINI_API_KEY") ?: ""
+val baseUrl : String = localProperties.getProperty("BASE_URL") ?: ""
 
 plugins {
     alias(libs.plugins.android.application)
@@ -34,7 +35,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://api-service.sahabatgula.com/\"")
+            buildConfigField("String",
+                "BASE_URL",
+                "\"$baseUrl\""
+            )
+
             buildConfigField(
                 "String",
                 "GEMINI_API_KEY",
@@ -48,7 +53,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"https://api-service.sahabatgula.com/\"")
+
+            buildConfigField("String",
+                "BASE_URL",
+                "\"$baseUrl\""
+            )
+            
             buildConfigField(
                 "String",
                 "GEMINI_API_KEY",

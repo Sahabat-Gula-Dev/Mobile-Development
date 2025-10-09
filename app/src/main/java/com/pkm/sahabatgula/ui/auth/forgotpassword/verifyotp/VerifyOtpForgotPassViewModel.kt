@@ -21,6 +21,18 @@ import javax.inject.Inject
 import kotlin.concurrent.timer
 import kotlin.text.orEmpty
 
+interface OtpForgotPassState {
+    data object Idle : OtpForgotPassState
+    data class Ticking(val remaining:Int) : OtpForgotPassState
+    data object ReadyToResend : OtpForgotPassState
+    data object Loading : OtpForgotPassState
+}
+
+sealed interface OtpForgotPassEffect {
+    data class ShowToast(val message: String): OtpForgotPassEffect
+    data class VerificationSuccess(val resetToken: String?): OtpForgotPassEffect
+
+}
 @HiltViewModel
 class VerifyOtpForgotPassViewModel @Inject constructor(
     private val saved: SavedStateHandle, private val authRepository: AuthRepository
@@ -79,8 +91,8 @@ class VerifyOtpForgotPassViewModel @Inject constructor(
                 delay(1000)
                 _uiState.value = OtpForgotPassState.Ticking(s)
             }
+            _uiState.value = OtpForgotPassState.ReadyToResend
         }
-        _uiState.value = OtpForgotPassState.ReadyToResend
     }
 
     fun resendOtp() = viewModelScope.launch {
@@ -104,7 +116,6 @@ class VerifyOtpForgotPassViewModel @Inject constructor(
                     _uiState.value = OtpForgotPassState.ReadyToResend
                 }
             )
-
         }
     }
 }

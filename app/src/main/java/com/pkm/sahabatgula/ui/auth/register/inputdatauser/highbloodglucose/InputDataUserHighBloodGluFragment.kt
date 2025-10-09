@@ -35,6 +35,10 @@ class InputDataUserHighBloodGluFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (inputDataViewModel.profileData.value.bloodSugar == null) {
+            inputDataViewModel.selectHighBloodGlucose(true)
+        }
+
         setupClickListener()
         observeViewModel()
     }
@@ -59,9 +63,11 @@ class InputDataUserHighBloodGluFragment : Fragment() {
         binding.chooseYesBloodGlucose.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
+        binding.chooseYesBloodGlucose.tvSubtitleChoice.text = "Gula darah tinggi bisa jadi tanda awal gangguan metabolisme."
         binding.chooseYesBloodGlucose.tvSubtitleChoice.visibility = View.GONE
 
         binding.chooseNoBloodGlucose.radioButton.isChecked = false
+        binding.chooseNoBloodGlucose.tvSubtitleChoice.text = "Sangat penting untuk melakukan cek gula darah secara rutin."
         binding.chooseNoBloodGlucose.cardChoice.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
@@ -117,6 +123,13 @@ class InputDataUserHighBloodGluFragment : Fragment() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (inputDataViewModel.profileData.value.bloodSugar == null) {
+            inputDataViewModel.selectHighBloodGlucose(true)
+        }
     }
 
 }

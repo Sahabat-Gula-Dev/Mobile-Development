@@ -40,6 +40,10 @@ class InputDataUserGenderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (inputDataViewModel.profileData.value.gender == null) {
+            inputDataViewModel.selectGender(Gender.MALE.value)
+        }
+
         setupClickListener()
         observeViewModel()
     }
@@ -59,8 +63,8 @@ class InputDataUserGenderFragment : Fragment() {
         binding.cardMale.radioButton.isChecked = isMaleSelected
         binding.cardMale.cardGender.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(),
-                if (isMaleSelected) R.color.selected_card // Warna saat dipilih
-                else R.color.md_theme_onPrimary // Warna default
+                if (isMaleSelected) R.color.selected_card
+                else R.color.md_theme_onPrimary
             )
         )
         binding.cardMale.tvGender.text = "Laki-laki"
@@ -72,8 +76,7 @@ class InputDataUserGenderFragment : Fragment() {
         binding.cardFemale.cardGender.setCardBackgroundColor(
             ContextCompat.getColor(requireContext(),
                 if (isFemaleSelected) R.color.selected_card
-                // Warna saat dipilih
-                else R.color.md_theme_onPrimary // Warna default
+                else R.color.md_theme_onPrimary
             )
         )
         binding.cardFemale.tvGender.text = "Perempuan"

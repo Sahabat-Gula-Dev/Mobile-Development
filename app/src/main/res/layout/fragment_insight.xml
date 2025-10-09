@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
+            android:background="@color/md_theme_onPrimary"
             app:title="Insight Kesehatan" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -63,7 +64,7 @@
                 android:id="@+id/et_chat_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tanya apa saja tentang kesehatanmu..."
+                android:hint="Tanya sesuatu..."
                 android:inputType="textMultiLine"
                 android:maxLines="4"
                 android:background="@drawable/bg_chat_gemini"/>

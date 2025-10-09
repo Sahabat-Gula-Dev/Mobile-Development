@@ -1,14 +1,17 @@
 package com.pkm.sahabatgula.ui.home.insight
 
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentHomeBinding
@@ -36,6 +39,12 @@ class InsightFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val toolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         setupRecyclerView()
         observeChatHistory()
         observeLoadingState()
@@ -45,12 +54,26 @@ class InsightFragment : Fragment() {
             viewModel.sendMessage(question)
             binding.etChatInput.text?.clear()
         }
+
+        binding.toolbar.title
+        // ubah title jadi bold
+        binding.toolbar.title = "Gluby - Asisten Kesehatan"
+
+
+        binding.etChatInput.setOnFocusChangeListener { view, hasFocus ->
+            val editText = view as com.google.android.material.textfield.TextInputEditText
+            if (hasFocus) {
+                editText.hint = ""
+            } else {
+                editText.hint = "Tanya sesuatu..."
+            }
+        }
+
     }
 
     private fun setupRecyclerView() {
-        chatAdapter = ChatAdapter() // Inisialisasi adapter
+        chatAdapter = ChatAdapter()
         binding.rvChatMessages.adapter = chatAdapter
-        // (Opsional) Untuk membuat chat dimulai dari bawah
         val layoutManager = binding.rvChatMessages.layoutManager as LinearLayoutManager
         layoutManager.stackFromEnd = true
     }
@@ -60,7 +83,6 @@ class InsightFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.chatHistory.collect { messages ->
                     chatAdapter.submitList(messages)
-                    // Auto-scroll ke pesan terbaru
                     if (messages.isNotEmpty()) {
                         binding.rvChatMessages.smoothScrollToPosition(messages.size - 1)
                     }
@@ -73,7 +95,6 @@ class InsightFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect { isLoading ->
-                    // Tampilkan ProgressBar atau nonaktifkan tombol kirim saat loading
                     binding.btnSendChat.isEnabled = !isLoading
                 }
             }

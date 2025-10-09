@@ -19,6 +19,7 @@
             app:cardCornerRadius="4dp"
             app:cardUseCompatPadding="false"
             app:cardElevation="0dp"
+            app:strokeWidth="0dp"
             app:cardBackgroundColor="@color/green_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="@id/bg_number_of_risk"
             app:layout_constraintStart_toEndOf="@id/bg_number_of_risk"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp">
+            android:layout_marginStart="12dp">
 
             <TextView
                 android:id="@+id/tv_title_index_risk"
@@ -63,7 +64,6 @@
                 android:id="@+id/subtitle_tv_index_risk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:letterSpacing="0.03"
                 android:textSize="12sp"
                 android:text="Kondisi cukup baik, jaga pola makan dan aktivitas harian"/>
 

@@ -14,6 +14,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+sealed interface RegisterViewState {
+    data object Idle : RegisterViewState
+    data object Loading : RegisterViewState
+    data class Error(val message: String) : RegisterViewState
+
+}
+
+// effect digunakan untuk action yang tidak berlaku terus-menerus, contohnya toast ketika menekan tombol kembali saat register sukses
+sealed interface RegisterEffect {
+    data class ShowError(val message: String) : RegisterEffect
+    data class ShowInfo(val message: String) : RegisterEffect
+    data class ShowSuccess(val message: String) : RegisterEffect
+    data class NavigateToOtpVerification(val email: String) : RegisterEffect
+    data object NavigateToWelcomeScreen : RegisterEffect
+}
 
 
 @HiltViewModel
@@ -32,12 +47,12 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
 
             result.fold(
                 onSuccess = { response ->
-                    _effect.send(RegisterEffect.ShowToast(response.message?: "Registrasi Berhasil"))
+                    _effect.send(RegisterEffect.ShowSuccess(response.message?: "Registrasi Berhasil"))
                     _effect.send(RegisterEffect.NavigateToOtpVerification(email))
                     _registerViewState.value = RegisterViewState.Idle
                 },
                 onFailure = { exception ->
-                    _effect.send(RegisterEffect.ShowToast(exception.message?: "Registrasi Gagal"))
+                    _effect.send(RegisterEffect.ShowError(exception.message?: "Registrasi Gagal"))
                     _registerViewState.value = RegisterViewState.Error(exception.message?: "Registrasi Gagal")
                 }
             )
@@ -50,10 +65,10 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
 
             repo.googleAuth(GoogleAuthRequest(idToken))
                 .onSuccess { response ->
-                    _effect.send(RegisterEffect.ShowToast("Berhasil masuk dengan Google"))
+                    _effect.send(RegisterEffect.ShowSuccess("Berhasil masuk dengan Google"))
                     val accessToken = response.data?.accessToken
                     if (accessToken.isNullOrEmpty()) {
-                        _effect.send(RegisterEffect.ShowToast("Token tidak valid dari server"))
+                        _effect.send(RegisterEffect.ShowError("Token tidak valid dari server"))
                         _registerViewState.value = RegisterViewState.Error("Token tidak valid dari server")
                         return@onSuccess
                     }
@@ -69,18 +84,19 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
 
                             _effect.send(RegisterEffect.NavigateToWelcomeScreen)
                         } else {
-                            _effect.send(RegisterEffect.NavigateToHome)
+                            // cetak error bukan ke home
+                            _registerViewState.value = RegisterViewState.Error("Gagal mengambil data profil")
                         }
 
                     _registerViewState.value = RegisterViewState.Idle
 
                     } catch (e: Exception) {
-                        _effect.send(RegisterEffect.ShowToast("Gagal mengambil data profil: ${e.message}"))
+                        _effect.send(RegisterEffect.ShowError("Gagal mengambil data profil: ${e.message}"))
                         _registerViewState.value = RegisterViewState.Error("Gagal mengambil data profil")
                     }
                 }
                 .onFailure { authError ->
-                    _effect.send(RegisterEffect.ShowToast(authError.message ?: "Gagal masuk dengan Google"))
+                    _effect.send(RegisterEffect.ShowError(authError.message ?: "Gagal masuk dengan Google"))
                     _registerViewState.value = RegisterViewState.Error(authError.message ?: "Gagal masuk dengan Google")
                 }
         }

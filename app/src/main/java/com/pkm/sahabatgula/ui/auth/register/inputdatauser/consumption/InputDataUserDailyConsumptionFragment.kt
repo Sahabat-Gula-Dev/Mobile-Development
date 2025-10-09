@@ -36,6 +36,10 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (inputDataViewModel.profileData.value.eatVegetables == null) {
+            inputDataViewModel.selectDailyConsumption(true)
+        }
+
         setupClickListener()
         observeViewModel()
     }
@@ -62,7 +66,13 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
 
     private fun setupClickListener() {
         binding.chooseYesConsumption.tvTitleChoice.text = "Rutin Mengonsumsi Setiap Hari"
+        binding.chooseYesConsumption.tvSubtitleChoice.text =
+            "Konsumsi 5-7 kali per minggu bantu jaga gula dan metabolisme."
+
         binding.chooseNoConsumption.tvTitleChoice.text = "Tidak Rutin Mengonsumsi"
+        binding.chooseNoConsumption.tvSubtitleChoice.text =
+            "Konsumsi kurang dari 5 kali per minggu bisa ganggu gula."
+
 
         val consumption = inputDataViewModel.profileData.value.eatVegetables
         binding.chooseYesConsumption.root.setOnClickListener {
@@ -71,7 +81,6 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
         binding.chooseNoConsumption.root.setOnClickListener {
             inputDataViewModel.selectDailyConsumption(false)
         }
-
         binding.btnContinueToHistoryFamily.isEnabled = consumption != null
         binding.btnContinueToHistoryFamily.setOnClickListener {
             val currentConsumption = inputDataViewModel.profileData.value.eatVegetables
@@ -120,6 +129,13 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
         )
         binding.chooseNoConsumption.tvSubtitleChoice.visibility =
             if (isNoSelected) View.VISIBLE else View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (inputDataViewModel.profileData.value.eatVegetables == null) {
+            inputDataViewModel.selectDailyConsumption(true)
+        }
     }
 
 

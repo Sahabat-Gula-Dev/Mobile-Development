@@ -33,7 +33,6 @@ import kotlin.collections.forEach
 class LogActivityFragment : Fragment() {
     private var _binding: FragmentLogActivityBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: LogActivityViewModel by viewModels()
     private lateinit var pagingAdapter: ActivityPagingAdapter
     private var searchJob: Job? = null

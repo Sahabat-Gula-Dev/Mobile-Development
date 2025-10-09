@@ -45,6 +45,11 @@ class SugarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         val tabLayoutHistory = binding.tabLayoutHistory
         val viewPager = binding.viewPager
         viewPager.adapter = SugarChartPagerAdapter(this)
