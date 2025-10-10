@@ -23,8 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-<!--        lalu yang di bawahnya itu  margintopnya -12 dp-->
-
 
         <TextView
             android:id="@+id/tv_title_privacy_policy"

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.databinding.FragmentRootLogActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +28,12 @@ class RootLogActivityFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         val tabLayoutLogActivity = binding.tabLayoutLogActivity
         val viewPager = binding.viewPager

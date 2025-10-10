@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.databinding.FragmentDetailFoodBinding
+import com.pkm.sahabatgula.ui.home.dailyactivity.activity.history.ActivityChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +37,11 @@ class DetailFoodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         Log.d("DEBUG_NAV", "DetailFoodFragment: onViewCreated dipanggil")
 

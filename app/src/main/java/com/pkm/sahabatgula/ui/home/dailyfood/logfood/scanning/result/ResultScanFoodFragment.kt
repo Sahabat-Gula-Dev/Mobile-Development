@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 @AndroidEntryPoint
 class ResultScanFoodFragment : Fragment() {
@@ -41,6 +42,11 @@ class ResultScanFoodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         Log.d("DEBUG_NAV", "ResultScanFoodFragment: Berhasil dibuat dan ditampilkan (onViewCreated).")
 
