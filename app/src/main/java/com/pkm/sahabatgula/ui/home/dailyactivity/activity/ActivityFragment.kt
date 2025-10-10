@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentActivityBinding
@@ -45,6 +46,27 @@ class ActivityFragment : Fragment() {
                 1 -> tab.text = "Bulanan"
             }
         }.attach()
+        tabLayoutHistory.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val tabTextView = tab.view.getChildAt(1) as? android.widget.TextView
+                tabTextView?.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.black) // hitam
+                )
+                tabTextView?.setTypeface(tabTextView.typeface, android.graphics.Typeface.BOLD)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                val tabTextView = tab.view.getChildAt(1) as? android.widget.TextView
+                tabTextView?.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant) // abu
+                )
+                tabTextView?.setTypeface(tabTextView.typeface, android.graphics.Typeface.NORMAL)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                // No-op
+            }
+        })
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.activityState.collect { state ->

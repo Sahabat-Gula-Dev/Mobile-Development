@@ -31,13 +31,14 @@ class LogManualCustomFoodViewModel @Inject constructor(
     private val _categories = MutableLiveData<Resource<List<FoodCategories>>>()
     val categories: LiveData<Resource<List<FoodCategories>>> = _categories
 
-    private val _currentQuery= MutableStateFlow<String?>(null)
+    private val _currentQuery = MutableStateFlow<String?>(null)
     val _currentCategory = MutableStateFlow<Int?>(null)
 
     private val _selectedFoodIds = MutableStateFlow<Set<String>>(emptySet())
+    val selectedFoodIds = _selectedFoodIds
     private val _expandedFoodId = MutableStateFlow<String?>(null)
 
-    val _logFoodStatus = MutableLiveData<Resource<Unit>>()
+    private val _logFoodStatus = MutableLiveData<Resource<Unit>>()
     val logFoodStatus: LiveData<Resource<Unit>> = _logFoodStatus
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -58,7 +59,7 @@ class LogManualCustomFoodViewModel @Inject constructor(
                     )
                 }
             }
-    }.cachedIn(viewModelScope) // 4. Terapkan cachedIn pada hasil AKHIR Flow
+    }.cachedIn(viewModelScope) // ✅ CHANGED: tetap dipertahankan, hanya komentar dihapus
 
     init {
         fetchCategories()
@@ -76,11 +77,12 @@ class LogManualCustomFoodViewModel @Inject constructor(
 
     fun onExpandClicked(foodItem: FoodItem) {
         _expandedFoodId.value = if (_expandedFoodId.value == foodItem.id) {
-            null // Jika item yang sama diklik lagi, tutup (collapse)
+            null
         } else {
-            foodItem.id // Jika item lain diklik, buka (expand)
+            foodItem.id
         }
     }
+
     private fun fetchCategories() {
         viewModelScope.launch {
             _categories.postValue(Resource.Loading())
@@ -106,13 +108,12 @@ class LogManualCustomFoodViewModel @Inject constructor(
 
             _logFoodStatus.value = Resource.Loading()
 
-             val requestItems = selectedIds.map { foodId ->
-                FoodItemRequest(foodId = foodId, portion = 1) // porsi default adalah 1
+            val requestItems = selectedIds.map { foodId ->
+                FoodItemRequest(foodId = foodId, portion = 1) // ✅ CHANGED: porsi default 1
             }
 
             val result = logFoodRepository.logFood(requestItems)
             _logFoodStatus.value = result
         }
     }
-
 }

@@ -131,7 +131,7 @@ class ExploreArticleFragment : Fragment() {
         )
         val backgroundColors = intArrayOf(
             ContextCompat.getColor(requireContext(), R.color.md_theme_primary),
-            ContextCompat.getColor(requireContext(), R.color.md_theme_surface)
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
         val backgroundColorStateList = ColorStateList(backgroundStates, backgroundColors)
 

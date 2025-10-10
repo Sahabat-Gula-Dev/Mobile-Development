@@ -8,8 +8,9 @@ import com.pkm.sahabatgula.data.remote.model.HistoryItem
 import com.pkm.sahabatgula.databinding.ItemParentDateBinding
 
 class ParentFoodHistoryAdapter(
-    private val historyList: List<HistoryItem>?
+    historyList: List<HistoryItem>?
 ) : RecyclerView.Adapter<ParentFoodHistoryAdapter.ParentViewHolder>() {
+    private val filteredList = historyList?.filter { !it.foods.isNullOrEmpty() } ?: emptyList()
 
     inner class ParentViewHolder(val binding: ItemParentDateBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -20,23 +21,21 @@ class ParentFoodHistoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ParentViewHolder, position: Int) {
-        val historyItem = historyList?.get(position)
+        val historyItem = filteredList[position]
+
         with(holder.binding) {
-            tvDate.text = historyItem?.date
-
-            var childAdapter: ChildFoodAdapter? = null
-
-            childAdapter = ChildFoodAdapter(historyItem?.foods?.toMutableList()!!) { pos, item ->
-                childAdapter?.collapseAllExcept(pos)
+            tvDate.text = historyItem.date
+            lateinit var childAdapter: ChildFoodAdapter
+            childAdapter = ChildFoodAdapter(historyItem.foods.toMutableList()) { pos, item ->
+                childAdapter.collapseAllExcept(pos)
                 item.isExpanded = !item.isExpanded
-                childAdapter?.updateItem(pos, item)
+                childAdapter.updateItem(pos, item)
             }
 
             rvChild.layoutManager = LinearLayoutManager(root.context)
             rvChild.adapter = childAdapter
-
         }
     }
 
-    override fun getItemCount(): Int = historyList!!.size
+    override fun getItemCount(): Int = filteredList.size
 }

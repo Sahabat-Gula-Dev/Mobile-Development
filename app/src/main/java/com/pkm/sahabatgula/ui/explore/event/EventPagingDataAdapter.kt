@@ -48,7 +48,6 @@ class EventPagingDataAdapter(
 
                 tvDateToday.text = formatEventDate(event.createdAt)
                 tvTitleEvent.text = event.title
-                tvEventOrganizer.text = "Sahabat Gula"
 
                 val htmlContent = event.content ?: ""
                 val regex = Regex("<p[^>]*>(.*?)</p>", RegexOption.DOT_MATCHES_ALL)
@@ -62,7 +61,7 @@ class EventPagingDataAdapter(
                 tvSubtitleEvent.text = firstParagraph
                 tvSubtitleEvent.maxLines = 2
                 tvSubtitleEvent.ellipsize = TextUtils.TruncateAt.END
-                tvEventOrganizer.text = "Sahabat Gula"
+
             }
         }
     }

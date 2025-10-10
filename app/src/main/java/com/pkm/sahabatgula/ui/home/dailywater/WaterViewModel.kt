@@ -59,20 +59,19 @@ class WaterViewModel @Inject constructor(private val homeRepository: HomeReposit
         val currentState = _waterState.value
         if (currentState is WaterState.Success) {
             currentState.filledGlasses?.let {
-
                 val newFilledCount = currentState.filledGlasses + 1
                 val originalFilledCount = currentState.filledGlasses
-                    _waterState.update { currentState.copy(filledGlasses = newFilledCount) }
-                    viewModelScope.launch {
-                        val increment = currentState.waterPerGlass
-                        val result = homeRepository.updateWaterIntake(increment)
+                _waterState.update { currentState.copy(filledGlasses = newFilledCount) }
+                viewModelScope.launch {
+                    val increment = currentState.waterPerGlass
+                    val result = homeRepository.updateWaterIntake(increment)
 
-                        if (result is Resource.Error) {
-                            Log.e("WaterViewModel", "Failed to update water intake. Reverting UI state.")
-                            _waterState.update { currentState.copy(filledGlasses = originalFilledCount) }
-                            _errorEvent.emit(result.message ?: "Gagal memperbarui data")
-                        }
+                    if (result is Resource.Error) {
+                        Log.e("WaterViewModel", "Failed to update water intake. Reverting UI state.")
+                        _waterState.update { currentState.copy(filledGlasses = originalFilledCount) }
+                        _errorEvent.emit(result.message ?: "Gagal memperbarui data")
                     }
+                }
 
             }
         }

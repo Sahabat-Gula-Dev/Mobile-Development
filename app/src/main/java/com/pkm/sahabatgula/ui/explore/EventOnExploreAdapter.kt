@@ -23,13 +23,10 @@ class EventOnExploreAdapter(
         )
         val holder = EventOnExploreViewHolder(binding)
 
-        // 2. SET ONCLICKLISTENER PADA ITEMVIEW DI SINI
         holder.itemView.setOnClickListener {
             val position = holder.bindingAdapterPosition
-            // Pastikan posisi valid sebelum mengambil item
             if (position != RecyclerView.NO_POSITION) {
                 val event = getItem(position)
-                // Panggil lambda dengan data event yang di-klik
                 onItemClick(event)
             }
         }
@@ -56,7 +53,7 @@ class EventOnExploreAdapter(
 
                 tvDateToday.text = formatEventDate(event.eventDate)
                 tvTitleEvent.text = event.title
-                tvEventOrganizer.text = event.location
+
                 tvSubtitleEvent.text = "Deskripsi acara akan ditampilkan di sini"
             }
         }

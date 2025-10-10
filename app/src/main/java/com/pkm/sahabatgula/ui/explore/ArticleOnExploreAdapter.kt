@@ -47,7 +47,6 @@ class ArticleOnExploreAdapter(
 
                 tvDateToday.text = convertIsoToIndonesianDateArticle(article.createdAt)
                 tvTitleArticle.text = article.title
-                tvArticleAuthor.text = "Sahabat Gula"
 
                 val htmlContent = article.content ?: ""
                 val regex = Regex("<p[^>]*>(.*?)</p>", RegexOption.DOT_MATCHES_ALL)
@@ -61,7 +60,6 @@ class ArticleOnExploreAdapter(
                 tvSubtitleArticle.text = firstParagraph
                 tvSubtitleArticle.maxLines = 2
                 tvSubtitleArticle.ellipsize = TextUtils.TruncateAt.END
-                tvArticleAuthor.text = "Sahabat Gula"
             }
         }
     }

@@ -61,7 +61,8 @@ class ActivityPagingAdapter(
             currentActivity = activity
 
             binding.tvTitleCustomFoodCard.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
-            binding.tvFoodCalories.text = "${activity.caloriesBurned.toInt()} kkal"
+            binding.tvFoodCalories.text = "${activity.caloriesBurned} kkal"
+            binding.tvTitleCustomFoodExpand.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
 
             binding.icPlusAddFood.setImageResource(R.drawable.ic_calories)
             if (activity.isSelected) {
@@ -71,12 +72,14 @@ class ActivityPagingAdapter(
             }
 
             if (activity.isExpanded) {
+                binding.tvTitleCustomFoodExpand.visibility = View.VISIBLE
+                binding.tvTitleCustomFoodCard.visibility = View.GONE
                 binding.expandedView.visibility = View.VISIBLE
                 binding.tvFoodCalories.visibility = View.GONE
                 binding.icPlusAddFood.visibility = View.GONE
 
-                binding.icArrowRight.setImageResource(R.drawable.ic_arrow_down)
-                binding.icArrowRight.setSize(18) // Ukuran normal saat expand
+                binding.icArrowRight.setImageResource(R.drawable.arrow_down_custom_food)
+                binding.icArrowRight.setSize(36) // Ukuran normal saat expand
 
                 // Isi data untuk view di dalam expanded_view
                 binding.tvFoodCaloriesOnExpand.text = "${activity.caloriesBurned.toInt()} kkal"
@@ -87,6 +90,8 @@ class ActivityPagingAdapter(
                     .into(binding.imgFood)
 
             } else {
+                binding.tvTitleCustomFoodExpand.visibility = View.GONE
+                binding.tvTitleCustomFoodCard.visibility = View.VISIBLE
                 binding.expandedView.visibility = View.GONE
                 binding.tvFoodCalories.visibility = View.VISIBLE
                 binding.icPlusAddFood.visibility = View.VISIBLE
@@ -95,8 +100,8 @@ class ActivityPagingAdapter(
                     binding.icArrowRight.setImageResource(R.drawable.ic_calories)
                     binding.icArrowRight.setSize(32)
                 } else {
-                    binding.icArrowRight.setImageResource(R.drawable.ic_arrow_right)
-                    binding.icArrowRight.setSize(18)
+                    binding.icArrowRight.setImageResource(R.drawable.arrow_right_custom_food_svg)
+                    binding.icArrowRight.setSize(36)
                 }
             }
         }

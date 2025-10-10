@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/age_value"
             android:textColor="#006B5F"
-            android:textSize="57sp"
+            android:textSize="46sp"
             android:textStyle="bold" />
 
         <TextView

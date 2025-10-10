@@ -37,7 +37,7 @@ class UserHistoryFragment : Fragment() {
         TabLayoutMediator(tabLayoutLogFood, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Riwayat Konsumsi"
-                1 -> tab.text = "Riwayat Aktivitas"
+                1 -> tab.text = "Riwayat Aktivitas  "
             }
         }.attach()
     }

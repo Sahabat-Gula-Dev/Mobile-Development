@@ -21,7 +21,6 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.databinding.FragmentLogManualCustomFoodBinding
-import com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.CustomFoodPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -29,16 +28,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class LogManualCustomFoodFragment : Fragment() {
-
 
     private var _binding: FragmentLogManualCustomFoodBinding? = null
     private val binding get() = _binding!!
     private val viewModel: LogManualCustomFoodViewModel by viewModels()
     private lateinit var pagingAdapter: CustomFoodPagingAdapter
     private var searchJob: Job? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,26 +48,20 @@ class LogManualCustomFoodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
         setupSearch()
         setupChipsObserver()
         setupPagingDataObserver()
         setupButtonListener()
         setupLogStatusObserver()
+        setupButtonStateObserver()
     }
 
     private fun setupRecyclerView() {
-
         pagingAdapter = CustomFoodPagingAdapter(
-            onSelectClick = { foodItem ->
-                viewModel.toggleFoodSelection(foodItem)
-            },
-            onExpandClick = { foodItem ->
-                viewModel.onExpandClicked(foodItem)
-            }
+            onSelectClick = { foodItem -> viewModel.toggleFoodSelection(foodItem) },
+            onExpandClick = { foodItem -> viewModel.onExpandClicked(foodItem) }
         )
-
         binding.rvCustomFood.apply {
             adapter = pagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -88,11 +80,11 @@ class LogManualCustomFoodFragment : Fragment() {
         viewModel.categories.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    binding.chipGroupFoodCategories.removeAllViews() // Hapus chip statis
+                    binding.chipGroupFoodCategories.removeAllViews()
                     addCategoryChips(resource.data)
                 }
                 is Resource.Error -> Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
-                is Resource.Loading -> { /* Tampilkan loading jika perlu */ }
+                is Resource.Loading -> {}
             }
         }
     }
@@ -101,60 +93,49 @@ class LogManualCustomFoodFragment : Fragment() {
         val chipGroup = binding.chipGroupFoodCategories
         chipGroup.removeAllViews()
 
-        val customTypefaceRegular = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_regular)
-        val customTypefaceBold = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
+        val regular = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_regular)
+        val bold = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
 
-        val backgroundStates = arrayOf(
-            intArrayOf(android.R.attr.state_checked), // Saat terpilih
-            intArrayOf(-android.R.attr.state_checked) // Saat normal (tidak terpilih)
+        val bgStates = arrayOf(
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
         )
-        val backgroundColors = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.md_theme_primary), // Warna solid saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_surface)  // Warna putih/surface saat normal
+        val bgColors = intArrayOf(
+            ContextCompat.getColor(requireContext(), R.color.md_theme_primary),
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
-        val backgroundColorStateList = ColorStateList(backgroundStates, backgroundColors)
+        val bgColorStateList = ColorStateList(bgStates, bgColors)
 
-        // --- Aturan untuk Warna Teks ---
         val textStates = arrayOf(
-            intArrayOf(android.R.attr.state_checked), // Saat terpilih
-            intArrayOf(-android.R.attr.state_checked) // Saat normal
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
         )
         val textColors = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary), // Warna putih saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant)   // Warna abu-abu saat normal
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary),
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant)
         )
         val textColorStateList = ColorStateList(textStates, textColors)
 
-        // Fungsi kecil untuk membantu konversi DP ke Pixel
         fun Float.dpToPx(): Float = (this * resources.displayMetrics.density)
 
-        // --- Buat Chip "Semua" ---
         val allChip = Chip(context).apply {
             text = "Semua"
             isCheckable = true
             isChecked = true
-            id = View.generateViewId() // Atau View.NO_ID
-
-            // Warna
-            chipBackgroundColor = backgroundColorStateList
+            id = View.generateViewId()
+            chipBackgroundColor = bgColorStateList
             setTextColor(textColorStateList)
-            setChipStrokeColorResource(R.color.md_theme_outline) // Warna outline
-            chipStrokeWidth = 1f.dpToPx() // Lebar outline 1dp
-
-            // Bentuk (sangat rounded)
+            setChipStrokeColorResource(R.color.md_theme_outline)
+            chipStrokeWidth = 1f.dpToPx()
             chipCornerRadius = 50f.dpToPx()
-
-            // Menghilangkan ikon centang saat terpilih
             isCheckedIconVisible = false
-            typeface = customTypefaceBold
+            typeface = bold
             textSize = 11f
             height = 36
-
         }
         chipGroup.addView(allChip)
         chipGroup.isSingleSelection = true
         chipGroup.isSelectionRequired = true
-
 
         categories?.forEach { category ->
             val chip = Chip(context).apply {
@@ -164,15 +145,12 @@ class LogManualCustomFoodFragment : Fragment() {
                 id = View.generateViewId()
                 tag = category.id
                 height = 36
-
-                // --- Terapkan Style yang sama ---
-                chipBackgroundColor = backgroundColorStateList
+                chipBackgroundColor = bgColorStateList
                 setTextColor(textColorStateList)
                 setChipStrokeColorResource(R.color.md_theme_outline)
                 chipStrokeWidth = 1f.dpToPx()
                 chipCornerRadius = 50f.dpToPx()
                 isCheckedIconVisible = false
-//                setTextAppearance(R.style.MyChipTextAppearance)
             }
             chipGroup.addView(chip)
         }
@@ -182,17 +160,14 @@ class LogManualCustomFoodFragment : Fragment() {
                 viewModel.setCategory(null)
                 return@setOnCheckedStateChangeListener
             }
-
             val selectedId = checkedIds.firstOrNull()
-
             for (i in 0 until group.childCount) {
                 val chip = group.getChildAt(i) as Chip
-                chip.typeface = if (chip.id == selectedId) customTypefaceBold else customTypefaceRegular
+                chip.typeface = if (chip.id == selectedId) bold else regular
             }
-
-            if (selectedId != null) {
-                val selectedChip = group.findViewById<Chip>(selectedId)
-                val categoryId = selectedChip?.tag as? Int  // ← Ambil ID dari tag, bukan dari ID view
+            selectedId?.let {
+                val selectedChip = group.findViewById<Chip>(it)
+                val categoryId = selectedChip?.tag as? Int
                 viewModel.setCategory(categoryId)
             }
         }
@@ -200,43 +175,32 @@ class LogManualCustomFoodFragment : Fragment() {
 
     private fun setupSearch() {
         val editText = binding.searchEditText
-
-        // 1. Listener untuk setiap kali teks berubah (termasuk saat dihapus oleh ikon 'x')
         editText.addTextChangedListener { editable ->
-            // Batalkan job pencarian sebelumnya agar tidak menumpuk
             searchJob?.cancel()
-            // Buat job baru dengan delay (debounce)
             searchJob = MainScope().launch {
-                delay(300L) // Tunggu 300ms setelah user berhenti mengetik
+                delay(300L)
                 editable?.let {
                     val query = it.toString().trim()
-                    // Kirim null jika query kosong, ini akan me-reset list
                     viewModel.searchFood(query.ifEmpty { null })
                 }
             }
         }
-
-        // 2. Listener untuk aksi keyboard "Search"
         editText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = textView.text.toString().trim()
                 viewModel.searchFood(query.ifEmpty { null })
-
-                // Sembunyikan keyboard
                 textView.hideKeyboard()
                 return@setOnEditorActionListener true
             }
             false
         }
-
-        // Sembunyikan keyboard saat ikon 'x' diklik
         binding.searchBarFood.setEndIconOnClickListener {
             editText.text?.clear()
             editText.hideKeyboard()
         }
     }
 
-    fun View.hideKeyboard() {
+    private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
@@ -250,11 +214,7 @@ class LogManualCustomFoodFragment : Fragment() {
     private fun setupLogStatusObserver() {
         viewModel.logFoodStatus.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Loading -> {
-                    // Tampilkan loading indicator
-//                    binding.btnLogThisFood.isEnabled = false
-//                    binding.btnLogThisFood.text = "Mencatat..."
-                }
+                is Resource.Loading -> binding.btnLogThisFood.isEnabled = false
                 is Resource.Success -> {
                     binding.btnLogThisFood.isEnabled = true
                     binding.btnLogThisFood.text = "Catat Aktivitas"
@@ -265,6 +225,14 @@ class LogManualCustomFoodFragment : Fragment() {
                     binding.btnLogThisFood.text = "Catat Aktivitas"
                     Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
                 }
+            }
+        }
+    }
+
+    private fun setupButtonStateObserver() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.selectedFoodIds.collect { selectedIds ->
+                binding.btnLogThisFood.isEnabled = selectedIds.isNotEmpty()
             }
         }
     }

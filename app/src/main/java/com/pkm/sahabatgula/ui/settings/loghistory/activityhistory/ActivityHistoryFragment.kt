@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.databinding.FragmentActivityHistoryBinding
@@ -54,16 +55,29 @@ class ActivityHistoryFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.historyState.collect { resource ->
                 when (resource) {
-                    is Resource.Loading -> {
-                    }
-
                     is Resource.Success -> {
-                        binding.rvParentActivity.adapter = ParentActivityHistoryAdapter(resource.data)
+                        val data = resource.data
+                            ?.filter { !it.activities.isNullOrEmpty() } // Pastikan filter juga di sini
+                            ?: emptyList()
+
+                        if (data.isEmpty()) {
+                            binding.layoutEmpty.root.visibility = View.VISIBLE
+                            binding.rvParentActivity.visibility = View.GONE
+                        } else {
+                            binding.layoutEmpty.root.visibility = View.GONE
+                            binding.rvParentActivity.visibility = View.VISIBLE
+                            binding.rvParentActivity.adapter = ParentActivityHistoryAdapter(data)
+                        }
                     }
 
                     is Resource.Error -> {
-                        Log.e("DEBUG_NAV", "ActivityHistoryFragment: ${resource.message}")
+                        binding.layoutEmpty.root.visibility = View.VISIBLE
+                        binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                        binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
+                        binding.layoutEmpty.tvMessage.text = "Gluby mengalami kendala saat ambil data. Coba periksa koneksi atau muat ulang halaman"
+                        binding.rvParentActivity.visibility = View.GONE
                     }
+                    else -> {}
                 }
             }
         }

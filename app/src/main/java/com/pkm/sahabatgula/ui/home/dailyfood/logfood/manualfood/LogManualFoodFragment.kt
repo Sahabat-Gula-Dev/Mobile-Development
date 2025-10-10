@@ -126,7 +126,7 @@ class LogManualFoodFragment : Fragment() {
         )
         val backgroundColors = intArrayOf(
             ContextCompat.getColor(requireContext(), R.color.md_theme_primary), // Warna solid saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_surface)  // Warna putih/surface saat normal
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)  // Warna putih/surface saat normal
         )
         val backgroundColorStateList = ColorStateList(backgroundStates, backgroundColors)
 

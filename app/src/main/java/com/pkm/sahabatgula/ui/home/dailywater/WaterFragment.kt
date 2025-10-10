@@ -69,7 +69,7 @@ class WaterFragment : Fragment() {
             glassView.setOnClickListener {
                 val currentState = viewModel.waterState.value
                 if (currentState is WaterState.Success) {
-                    if (index < currentState.filledGlasses) {
+                    if (index < currentState.filledGlasses && index < 7) {
                         return@setOnClickListener
                     }
 

@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="205dp">
 
         <ImageView
             android:id="@+id/img_article"
@@ -37,8 +37,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="24dp"
-            android:background="#AB312D2D"
+            android:layout_marginVertical="43dp"
+            android:layout_marginHorizontal="24dp"
+            android:background="#7A524F4F"
             android:padding="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,47 +91,18 @@
                 android:id="@+id/tv_subtitle_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
+                android:layout_marginTop="3dp"
                 android:ellipsize="end"
-                android:text="Webinar edukatif untuk mengenali tanda-tanda risiko diabetes serta langkah pencegahannya."
                 android:letterSpacing="0.05"
                 android:lineSpacingExtra="2sp"
-                android:textSize="11sp"
+                android:maxLines="2"
+                android:text="Webinar edukatif untuk mengenali tanda-tanda risiko diabetes serta langkah pencegahannya."
                 android:textColor="@color/md_theme_onPrimary"
+                android:textSize="11sp"
                 android:textStyle="normal"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_event"
-                android:layout_marginTop="3dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/card_event_organizer"
-                android:layout_marginBottom="18dp"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_title_event" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_event_organizer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:contentPaddingTop="6dp"
-                app:contentPaddingBottom="6dp"
-                app:contentPaddingLeft="12dp"
-                app:contentPaddingRight="12dp"
-                android:elevation="0dp"
-                app:strokeWidth="0dp"
-                app:cardCornerRadius="4dp"
-                android:backgroundTint="@color/md_theme_primary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/tv_event_organizer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Universitas Mataram"
-                    android:textSize="10sp"
-                    android:textColor="@color/md_theme_onPrimary"
-                    android:letterSpacing="0.04"
-                    android:lineSpacingExtra="3sp"
-                    tools:ignore="SmallSp" />
-
-            </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
