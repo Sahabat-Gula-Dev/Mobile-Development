@@ -14,92 +14,98 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.pkm.sahabatgula.data.remote.model.LoginResponse
+
+sealed interface LoginViewState {
+    data object Idle : LoginViewState
+    data object Loading : LoginViewState
+    data class Success(val data: LoginResponse?) : LoginViewState
+    data class Error(val message: String?) : LoginViewState
+}
+
+sealed interface LoginEffect {
+    object NavigateToHome : LoginEffect
+    object NavigateToWelcome : LoginEffect
+}
+
+enum class LoginMode {
+    EMAIL,
+    GOOGLE,
+    NONE
+}
 
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
     private val tokenManager: TokenManager
-): ViewModel() {
+) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginViewState>(LoginViewState.Idle)
     val loginState = _loginState.asStateFlow()
-    private val _effect : Channel<LoginEffect> = Channel()
+
+    private val _effect: Channel<LoginEffect> = Channel()
     val effect = _effect.receiveAsFlow()
+    private val _loginMode = MutableStateFlow(LoginMode.NONE)
+    val loginMode = _loginMode.asStateFlow()
 
-
+    private var _pendingNavigation: LoginEffect? = null
 
     fun login(email: String, password: String) {
+        _loginMode.value = LoginMode.EMAIL
         viewModelScope.launch {
             _loginState.value = LoginViewState.Loading
-            val resource = repository.login(email, password)
-            when (resource) {
+            when (val resource = repository.login(email, password)) {
                 is Resource.Success -> {
                     _loginState.value = LoginViewState.Success(resource.data)
                     val accessToken = tokenManager.getAccessToken()
                     val profile = repository.getMyProfile(accessToken)
                     val bmi = profile?.bmiScore
-                    Log.d("RegisterViewModel", " BMI: $bmi")
-
-                    if ( bmi == null || bmi == 0.0) {
-                        _effect.send(LoginEffect.NavigateToWelcome)
+                    _pendingNavigation = if (bmi == null || bmi == 0.0) {
+                        LoginEffect.NavigateToWelcome
                     } else {
-                        _effect.send(LoginEffect.NavigateToHome)
+                        LoginEffect.NavigateToHome
                     }
                 }
                 is Resource.Error -> {
                     _loginState.value = LoginViewState.Error(resource.message)
                 }
-                is Resource.Loading<*> -> {
-                    Log.d("LoginViewModel", "login: tunggu dulu")
-                }
+                else -> {}
             }
         }
     }
 
-
     fun signInWithGoogle(idToken: String) {
+        _loginMode.value = LoginMode.GOOGLE
         viewModelScope.launch {
             _loginState.value = LoginViewState.Loading
-
             repository.googleAuth(GoogleAuthRequest(idToken))
                 .onSuccess { response ->
                     val accessToken = response.data.accessToken
                     if (accessToken.isNullOrEmpty()) {
-                        _loginState.value = Error("Token tidak valid dari server") as LoginViewState
-                        _effect.send(LoginEffect.ShowToast("Token tidak valid dari server"))
+                        _loginState.value = LoginViewState.Error("Token tidak valid dari server")
                         return@onSuccess
                     }
-
                     tokenManager.saveAccessToken(accessToken)
-
-                    try {
-                        val profile = repository.getMyProfile(accessToken)
-                        val bmi = profile?.bmiScore
-                        Log.d("RegisterViewModel", " BMI: $bmi")
-
-                        if ( bmi == null || bmi == 0.0) {
-                            _effect.send(LoginEffect.NavigateToWelcome)
-                        } else {
-                            _effect.send(LoginEffect.ShowToast("Berhasil masuk dengan Google"))
-                            _effect.send(LoginEffect.NavigateToHome)
-                        }
-
-                        _loginState.value = LoginViewState.Idle
-
-                    } catch (e: Exception) {
-                        _effect.send(LoginEffect.ShowToast("Gagal mengambil data profil: ${e.message}"))
+                    val profile = repository.getMyProfile(accessToken)
+                    val bmi = profile?.bmiScore
+                    _pendingNavigation = if (bmi == null || bmi == 0.0) {
+                        LoginEffect.NavigateToWelcome
+                    } else {
+                        LoginEffect.NavigateToHome
                     }
-
-                    _loginState.value = LoginViewState.Idle
+                    _loginState.value = LoginViewState.Success(null)
                 }
                 .onFailure { e ->
                     _loginState.value = LoginViewState.Error(e.message ?: "Gagal login dengan Google")
-                    _effect.send(LoginEffect.ShowToast(e.message ?: "Gagal login dengan Google"))
                 }
         }
     }
+
+    fun consumePendingNavigation(): LoginEffect? {
+        val effect = _pendingNavigation
+        _pendingNavigation = null
+        _loginMode.value = LoginMode.NONE
+        return effect
+    }
 }
-
-
-

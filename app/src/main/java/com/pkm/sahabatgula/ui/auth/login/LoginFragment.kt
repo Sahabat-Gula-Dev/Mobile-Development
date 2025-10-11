@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentLoginBinding
+import com.pkm.sahabatgula.ui.state.GlobalUiState
+import com.pkm.sahabatgula.ui.state.StateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,29 +35,34 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val loginViewModel by viewModels<LoginViewModel>()
+    private var stateDialog: StateDialogFragment? = null
 
     @Inject lateinit var sessionManager: com.pkm.sahabatgula.data.local.SessionManager
-    @Inject
-    lateinit var apiService: com.pkm.sahabatgula.data.remote.api.ApiService
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater,container,false)
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val compSignInWithGoogle = binding.compSignInWithGoogle
         val btnLogin = binding.btnLogin
         val etEmail = binding.editInputEmail
         val etPassword = binding.editInputPassword
 
         btnLogin.isEnabled = false
+
+        binding.tvRegisterNow.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_register)
+        }
+
+        binding.tvForgotPasswordClickable.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_forgot_password)
+        }
 
         fun updateLoginButtonState() {
             val emailNotEmpty = etEmail.text.toString().isNotBlank()
@@ -69,54 +76,81 @@ class LoginFragment : Fragment() {
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString()
-
-            if (email.isEmpty() || password.isEmpty()) return@setOnClickListener
-
-            loginViewModel.login(email, password)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginViewModel.login(email, password)
+            }
         }
 
-        compSignInWithGoogle.btnGoogleSignIn.setOnClickListener {
+        binding.compSignInWithGoogle.btnGoogleSignIn.setOnClickListener {
             signInWithGoogle()
         }
 
         observeLoginState()
-        observeState()
         observeEffect()
     }
 
-    private fun observeLoginState(){
+    private fun observeLoginState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                loginViewModel.loginState.collect {
-                    updateLoginButtonState()
-                }
-            }
-        }
-    }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModel.loginState.collect { state ->
+                    when (state) {
+                        is LoginViewState.Idle -> hideStateDialog()
+                        is LoginViewState.Loading -> {
+                            val mode = loginViewModel.loginMode.value
+                            if (mode == LoginMode.GOOGLE) {
+                                showStateDialog(
+                                    GlobalUiState.Loading(
+                                        message = "Kami sedang memproses akun Google-mu. Mohon tunggu sebentar…"
+                                    )
+                                )
+                            } else {
+                                showStateDialog(
+                                    GlobalUiState.Loading(
+                                        message = "Gluby sedang menganalisis data kamu, tunggu beberapa detik"
+                                    )
+                                )
+                            }
+                        }
 
-    fun updateLoginButtonState() {
-        val emailNotEmpty = binding.editInputEmail.text.toString().isNotBlank()
-        val passwordNotEmpty = binding.editInputPassword.text.toString().isNotBlank()
-        binding.btnLogin.isEnabled = emailNotEmpty && passwordNotEmpty
-    }
+                        is LoginViewState.Success -> {
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = if (loginViewModel.loginMode.value == LoginMode.GOOGLE)
+                                        "Login Google Berhasil"
+                                    else
+                                        "Login Berhasil",
+                                    message = "Selamat datang kembali. Terima kasih sudah bergabung."
+                                )
+                            )
 
-    private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            loginViewModel.loginState.collect { it ->
-                when (it) {
-                    is LoginViewState.Idle -> {
-                        binding.btnLogin.isEnabled = true
+                            stateDialog?.dismissListener = {
+                                val navEffect = loginViewModel.consumePendingNavigation()
+                                when (navEffect) {
+                                    is LoginEffect.NavigateToHome -> {
+                                        findNavController().navigate(R.id.action_login_to_home_graph)
+                                    }
+                                    is LoginEffect.NavigateToWelcome -> {
+                                        findNavController().navigate(R.id.action_login_to_welcome_screen)
+                                    }
+                                    null -> {}
+                                }
+                            }
+                        }
+
+
+                        is LoginViewState.Error -> {
+                            val errorTitle = if (loginViewModel.loginMode.value == LoginMode.GOOGLE)
+                                "Oops, Login Google Gagal"
+                            else
+                                "Oops, Ada Masalah"
+                            stateDialog?.updateState(
+                                GlobalUiState.Error(
+                                    title = errorTitle,
+                                    message = state.message ?: "Terjadi kesalahan, coba lagi."
+                                )
+                            )
+                        }
                     }
-                    is LoginViewState.Loading -> {
-                        binding.btnLogin.isEnabled = false
-                        Toast.makeText(requireContext(), "Loading", Toast.LENGTH_LONG).show()
-                    }
-                    is LoginViewState.Error -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                        Log.d("LoginFragment", "observeState: ${it.message}")
-                        binding.btnLogin.isEnabled = true
-                    }
-                    is LoginViewState.Success -> binding.btnLogin.isEnabled = false
                 }
             }
         }
@@ -124,29 +158,35 @@ class LoginFragment : Fragment() {
 
     private fun observeEffect() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.effect.collect { effect ->
-                    when(effect) {
+                    when (effect) {
                         is LoginEffect.NavigateToHome -> {
                             findNavController().navigate(R.id.action_login_to_home_graph)
                         }
                         is LoginEffect.NavigateToWelcome -> {
                             findNavController().navigate(R.id.action_login_to_welcome_screen)
                         }
-                        is LoginEffect.ShowToast -> {
-                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_LONG).show()
-                        }
                     }
-
                 }
             }
         }
     }
 
+    private fun showStateDialog(state: GlobalUiState) {
+        if (stateDialog?.dialog?.isShowing == true) stateDialog?.dismiss()
+        stateDialog = StateDialogFragment.newInstance(state)
+        stateDialog?.show(childFragmentManager, "LoginDialog")
+    }
+
+    private fun hideStateDialog() {
+        stateDialog?.dismiss()
+        stateDialog = null
+    }
+
 
     private fun signInWithGoogle() {
         val credentialManager = CredentialManager.create(requireContext())
-
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(getString(R.string.default_web_client_id))
@@ -168,7 +208,6 @@ class LoginFragment : Fragment() {
                             val googleIdTokenCredential =
                                 GoogleIdTokenCredential.createFrom(credential.data)
                             val googleIdToken = googleIdTokenCredential.idToken
-
                             firebaseAuthWithGoogle(googleIdToken)
                         }
                     }
@@ -189,8 +228,6 @@ class LoginFragment : Fragment() {
                         if (tokenTask.isSuccessful) {
                             val firebaseIdToken = tokenTask.result?.token
                             Log.d("FIREBASE_ID_TOKEN", "Firebase ID Token: $firebaseIdToken")
-
-                            // kirim Firebase ID Token ke backend via ViewModel
                             firebaseIdToken?.let {
                                 loginViewModel.signInWithGoogle(it)
                             }

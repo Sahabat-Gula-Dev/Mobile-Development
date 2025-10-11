@@ -86,8 +86,8 @@ class StateDialogFragment : DialogFragment() {
             is GlobalUiState.Loading -> {
                 loadingStartTime = System.currentTimeMillis()
 
-                title.text = state.message ?: "Tunggu Sebentar"
-                message.text = ""
+                title.text = "Tunggu Sebentar"
+                message.text = state.message ?: ""
                 img.setImageResource(state.imageRes ?: R.drawable.glubby_read)
                 btnAction.visibility = View.GONE
 

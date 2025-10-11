@@ -3,6 +3,7 @@ package com.pkm.sahabatgula.ui.explore.article
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -50,14 +51,9 @@ class ArticlePagingDataAdapter(
                 tvTitleArticle.text = article.title
 
                 val htmlContent = article.content ?: ""
-                val regex = Regex("<p[^>]*>(.*?)</p>", RegexOption.DOT_MATCHES_ALL)
-                val match = regex.find(htmlContent)
-
-                val firstParagraph = match?.groups?.get(1)?.value
-                    ?.replace(Regex("\\s+"), " ")
-                    ?.trim() ?: ""
-
-
+                val plainText = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_LEGACY).toString().trim()
+                val lines = plainText.lines().filter { it.isNotBlank() }
+                val firstParagraph = lines.take(2).joinToString("\n")
                 tvSubtitleArticle.text = firstParagraph
                 tvSubtitleArticle.maxLines = 2
                 tvSubtitleArticle.ellipsize = TextUtils.TruncateAt.END

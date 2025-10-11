@@ -41,7 +41,7 @@ class ForgotPassEmailInputFragment : Fragment() {
 
         binding.btnContinue.setOnClickListener {
             val email = binding.inputEmail.editText?.text.toString().trim()
-            val emailError = com.pkm.sahabatgula.core.utils.Validator.validateEmail(email)
+            val emailError = Validator.validateEmail(email)
             binding.inputEmail.error = emailError
             if (emailError == null) {
                 viewModel.requestOtp(email)
@@ -63,7 +63,15 @@ class ForgotPassEmailInputFragment : Fragment() {
                                 message = "Gluby sedang menganalisis data kamu, tunggu beberapa detik"
                             )
                         )
-                        is ForgotPasswordEmailState.Success -> hideStateDialog()
+                        is ForgotPasswordEmailState.Success -> {
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = "Gluby Sudah Kirim Kode OTP!",
+                                    message = "Cek email kamu ya! Masukkan kode OTP yang kami kirim untuk lanjut ke tahap berikutnya."
+                                )
+                            )
+                        }
+
                         is ForgotPasswordEmailState.Error -> {
                             hideStateDialog()
                             binding.inputEmail.error = state.message
@@ -99,7 +107,7 @@ class ForgotPassEmailInputFragment : Fragment() {
                         is ForgotPasswordEmailEffect.NavigateToOtpVerification -> {
                             stateDialog?.updateState(
                                 GlobalUiState.Success(
-                                    title = "Gluby Sudah Kirim Kode OTP!",
+                                    title = "OTP Terkirim!",
                                     message = "Cek email kamu ya! Masukkan kode OTP yang kami kirim untuk lanjut ke tahap berikutnya."
                                 )
                             )

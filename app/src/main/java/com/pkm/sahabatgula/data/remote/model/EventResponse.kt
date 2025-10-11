@@ -29,6 +29,12 @@ data class Event(
     val createdAt: String?,
     @SerializedName("content")
     val content: String?,
+    @SerializedName("location_detail")
+    val locationDetail: String?,
+    @SerializedName("event_start")
+    val eventStart: String?,
+    @SerializedName("event_end")
+    val eventEnd: String?,
     @SerializedName("event_categories")
     val eventCategories: EventCategory?
 ): Parcelable

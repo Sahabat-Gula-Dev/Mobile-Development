@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/ic_calendar"
+        android:id="@+id/layout_calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:contentPadding="10dp"
@@ -18,6 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
+            android:id="@+id/ic_calendar"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_calendar"/>
@@ -35,7 +36,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:textColor="@color/md_theme_onSurface"
-        app:layout_constraintStart_toEndOf="@id/ic_calendar"
+        app:layout_constraintStart_toEndOf="@id/layout_calendar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -49,7 +50,8 @@
         android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@id/tv_title_info"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_info"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_title_info"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 

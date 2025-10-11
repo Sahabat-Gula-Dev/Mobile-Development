@@ -4,11 +4,13 @@ package com.pkm.sahabatgula.ui.explore
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
+import com.pkm.sahabatgula.core.utils.formatEventDate
 import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.databinding.ComponentArticleBinding
 import kotlin.apply
@@ -45,16 +47,13 @@ class ArticleOnExploreAdapter(
                     .load(article.coverUrl)
                     .into(imgArticle)
 
-                tvDateToday.text = convertIsoToIndonesianDateArticle(article.createdAt)
+                tvDateToday.text = formatEventDate(article.createdAt)
                 tvTitleArticle.text = article.title
 
                 val htmlContent = article.content ?: ""
-                val regex = Regex("<p[^>]*>(.*?)</p>", RegexOption.DOT_MATCHES_ALL)
-                val match = regex.find(htmlContent)
-
-                val firstParagraph = match?.groups?.get(1)?.value
-                    ?.replace(Regex("\\s+"), " ")
-                    ?.trim() ?: ""
+                val plainText = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_LEGACY).toString().trim()
+                val lines = plainText.lines().filter { it.isNotBlank() }
+                val firstParagraph = lines.take(2).joinToString("\n")
 
 
                 tvSubtitleArticle.text = firstParagraph

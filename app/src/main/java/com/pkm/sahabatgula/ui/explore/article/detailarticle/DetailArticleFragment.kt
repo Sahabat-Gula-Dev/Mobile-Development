@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -51,6 +52,11 @@ class DetailArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
 
         val articleItem = args.articleItemFromExplore
@@ -59,7 +65,7 @@ class DetailArticleFragment : Fragment() {
         val articleCover = articleItem?.coverUrl
         val articleContent = articleItem?.content
         val articleDate = convertIsoToIndonesianDateArticle(articleItem?.createdAt)
-        val articleAuthor = "Sahabat Gula"
+        val articleAuthor = "Tim Sahabat Gula"
 
 
         binding.apply {

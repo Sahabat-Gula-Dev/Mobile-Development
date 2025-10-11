@@ -7,52 +7,46 @@ import com.pkm.sahabatgula.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResetPasswordViewModel @Inject constructor(private val authRepository: AuthRepository): ViewModel(){
+class ResetPasswordViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ResetPasswordState>(ResetPasswordState.Idle)
-    val uiState: StateFlow<ResetPasswordState> = _uiState
+    val uiState = _uiState.asStateFlow()
 
-    private val _effect = MutableSharedFlow<ResetPasswordEffect>()
-    val uiEffect: SharedFlow<ResetPasswordEffect> = _effect
+    private val _effect = MutableSharedFlow<ResetPasswordEffect>(replay = 1)
+    val uiEffect = _effect.asSharedFlow()
 
     fun resetPassword(resetToken: String, newPassword: String, confirmPassword: String) {
-        if(newPassword.isBlank() || confirmPassword.isBlank()) {
-            viewModelScope.launch {
-                _effect.emit(ResetPasswordEffect.ShowToast("Password tidak boleh kosong"))
-                return@launch
-            }
+        if (newPassword.isBlank() || confirmPassword.isBlank()) {
+            _uiState.value = ResetPasswordState.Error("Password tidak boleh kosong")
+            return
         }
         if (newPassword != confirmPassword) {
-            viewModelScope.launch {
-                _effect.emit(ResetPasswordEffect.ShowToast("Konfirmasi password tidak sesuai"))
-                return@launch
-            }
+            _uiState.value = ResetPasswordState.Error("Konfirmasi password tidak cocok")
+            return
         }
+
         viewModelScope.launch {
             _uiState.value = ResetPasswordState.Loading
-            when(val result = authRepository.resetPassword(resetToken, newPassword)) {
+            when (val result = authRepository.resetPassword(resetToken, newPassword)) {
                 is Resource.Success -> {
-                    _uiState.value = ResetPasswordState.Success
-                    _effect.emit(ResetPasswordEffect.ShowToast(result.data!!.message))
+                    _uiState.value = ResetPasswordState.Success(result.data?.message ?: "Password berhasil diubah")
                     _effect.emit(ResetPasswordEffect.NavigateToLogin)
                 }
                 is Resource.Error -> {
-                    _uiState.value = ResetPasswordState.Idle
-                    _effect.emit(ResetPasswordEffect.ShowToast(result.message))
+                    _uiState.value = ResetPasswordState.Error(result.message ?: "Terjadi kesalahan")
                 }
                 is Resource.Loading -> {
-
+                    _uiState.value = ResetPasswordState.Loading
                 }
-
-
             }
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.explore
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
 import com.pkm.sahabatgula.core.utils.formatEventDate
 import com.pkm.sahabatgula.data.remote.model.Event
 import com.pkm.sahabatgula.databinding.ComponentEventBinding
@@ -54,7 +56,18 @@ class EventOnExploreAdapter(
                 tvDateToday.text = formatEventDate(event.eventDate)
                 tvTitleEvent.text = event.title
 
-                tvSubtitleEvent.text = "Deskripsi acara akan ditampilkan di sini"
+                val htmlContent = event.content ?: ""
+                val regex = Regex("<p[^>]*>(.*?)</p>", RegexOption.DOT_MATCHES_ALL)
+                val match = regex.find(htmlContent)
+
+                val firstParagraph = match?.groups?.get(1)?.value
+                    ?.replace(Regex("\\s+"), " ")
+                    ?.trim() ?: ""
+
+
+                tvSubtitleEvent.text = firstParagraph
+                tvSubtitleEvent.maxLines = 2
+                tvSubtitleEvent.ellipsize = TextUtils.TruncateAt.END
             }
         }
     }

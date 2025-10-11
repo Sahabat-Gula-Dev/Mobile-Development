@@ -8,9 +8,11 @@ import com.pkm.sahabatgula.data.remote.model.GoogleAuthRequest
 import com.pkm.sahabatgula.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -18,7 +20,7 @@ sealed interface RegisterViewState {
     data object Idle : RegisterViewState
     data object Loading : RegisterViewState
     data class Error(val message: String) : RegisterViewState
-
+    data object GoogleLoginSuccess : RegisterViewState
 }
 
 // effect digunakan untuk action yang tidak berlaku terus-menerus, contohnya toast ketika menekan tombol kembali saat register sukses
@@ -28,32 +30,36 @@ sealed interface RegisterEffect {
     data class ShowSuccess(val message: String) : RegisterEffect
     data class NavigateToOtpVerification(val email: String) : RegisterEffect
     data object NavigateToWelcomeScreen : RegisterEffect
+    data object NavigateToHome : RegisterEffect
 }
 
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val repo: AuthRepository, private val tokenManager: TokenManager): ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val repo: AuthRepository,
+    private val tokenManager: TokenManager
+) : ViewModel() {
+
     private val _registerViewState = MutableStateFlow<RegisterViewState>(RegisterViewState.Idle)
     val registerViewState: StateFlow<RegisterViewState> = _registerViewState
 
-    private val _effect: Channel<RegisterEffect> = Channel()
-    val effect = _effect.receiveAsFlow()
+    private val _effect = MutableSharedFlow<RegisterEffect>(replay = 0) // ✅ ubah replay
+    val effect = _effect.asSharedFlow()
 
     fun register(username: String, email: String, password: String) {
         viewModelScope.launch {
             _registerViewState.value = RegisterViewState.Loading
-
             val result = repo.register(username, email, password)
 
             result.fold(
                 onSuccess = { response ->
-                    _effect.send(RegisterEffect.ShowSuccess(response.message?: "Registrasi Berhasil"))
-                    _effect.send(RegisterEffect.NavigateToOtpVerification(email))
+                    _effect.emit(RegisterEffect.ShowSuccess(response.message ?: "Registrasi Berhasil"))
+                    _effect.emit(RegisterEffect.NavigateToOtpVerification(email))
                     _registerViewState.value = RegisterViewState.Idle
                 },
                 onFailure = { exception ->
-                    _effect.send(RegisterEffect.ShowError(exception.message?: "Registrasi Gagal"))
-                    _registerViewState.value = RegisterViewState.Error(exception.message?: "Registrasi Gagal")
+                    _effect.emit(RegisterEffect.ShowError(exception.message ?: "Registrasi Gagal"))
+                    _registerViewState.value = RegisterViewState.Error(exception.message ?: "Registrasi Gagal")
                 }
             )
         }
@@ -65,10 +71,9 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
 
             repo.googleAuth(GoogleAuthRequest(idToken))
                 .onSuccess { response ->
-                    _effect.send(RegisterEffect.ShowSuccess("Berhasil masuk dengan Google"))
                     val accessToken = response.data?.accessToken
                     if (accessToken.isNullOrEmpty()) {
-                        _effect.send(RegisterEffect.ShowError("Token tidak valid dari server"))
+                        _effect.emit(RegisterEffect.ShowError("Token tidak valid dari server"))
                         _registerViewState.value = RegisterViewState.Error("Token tidak valid dari server")
                         return@onSuccess
                     }
@@ -80,24 +85,21 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepository, pr
                         val bmi = profile?.bmiScore
                         Log.d("RegisterViewModel", "BMI: $bmi")
 
-                        if ( bmi == null || bmi == 0.0) {
-
-                            _effect.send(RegisterEffect.NavigateToWelcomeScreen)
+                        _registerViewState.value = RegisterViewState.GoogleLoginSuccess
+                        if (bmi == null || bmi == 0.0) {
+                            _effect.emit(RegisterEffect.NavigateToWelcomeScreen)
                         } else {
-                            // cetak error bukan ke home
-                            _registerViewState.value = RegisterViewState.Error("Gagal mengambil data profil")
+                            _effect.emit(RegisterEffect.NavigateToHome)
                         }
 
-                    _registerViewState.value = RegisterViewState.Idle
-
                     } catch (e: Exception) {
-                        _effect.send(RegisterEffect.ShowError("Gagal mengambil data profil: ${e.message}"))
-                        _registerViewState.value = RegisterViewState.Error("Gagal mengambil data profil")
+                        _effect.emit(RegisterEffect.ShowError("Gagal ambil profil: ${e.message}"))
+                        _registerViewState.value = RegisterViewState.Error("Gagal ambil profil")
                     }
                 }
-                .onFailure { authError ->
-                    _effect.send(RegisterEffect.ShowError(authError.message ?: "Gagal masuk dengan Google"))
-                    _registerViewState.value = RegisterViewState.Error(authError.message ?: "Gagal masuk dengan Google")
+                .onFailure { e ->
+                    _effect.emit(RegisterEffect.ShowError(e.message ?: "Gagal login Google"))
+                    _registerViewState.value = RegisterViewState.Error(e.message ?: "Gagal login Google")
                 }
         }
     }

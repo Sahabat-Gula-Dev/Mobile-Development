@@ -40,6 +40,7 @@ import com.pkm.sahabatgula.ui.state.StateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
@@ -89,11 +90,6 @@ class RegisterFragment : Fragment() {
         val compSignInWithGoogle = binding.compSignInWithGoogle
 
         compSignInWithGoogle.btnGoogleSignIn.setOnClickListener {
-            showStateDialog(
-                GlobalUiState.Loading(
-                    message = "Kami sedang memproses akun Google-mu. Mohon tunggu sebentar…"
-                )
-            )
             signInWithGoogle()
         }
 
@@ -163,9 +159,11 @@ class RegisterFragment : Fragment() {
                                 )
                             )
                         }
+
                         is RegisterEffect.ShowInfo -> {
                             Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
                         }
+
                         is RegisterEffect.ShowSuccess -> {
                             stateDialog?.updateState(
                                 GlobalUiState.Success(
@@ -174,6 +172,7 @@ class RegisterFragment : Fragment() {
                                 )
                             )
                         }
+
                         is RegisterEffect.NavigateToOtpVerification -> {
                             stateDialog?.updateState(
                                 GlobalUiState.Success(
@@ -183,18 +182,40 @@ class RegisterFragment : Fragment() {
                             )
                             stateDialog?.dismissListener = {
                                 val bundle = bundleOf("email" to effect.email)
-                                findNavController().navigate(R.id.register_to_otp_verification, bundle)
+                                // Pastikan navigasi dilakukan setelah fragment resumed
+                                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+                                    findNavController().navigate(R.id.register_to_otp_verification, bundle)
+                                }
                             }
                         }
+
+                        is RegisterEffect.NavigateToHome -> {
+                            stateDialog?.updateState(
+                                GlobalUiState.Success(
+                                    title = "Login Google Berhasil",
+                                    message = "Selamat datang kembali!"
+                                )
+                            )
+                            stateDialog?.dismissListener = {
+                                // stateDialog?.dismiss() // Opsional, listener biasanya dipanggil setelah dismiss
+                                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+                                    findNavController().navigate(R.id.register_to_home)
+                                }
+                            }
+                        }
+
                         is RegisterEffect.NavigateToWelcomeScreen -> {
                             stateDialog?.updateState(
                                 GlobalUiState.Success(
-                                    title = "Login Berhasil",
+                                    title = "Login Google Berhasil",
                                     message = "Akun Google-mu berhasil terhubung. Yuk, lengkapi profilmu dulu!"
                                 )
                             )
                             stateDialog?.dismissListener = {
-                                findNavController().navigate(R.id.register_to_welcome_screen)
+                                // stateDialog?.dismiss() // Opsional
+                                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+                                    findNavController().navigate(R.id.register_to_welcome_screen)
+                                }
                             }
                         }
                     }
@@ -202,6 +223,7 @@ class RegisterFragment : Fragment() {
             }
         }
     }
+
 
 
     private fun signInWithGoogle() {
@@ -251,6 +273,11 @@ class RegisterFragment : Fragment() {
 
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        showStateDialog(
+            GlobalUiState.Loading(
+                message = "Memverifikasi akunmu, tunggu sebentar..."
+            )
+        )
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnCompleteListener { task ->

@@ -62,7 +62,7 @@
         <action
             android:id="@+id/register_to_otp_verification"
             app:destination="@id/otp_verification_fragment"
-            app:popUpTo="@id/auth_graph"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/register_to_login"
@@ -70,7 +70,7 @@
         <action
             android:id="@+id/register_to_home"
             app:destination="@id/home_graph"
-            app:popUpTo="@id/auth_graph"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/register_to_welcome_screen"
@@ -96,7 +96,6 @@
         android:id="@+id/terms_and_conditions_fragment"
         android:name="com.pkm.sahabatgula.ui.settings.appinfo.TermsAndConditionsFragment"/>
 
-
     <fragment
         android:id="@+id/welcome_screen_fragment"
         android:name="com.pkm.sahabatgula.welcomescreen.WelcomeScreenFragment">
@@ -104,7 +103,7 @@
         <action
             android:id="@+id/action_welcome_screen_to_home_graph"
             app:destination="@id/home_graph"
-            app:popUpTo="@id/nav_graph"
+            app:popUpTo="@id/auth_graph"
             app:popUpToInclusive="true"/>
 
         <action
@@ -281,5 +280,6 @@
     <include app:graph="@navigation/home_graph" />
     <include app:graph="@navigation/explore_graph" />
     <include app:graph="@navigation/settings_graph" />
+
 
 </navigation>

@@ -3,6 +3,7 @@ package com.pkm.sahabatgula.ui.explore.event
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -46,16 +47,13 @@ class EventPagingDataAdapter(
                     .load(event.coverUrl)
                     .into(imgArticle)
 
-                tvDateToday.text = formatEventDate(event.createdAt)
+                tvDateToday.text = formatEventDate(event.eventDate)
                 tvTitleEvent.text = event.title
 
                 val htmlContent = event.content ?: ""
-                val regex = Regex("<p[^>]*>(.*?)</p>", RegexOption.DOT_MATCHES_ALL)
-                val match = regex.find(htmlContent)
-
-                val firstParagraph = match?.groups?.get(1)?.value
-                    ?.replace(Regex("\\s+"), " ")
-                    ?.trim() ?: ""
+                val plainText = HtmlCompat.fromHtml(htmlContent, HtmlCompat.FROM_HTML_MODE_LEGACY).toString().trim()
+                val lines = plainText.lines().filter { it.isNotBlank() }
+                val firstParagraph = lines.take(2).joinToString("\n")
 
 
                 tvSubtitleEvent.text = firstParagraph

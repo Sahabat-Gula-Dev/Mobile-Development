@@ -11,13 +11,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.data.remote.model.Event
+import com.pkm.sahabatgula.core.utils.formatEventDateTime
 import com.pkm.sahabatgula.databinding.FragmentDetailEventBinding
 import com.pkm.sahabatgula.ui.explore.EventOnExploreAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,21 +46,36 @@ class DetailEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
 
         val eventItem = args.eventItemFromExplore
         val eventTitle = eventItem?.title
         val eventCover = eventItem?.coverUrl
         val eventContent = eventItem?.content
-        val eventDate = eventItem?.createdAt
+        val eventDate = eventItem?.eventDate
         val eventLocation = eventItem?.location
+        val eventLocationDetail = eventItem?.locationDetail
+        val eventStart = eventItem?.eventStart
+        val eventEnd = eventItem?.eventEnd
+
+
+
+
 
         binding.apply {
             tvTitleEvent.text = eventTitle
-            tvEventOrganizer.text = "Sahabat Gula"
+            tvEventOrganizer.text = "Tim Sahabat Gula"
+            val (date, time) = formatEventDateTime(eventDate, eventStart, eventEnd)
+            cardEventDate.tvTitleInfo.text = date
+            cardEventLocation.tvTitleInfo.text = time
 
-            cardEventDate.tvTitleInfo.text = eventDate
-            cardEventLocation.tvTitleInfo.text = eventLocation
+            cardEventLocation.icCalendar.setImageResource(R.drawable.ic_location)
+            cardEventLocation.tvSubtitleInfo.text = eventLocation
+            cardEventLocation.tvSubtitleInfo.text = eventLocationDetail
 
             val htmlContent = """
             <html>

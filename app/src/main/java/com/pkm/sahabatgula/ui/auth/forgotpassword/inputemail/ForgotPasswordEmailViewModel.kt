@@ -12,6 +12,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+interface ForgotPasswordEmailState {
+    data object Idle : ForgotPasswordEmailState
+    data object Loading : ForgotPasswordEmailState
+    data class Success(val message: String?) : ForgotPasswordEmailState
+    data class Error(val message: String) : ForgotPasswordEmailState
+}
+
+sealed class ForgotPasswordEmailEffect {
+    data class ShowError(val message: String) : ForgotPasswordEmailEffect()
+    data class ShowInfo(val message: String) : ForgotPasswordEmailEffect()
+    data class NavigateToOtpVerification(val email: String) : ForgotPasswordEmailEffect()
+}
+
+
 @HiltViewModel
 class ForgotPasswordEmailViewModel @Inject constructor(
     private val authRepository: AuthRepository
@@ -35,7 +50,8 @@ class ForgotPasswordEmailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = ForgotPasswordEmailState.Loading
 
-            when (val result = authRepository.forgotPasswordInputEmail(email)) {
+            val result = authRepository.forgotPasswordInputEmail(email)
+            when (result) {
                 is Resource.Success -> {
                     _uiState.value = ForgotPasswordEmailState.Success(result.data?.message)
                     _effect.emit(ForgotPasswordEmailEffect.NavigateToOtpVerification(email))
