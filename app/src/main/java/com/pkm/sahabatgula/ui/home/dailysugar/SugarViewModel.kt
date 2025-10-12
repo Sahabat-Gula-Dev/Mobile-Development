@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.data.repository.HomeRepository
 import com.pkm.sahabatgula.core.utils.DateConverter
+import com.pkm.sahabatgula.ui.home.dailyprotein.ProteinState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,17 +22,11 @@ class SugarViewModel @Inject constructor(homeRepository: HomeRepository): ViewMo
             .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
 
                 if (profile == null) {
-                    // Jika profil tidak ada, ini adalah kondisi error
                     SugarState.Error("Profil tidak ditemukan.")
-                } else if (summary == null) {
-                    // Jika profil ada tapi summary belum ada di DB, tampilkan LOADING
-                    // sambil menunggu proses refresh dari server selesai.
-                    SugarState.Loading
                 } else {
-                    // Jika keduanya ada, tampilkan data yang sebenarnya
                     SugarState.Success(
-                        currentSugar = summary.sugar ?: 0.0,
-                        maxSugar = profile.max_sugar ?: 0.0 // Beri default yang aman
+                        currentSugar = summary?.protein ?: 0.0,
+                        maxSugar = profile.max_protein ?: 0.0
                     )
                 }
             }.stateIn(

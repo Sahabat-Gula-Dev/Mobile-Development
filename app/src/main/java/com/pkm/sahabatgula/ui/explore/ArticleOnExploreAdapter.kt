@@ -47,7 +47,7 @@ class ArticleOnExploreAdapter(
                     .load(article.coverUrl)
                     .into(imgArticle)
 
-                tvDateToday.text = formatEventDate(article.createdAt)
+                tvDateToday.text = convertIsoToIndonesianDateArticle(article.createdAt)
                 tvTitleArticle.text = article.title
 
                 val htmlContent = article.content ?: ""

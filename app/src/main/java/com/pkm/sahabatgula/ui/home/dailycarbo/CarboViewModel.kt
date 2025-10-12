@@ -27,11 +27,9 @@ class CarboViewModel @Inject constructor(private val homeRepository: HomeReposit
             .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
                 if (profile == null) {
                     CarboState.Error("Profil tidak ditemukan.")
-                } else if (summary == null) {
-                    CarboState.Loading
                 } else {
                     CarboState.Success(
-                        totalCarbo = summary.carbs ?: 0.0,
+                        totalCarbo = summary?.carbs ?: 0.0,
                         maxCarbo = profile.max_carbs ?: 0.0
                     )
                 }

@@ -27,7 +27,7 @@ import javax.inject.Singleton
 class LogFoodRepository @Inject constructor(
     private val apiService: ApiService,
     private val tokenManager: TokenManager,
-    private val summaryDao: SummaryDao // Kita butuh SummaryDao untuk update DB lokal
+    private val summaryDao: SummaryDao
 ) {
 
     suspend fun logFood(items: List<FoodItemRequest>): Resource<Unit> {
@@ -37,13 +37,10 @@ class LogFoodRepository @Inject constructor(
             val response = apiService.logFood("Bearer $token", requestBody)
 
             if (response.isSuccessful && response.body() != null) {
-                // Jika sukses, API akan mengembalikan total nutrisi TERBARU untuk hari ini.
                 val newTotals = response.body()!!.data.totals
-
-                // Update database lokal kita dengan total yang baru ini.
                 updateLocalSummary(newTotals)
 
-                return Resource.Success(Unit) // Kirim sinyal sukses tanpa data spesifik
+                return Resource.Success(Unit)
             } else {
                 return Resource.Error("Gagal mencatat makanan: ${response.message()}")
             }

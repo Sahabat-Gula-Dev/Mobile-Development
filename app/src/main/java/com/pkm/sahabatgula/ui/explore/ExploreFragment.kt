@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula.ui.explore
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,9 @@ import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.HorizontalSpaceItemDecoration
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
 import com.pkm.sahabatgula.databinding.FragmentExploreBinding
+import com.pkm.sahabatgula.ui.explore.news.NewsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,6 +33,7 @@ class ExploreFragment : Fragment() {
 
     private lateinit var eventAdapter: EventOnExploreAdapter
     private lateinit var articleAdapter: ArticleOnExploreAdapter
+    private lateinit var newsAdapter: NewsPagingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +68,29 @@ class ExploreFragment : Fragment() {
 
         setupArticle()
         observeArticleState()
+
+        setupNews()
+        binding.rvNews.isNestedScrollingEnabled = false
+
+    }
+
+    private fun setupNews() {
+        newsAdapter = NewsPagingAdapter()
+        binding.rvNews.apply {
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = null
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.newsPagingFlow.collectLatest { pagingData ->
+                    newsAdapter.submitData(pagingData)
+                    Log.d("DEBUG_NEWS_AJA","DEBUG_NEWS: PagingData received!")
+                }
+            }
+        }
+
     }
 
     private fun observeArticleState() {
@@ -73,7 +100,6 @@ class ExploreFragment : Fragment() {
                     when (resource) {
                         is Resource.Loading -> {  }
                         is Resource.Success -> {
-
                             articleAdapter.submitList(resource.data)
                         }
                         is Resource.Error -> {
@@ -93,7 +119,6 @@ class ExploreFragment : Fragment() {
         binding.rvArticles.apply {
             adapter = articleAdapter
             layoutManager = LinearLayoutManager(context)
-//            isNestedScrollingEnabled = false
         }
     }
 
@@ -146,15 +171,11 @@ class ExploreFragment : Fragment() {
                 viewModel.eventState.collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
-//                            binding.progressBar.visibility = View.VISIBLE
                         }
                         is Resource.Success -> {
-//                            binding.progressBar.visibility = View.GONE
-                            // resource.data tidak akan null di state Success
                             eventAdapter.submitList(resource.data)
                         }
                         is Resource.Error -> {
-//                            binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
                         }
                     }

@@ -84,9 +84,9 @@ class SugarFragment : Fragment() {
                         }
 
                         val indicatorColor = if ( state.currentSugar > state.maxSugar) {
-                            "#FF0000".toColorInt() // merah
+                            "#B3261E".toColorInt() // merah
                         } else {
-                            "#006B5F".toColorInt() // hijau
+                            "#FF3776".toColorInt() // hijau
                         }
 
                         binding.piDailySugar.tvRemaining.setTextColor(indicatorColor)

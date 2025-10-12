@@ -59,13 +59,13 @@ class WeeklyFoodFragment : Fragment() {
             viewModel.uiState.collect { state ->
                 when (state) {
                     is WeeklyFoodState.Loading -> {
-                        // Tampilkan loading indicator
+
                     }
                     is WeeklyFoodState.Success -> {
-                        // Panggil fungsi setup grafik dengan data dari ViewModel
                         setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                     }
                     is WeeklyFoodState.Error -> {
+
                     }
                 }
             }
@@ -74,22 +74,20 @@ class WeeklyFoodFragment : Fragment() {
 
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
 
-        // Nonaktifkan interaksi
+        chart.data = data
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false
-        chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
+        chart.setScaleEnabled(false)
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
         chart.setExtraOffsets(10f, 0f, 0f, 8f)
 
-        // Konfigurasi umum
+
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
 
-        // font
         val font = resources.getFont(R.font.jakarta_sans_family)
 
-        // Sumbu X (Horizontal)
         val xAxis = chart.xAxis
         xAxis.typeface = font
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -101,7 +99,6 @@ class WeeklyFoodFragment : Fragment() {
             }
         }
 
-        // Sumbu Y Kiri (Vertikal)
         val yAxisLeft = chart.axisLeft
         yAxisLeft.axisMinimum = 0f
         yAxisLeft.typeface = font
@@ -109,10 +106,9 @@ class WeeklyFoodFragment : Fragment() {
         yAxisLeft.setDrawAxisLine(false)
 
 
-        // Sumbu Y Kanan
         chart.axisRight.isEnabled = false
 
-        // Refresh grafik untuk menampilkan data
+
         chart.invalidate()
     }
 

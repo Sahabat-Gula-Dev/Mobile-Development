@@ -271,7 +271,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-
     private fun firebaseAuthWithGoogle(idToken: String) {
         showStateDialog(
             GlobalUiState.Loading(

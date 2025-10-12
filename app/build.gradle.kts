@@ -8,6 +8,8 @@ if (localPropertiesFile.exists()) {
 
 val geminiApiKey: String = localProperties.getProperty("GEMINI_API_KEY") ?: ""
 val baseUrl : String = localProperties.getProperty("BASE_URL") ?: ""
+val rssUrl : String = localProperties.getProperty("RSS_URL") ?: ""
+val rssApiKey : String = localProperties.getProperty("RSS_API_KEY") ?: ""
 
 plugins {
     alias(libs.plugins.android.application)
@@ -45,6 +47,18 @@ android {
                 "GEMINI_API_KEY",
                 "\"$geminiApiKey\""
             )
+
+            buildConfigField(
+                "String",
+                "RSS_URL",
+                "\"$rssUrl\""
+            )
+
+            buildConfigField(
+                "String",
+                "RSS_API_KEY",
+                "\"$rssApiKey\""
+            )
         }
 
         release {
@@ -63,6 +77,18 @@ android {
                 "String",
                 "GEMINI_API_KEY",
                 "\"$geminiApiKey\""
+            )
+
+            buildConfigField(
+                "String",
+                "RSS_URL",
+                "\"$rssUrl\""
+            )
+
+            buildConfigField(
+                "String",
+                "RSS_API_KEY",
+                "\"$rssApiKey\""
             )
 
         }

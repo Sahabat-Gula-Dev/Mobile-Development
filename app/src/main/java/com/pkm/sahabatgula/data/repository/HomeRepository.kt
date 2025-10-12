@@ -79,10 +79,9 @@ class HomeRepository @Inject constructor(
     suspend fun updateWaterIntake(increment: Int): Resource<Unit> {
         val today = DateConverter.getTodayLocalFormatted()
         return try {
-            // --- 1. Optimistic Update ke Room ---
             val currentSummary = summaryDao.getSummaryByDate("DAILY", today).firstOrNull()
             val updatedSummary = currentSummary?.copy(water = (currentSummary.water ?: 0) + increment)
-                ?: // kalau belum ada data hari ini, bikin baru
+                ?:
                 SummaryEntity(
                     type = "DAILY",
                     date = today,

@@ -62,7 +62,8 @@ class FoodFragment : Fragment() {
                 when (state) {
                     is FoodState.Success -> {
                         binding.piLogFood .apply {
-                            tvRemaining.text = state.remainingCalories.toInt().toString()
+                            val tvRemainingCalories = (state.remainingCalories).coerceIn(0.0,100.0)
+                            tvRemaining.text = tvRemainingCalories.toInt().toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_card))
                             val progressCalories = (state.totalCalories/ (state.maxCalories?.toDouble() ?: 0.0))*100
                             tvFormat.text = "kkal tersisa"
@@ -95,9 +96,9 @@ class FoodFragment : Fragment() {
 
                             val indicatorColor = state.maxCalories?.let {
                                 if ( state.totalCalories > it) {
-                                    "#FF0000".toColorInt() // merah
+                                    "#B3261E".toColorInt() // merah
                                 } else {
-                                    "#006B5F".toColorInt() // hijau
+                                    "#088D08".toColorInt() // hijau
                                 }
                             }
 
@@ -122,7 +123,7 @@ class FoodFragment : Fragment() {
                         binding.cardHistoryFood.apply {
                             icAction.setImageResource(R.drawable.ic_history)
                             tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
-                            tvSubtitleAction.text = "Cek ulang makananmu dan pastikan kamu tetap dalam jalur sehat"
+                            tvSubtitleAction.text = "Cek ulang makananmu dan pastikan tetap di jalur sehat"
                             root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory_background))
                         }
 

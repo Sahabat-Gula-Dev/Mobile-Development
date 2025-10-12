@@ -1,16 +1,27 @@
 package com.pkm.sahabatgula.ui.settings
 
+import android.R.attr.typeface
 import android.app.AlertDialog
 import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.text.LineBreaker
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.data.local.SessionManager
 import com.pkm.sahabatgula.databinding.FragmentSettingsBinding
@@ -167,26 +178,104 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showLogoutConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Konfirmasi Logout")
-            .setMessage("Apakah kamu yakin ingin logout dari akun ini?")
-            .setPositiveButton("Ya") { dialog, _ ->
-                performLogout()
-                dialog.dismiss()
+        val context = requireContext()
+
+        // 🖼️ Gambar Glubby
+        val imageView = ImageView(context).apply {
+            setImageResource(R.drawable.glubby_error)
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            val size = context.resources.getDimensionPixelSize(R.dimen.dialog_image_size)
+            layoutParams = LinearLayout.LayoutParams(size, size).apply {
+                gravity = android.view.Gravity.CENTER
+                bottomMargin = 16
+                topMargin = 24
             }
-            .setNegativeButton("Batal") { dialog, _ ->
-                dialog.dismiss()
+        }
+
+        // 📝 Title
+        val titleText = SpannableString("Konfirmasi Logout").apply {
+            setSpan(
+                StyleSpan(Typeface.BOLD),
+                0,
+                length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        val titleView = TextView(context).apply {
+            text = titleText
+            gravity = android.view.Gravity.CENTER
+            textSize = 18f
+            setTextColor(Color.BLACK)  // 🟡 Warna hitam
+            typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_semibold)
+            setPadding(16, 0, 16, 8)
+        }
+
+        // 🧠 Message
+        val messageView = android.widget.TextView(context).apply {
+            text = "Apakah kamu yakin ingin logout dari akun ini?"
+            gravity = android.view.Gravity.CENTER
+            textSize = 14f
+            setTextColor(Color.BLACK)  // 🟡 Warna hitam
+            typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_regular)
+            setPadding(32, 8, 32, 0)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                justificationMode = LineBreaker.JUSTIFICATION_MODE_NONE
+            }
+        }
+
+        // 📦 Container
+        val container = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = android.view.Gravity.CENTER_HORIZONTAL
+            setBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_onPrimary))
+            setPadding(24, 24, 24, 16)
+            addView(imageView)
+            addView(titleView)
+            addView(messageView)
+        }
+
+        // ✨ Material Alert Dialog
+        val dialog = MaterialAlertDialogBuilder(context)
+            .setView(container)
+            .setPositiveButton("Ya") { d, _ ->
+                performLogout()
+                d.dismiss()
+            }
+            .setNegativeButton("Batal") { d, _ ->
+                d.dismiss()
             }
             .create()
-            .show()
+
+        dialog.show()
+
+        val onPrimaryColor = ContextCompat.getColor(context, R.color.md_theme_onPrimary)
+
+        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+
+        val buttonParent = positiveButton.parent as? View
+        buttonParent?.setBackgroundColor(onPrimaryColor)
+
+        positiveButton.setBackgroundColor(Color.TRANSPARENT)
+        negativeButton.setBackgroundColor(Color.TRANSPARENT)
+        positiveButton.setTextColor(Color.BLACK)
+        negativeButton.setTextColor(Color.BLACK)
+
+        val customTypeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_semibold)
+        positiveButton.typeface = customTypeface
+        negativeButton.typeface = customTypeface
+        positiveButton.setTypeface(customTypeface, Typeface.BOLD)
+        negativeButton.setTypeface(customTypeface, Typeface.BOLD)
     }
 
+
+
+
     private fun performLogout() {
-        // Jalankan di background thread karena clear session menyentuh database
         lifecycleScope.launch {
             sessionManager.clearSession()
-
-            // Navigasi balik ke login (atau splash)
             findNavController().navigate(R.id.action_settings_fragment_to_auth_graph)
             Toast.makeText(requireContext(), "Berhasil logout", Toast.LENGTH_SHORT).show()
         }

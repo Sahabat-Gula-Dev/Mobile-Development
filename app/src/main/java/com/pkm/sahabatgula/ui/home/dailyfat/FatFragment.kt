@@ -96,9 +96,9 @@ class FatFragment : Fragment() {
                             }
 
                             val indicatorColor = if ( state.totalFat > state.maxFat) {
-                                "#FF0000".toColorInt() // merah
+                                "#B3261E".toColorInt() // merah
                             } else {
-                                "#006B5F".toColorInt() // hijau
+                                "#FF5023".toColorInt() // hijau
                             }
 
                             tvRemaining.setTextColor(indicatorColor)
@@ -121,7 +121,7 @@ class FatFragment : Fragment() {
                         binding.cardHistoryFat.apply {
                             icAction.setImageResource(R.drawable.ic_history)
                             tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
-                            tvSubtitleAction.text = "Cek ulang makananmu dan pastikan kamu tetap dalam jalur sehat"
+                            tvSubtitleAction.text = "Cek ulang makananmu dan pastikan tetap dalam jalur sehat"
                         }
 
                         binding.cardHistoryFat.root.setOnClickListener {

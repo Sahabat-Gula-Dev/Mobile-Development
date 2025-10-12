@@ -29,11 +29,9 @@ class FoodViewModel @Inject constructor(private val homeRepository: HomeReposito
             .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
                 if (profile == null) {
                     FoodState.Error("Profil tidak ditemukan.")
-                } else if (summary == null) {
-                    FoodState.Loading
                 } else {
                     FoodState.Success(
-                        totalCalories = summary.calories ?: 0.0,
+                        totalCalories = summary?.calories ?: 0.0,
                         maxCalories = profile.max_calories ?: 0
                     )
                 }

@@ -12,10 +12,8 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import javax.inject.Inject
+import javax.inject.Singleton
 
-/**
- * Retrofit API interface untuk Gemini REST API v1
- */
 interface GeminiRestApi {
     @POST("v1/models/{model}:generateContent")
     suspend fun generateContent(
@@ -24,10 +22,6 @@ interface GeminiRestApi {
         @Body body: GeminiRequest
     ): GeminiResponse
 }
-
-/**
- * Request & Response model untuk Gemini API
- */
 data class GeminiRequest(
     val contents: List<Content>
 )
@@ -48,37 +42,14 @@ data class Candidate(
     val content: Content?
 )
 
-/**
- * Service utama untuk mengirim prompt ke Gemini dan menerima response.
- */
-class GeminiApiService @Inject constructor() {
 
-    // Ganti model di sini kalau mau pakai pro
+@Singleton
+class GeminiApiService @Inject constructor(
+    private val api: GeminiRestApi
+) {
+
     private val modelName = "gemini-2.5-flash"
-    // atau: private val modelName = "gemini-1.5-pro"
 
-    private val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://generativelanguage.googleapis.com/")
-            .client(OkHttpClient.Builder().build())
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
-        .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-        .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-        .build()
-
-    private val api by lazy {
-        retrofit.create(GeminiRestApi::class.java)
-    }
-
-    /**
-     * Kirim prompt ke Gemini & ambil jawaban.
-     */
     suspend fun generateResponse(prompt: String): String = withContext(Dispatchers.IO) {
         try {
             val request = GeminiRequest(
@@ -86,7 +57,6 @@ class GeminiApiService @Inject constructor() {
                     Content(parts = listOf(Part(text = prompt)))
                 )
             )
-
             val response = api.generateContent(
                 model = modelName,
                 apiKey = BuildConfig.GEMINI_API_KEY,

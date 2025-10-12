@@ -29,6 +29,7 @@ import com.pkm.sahabatgula.data.remote.model.LogWaterResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
 import com.pkm.sahabatgula.data.remote.model.LoginResponse
 import com.pkm.sahabatgula.data.remote.model.MyProfileResponse
+import com.pkm.sahabatgula.data.remote.model.NewsResponse
 import com.pkm.sahabatgula.data.remote.model.PredictionResponse
 import com.pkm.sahabatgula.data.remote.model.ProfileData
 import com.pkm.sahabatgula.data.remote.model.SetupProfileResponse
@@ -197,4 +198,10 @@ interface ApiService {
     suspend fun getUserHistory(
         @Header("Authorization") token: String,
     ): Response<HistoryResponse>
+
+
+    @GET("api.json")
+    fun getHealthNews(
+        @Query("rss_url") rssUrl: String
+    ): Response<NewsResponse>
 }

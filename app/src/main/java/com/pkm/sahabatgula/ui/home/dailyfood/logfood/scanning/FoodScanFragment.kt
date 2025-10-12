@@ -25,10 +25,14 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentFoodScanBinding
 import com.pkm.sahabatgula.databinding.FragmentScanBinding
+import com.pkm.sahabatgula.ui.state.GlobalUiState
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
@@ -46,7 +50,7 @@ class FoodScanFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
 
-    // Launcher untuk meminta izin kamera
+
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -58,7 +62,6 @@ class FoodScanFragment : Fragment() {
             }
         }
 
-    // Launcher untuk memilih gambar dari galeri
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -77,7 +80,6 @@ class FoodScanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Cek izin saat fragment dibuat
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -136,10 +138,9 @@ class FoodScanFragment : Fragment() {
                     val uri = saveBitmapToCache(bitmap)
 
                     if(uri!= null) {
-                        Toast.makeText(requireContext(), "Gambar berhasil diambil!", Toast.LENGTH_SHORT).show()
                         sendUriToParent(uri)
                     } else {
-                        Toast.makeText(requireContext(), "Gagal menyimpan gambar temporer.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show()
                     }
                 }
 

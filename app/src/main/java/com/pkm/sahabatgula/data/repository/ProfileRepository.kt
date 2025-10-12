@@ -96,7 +96,6 @@ fun ProfileData.toProfileEntity(
         diabetes_family = this.diabetesFamily,
         activity_level = this.activityLevel,
 
-        // Mengambil setupProfileData hasil kalkulasi dari response API
         risk_index = response.setupProfileData.riskIndex,
         bmi_score = response.setupProfileData.bmi,
         max_calories = response.setupProfileData.maxCalories,
@@ -105,7 +104,6 @@ fun ProfileData.toProfileEntity(
         max_fat = response.setupProfileData.fat,
         max_sugar = response.setupProfileData.sugar,
 
-        // Kolom ini tidak ada di response, jadi kita beri null atau nilai default
         max_natrium = null,
         max_fiber = null,
         max_potassium = null

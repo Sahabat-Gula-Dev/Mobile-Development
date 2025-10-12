@@ -1,4 +1,4 @@
-package com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning
+package com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.result
 
 import android.content.Context
 import android.net.Uri
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.uriToFile
+import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.data.remote.model.FoodsItem
 import com.pkm.sahabatgula.data.repository.ScanRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,13 +24,19 @@ sealed interface ScanUiState{
 }
 
 @HiltViewModel
-class FoodScanViewModel @Inject constructor(
+class ResultFoodScanViewModel @Inject constructor(
     private val scanRepository: ScanRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ScanUiState>(ScanUiState.Loading)
     val uiState: StateFlow<ScanUiState> = _uiState
+    private var lastResult: List<FoodsItem?> = emptyList()
+
+    fun hasScannedResult() = lastResult != null
+
+    fun getLastResult(): List<FoodsItem> = lastResult as List<FoodsItem>
+
 
     fun predictImage(imageUri: Uri?) {
         viewModelScope.launch {
@@ -45,17 +52,18 @@ class FoodScanViewModel @Inject constructor(
                     is Resource.Success -> {
                         val foodList = result.data?.data?.foods ?: emptyList()
                         Log.d(
-                            "FoodScanViewModel",
+                            "ResultFoodScanViewModel",
                             "Prediksi berhasil. Jumlah makanan terdeteksi: ${foodList.size}"
                         )
+                        lastResult = foodList
                         _uiState.value = ScanUiState.Success(foodList)
                     }
                     is Resource.Error -> {
-                        Log.e("FoodScanViewModel", "Prediksi gagal: ${result.message}")
+                        Log.e("ResultFoodScanViewModel", "Prediksi gagal: ${result.message}")
                         _uiState.value = ScanUiState.Error(result.message ?: "Terjadi kesalahan")
                     }
                     is Resource.Loading -> {
-                        Log.d("FoodScanViewModel", "Sedang memproses gambar...")
+                        Log.d("ResultFoodScanViewModel", "Sedang memproses gambar...")
                         _uiState.value = ScanUiState.Loading
                     }
                 }

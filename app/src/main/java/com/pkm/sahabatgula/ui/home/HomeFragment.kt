@@ -212,7 +212,7 @@ class HomeFragment : Fragment() {
         binding.circularProgressCalories.tvRemaining.text = remaining.toString()
 
         val indicatorColor = if (caloriesConsumed > maxCalories) {
-            "#FF0000".toColorInt() // merah
+            "#B3261E".toColorInt() // merah
         } else {
             "#006B5F".toColorInt() // hijau
         }

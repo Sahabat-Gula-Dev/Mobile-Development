@@ -125,6 +125,30 @@
             android:paddingEnd="16dp"
             app:layout_constraintStart_toStartOf="@id/tv_title_article"/>
 
+
+        <TextView
+            android:id="@+id/tv_title_news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Berita Terkini"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="@id/view_pager_carousel"
+            app:layout_constraintEnd_toEndOf="@id/view_pager_carousel"
+            app:layout_constraintTop_toBottomOf="@id/rv_articles"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_news"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintStart_toStartOf="@id/tv_title_news"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

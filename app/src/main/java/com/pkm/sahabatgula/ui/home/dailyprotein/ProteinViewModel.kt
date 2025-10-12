@@ -28,11 +28,9 @@ class ProteinViewModel @Inject constructor(private val homeRepository: HomeRepos
             .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
                 if (profile == null) {
                     ProteinState.Error("Profil tidak ditemukan.")
-                } else if (summary == null) {
-                    ProteinState.Loading
                 } else {
                     ProteinState.Success(
-                        totalProtein = summary.protein ?: 0.0,
+                        totalProtein = summary?.protein ?: 0.0,
                         maxProtein = profile.max_protein ?: 0.0
                     )
                 }
@@ -51,5 +49,4 @@ class ProteinViewModel @Inject constructor(private val homeRepository: HomeRepos
             homeRepository.refreshDailySummary()
         }
     }
-
 }

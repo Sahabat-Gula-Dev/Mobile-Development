@@ -90,6 +90,7 @@ class StateDialogFragment : DialogFragment() {
                 message.text = state.message ?: ""
                 img.setImageResource(state.imageRes ?: R.drawable.glubby_read)
                 btnAction.visibility = View.GONE
+                btnClose.visibility = View.GONE
 
                 startLoadingDotsAnimation()
             }
@@ -125,6 +126,7 @@ class StateDialogFragment : DialogFragment() {
                 btnAction.setOnClickListener { dismiss() }
             }
             GlobalUiState.None -> dismiss()
+            else->{}
         }
     }
 
@@ -164,6 +166,5 @@ class StateDialogFragment : DialogFragment() {
         super.onDestroyView()
     }
 }
-
 
 

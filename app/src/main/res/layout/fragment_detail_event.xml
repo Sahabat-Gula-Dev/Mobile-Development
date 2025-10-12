@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.explore.event.detailevent.DetailEventFragment">
 
-
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/top_app_bar"
         android:layout_width="0dp"

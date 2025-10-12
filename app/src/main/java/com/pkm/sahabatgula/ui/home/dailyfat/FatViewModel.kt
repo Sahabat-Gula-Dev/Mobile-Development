@@ -28,11 +28,10 @@ class FatViewModel @Inject constructor(private val homeRepository: HomeRepositor
             .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
                 if (profile == null) {
                     FatState.Error("Profil tidak ditemukan.")
-                } else if (summary == null) {
-                    FatState.Loading
-                } else {
+                }
+                else {
                     FatState.Success(
-                        totalFat = summary.fat ?: 0.0,
+                        totalFat = summary?.fat ?: 0.0,
                         maxFat = profile.max_fat ?: 0.0
                     )
                 }
