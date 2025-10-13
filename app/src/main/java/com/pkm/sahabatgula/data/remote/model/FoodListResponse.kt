@@ -49,7 +49,7 @@ data class FoodItem(
 	val categoryId: Int,
 
 	@field:SerializedName("weight_unit")
-	val weightUnit: String,
+	val weightUnit: String? = null,
 
 	@field:SerializedName("weight_size")
 	val weightSize: Int,

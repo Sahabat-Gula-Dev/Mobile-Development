@@ -39,7 +39,6 @@ class LogManualFoodFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: LogManualFoodViewModel by viewModels()
     private lateinit var pagingAdapter: FoodPagingAdapter
-    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,6 +85,7 @@ class LogManualFoodFragment : Fragment() {
             adapter = pagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
             // biar ada loading tambah adapter untuk paginglaoding di sini
+            isNestedScrollingEnabled = false
         }
     }
 

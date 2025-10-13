@@ -48,15 +48,6 @@ fun Bundle.toState(): GlobalUiState {
 }
 
 
-//fun GlobalUiState.Companion.NoInternet(): GlobalUiState.Error {
-//    return GlobalUiState.Error(
-//        title = "Koneksi Internet Terputus",
-//        message = "Pastikan kamu terhubung ke internet untuk melanjutkan penggunaan aplikasi.",
-//        imageRes = R.drawable.glubby_error // ilustrasi glubby sedih/error
-//    )
-//}
-
-
 fun Fragment.showNoInternetDialogAndExit() {
     val dialog = StateDialogFragment.newInstance(
         GlobalUiState.Error(

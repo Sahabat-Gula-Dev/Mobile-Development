@@ -41,7 +41,7 @@ class FoodPagingAdapter(
         fun bind(food: FoodItem) {
             binding.tvFoodName.text = food.name
             binding.tvFoodDesc.text = food.description
-            binding.tvCalories.text = "${food.calories} kkal"
+            binding.tvCalories.text = "${food.calories.toInt()} kkal"
             Glide.with(itemView.context)
                 .load(food.photoUrl)
                 .placeholder(R.drawable.image_placeholder)

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.newsTimeConverter
 import com.pkm.sahabatgula.data.remote.model.NewsItem
 import com.pkm.sahabatgula.databinding.ComponentNewsBinding
 
@@ -31,7 +32,7 @@ class NewsPagingAdapter : PagingDataAdapter<NewsItem, NewsPagingAdapter.NewsView
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NewsItem) {
             binding.tvTitleArticle.text = item.title
-            binding.tvDateToday.text = item.pubDate
+            binding.tvDateToday.text = newsTimeConverter(item.pubDate)
 
             val desc = parseDescription(item.description)
             binding.tvSubtitleArticle.text = desc

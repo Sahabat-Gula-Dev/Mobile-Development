@@ -73,6 +73,7 @@ class LogFoodRepository @Inject constructor(
         ).flow
     }
 
+
     suspend fun getFoodCategories(): Resource<List<FoodCategories>> {
         return try {
             val response = apiService.getFoodCategories()
@@ -86,6 +87,26 @@ class LogFoodRepository @Inject constructor(
             Resource.Error("Terjadi kesalahan: ${e.message}")
         }
     }
+
+    suspend fun searchFoods(query: String?, categoryId: Int?): List<FoodItem> {
+        return try {
+            val response = apiService.getFoods(
+                page = 1,
+                limit = 5, // cukup ambil sedikit untuk cek ada/tidak
+                query = query,
+                categoryId = categoryId
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.data ?: emptyList()
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
 
     private suspend fun updateLocalSummary(newTotals: Totals) {
         val today = DateConverter.getTodayLocalFormatted()

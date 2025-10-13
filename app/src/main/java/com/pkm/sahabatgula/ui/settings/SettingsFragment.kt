@@ -180,7 +180,7 @@ class SettingsFragment : Fragment() {
     private fun showLogoutConfirmationDialog() {
         val context = requireContext()
 
-        // 🖼️ Gambar Glubby
+        // Gambar Glubby
         val imageView = ImageView(context).apply {
             setImageResource(R.drawable.glubby_error)
             adjustViewBounds = true
@@ -193,7 +193,7 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // 📝 Title
+        // Title
         val titleText = SpannableString("Konfirmasi Logout").apply {
             setSpan(
                 StyleSpan(Typeface.BOLD),
@@ -212,7 +212,7 @@ class SettingsFragment : Fragment() {
             setPadding(16, 0, 16, 8)
         }
 
-        // 🧠 Message
+        // Message
         val messageView = android.widget.TextView(context).apply {
             text = "Apakah kamu yakin ingin logout dari akun ini?"
             gravity = android.view.Gravity.CENTER

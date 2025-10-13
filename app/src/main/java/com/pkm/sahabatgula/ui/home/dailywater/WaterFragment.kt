@@ -17,10 +17,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.databinding.FragmentWaterBinding
 import com.pkm.sahabatgula.ui.home.dailywater.history.WaterChartPagerAdapter
 import com.pkm.sahabatgula.ui.home.dailywater.history.monthly.MonthlyWaterFragment
 import com.pkm.sahabatgula.ui.home.dailywater.history.weekly.WeeklyWaterFragment
+import com.pkm.sahabatgula.ui.state.DialogFoodUiState
+import com.pkm.sahabatgula.ui.state.LogFoodStateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -50,6 +53,13 @@ class WaterFragment : Fragment() {
         val tabLayoutHistory = binding.tabLayoutHistory
         val viewPager = binding.viewPager
         val adapter = WaterChartPagerAdapter(this)
+
+        binding.cardDidYouKnow.apply {
+            icInfo.setImageResource(R.drawable.ic_question)
+            tvTitleInfo.text = "Tahukah Kamu?"
+            tvSubtitleInfo.text = "Satu ikon gelas mewakili 250 ml air. Cukup minum 8 gelas untuk capai target harianmu"
+        }
+
 
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayoutHistory, viewPager) { tab, position ->
@@ -110,13 +120,6 @@ class WaterFragment : Fragment() {
                             // Tampilkan UI loading jika perlu
                         }
                         is WaterState.Success -> {
-
-                            binding.cardDidYouKnow.apply {
-                                icInfo.setImageResource(R.drawable.ic_question)
-                                tvTitleInfo.text = "Tahukah Kamu?"
-                                tvSubtitleInfo.text = "Satu ikon gelas mewakili 250 ml air. Cukup minum 8 gelas untuk capai target harianmu"
-                            }
-
                             binding.piDailyWater.apply {
                                 tvFormat.text = "ml tersisa"
                                 icObject.setImageResource(R.drawable.ic_water_circular)
@@ -136,7 +139,7 @@ class WaterFragment : Fragment() {
                             }
 
                             glassImageViews.forEachIndexed { index, imageView ->
-                                val totalGlasses = glassImageViews.size // 8
+                                val totalGlasses = glassImageViews.size
                                 val maxDisplayFilled = totalGlasses - 1 // 7 penuh, 1 terakhir kosong
 
                                 val isLastGlass = index == totalGlasses - 1
@@ -159,6 +162,39 @@ class WaterFragment : Fragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.logWaterStatus.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            // Bisa tampilkan shimmer atau loading ringan
+                        }
+                        is Resource.Success -> {
+                            Log.d("WATER FRAGMENT", "WaterFragment: Success")
+                            showLogWaterStateDialog(
+                                DialogFoodUiState.Success(
+                                    title = "Yey! Satu Gelas Lagi",
+                                    message = "Kamu baru saja bantu tubuhmu tetap segar dan bertenaga",
+                                    imageRes = R.drawable.glubby_water,
+                                    calorieValue = null
+                                )
+                            )
+                        }
+                        is Resource.Error -> {
+                            showLogWaterStateDialog(
+                                DialogFoodUiState.Error(
+                                    title = "Oops, Ada Masalah",
+                                    message = resource.message ?: "Terjadi kesalahan saat mencatat air.",
+                                    imageRes = R.drawable.glubby_error
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorEvent.collect { message ->
@@ -184,5 +220,12 @@ class WaterFragment : Fragment() {
             }
         }
     }
+
+    private fun showLogWaterStateDialog(state: DialogFoodUiState) {
+        val dialog = LogFoodStateDialogFragment.newInstance(state)
+        dialog.show(parentFragmentManager, "LogWaterStateDialog")
+    }
+
+
 
 }

@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.ui.home.dailywater
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
@@ -28,15 +27,16 @@ sealed class WaterState {
     data class Error(val message: String): WaterState()
 }
 
-
 @HiltViewModel
 class WaterViewModel @Inject constructor(private val homeRepository: HomeRepository) : ViewModel() {
 
     private val _waterState = MutableStateFlow<WaterState>(WaterState.Loading)
     val waterState = _waterState.asStateFlow()
-
     private val _errorEvent = MutableSharedFlow<String>()
     val errorEvent = _errorEvent.asSharedFlow()
+    private val _logWaterStatus = MutableStateFlow<Resource<Unit>>(Resource.Loading())
+    val logWaterStatus = _logWaterStatus
+
 
     init {
         viewModelScope.launch {
@@ -58,21 +58,19 @@ class WaterViewModel @Inject constructor(private val homeRepository: HomeReposit
     fun addOneGlassOfWater() {
         val currentState = _waterState.value
         if (currentState is WaterState.Success) {
-            currentState.filledGlasses?.let {
-                val newFilledCount = currentState.filledGlasses + 1
-                val originalFilledCount = currentState.filledGlasses
-                _waterState.update { currentState.copy(filledGlasses = newFilledCount) }
-                viewModelScope.launch {
-                    val increment = currentState.waterPerGlass
-                    val result = homeRepository.updateWaterIntake(increment)
-
-                    if (result is Resource.Error) {
-                        Log.e("WaterViewModel", "Failed to update water intake. Reverting UI state.")
-                        _waterState.update { currentState.copy(filledGlasses = originalFilledCount) }
-                        _errorEvent.emit(result.message ?: "Gagal memperbarui data")
-                    }
+            val newFilledCount = currentState.filledGlasses + 1
+            val originalFilledCount = currentState.filledGlasses
+            _waterState.update { currentState.copy(filledGlasses = newFilledCount) }
+            viewModelScope.launch {
+                _logWaterStatus.value = Resource.Loading()
+                val increment = currentState.waterPerGlass
+                val result = homeRepository.updateWaterIntake(increment)
+                if (result is Resource.Error) {
+                    _waterState.update { currentState.copy(filledGlasses = originalFilledCount) }
+                    _logWaterStatus.value = Resource.Error(result.message ?: "Gagal mencatat air")
+                } else if (result is Resource.Success) {
+                    _logWaterStatus.value = Resource.Success(Unit)
                 }
-
             }
         }
     }

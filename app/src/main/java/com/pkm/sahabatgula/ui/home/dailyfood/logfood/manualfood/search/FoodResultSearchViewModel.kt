@@ -5,15 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.model.FoodItem
+import com.pkm.sahabatgula.data.remote.model.HistoryItem
 import com.pkm.sahabatgula.data.repository.LogFoodRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FoodResultSearchViewModel @Inject constructor(
-    logFoodRepository: LogFoodRepository,
+    private val logFoodRepository: LogFoodRepository,
     savedStateHandle: SavedStateHandle // Hilt akan menyediakan ini secara otomatis
 ) : ViewModel() {
 

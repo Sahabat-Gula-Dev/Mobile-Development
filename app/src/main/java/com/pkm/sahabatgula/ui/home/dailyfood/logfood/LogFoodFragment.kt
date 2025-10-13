@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -43,7 +44,6 @@ class LogFoodFragment : Fragment() {
                 1 -> tab.text = "Catat Manual"
             }
         }.attach()
-
 
         // 0
         childFragmentManager.setFragmentResultListener(

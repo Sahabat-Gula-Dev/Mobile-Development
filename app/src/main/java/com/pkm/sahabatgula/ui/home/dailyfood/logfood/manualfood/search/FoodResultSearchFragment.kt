@@ -1,6 +1,7 @@
 package com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.search
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,11 @@ class FoodResultSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         setupUI()
         setupRecyclerView()
         observeFoods()
@@ -49,6 +55,9 @@ class FoodResultSearchFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        binding.tvHeaderResult.visibility = View.GONE
+        binding.tvSubtitleResult.visibility = View.GONE
+
         foodAdapter = FoodPagingAdapter { foodItemManual ->
             val action = FoodResultSearchFragmentDirections.actionFoodResultSearchToDetailFoodFragment(
                 foodItemManual = foodItemManual,
@@ -61,7 +70,43 @@ class FoodResultSearchFragment : Fragment() {
             adapter = foodAdapter
             layoutManager = LinearLayoutManager(context)
         }
+
+        foodAdapter.addLoadStateListener { loadStates ->
+            val isListEmpty = foodAdapter.itemCount == 0 &&
+                    loadStates.refresh is androidx.paging.LoadState.NotLoading
+
+            if (isListEmpty) {
+                // Tidak ada hasil pencarian
+                binding.layoutEmpty.root.visibility = View.VISIBLE
+                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
+                binding.layoutEmpty.tvMessage.text = "Kami tidak menemukan apapun untuk pencarian ini. Coba gunakan kata kunci lain."
+                binding.rvSearchResult.visibility = View.GONE
+                binding.tvHeaderResult.visibility = View.GONE
+                binding.tvSubtitleResult.visibility = View.GONE
+                binding.topAppBar.setNavigationIcon(R.drawable.ic_close)
+            } else {
+                binding.layoutEmpty.root.visibility = View.GONE
+                binding.rvSearchResult.visibility = View.VISIBLE
+                binding.tvHeaderResult.visibility = View.VISIBLE
+                binding.tvSubtitleResult.visibility = View.VISIBLE
+                binding.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back)
+            }
+
+            // Kalau error saat load
+            val errorState = loadStates.refresh as? androidx.paging.LoadState.Error
+            if (errorState != null) {
+                binding.layoutEmpty.root.visibility = View.VISIBLE
+                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
+                binding.layoutEmpty.tvMessage.text = errorState.error.localizedMessage
+                binding.rvSearchResult.visibility = View.GONE
+                binding.tvHeaderResult.visibility = View.GONE
+                binding.tvSubtitleResult.visibility = View.GONE
+            }
+        }
     }
+
     private fun observeFoods() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

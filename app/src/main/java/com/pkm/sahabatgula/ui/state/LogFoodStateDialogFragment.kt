@@ -61,19 +61,6 @@ class LogFoodStateDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-//        title = binding.tvTitle
-//        message = binding.tvMessage
-//        img = binding.imgGlubby
-//        btnClose = binding.btnClose
-//        cardNutrient = binding.cardCalorie
-//        tvCalorieValue = binding.tvCalorieValue
-//        tvCarbo = binding.layoutNutrient.tvNumberCarbo
-//        tvProtein = binding.layoutNutrient.tvNumberProtein
-//        tvFat = binding.layoutNutrient.tvNumberFat
-//        tvSugar = binding.layoutNutrient.tvNumberOfSugar
-//        tvSodium = binding.layoutNutrient.tvNumberOfSalt
-//        tvFiber = binding.layoutNutrient.tvNumberOfFiber
-//        tvPotassium = binding.layoutNutrient.tvNumberOfPotasium
 
         state = (arguments?.getBundle(ARG_STATE_FOOD)?.toDialogFoodUiState() ?: DialogFoodUiState.None) as DialogFoodUiState
 
@@ -103,22 +90,39 @@ class LogFoodStateDialogFragment : DialogFragment() {
                 binding.tvMessage.text = state.message ?: ""
                 binding.imgGlubby.setImageResource(state.imageRes ?: R.drawable.glubby_success)
 
-                // tampilkan summary nutrisi
-                binding.layoutNutrient.apply {
-                    tvNumberCarbo.text = "${state.carbo?.toString()} gr"
-                    tvNumberProtein.text = "${state.protein?.toString()} gr"
-                    tvNumberFat.text = "${state.fat?.toString()} gr"
-                    tvNumberOfSugar.text = state.sugar?.toString() ?: "0"
-                    tvNumberOfSalt.text = state.sodium?.toString() ?: "0"
-                    tvNumberOfFiber.text = state.fiber?.toString() ?: "0"
-                    tvNumberOfPotasium.text = state.kalium?.toString() ?: "0"
-                }
-
                 if (state.calorieValue != null) {
                     binding.cardCalorie.visibility = View.VISIBLE
                     binding.tvCalorieValue.text = "${state.calorieValue}"
+                    binding.tvPlusSign.visibility = View.GONE
+                    binding.icGraphicOfProgress.visibility = View.GONE
+                    binding.tvNumberOfPercentage.visibility = View.GONE
+                    binding.icFood.setImageResource(R.drawable.ic_calories)
                 } else {
                     binding.cardCalorie.visibility = View.GONE
+                    binding.tvPlusSign.visibility = View.VISIBLE
+                    binding.icGraphicOfProgress.visibility = View.VISIBLE
+                    binding.tvNumberOfPercentage.visibility = View.VISIBLE
+                    binding.icFood.setImageResource(R.drawable.ic_food_salad)
+                }
+
+                val hasNutrientData = listOf(
+                    state.carbo, state.protein, state.fat,
+                    state.sugar, state.sodium, state.fiber, state.kalium
+                ).any { it != null && it != 0 && it != 0.0 }
+
+                if (hasNutrientData) {
+                    binding.layoutNutrient.root.visibility = View.VISIBLE
+                    binding.layoutNutrient.apply {
+                        tvNumberCarbo.text = state.carbo?.toString() ?: "-"
+                        tvNumberProtein.text = state.protein?.toString() ?: "-"
+                        tvNumberFat.text = state.fat?.toString() ?: "-"
+                        tvNumberOfSugar.text = state.sugar?.toString() ?: "-"
+                        tvNumberOfSalt.text = state.sodium?.toString() ?: "-"
+                        tvNumberOfFiber.text = state.fiber?.toString() ?: "-"
+                        tvNumberOfPotasium.text = state.kalium?.toString() ?: "-"
+                    }
+                } else {
+                    binding.layoutNutrient.root.visibility = View.GONE
                 }
             }
 
@@ -127,11 +131,14 @@ class LogFoodStateDialogFragment : DialogFragment() {
                 binding.tvMessage.text = state.message
                 binding.imgGlubby.setImageResource(state.imageRes ?: R.drawable.glubby_error)
                 binding.cardCalorie.visibility = View.GONE
+                binding.layoutNutrient.root.visibility = View.GONE
             }
+
             DialogFoodUiState.None -> dismiss()
             else -> {}
         }
     }
+
 
 
     override fun onDestroyView() {
