@@ -97,7 +97,7 @@ class CustomFoodPagingAdapter (
 
                 if (food.isSelected) {
                     binding.icArrowRight.setImageResource(R.drawable.ic_food_salad)
-                    binding.icArrowRight.setSize(32)
+                    binding.icArrowRight.setSize(24)
                 } else {
                     binding.icArrowRight.setImageResource(R.drawable.arrow_right_custom_food_svg)
                     binding.icArrowRight.setSize(36)

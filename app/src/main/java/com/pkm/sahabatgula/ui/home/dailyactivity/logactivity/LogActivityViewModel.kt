@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.SearchParameters
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.map
+import kotlin.text.contains
 
 
 @HiltViewModel
@@ -83,20 +85,25 @@ class LogActivityViewModel @Inject constructor(
     ) { query, categoryId, selectedIds, expandedId ->
         SearchParameters(query, categoryId, selectedIds, expandedId)
     }.flatMapLatest { params ->
-        logActivityRepository.getActivityPaginated(params.query, params.categoryId)
+        logActivityRepository.getActivityPaginated(null, params.categoryId) // ⬅️ kirim null agar backend tidak filter semua field
             .map { pagingData ->
-                pagingData.map { foodItem ->
-                    val updated = foodItem.copy(
-                        isSelected = params.selectedIds.contains(foodItem.id),
-                        isExpanded = foodItem.id == params.expandedId
-                    )
-                    if (cachedActivityList.none { it.id == updated.id }) {
-                        cachedActivityList.add(updated)
+                pagingData
+                    .filter { activityItem ->
+                        params.query.isNullOrBlank() ||
+                                activityItem.name.contains(params.query!!, ignoreCase = true)
                     }
-                    updated
-                }
+                    .map { foodItem ->
+                        val updated = foodItem.copy(
+                            isSelected = params.selectedIds.contains(foodItem.id),
+                            isExpanded = foodItem.id == params.expandedId
+                        )
+                        if (cachedActivityList.none { it.id == updated.id }) {
+                            cachedActivityList.add(updated)
+                        }
+                        updated
+                    }
             }
-    }.cachedIn(viewModelScope)
+    }
 
     fun onExpandClicked(activityItem: ActivitiesDataItem) {
         _expandedActivityId.value = if (_expandedActivityId.value == activityItem.id) {

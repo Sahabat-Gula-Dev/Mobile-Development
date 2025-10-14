@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.settings.loghistory
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +19,17 @@ class ChildActivityAdapter(
     inner class ViewHolder(val binding: ItemChildFoodBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ActivityLog) {
             with(binding) {
-                tvTitleCustomFoodCard.text = item.name
+                tvTitleCustomFoodCard.text = "${item.name} ${item.duration} ${item.durationUnit}"
+                tvTitleCustomFoodExpand.text = "${item.name} ${item.duration} ${item.durationUnit}"
                 tvFoodCalories.text = "${item.caloriesBurned.toInt()} kkal"
                 tvDescFood.text = item.description ?: ""
                 icPlusAddFood.setImageResource(R.drawable.ic_calories)
                 icFoodSaladCloseToCalories.setImageResource(R.drawable.ic_calories)
 
+                tvTitleCustomFoodCard.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
+                tvTitleCustomFoodExpand.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
+
+                tvFoodCaloriesOnExpand.setTextColor(Color.parseColor("#C80000"))
                 tvFoodCaloriesOnExpand.text = "${item.caloriesBurned.toInt()} kkal"
                 Glide.with(root.context)
                     .load(item.photoUrl)

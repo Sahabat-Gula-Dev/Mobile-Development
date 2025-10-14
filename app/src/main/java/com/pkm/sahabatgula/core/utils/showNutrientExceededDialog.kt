@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.core.utils
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -12,12 +11,16 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pkm.sahabatgula.R
 
-@RequiresApi(Build.VERSION_CODES.Q)
 fun showNutrientExceededDialog(
     context: Context,
     title: String,
@@ -38,14 +41,12 @@ fun showNutrientExceededDialog(
         firstLineEnd,
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
-
     spannable.setSpan(
         ForegroundColorSpan(Color.RED),
         secondLineStart,
         secondLineEnd,
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
-
     spannable.setSpan(
         RelativeSizeSpan(0.85f),
         secondLineStart,
@@ -53,12 +54,12 @@ fun showNutrientExceededDialog(
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
-    val imageView = android.widget.ImageView(context).apply {
+    val imageView = ImageView(context).apply {
         setImageResource(R.drawable.glubby_error)
         adjustViewBounds = true
-        scaleType = android.widget.ImageView.ScaleType.CENTER_INSIDE
+        scaleType = ImageView.ScaleType.CENTER_INSIDE
         val size = context.resources.getDimensionPixelSize(R.dimen.dialog_image_size)
-        layoutParams = android.widget.LinearLayout.LayoutParams(size, size).apply {
+        layoutParams = LinearLayout.LayoutParams(size, size).apply {
             gravity = Gravity.CENTER
             bottomMargin = 16
             topMargin = 32
@@ -70,6 +71,12 @@ fun showNutrientExceededDialog(
         gravity = Gravity.CENTER
         setPadding(16, 0, 16, 8)
         textSize = 18f
+        typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_semibold)
+        textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     val customFont = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_regular)
@@ -79,27 +86,50 @@ fun showNutrientExceededDialog(
         textSize = 14f
         typeface = customFont
         textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-        justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+        gravity = Gravity.START
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            breakStrategy = LineBreaker.BREAK_STRATEGY_SIMPLE
+        }
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
-    val container = android.widget.LinearLayout(context).apply {
-        orientation = android.widget.LinearLayout.VERTICAL
+    val container = LinearLayout(context).apply {
+        orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
+        // ❌ Jangan pakai match_parent di sini
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         setPadding(24, 24, 24, 16)
+        setBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_onPrimary))
         addView(imageView)
         addView(titleView)
         addView(messageView)
     }
 
-    val dialog = AlertDialog.Builder(context)
+    val dialog = MaterialAlertDialogBuilder(context)
         .setView(container)
         .setPositiveButton("OK", null)
         .create()
 
     dialog.show()
+
+    val positiveButton = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+
+// ambil parent view dari button (panel tombol)
+    val buttonPanel = positiveButton.parent as? ViewGroup
+    buttonPanel?.setBackgroundColor(
+        ContextCompat.getColor(context, R.color.md_theme_onPrimary)
+    )
+
     dialog.window?.setDimAmount(0.2f)
 
-    dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.apply {
+    dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.apply {
         setTypeface(typeface, Typeface.BOLD)
+        setBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_onPrimary))
     }
 }

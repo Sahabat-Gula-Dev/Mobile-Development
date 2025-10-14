@@ -27,6 +27,6 @@ class FoodResultSearchViewModel @Inject constructor(
     val categoryIdInt = categoryIdString?.toIntOrNull()
 
     val foods: Flow<PagingData<FoodItem>> = logFoodRepository
-        .getFoodPagingData(query, categoryIdInt)
+        .getFoodPaginated(query, categoryIdInt)
         .cachedIn(viewModelScope)
 }

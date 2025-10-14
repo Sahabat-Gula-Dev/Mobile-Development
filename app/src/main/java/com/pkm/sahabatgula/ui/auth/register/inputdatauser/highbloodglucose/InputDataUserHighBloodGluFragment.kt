@@ -103,7 +103,9 @@ class InputDataUserHighBloodGluFragment : Fragment() {
 
     private fun setupClickListener() {
         binding.chooseYesBloodGlucose.tvTitleChoice.text = "Pernah Atau Sedang Mengalami"
+        binding.chooseNoBloodGlucose.tvSubtitleChoice.text = "Gula darah tinggi bisa jadi tanda awal gangguan metabolisme."
         binding.chooseNoBloodGlucose.tvTitleChoice.text = "Tidak Pernah Mengalami"
+        binding.chooseNoBloodGlucose.tvSubtitleChoice.text = "Sangat penting untuk melakukan cek gula darah secara rutin."
 
         val bloodGlucose = inputDataViewModel.profileData.value.bloodSugar
         binding.chooseYesBloodGlucose.root.setOnClickListener {

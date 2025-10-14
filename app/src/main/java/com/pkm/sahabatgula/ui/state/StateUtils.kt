@@ -90,8 +90,6 @@ fun DialogFoodUiState.toBundleDetail(): Bundle {
     return b
 }
 
-
-// Tambahkan fungsi ini
 fun Bundle.toDialogFoodUiState(): DialogFoodUiState {
     return when (getString("type")) {
         "success" -> DialogFoodUiState.Success(

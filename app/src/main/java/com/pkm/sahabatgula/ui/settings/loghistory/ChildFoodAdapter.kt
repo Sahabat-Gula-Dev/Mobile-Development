@@ -17,9 +17,12 @@ class ChildFoodAdapter(
     inner class ViewHolder(val binding: ItemChildFoodBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FoodLog) {
             with(binding) {
-                tvTitleCustomFoodCard.text = item.name
+                tvTitleCustomFoodCard.text = "${item.name} ${item.servingSize} ${item.servingUnit} ${item.weightSize} ${item.weightUnit}"
+                tvTitleCustomFoodExpand.text = "${item.name} ${item.servingSize} ${item.servingUnit} ${item.weightSize} ${item.weightUnit}"
                 tvFoodCalories.text = "${item.calories.toInt()} kkal"
                 tvDescFood.text = item.description ?: ""
+                tvTitleCustomFoodCard.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
+                tvTitleCustomFoodExpand.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
 
                 Glide.with(root.context)
                     .load(item.photoUrl)
@@ -33,6 +36,7 @@ class ChildFoodAdapter(
                     onExpand(bindingAdapterPosition, item)
                 }
                 tvFoodCalories.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
+
                 tvFoodCaloriesOnExpand.text = "${item.calories.toInt()} kkal"
             }
         }

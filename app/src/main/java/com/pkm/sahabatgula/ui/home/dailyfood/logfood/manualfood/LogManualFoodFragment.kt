@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
@@ -26,9 +22,6 @@ import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.databinding.FragmentLogManualFoodBinding
 import com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

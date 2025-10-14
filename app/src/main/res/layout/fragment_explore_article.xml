@@ -9,8 +9,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:titleTextColor="@color/black"
+            app:navigationIconTint="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <TextView
             android:id="@+id/tv_title_explore_article"
@@ -20,9 +31,11 @@
             android:textColor="@color/md_theme_onSurface"
             android:textSize="22sp"
             android:textStyle="bold"
+            android:layout_marginTop="-12dp"
+            android:layout_marginHorizontal="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
         <TextView
             android:id="@+id/tv_subtitle_explore_article"
@@ -32,8 +45,8 @@
             android:lineSpacingExtra="1sp"
             android:text="Dapatkan wawasan baru untuk hidup sehat yang lebih cerdas"
             android:textSize="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_title_explore_article"
+            app:layout_constraintStart_toStartOf="@id/tv_title_explore_article"
             app:layout_constraintTop_toBottomOf="@id/tv_title_explore_article" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -50,6 +63,7 @@
             app:boxCornerRadiusTopStart="28dp"
             app:endIconMode="clear_text"
             app:hintEnabled="false"
+            android:layout_marginHorizontal="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle_explore_article"
@@ -82,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:singleLine="true"
+                android:layout_marginHorizontal="16dp"
                 app:singleSelection="true">
 
             </com.google.android.material.chip.ChipGroup>
@@ -90,13 +105,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_articles"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_chip_group_article_categories"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/component_article" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -76,7 +76,6 @@ class FoodResultSearchFragment : Fragment() {
                     loadStates.refresh is androidx.paging.LoadState.NotLoading
 
             if (isListEmpty) {
-                // Tidak ada hasil pencarian
                 binding.layoutEmpty.root.visibility = View.VISIBLE
                 binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
                 binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"

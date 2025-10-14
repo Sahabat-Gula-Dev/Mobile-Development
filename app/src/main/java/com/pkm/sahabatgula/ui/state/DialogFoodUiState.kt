@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.state
 
+
 sealed class DialogFoodUiState {
     data class Loading(val message: String? = null, val imageRes: Int? = null) : DialogFoodUiState()
     data class Success(
@@ -16,6 +17,5 @@ sealed class DialogFoodUiState {
         val kalium: Double? = null,
     ) : DialogFoodUiState()
     data class Error(val title: String, val message: String, val imageRes: Int? = null,  val actionText: String? = null) : DialogFoodUiState()
-    annotation class Companion
     object None : DialogFoodUiState()
 }

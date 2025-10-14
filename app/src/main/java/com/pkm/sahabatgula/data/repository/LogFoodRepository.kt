@@ -3,6 +3,7 @@ package com.pkm.sahabatgula.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.filter
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.DateConverter
 import com.pkm.sahabatgula.data.local.TokenManager
@@ -20,6 +21,7 @@ import com.pkm.sahabatgula.ui.explore.article.ArticlePagingSource
 import com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.FoodPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -58,19 +60,11 @@ class LogFoodRepository @Inject constructor(
             pagingSourceFactory = {
                 FoodPagingSource(apiService, query, categoryId)
             }
-        ).flow
-    }
-
-    fun getFoodPagingData(query: String?, categoryId: Int?): Flow<PagingData<FoodItem>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = {
-                FoodPagingSource(apiService, query, categoryId)
+        ).flow.map { pagingData ->
+            pagingData.filter { food ->
+                query.isNullOrBlank() || food.name.contains(query, ignoreCase = true)
             }
-        ).flow
+        }
     }
 
 

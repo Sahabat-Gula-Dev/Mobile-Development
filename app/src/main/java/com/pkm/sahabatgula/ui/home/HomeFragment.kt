@@ -260,10 +260,13 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_to_log_water)
         }
         binding.cardTotalSteps.root.setOnClickListener {
-            Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_home_to_coming_soon)
         }
         binding.icInsight.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_insight)
+        }
+        binding.notifications.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_coming_soon)
         }
 
     }

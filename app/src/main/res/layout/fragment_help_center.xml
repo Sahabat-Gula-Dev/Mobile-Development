@@ -46,59 +46,6 @@
             android:paddingHorizontal="16dp"
             app:chipSpacingHorizontal="8dp"
             app:singleLine="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_help_center_1"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="Umum"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginStart="16dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:layout_marginEnd="2dp"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_help_center_2"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="Layanan"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_help_center_3"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="Konektivitas"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_help_center_4"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:text="Troubleshooting"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 

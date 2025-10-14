@@ -12,27 +12,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.DialogLogFoodBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LogFoodStateDialogFragment : DialogFragment() {
 
     private var _binding: DialogLogFoodBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var title: TextView
-    private lateinit var message: TextView
-    private lateinit var img: ImageView
-    private lateinit var btnClose: ImageView
-    private lateinit var cardNutrient: CardView
-    private lateinit var tvCalorieValue: TextView
-    private lateinit var tvCarbo: TextView
-    private lateinit var tvProtein: TextView
-    private lateinit var tvFat: TextView
-    private lateinit var tvSugar: TextView
-    private lateinit var tvSodium: TextView
-    private lateinit var tvFiber: TextView
-    private lateinit var tvPotassium: TextView
+    private val viewModel: LogFoodStateDialogViewModel by viewModels()
 
     private var state: DialogFoodUiState = DialogFoodUiState.None
     var dismissListener: (() -> Unit)? = null
@@ -60,10 +51,9 @@ class LogFoodStateDialogFragment : DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
 
         state = (arguments?.getBundle(ARG_STATE_FOOD)?.toDialogFoodUiState() ?: DialogFoodUiState.None) as DialogFoodUiState
-
         binding.btnClose.setOnClickListener { dismiss() }
         renderState(state)
     }
@@ -90,21 +80,6 @@ class LogFoodStateDialogFragment : DialogFragment() {
                 binding.tvMessage.text = state.message ?: ""
                 binding.imgGlubby.setImageResource(state.imageRes ?: R.drawable.glubby_success)
 
-                if (state.calorieValue != null) {
-                    binding.cardCalorie.visibility = View.VISIBLE
-                    binding.tvCalorieValue.text = "${state.calorieValue}"
-                    binding.tvPlusSign.visibility = View.GONE
-                    binding.icGraphicOfProgress.visibility = View.GONE
-                    binding.tvNumberOfPercentage.visibility = View.GONE
-                    binding.icFood.setImageResource(R.drawable.ic_calories)
-                } else {
-                    binding.cardCalorie.visibility = View.GONE
-                    binding.tvPlusSign.visibility = View.VISIBLE
-                    binding.icGraphicOfProgress.visibility = View.VISIBLE
-                    binding.tvNumberOfPercentage.visibility = View.VISIBLE
-                    binding.icFood.setImageResource(R.drawable.ic_food_salad)
-                }
-
                 val hasNutrientData = listOf(
                     state.carbo, state.protein, state.fat,
                     state.sugar, state.sodium, state.fiber, state.kalium
@@ -130,7 +105,6 @@ class LogFoodStateDialogFragment : DialogFragment() {
                 binding.tvTitle.text = state.title
                 binding.tvMessage.text = state.message
                 binding.imgGlubby.setImageResource(state.imageRes ?: R.drawable.glubby_error)
-                binding.cardCalorie.visibility = View.GONE
                 binding.layoutNutrient.root.visibility = View.GONE
             }
 
@@ -138,7 +112,6 @@ class LogFoodStateDialogFragment : DialogFragment() {
             else -> {}
         }
     }
-
 
 
     override fun onDestroyView() {

@@ -39,6 +39,10 @@
             android:id="@+id/action_home_to_insight"
             app:destination="@id/insight_fragment"/>
 
+        <action
+            android:id="@+id/action_home_to_coming_soon"
+            app:destination="@id/coming_soon_fragment"/>
+
     </fragment>
 
     <fragment
@@ -48,6 +52,10 @@
             android:id="@+id/action_log_sugar_to_log_water"
             app:destination="@id/log_water_fragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/coming_soon_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailystep.ComingSoonFragment"/>
 
     <fragment
         android:id="@+id/log_water_fragment"
@@ -146,6 +154,32 @@
     <fragment
         android:id="@+id/scan_food_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning.FoodScanFragment"/>
+
+     <fragment
+            android:id="@+id/detail_food_fragment"
+            android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment">
+         <action
+             android:id="@+id/action_detail_food_fragment_to_home_graph"
+             app:destination="@id/home_graph"/>
+         <argument
+             android:name="foodItem"
+             app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
+             app:nullable="true" />
+         <argument
+             android:name="foodItemManual"
+             app:argType="com.pkm.sahabatgula.data.remote.model.FoodItem"
+             app:nullable="true" />
+     </fragment>
+
+    <fragment
+        android:id="@+id/log_manual_custom_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment">
+        <action
+            android:id="@+id/action_log_custom_food_fragment_to_home_graph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/home_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 
 </navigation>

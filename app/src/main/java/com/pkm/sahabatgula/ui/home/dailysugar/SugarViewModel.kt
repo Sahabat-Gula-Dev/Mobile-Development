@@ -17,7 +17,6 @@ import javax.inject.Inject
 class SugarViewModel @Inject constructor(homeRepository: HomeRepository): ViewModel(){
 
     val sugarState: StateFlow<SugarState> =
-        // Gabungkan data dari database
         homeRepository.observeProfile()
             .combine(homeRepository.observeDailySummary(DateConverter.getTodayLocalFormatted())) { profile, summary ->
 
@@ -25,18 +24,17 @@ class SugarViewModel @Inject constructor(homeRepository: HomeRepository): ViewMo
                     SugarState.Error("Profil tidak ditemukan.")
                 } else {
                     SugarState.Success(
-                        currentSugar = summary?.protein ?: 0.0,
-                        maxSugar = profile.max_protein ?: 0.0
+                        currentSugar = summary?.sugar ?: 0.0,
+                        maxSugar = profile.max_sugar ?: 0.0
                     )
                 }
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
-                initialValue = SugarState.Loading // Nilai awal saat Flow pertama kali dibuat
+                initialValue = SugarState.Loading
             )
 
     init {
-        // Cukup panggil refresh sekali saat ViewModel dibuat
         refreshData(homeRepository)
     }
 

@@ -20,7 +20,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -79,7 +78,7 @@ class LogActivityFragment : Fragment() {
                         showLogActivityStateDialog(
                             DialogFoodUiState.Success(
                                 title = "Yey! Sudah Tersimpan",
-                                message = "Pencatatan ${viewModel.selectedActivityIds.value.size} aktivitas berhasil.",
+                                message = "Gluby sudah menyimpan aktivitasmu. Semakin aktif, semakin sehat",
                                 imageRes = R.drawable.glubby_activity,
                                 calorieValue = summary.totalCalories
                             )
@@ -122,6 +121,32 @@ class LogActivityFragment : Fragment() {
         binding.rvActivity .apply {
             adapter = pagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        pagingAdapter.addLoadStateListener { loadStates ->
+            val isListEmpty = pagingAdapter.itemCount == 0 &&
+                    loadStates.refresh is androidx.paging.LoadState.NotLoading
+
+            if (isListEmpty) {
+                // Tidak ada hasil pencarian
+                binding.layoutEmpty.root.visibility = View.VISIBLE
+                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
+                binding.layoutEmpty.tvMessage.text = "Kami tidak menemukan apapun untuk pencarian ini. Coba gunakan kata kunci lain."
+                binding.rvActivity.visibility = View.GONE
+            } else {
+                binding.layoutEmpty.root.visibility = View.GONE
+                binding.rvActivity.visibility = View.VISIBLE
+            }
+
+            // Kalau error saat load
+            val errorState = loadStates.refresh as? androidx.paging.LoadState.Error
+            if (errorState != null) {
+                binding.layoutEmpty.root.visibility = View.VISIBLE
+                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
+                binding.layoutEmpty.tvMessage.text = "Pencarian aktivitas tidak dapat dilakukan, periksa koneksi internet kamu atau muat ulang halaman"
+            }
         }
     }
     

@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     xmlns:texttools="http://schemas.android.com/tools"
     android:maxHeight="350dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/md_theme_onPrimary"
     android:padding="16dp">
 
@@ -34,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Belum Ada Aktivitas"
+            texttools:text="Belum Ada Aktivitas"
             android:textSize="24dp"
             android:textStyle="bold" />
 

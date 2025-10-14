@@ -10,7 +10,6 @@ import androidx.paging.cachedIn
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.di.DetikHealthRss
 import com.pkm.sahabatgula.core.di.RssApiKey
-import com.pkm.sahabatgula.core.di.RssUrl
 import com.pkm.sahabatgula.data.remote.api.NewsApiService
 import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
@@ -50,7 +49,7 @@ class ExploreViewModel @Inject constructor(
     private fun fetchCarousels() {
         viewModelScope.launch {
             _carouselItems.value = Resource.Loading()
-            _carouselItems.value = repository.getCarusels()
+            _carouselItems.value = repository.getCarousels()
         }
     }
 

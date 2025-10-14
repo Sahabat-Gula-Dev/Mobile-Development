@@ -273,7 +273,13 @@
 
     <fragment
         android:id="@+id/log_manual_custom_food_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment" />
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodFragment">
+        <action
+            android:id="@+id/action_log_custom_food_fragment_to_home_graph"
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/scan_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <include app:graph="@navigation/auth_graph" />
     <include app:graph="@navigation/scan_graph" />
     <include app:graph="@navigation/input_data_graph" />

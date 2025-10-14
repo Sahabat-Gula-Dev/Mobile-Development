@@ -1,8 +1,11 @@
 package com.pkm.sahabatgula.ui.home.dailyactivity.logactivity
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +14,7 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.setSize
 import com.pkm.sahabatgula.data.remote.model.ActivitiesDataItem
 import com.pkm.sahabatgula.databinding.ItemCardCustomFoodBinding
+import androidx.core.graphics.toColorInt
 
 class ActivityPagingAdapter(
     private val onSelectClick: (ActivitiesDataItem) -> Unit,
@@ -20,13 +24,13 @@ class ActivityPagingAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ActivityPagingAdapter.ActivityViewHolder {
+    ): ActivityViewHolder {
         val binding = ItemCardCustomFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ActivityViewHolder(binding, onSelectClick, onExpandClick)
     }
 
     override fun onBindViewHolder(
-        holder: ActivityPagingAdapter.ActivityViewHolder,
+        holder: ActivityViewHolder,
         position: Int
     ) {
         val activity = getItem(position)
@@ -57,18 +61,21 @@ class ActivityPagingAdapter(
             binding.icArrowRight.setOnClickListener(expandListener)
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(activity: ActivitiesDataItem) {
             currentActivity = activity
 
             binding.tvTitleCustomFoodCard.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
             binding.tvFoodCalories.text = "${activity.caloriesBurned} kkal"
             binding.tvTitleCustomFoodExpand.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
-
+            binding.icPlusAddFood.setImageResource(R.drawable.ic_check_activity_yellow)
+            binding.icFoodSaladCloseToCalories.setImageResource(R.drawable.ic_calories)
+            binding.tvFoodCaloriesOnExpand.setTextColor("#C80000".toColorInt())
             binding.icPlusAddFood.setImageResource(R.drawable.ic_calories)
             if (activity.isSelected) {
-                binding.icPlusAddFood.setImageResource(R.drawable.ic_checked)
+                binding.icPlusAddFood.setImageResource(R.drawable.ic_check_activity_yellow)
             } else {
-                binding.icPlusAddFood.setImageResource(R.drawable.ic_plus_add_food)
+                binding.icPlusAddFood.setImageResource(R.drawable.ic_add_plus_activity_yellow)
             }
 
             if (activity.isExpanded) {
@@ -98,7 +105,7 @@ class ActivityPagingAdapter(
 
                 if (activity.isSelected) {
                     binding.icArrowRight.setImageResource(R.drawable.ic_calories)
-                    binding.icArrowRight.setSize(32)
+                    binding.icArrowRight.setSize(24)
                 } else {
                     binding.icArrowRight.setImageResource(R.drawable.arrow_right_custom_food_svg)
                     binding.icArrowRight.setSize(36)

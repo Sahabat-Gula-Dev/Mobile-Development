@@ -99,7 +99,7 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Nikmati fitur premium Sahabat Gula"
 
             root.setOnClickListener {
-                Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_setting_to_coming_soon)
             }
         }
 

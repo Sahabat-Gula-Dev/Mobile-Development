@@ -40,11 +40,20 @@
             app:popUpTo="@id/settings_graph"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_setting_to_coming_soon"
+            app:destination="@id/coming_soon_fragment"/>
+
 
     </fragment>
 
+    <fragment
+        android:id="@+id/coming_soon_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailystep.ComingSoonFragment"/>
 
-<!--    user profile -->
+
+
+    <!--    user profile -->
     <fragment
         android:id="@+id/user_profile_fragment"
         android:name="com.pkm.sahabatgula.ui.settings.userprofile.UserProfileFragment">

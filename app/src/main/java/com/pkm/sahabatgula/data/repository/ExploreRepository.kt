@@ -1,26 +1,21 @@
 package com.pkm.sahabatgula.data.repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.pkm.sahabatgula.BuildConfig
+import androidx.paging.filter
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.remote.api.ApiService
-import com.pkm.sahabatgula.data.remote.api.NewsApiService
 import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.data.remote.model.ArticleCategory
-import com.pkm.sahabatgula.data.remote.model.ArticleItem
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
 import com.pkm.sahabatgula.data.remote.model.Event
 import com.pkm.sahabatgula.data.remote.model.EventCategory
-import com.pkm.sahabatgula.data.remote.model.NewsItem
 import com.pkm.sahabatgula.ui.explore.article.ArticlePagingSource
 import com.pkm.sahabatgula.ui.explore.event.EventPagingSource
-import com.pkm.sahabatgula.ui.explore.news.NewsPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
@@ -28,7 +23,7 @@ class ExploreRepository @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun getCarusels(): Resource<List<CarouselItem>> {
+    suspend fun getCarousels(): Resource<List<CarouselItem>> {
         return try {
             val response = apiService.getCarousels()
             if(response.isSuccessful && response.body() != null) {
@@ -92,23 +87,6 @@ class ExploreRepository @Inject constructor(
         }
     }
 
-    suspend fun getArticleDetail(id: String): Resource<ArticleItem> {
-        return try {
-            val response = apiService.getArticleDetail(id)
-
-            if (response.isSuccessful && response.body() != null) {
-                val article = response.body()?.data!!.article
-                Log.d("Debug SCAN REPO", "getFoodDetail: $article")
-                Resource.Success(article)
-            } else {
-                Resource.Error("Gagal mengambil detail artikel hari : ${response.message()}")
-            }
-        } catch (e: Exception) {
-            Log.e("Debug SCAN REPO", "Error: ${e.message}", e)
-            Resource.Error(e.message ?: "Terjadi kesalahan tidak diketahui")
-        }
-    }
-
     fun getArticlePagingData(query: String?, categoryId: Int?): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
@@ -118,7 +96,12 @@ class ExploreRepository @Inject constructor(
             pagingSourceFactory = {
                 ArticlePagingSource(apiService, query, categoryId)
             }
-        ).flow
+        ).flow.map { pagingData ->
+            pagingData.filter { article ->
+                query.isNullOrBlank() ||
+                        article.title?.contains(query!!, ignoreCase = true) == true
+            }
+        }
     }
 
     suspend fun getArticleCategories(): Resource<List<ArticleCategory>> {
@@ -141,10 +124,16 @@ class ExploreRepository @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                EventPagingSource(apiService, query, categoryId)
+                EventPagingSource(apiService, null, categoryId) // kirim null ke q
             }
-        ).flow
+        ).flow.map { pagingData ->
+            pagingData.filter { event ->
+                query.isNullOrBlank() ||
+                        event.title?.contains(query!!, ignoreCase = true) == true
+            }
+        }
     }
+
 
     suspend fun getEventCategories(): Resource<List<EventCategory>> {
         return try {

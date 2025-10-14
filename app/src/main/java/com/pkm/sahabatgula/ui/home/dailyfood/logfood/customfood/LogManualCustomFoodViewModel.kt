@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.SearchParameters
+import com.pkm.sahabatgula.data.local.room.ProfileDao
+import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.Food
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodItem
@@ -20,6 +23,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -29,7 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LogManualCustomFoodViewModel @Inject constructor(
     private val logFoodRepository: LogFoodRepository,
-    private val scanRepository: ScanRepository
+    private val scanRepository: ScanRepository,
+    private val profileDao: ProfileDao
 ) : ViewModel() {
 
     private val _categories = MutableLiveData<Resource<List<FoodCategories>>>()
@@ -47,24 +52,14 @@ class LogManualCustomFoodViewModel @Inject constructor(
 
     private val cachedFoodList = mutableListOf<FoodItem>()
 
-    private val _foodDetail = MutableLiveData<Resource<Food>>()
-    val foodDetail: MutableLiveData<Resource<Food>> = _foodDetail
+    private val _foodDetail = MutableLiveData<Resource<FoodItem>>()
+    val foodDetail: MutableLiveData<Resource<FoodItem>> = _foodDetail
+    private val _profile = MutableStateFlow<ProfileEntity?>(null)
+    val profile: StateFlow<ProfileEntity?> get() = _profile
 
-
-    fun fetchFoodDetail(id: String?) {
-        if (id == null) {
-            _foodDetail.value = Resource.Error("Food ID is missing.")
-            return
-        }
+    fun loadProfile() {
         viewModelScope.launch {
-            _foodDetail.value = Resource.Loading()
-            try {
-                val response = scanRepository.getFoodDetail(id)
-                _foodDetail.value = response
-            } catch (e: Exception) {
-                _foodDetail.value = Resource.Error(e.message ?: "An unknown error occurred")
-                Log.e("DetailFoodViewModel", "Error fetching food detail", e)
-            }
+            _profile.value = profileDao.getProfile()
         }
     }
 
@@ -77,20 +72,26 @@ class LogManualCustomFoodViewModel @Inject constructor(
     ) { query, categoryId, selectedIds, expandedId ->
         SearchParameters(query, categoryId, selectedIds, expandedId)
     }.flatMapLatest { params ->
-        logFoodRepository.getFoodPaginated(params.query, params.categoryId)
+        logFoodRepository.getFoodPaginated(null, params.categoryId) // ⬅️ kirim null agar backend tidak filter semua field
             .map { pagingData ->
-                pagingData.map { foodItem ->
-                    val updated = foodItem.copy(
-                        isSelected = params.selectedIds.contains(foodItem.id),
-                        isExpanded = foodItem.id == params.expandedId
-                    )
-                    if (cachedFoodList.none { it.id == updated.id }) {
-                        cachedFoodList.add(updated)
+                pagingData
+                    .filter { foodItem ->
+                        params.query.isNullOrBlank() ||
+                                foodItem.name.contains(params.query!!, ignoreCase = true)
                     }
-                    updated
-                }
+                    .map { foodItem ->
+                        val updated = foodItem.copy(
+                            isSelected = params.selectedIds.contains(foodItem.id),
+                            isExpanded = foodItem.id == params.expandedId
+                        )
+                        if (cachedFoodList.none { it.id == updated.id }) {
+                            cachedFoodList.add(updated)
+                        }
+                        updated
+                    }
             }
-    }.cachedIn(viewModelScope)
+    }
+
 
 
     init {

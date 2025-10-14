@@ -49,14 +49,12 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 inputDataViewModel.profileData.collect { profileData ->
 
-                    // update pilihan yes/no
                     when (profileData.eatVegetables) {
                         true -> updateConsumptionSelection(true)
                         false -> updateConsumptionSelection(false)
-                        null -> resetConsumptionSelection() // handle default state
+                        null -> resetConsumptionSelection()
                     }
 
-                    // update tombol continue
                     binding.btnContinueToHistoryFamily.isEnabled =
                         profileData.eatVegetables != null
                 }
@@ -71,7 +69,7 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
 
         binding.chooseNoConsumption.tvTitleChoice.text = "Tidak Rutin Mengonsumsi"
         binding.chooseNoConsumption.tvSubtitleChoice.text =
-            "Konsumsi kurang dari 5 kali per minggu bisa ganggu gula."
+            "Kurang dari 5 kali per minggu memicu fluktuasi gula dan ganggu pencernaan."
 
 
         val consumption = inputDataViewModel.profileData.value.eatVegetables

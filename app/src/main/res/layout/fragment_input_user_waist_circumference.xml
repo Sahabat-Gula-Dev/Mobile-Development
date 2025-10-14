@@ -8,68 +8,73 @@
     android:paddingEnd="16dp"
     tools:context=".ui.auth.register.inputdatauser.waistcircumference.InputDataUserWaistCircFragment">
 
-    <TextView
-        android:id="@+id/title_input_waist_circ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="43dp"
-        android:text="Ukuran Lingkar Pinggang"
-        android:textColor="@color/md_theme_onSurface"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextSizeCheck" />
-
-    <TextView
-        android:id="@+id/subtitle_input_waist_circ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="2sp"
-        android:text="Data ini bisa menunjukkan risiko penumpukan lemak di perut yang berhubungan dengan diabetes"
-        android:textSize="14sp"
-        android:layout_marginTop="6dp"
-        app:layout_constraintStart_toStartOf="@+id/title_input_waist_circ"
-        app:layout_constraintTop_toBottomOf="@+id/title_input_waist_circ"
-        tools:ignore="TextContrastCheck" />
-
-    <include
-        android:id="@+id/ruler_component_waist"
-        layout="@layout/component_ruler_waist_circumference"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@id/subtitle_input_waist_circ"/>
-
-    <include
-        android:id="@+id/card_info_tips"
-        layout="@layout/component_information"
-        app:layout_constraintTop_toBottomOf="@id/ruler_component_waist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <include
-        android:id="@+id/card_info_average_waist_circ"
-        layout="@layout/component_information"
-        app:layout_constraintTop_toBottomOf="@id/card_info_tips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <View
-        android:id="@+id/spacer"
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/card_info_average_waist_circ"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_continue_to_blood_pressure"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_input_waist_circ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="43dp"
+                android:text="Ukuran Lingkar Pinggang"
+                android:textColor="@color/md_theme_onSurface"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                tools:ignore="TextSizeCheck" />
+
+            <TextView
+                android:id="@+id/subtitle_input_waist_circ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="2sp"
+                android:text="Data ini bisa menunjukkan risiko penumpukan lemak di perut yang berhubungan dengan diabetes"
+                android:textSize="14sp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintStart_toStartOf="@+id/title_input_waist_circ"
+                app:layout_constraintTop_toBottomOf="@+id/title_input_waist_circ"
+                tools:ignore="TextContrastCheck" />
+
+            <include
+                android:id="@+id/ruler_component_waist"
+                layout="@layout/component_ruler_waist_circumference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp" />
+
+            <include
+                android:id="@+id/card_info_tips"
+                layout="@layout/component_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="42dp" />
+
+            <include
+                android:id="@+id/card_info_average_waist_circ"
+                layout="@layout/component_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp" />
+
+            <View
+                android:id="@+id/spacer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btn_continue_to_blood_pressure"

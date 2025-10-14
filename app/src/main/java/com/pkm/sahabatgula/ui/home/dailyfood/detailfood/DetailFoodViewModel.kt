@@ -6,18 +6,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.data.local.room.ProfileDao
+import com.pkm.sahabatgula.data.local.room.ProfileEntity
 import com.pkm.sahabatgula.data.remote.model.Food
 import com.pkm.sahabatgula.data.remote.model.FoodItemRequest
 import com.pkm.sahabatgula.data.repository.LogFoodRepository
 import com.pkm.sahabatgula.data.repository.ScanRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailFoodViewModel @Inject constructor(
     private val scanRepository: ScanRepository,
-    private val logFoodRepository: LogFoodRepository
+    private val logFoodRepository: LogFoodRepository,
+    private val profileDao: ProfileDao
     ): ViewModel() {
 
     private val _foodDetail = MutableLiveData<Resource<Food>>()
@@ -26,6 +31,15 @@ class DetailFoodViewModel @Inject constructor(
     // for log food
     private val _logFoodStatus = MutableLiveData<Resource<Unit>>()
     val logFoodStatus: LiveData<Resource<Unit>> = _logFoodStatus
+
+    private val _profile = MutableStateFlow<ProfileEntity?>(null)
+    val profile: StateFlow<ProfileEntity?> get() = _profile
+
+    fun loadProfile() {
+        viewModelScope.launch {
+            _profile.value = profileDao.getProfile()
+        }
+    }
 
     fun fetchFoodDetail(id: String?) {
         if (id == null) {

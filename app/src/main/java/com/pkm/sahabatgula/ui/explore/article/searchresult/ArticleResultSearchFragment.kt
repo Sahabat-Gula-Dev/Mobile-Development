@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pkm.sahabatgula.R
@@ -41,6 +42,11 @@ class ArticleResultSearchFragment : Fragment() {
 
         requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
 
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         setupUI()
         setupRecyclerView()
         observeArticles()
@@ -63,6 +69,40 @@ class ArticleResultSearchFragment : Fragment() {
         binding.rvSearchResult.apply {
             adapter = articleAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+
+        articleAdapter.addLoadStateListener { loadStates ->
+            val isListEmpty = articleAdapter.itemCount == 0 &&
+                    loadStates.refresh is LoadState.NotLoading
+
+            if (isListEmpty) {
+                binding.layoutEmpty.root.visibility = View.VISIBLE
+                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
+                binding.layoutEmpty.tvMessage.text = "Kami tidak menemukan apapun untuk pencarian ini. Coba gunakan kata kunci lain."
+                binding.rvSearchResult.visibility = View.GONE
+                binding.tvHeaderResult.visibility = View.GONE
+                binding.tvSubtitleResult.visibility = View.GONE
+                binding.topAppBar.setNavigationIcon(R.drawable.ic_close)
+            } else {
+                binding.layoutEmpty.root.visibility = View.GONE
+                binding.rvSearchResult.visibility = View.VISIBLE
+                binding.tvHeaderResult.visibility = View.VISIBLE
+                binding.tvSubtitleResult.visibility = View.VISIBLE
+                binding.topAppBar.setNavigationIcon(R.drawable.ic_arrow_back)
+            }
+
+            // Kalau error saat load
+            val errorState = loadStates.refresh as? LoadState.Error
+            if (errorState != null) {
+                binding.layoutEmpty.root.visibility = View.VISIBLE
+                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
+                binding.layoutEmpty.tvMessage.text = errorState.error.localizedMessage
+                binding.rvSearchResult.visibility = View.GONE
+                binding.tvHeaderResult.visibility = View.GONE
+                binding.tvSubtitleResult.visibility = View.GONE
+            }
         }
     }
 

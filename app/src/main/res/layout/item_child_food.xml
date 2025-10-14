@@ -59,6 +59,14 @@
                 android:textColor="@color/md_theme_onSurface"
                 android:textSize="12sp"
                 tools:text="203 kkal" />
+            <TextView
+                android:id="@+id/tv_title_custom_food_expand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_onSurface"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Sate Ayam 1 Tusuk 15 gr" />
         </LinearLayout>
 
         <ImageView

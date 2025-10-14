@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/card_food_nutritions"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentPadding="24dp"
+    app:strokeColor="#2F000000"
+    app:strokeWidth="1dp"
+    android:backgroundTint="@color/md_theme_onPrimary"
+    android:elevation="0dp"
+    android:layout_marginTop="16dp"
+    app:cardCornerRadius="0dp"
+    app:layout_constraintTop_toBottomOf="@id/tv_food_nutritions"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_title_macronutrients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zat Gizi Utama"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2sp"
+            android:letterSpacing="0.02"
+            android:textColor="@color/md_theme_onSurface"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle_macronutrients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Zat gizi yang dibutuhkan tubuh dalam jumlah besar"
+            android:textSize="12sp"
+            android:letterSpacing="0.03"
+            android:lineSpacingExtra="1sp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_macronutrients"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- carbo -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cp_carbo"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="-10dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_macronutrients"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cp_carbo_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="0"
+                app:trackThickness="2.5dp"
+                app:trackColor="#FCF2DE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cp_carbo_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="40"
+                app:trackThickness="2.5dp"
+                app:indicatorColor="#F0BE5A"
+                app:trackColor="#FCF2DE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- fat -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cp_fat"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            app:layout_constraintTop_toTopOf="@id/cp_carbo"
+            app:layout_constraintBottom_toBottomOf="@id/cp_carbo"
+            app:layout_constraintStart_toStartOf="@id/cp_carbo"
+            app:layout_constraintEnd_toEndOf="@id/cp_carbo">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cp_fat_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="0"
+                app:trackThickness="3.5dp"
+                app:trackColor="#F5D9CC"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cp_fat_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="80"
+                app:trackThickness="3.5dp"
+                app:indicatorColor="#CE4101"
+                app:trackColor="#F5D9CC"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- fat -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cp_protein"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:layout_constraintTop_toTopOf="@id/cp_carbo"
+            app:layout_constraintBottom_toBottomOf="@id/cp_carbo"
+            app:layout_constraintStart_toStartOf="@id/cp_carbo"
+            app:layout_constraintEnd_toEndOf="@id/cp_carbo">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cp_protein_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="0"
+                app:trackThickness="5.2dp"
+                app:trackColor="#EAECCC"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cp_protein_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progress="20"
+                app:trackThickness="5.2dp"
+                app:indicatorColor="#979F00"
+                app:trackColor="#EAECCC"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            app:layout_constraintTop_toTopOf="@id/cp_carbo"
+            app:layout_constraintBottom_toBottomOf="@id/cp_carbo"
+            app:layout_constraintStart_toEndOf="@id/cp_carbo"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/circle_yellow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:background="@drawable/bg_yellow_small_circle" />
+
+                    <TextView
+                        android:id="@+id/tv_name_carbo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:letterSpacing="0.03"
+                        android:text="Karbohidrat"
+                        android:textColor="#F9AB0F"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end|center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_number_carbo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.03"
+                        android:text="34"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text=" gr"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/circle_red"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:background="@drawable/bg_red_small_circle" />
+
+                    <TextView
+                        android:id="@+id/tv_name_fat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:letterSpacing="0.03"
+                        android:text="Lemak"
+                        android:textColor="#CE4101"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end|center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_number_fat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.03"
+                        android:text="34"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text=" gr"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/circle_green"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:background="@drawable/bg_green_small_circle" />
+
+                    <TextView
+                        android:id="@+id/tv_name_protein"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:letterSpacing="0.03"
+                        android:text="Protein"
+                        android:textColor="#6A7A01" android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end|center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_number_protein"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.03"
+                        android:text="34"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text=" gr"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </TableRow>
+
+        </TableLayout>
+
+
+        <LinearLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/green_line"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cp_carbo">
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_title_micronutrients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zat Gizi Pendukung &amp; Elektrolit"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2sp"
+            android:letterSpacing="0.02"
+            android:textColor="@color/md_theme_onSurface"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/line"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle_micronutrients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Zat yang membantu fungsi tubuh tetap berjalan"
+            android:textSize="12sp"
+            android:letterSpacing="0.03"
+            android:lineSpacingExtra="1sp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_micronutrients"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_micronutrients">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_sugar_in_micronutrients"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gula"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_number_of_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sugar"
+                    app:layout_constraintStart_toStartOf="@id/tv_sugar"
+                    app:layout_constraintEnd_toStartOf="@id/tv_gr_sugar"/>
+
+                <TextView
+                    android:id="@+id/tv_gr_sugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="gr"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_number_of_sugar"
+                    app:layout_constraintEnd_toEndOf="@id/tv_sugar"
+                    app:layout_constraintStart_toEndOf="@id/tv_number_of_sugar"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_salt_in_micronutrients"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/layout_fiber_in_micronutrients"
+                app:layout_constraintStart_toEndOf="@id/layout_sugar_in_micronutrients">
+
+                <TextView
+                    android:id="@+id/tv_salt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Garam"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_number_of_salt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toBottomOf="@id/tv_salt"
+                    app:layout_constraintStart_toStartOf="@id/tv_salt"
+                    app:layout_constraintEnd_toStartOf="@id/tv_gr_salt"/>
+
+                <TextView
+                    android:id="@+id/tv_gr_salt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="gr"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_number_of_salt"
+                    app:layout_constraintEnd_toEndOf="@id/tv_salt"
+                    app:layout_constraintStart_toEndOf="@id/tv_number_of_salt"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--                    serat -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_fiber_in_micronutrients"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/layout_potasium_in_micronutrients"
+                app:layout_constraintStart_toEndOf="@id/layout_salt_in_micronutrients">
+
+                <TextView
+                    android:id="@+id/tv_fiber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Serat"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_number_of_fiber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toBottomOf="@id/tv_fiber"
+                    app:layout_constraintStart_toStartOf="@id/tv_fiber"
+                    app:layout_constraintEnd_toStartOf="@id/tv_gr_fiber"/>
+
+                <TextView
+                    android:id="@+id/tv_gr_fiber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="gr"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_number_of_fiber"
+                    app:layout_constraintEnd_toEndOf="@id/tv_fiber"
+                    app:layout_constraintStart_toEndOf="@id/tv_number_of_fiber"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_potasium_in_micronutrients"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_potasium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kalium"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_number_of_potasium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/md_theme_primary"
+                    app:layout_constraintTop_toBottomOf="@id/tv_potasium"
+                    app:layout_constraintStart_toStartOf="@id/tv_potasium"
+                    app:layout_constraintEnd_toStartOf="@id/tv_gr_potasium"/>
+
+                <TextView
+                    android:id="@+id/tv_gr_potasium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="gr"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="1sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_number_of_potasium"
+                    app:layout_constraintEnd_toEndOf="@id/tv_potasium"
+                    app:layout_constraintStart_toEndOf="@id/tv_number_of_potasium"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

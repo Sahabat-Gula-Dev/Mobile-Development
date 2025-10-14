@@ -83,72 +83,6 @@
             app:chipSpacingHorizontal="8dp"
             app:singleLine="true">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Semua"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginStart="16dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:layout_marginEnd="2dp"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Olahan Ayam"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sate"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bakso"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_food_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gorengan"
-                android:lineSpacingExtra="2sp"
-                android:letterSpacing="0.05"
-                android:textSize="11sp"
-                android:layout_marginEnd="2dp"
-                android:textAppearance="@font/plus_jakarta_sans_light"
-                android:backgroundTint="@color/md_theme_onPrimary"
-                app:chipCornerRadius="100dp"/>
-
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
@@ -165,6 +99,16 @@
         android:paddingBottom="106dp"
         tools:listitem="@layout/item_card_custom_food"/>
 
+    <include
+        android:id="@+id/layout_empty"
+        layout="@layout/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"

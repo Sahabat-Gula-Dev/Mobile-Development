@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Senin, 23 Juli 2025"
         android:textStyle="bold"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChild"

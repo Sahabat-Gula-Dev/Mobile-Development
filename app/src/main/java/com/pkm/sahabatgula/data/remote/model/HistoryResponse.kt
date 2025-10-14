@@ -34,6 +34,14 @@ data class FoodLog(
     val portion: Int,
     @field:SerializedName("time")
     val time: String,
+    @field:SerializedName("serving_size")
+    val servingSize: Int,
+    @field:SerializedName("serving_unit")
+    val servingUnit: String,
+    @field:SerializedName("weight_size")
+    val weightSize: Int,
+    @field:SerializedName("weight_unit")
+    val weightUnit: String,
     @Transient
     var isExpanded: Boolean = false
 )
@@ -51,6 +59,8 @@ data class ActivityLog(
     val caloriesBurned: Double,
     @field:SerializedName("duration")
     val duration: Int,
+    @field:SerializedName("duration_unit")
+    val durationUnit: String,
     @field:SerializedName("time")
     val time: String,
     @Transient
