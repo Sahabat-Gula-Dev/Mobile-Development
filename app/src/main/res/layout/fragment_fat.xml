@@ -91,7 +91,7 @@
             android:id="@+id/title_fat_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Riwayat Konsumsi Karbohiodrat Harian"
+            android:text="Riwayat Konsumsi Lemak Harian"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginHorizontal="16dp"

@@ -71,7 +71,7 @@
             android:id="@+id/title_water_intake_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Riwayat Konsumsi Asupan Air"
+            android:text="Riwayat Langkah Harian"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/md_theme_onSurface"
