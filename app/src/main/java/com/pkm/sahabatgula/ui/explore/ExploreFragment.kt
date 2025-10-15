@@ -13,15 +13,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.HorizontalSpaceItemDecoration
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
 import com.pkm.sahabatgula.databinding.FragmentExploreBinding
 import com.pkm.sahabatgula.ui.explore.news.NewsPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -34,6 +39,7 @@ class ExploreFragment : Fragment() {
     private lateinit var eventAdapter: EventOnExploreAdapter
     private lateinit var articleAdapter: ArticleOnExploreAdapter
     private lateinit var newsAdapter: NewsPagingAdapter
+    private var loadingDotsJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,7 +92,21 @@ class ExploreFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.newsPagingFlow.collectLatest { pagingData ->
                     newsAdapter.submitData(pagingData)
-                    Log.d("DEBUG_NEWS_AJA","DEBUG_NEWS: PagingData received!")
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            newsAdapter.loadStateFlow.collectLatest { loadStates ->
+                val isLoading = loadStates.refresh is LoadState.Loading
+                if (isLoading) {
+                    binding.layoutLoading.root.visibility = View.VISIBLE
+                    binding.rvNews.visibility = View.GONE
+                    startLoadingDotsAnimation()
+                } else {
+                    binding.layoutLoading.root.visibility = View.GONE
+                    binding.rvNews.visibility = View.VISIBLE
+                    stopLoadingDotsAnimation()
                 }
             }
         }
@@ -182,6 +202,33 @@ class ExploreFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun startLoadingDotsAnimation() {
+        val baseText = "Tunggu sebentar"
+        val gluby = binding.layoutLoading.imgGlubby
+        val titleView = binding.layoutLoading.tvTitle
+        val messageView = binding.layoutLoading.tvMessage
+
+        titleView.text = baseText
+        messageView.text = "Berita sedang dimuat, tunggu sejenak ya "
+        gluby.setImageResource(R.drawable.glubby_progress)
+
+        loadingDotsJob?.cancel()
+        loadingDotsJob = lifecycleScope.launch {
+            var dotCount = 0
+            while (isActive) {
+                val dots = ".".repeat(dotCount)
+                titleView.text = "$baseText$dots"
+                dotCount = (dotCount + 1) % 4
+                delay(500)
+            }
+        }
+    }
+
+    private fun stopLoadingDotsAnimation() {
+        loadingDotsJob?.cancel()
+        loadingDotsJob = null
     }
 
     override fun onDestroy() {

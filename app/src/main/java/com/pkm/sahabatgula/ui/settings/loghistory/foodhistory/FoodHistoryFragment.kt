@@ -13,7 +13,9 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.databinding.FragmentFoodHistoryBinding
+import com.pkm.sahabatgula.ui.settings.loghistory.ParentActivityHistoryAdapter
 import com.pkm.sahabatgula.ui.settings.loghistory.ParentFoodHistoryAdapter
+import com.pkm.sahabatgula.ui.settings.loghistory.activityhistory.FoodHistoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -24,6 +26,7 @@ class FoodHistoryFragment : Fragment() {
     private var _binding: FragmentFoodHistoryBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FoodHistoryViewModel by viewModels()
+    private lateinit var parentAdapter: ParentFoodHistoryAdapter
 
     @Inject
     lateinit var tokenManager: TokenManager
@@ -48,6 +51,12 @@ class FoodHistoryFragment : Fragment() {
         val token = tokenManager.getAccessToken()
         if (token.isNullOrEmpty()) return
 
+        parentAdapter = ParentFoodHistoryAdapter(emptyList())
+        binding.rvParentFood.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvParentFood.adapter = parentAdapter
+
+        viewModel.fetchHistory(token)
+
         binding.rvParentFood.layoutManager = LinearLayoutManager(requireContext())
         viewModel.fetchHistory(token)
 
@@ -57,8 +66,8 @@ class FoodHistoryFragment : Fragment() {
 
                     is Resource.Success -> {
                         val data = resource.data
-                            ?.filter { !it.foods.isNullOrEmpty() }
-                            ?: emptyList()
+                            ?.filter { !it.activities.isNullOrEmpty() } ?: emptyList()
+
 
                         if (data.isEmpty()) {
                             binding.layoutEmpty.root.visibility = View.VISIBLE
@@ -70,7 +79,7 @@ class FoodHistoryFragment : Fragment() {
                             binding.layoutEmpty.root.visibility = View.GONE
                             binding.rvParentFood.visibility = View.VISIBLE
                             binding.rvParentFood.adapter = ParentFoodHistoryAdapter(data)
-                            Log.d("FoodHistoryFragment", "Success: ${data.size} data")
+                            parentAdapter.updateData(data)
                         }
                     }
 

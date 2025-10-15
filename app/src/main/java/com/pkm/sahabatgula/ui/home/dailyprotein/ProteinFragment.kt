@@ -87,7 +87,7 @@ class ProteinFragment : Fragment() {
                                     "Batas Protein Terlampaui",
                                     state.totalProtein.toInt(),
                                     state.maxProtein.toInt(),
-                                    "Asupan proteinmu sudah berlebihan. Yuk, kendalikan porsimu agar tetap seimbang"
+                                    "Protein memang penting untuk otot, tapi jangan berlebihan konsumsinya"
                                 )
                                 hasShownOverLimitDialog = true
                             } else if (progressProtein < 100) {

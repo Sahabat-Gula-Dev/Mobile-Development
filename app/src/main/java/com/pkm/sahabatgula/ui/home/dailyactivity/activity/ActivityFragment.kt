@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
@@ -101,6 +102,20 @@ class ActivityFragment : Fragment() {
                             icInfo.setImageResource(R.drawable.ic_question)
                             tvTitleInfo.text = "Tahukah Kamu?"
                             tvSubtitleInfo.text = "Aktivitas ringan seperti berjalan kaki pun membantu menjaga kadar gula tetap stabil"
+                        }
+
+                        binding.cardHistoryActivity.apply {
+                            icAction.setImageResource(R.drawable.ic_history)
+                            tvTitleAction.text = "Pantau Aktivitasmu Hari Ini"
+                            tvSubtitleAction.text = "Tubuhmu butuh gerak, yuk pantau dan lanjutkan semangatnya!"
+                            root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_action_background))
+
+                            root.setOnClickListener {
+                                findNavController()
+                                    .getBackStackEntry(R.id.home_graph)
+                                    .savedStateHandle["open_history_activity_tab_index"] = 1
+                                findNavController().navigate(R.id.action_log_activity_to_log_history)
+                            }
                         }
 
                     }

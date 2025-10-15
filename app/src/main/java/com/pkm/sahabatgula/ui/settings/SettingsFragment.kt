@@ -66,9 +66,8 @@ class SettingsFragment : Fragment() {
             )
             tvTitleSettingCard.text = "Notifikasi"
             tvSubtitleSettingCard.text = "Kelola pengingat dan informasi penting"
-
             root.setOnClickListener {
-                Toast.makeText(requireContext(), "Dalam Pengembangan", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_setting_to_coming_soon)
             }
         }
 
@@ -78,6 +77,9 @@ class SettingsFragment : Fragment() {
             tvSubtitleSettingCard.text = "Lihat kembali catatan harianmu"
 
             root.setOnClickListener {
+                findNavController()
+                    .getBackStackEntry(R.id.settings_graph)
+                    .savedStateHandle["open_history_activity_tab_index"] = 0
                 findNavController().navigate(R.id.action_settings_fragment_to_log_history_fragment)
             }
         }
@@ -180,7 +182,6 @@ class SettingsFragment : Fragment() {
     private fun showLogoutConfirmationDialog() {
         val context = requireContext()
 
-        // Gambar Glubby
         val imageView = ImageView(context).apply {
             setImageResource(R.drawable.glubby_error)
             adjustViewBounds = true
@@ -193,7 +194,6 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // Title
         val titleText = SpannableString("Konfirmasi Logout").apply {
             setSpan(
                 StyleSpan(Typeface.BOLD),
@@ -212,12 +212,11 @@ class SettingsFragment : Fragment() {
             setPadding(16, 0, 16, 8)
         }
 
-        // Message
-        val messageView = android.widget.TextView(context).apply {
+        val messageView = TextView(context).apply {
             text = "Apakah kamu yakin ingin logout dari akun ini?"
             gravity = android.view.Gravity.CENTER
             textSize = 14f
-            setTextColor(Color.BLACK)  // 🟡 Warna hitam
+            setTextColor(Color.BLACK)
             typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_regular)
             setPadding(32, 8, 32, 0)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -225,7 +224,6 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // 📦 Container
         val container = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             gravity = android.view.Gravity.CENTER_HORIZONTAL
@@ -236,7 +234,6 @@ class SettingsFragment : Fragment() {
             addView(messageView)
         }
 
-        // ✨ Material Alert Dialog
         val dialog = MaterialAlertDialogBuilder(context)
             .setView(container)
             .setPositiveButton("Ya") { d, _ ->
@@ -269,9 +266,6 @@ class SettingsFragment : Fragment() {
         positiveButton.setTypeface(customTypeface, Typeface.BOLD)
         negativeButton.setTypeface(customTypeface, Typeface.BOLD)
     }
-
-
-
 
     private fun performLogout() {
         lifecycleScope.launch {

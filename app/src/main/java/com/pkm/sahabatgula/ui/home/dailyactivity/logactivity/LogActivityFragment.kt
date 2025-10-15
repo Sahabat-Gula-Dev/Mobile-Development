@@ -20,6 +20,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -306,9 +307,6 @@ class LogActivityFragment : Fragment() {
         viewModel.logActivityStatus.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-                    // Tampilkan loading indicator
-    //                    binding.btnLogThisFood.isEnabled = false
-    //                    binding.btnLogThisFood.text = "Mencatat..."
                 }
                 is Resource.Success -> {
                     binding.btnLogThisActivity.isEnabled = true
@@ -424,6 +422,13 @@ class LogActivityFragment : Fragment() {
 
     private fun showLogActivityStateDialog(state: DialogFoodUiState) {
         val dialog = LogFoodStateDialogFragment.newInstance(state)
+        dialog.dismissListener = {
+            findNavController()
+                .getBackStackEntry(R.id.home_graph)
+                .savedStateHandle["open_activity_tab_index"] = 0
+            findNavController().navigate(R.id.action_log_activity_to_root_log_history)
+        }
+
         dialog.show(parentFragmentManager, "LogFoodStateDialog")
     }
 

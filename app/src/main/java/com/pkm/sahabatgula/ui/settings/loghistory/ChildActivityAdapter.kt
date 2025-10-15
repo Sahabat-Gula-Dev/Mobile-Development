@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.settings.loghistory
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
+import com.pkm.sahabatgula.core.utils.capitalizeEachWord
 import com.pkm.sahabatgula.data.remote.model.ActivityLog
 import com.pkm.sahabatgula.data.remote.model.FoodLog
 import com.pkm.sahabatgula.databinding.ItemChildFoodBinding
+import androidx.core.graphics.toColorInt
 
 class ChildActivityAdapter(
     private val items: MutableList<ActivityLog>,
@@ -17,10 +20,12 @@ class ChildActivityAdapter(
 ) : RecyclerView.Adapter<ChildActivityAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemChildFoodBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: ActivityLog) {
             with(binding) {
-                tvTitleCustomFoodCard.text = "${item.name} ${item.duration} ${item.durationUnit}"
-                tvTitleCustomFoodExpand.text = "${item.name} ${item.duration} ${item.durationUnit}"
+
+                tvTitleCustomFoodCard.text = "${capitalizeEachWord(item.name)} ${item.duration} ${capitalizeEachWord(item.durationUnit)}"
+                tvTitleCustomFoodExpand.text = "${capitalizeEachWord(item.name)} ${item.duration} ${capitalizeEachWord(item.durationUnit)}"
                 tvFoodCalories.text = "${item.caloriesBurned.toInt()} kkal"
                 tvDescFood.text = item.description ?: ""
                 icPlusAddFood.setImageResource(R.drawable.ic_calories)
@@ -28,8 +33,8 @@ class ChildActivityAdapter(
 
                 tvTitleCustomFoodCard.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
                 tvTitleCustomFoodExpand.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
-
-                tvFoodCaloriesOnExpand.setTextColor(Color.parseColor("#C80000"))
+                icPlusAddFood.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
+                tvFoodCaloriesOnExpand.setTextColor("#C80000".toColorInt())
                 tvFoodCaloriesOnExpand.text = "${item.caloriesBurned.toInt()} kkal"
                 Glide.with(root.context)
                     .load(item.photoUrl)

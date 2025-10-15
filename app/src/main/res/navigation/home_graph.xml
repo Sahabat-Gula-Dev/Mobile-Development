@@ -108,9 +108,18 @@
         android:id="@+id/root_log_activity_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyactivity.RootLogActivityFragment">
         <action
-            android:id="@+id/action_root_log_activity_to_log_step"
-            app:destination="@id/log_step_fragment"/>
+            android:id="@+id/action_log_activity_to_log_history"
+            app:destination="@id/log_history_fragment"/>
+        <action
+            android:id="@+id/action_log_activity_to_root_log_history"
+            app:destination="@id/root_log_activity_fragment"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/log_history_fragment"
+        android:name="com.pkm.sahabatgula.ui.settings.loghistory.UserHistoryFragment"/>
+
 
     <fragment
         android:id="@+id/add_log_food_fragment"
@@ -146,10 +155,6 @@
         android:id="@+id/food_result_search_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.logfood.manualfood.search.FoodResultSearchFragment">
     </fragment>
-
-    <fragment
-        android:id="@+id/result_search_activity_fragment"
-        android:name="com.pkm.sahabatgula.ui.home.dailyactivity.logactivity.search.ResultSearchActivityFragment"/>
 
     <fragment
         android:id="@+id/scan_food_fragment"

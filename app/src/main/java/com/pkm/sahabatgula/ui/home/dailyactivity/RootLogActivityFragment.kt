@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentRootLogActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,6 +48,12 @@ class RootLogActivityFragment: Fragment() {
                 1 -> tab.text = "Catat Aktivitas"
             }
         }.attach()
+
+        val handle = findNavController().getBackStackEntry(R.id.home_graph).savedStateHandle
+        handle.getLiveData<Int>("open_activity_tab_index").observe(viewLifecycleOwner) { tabIndex ->
+            viewPager.setCurrentItem(tabIndex, false)
+        }
+
     }
 
 }

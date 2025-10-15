@@ -85,7 +85,7 @@ class FoodFragment : Fragment() {
                                         title = "Batas Kalori Terlampaui",
                                         consumed = state.totalCalories.toInt(),
                                         max = it,
-                                        suggestion = "Konsumsi kalorimu sudah melebihi batas harian"
+                                        suggestion = "Konsumsi kalorimu sudah melebihi batas harian. Mungkin saatnya kamu berpuasa dan lanjut makan diesok hari. "
                                     )
                                 }
 

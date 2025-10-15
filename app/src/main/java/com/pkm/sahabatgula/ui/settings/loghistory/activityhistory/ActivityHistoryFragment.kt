@@ -28,6 +28,8 @@ class ActivityHistoryFragment : Fragment() {
     @Inject
     lateinit var tokenManager: TokenManager
 
+    private lateinit var parentAdapter: ParentActivityHistoryAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,19 +39,16 @@ class ActivityHistoryFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tokenManager = TokenManager(requireContext())
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val token = tokenManager.getAccessToken()
         if (token.isNullOrEmpty()) return
 
-
+        parentAdapter = ParentActivityHistoryAdapter(emptyList())
         binding.rvParentActivity.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvParentActivity.adapter = parentAdapter
+
         viewModel.fetchHistory(token)
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -57,26 +56,31 @@ class ActivityHistoryFragment : Fragment() {
                 when (resource) {
                     is Resource.Success -> {
                         val data = resource.data
-                            ?.filter { !it.activities.isNullOrEmpty() } // Pastikan filter juga di sini
-                            ?: emptyList()
+                            ?.filter { !it.activities.isNullOrEmpty() } ?: emptyList()
 
                         if (data.isEmpty()) {
                             binding.layoutEmpty.root.visibility = View.VISIBLE
                             binding.rvParentActivity.visibility = View.GONE
+                            binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                            binding.layoutEmpty.tvTitle.text = "Belum Ada Aktivitas"
+                            binding.layoutEmpty.tvMessage.text =
+                                "Aktivitas yang kamu catat akan muncul di sini"
                         } else {
                             binding.layoutEmpty.root.visibility = View.GONE
                             binding.rvParentActivity.visibility = View.VISIBLE
-                            binding.rvParentActivity.adapter = ParentActivityHistoryAdapter(data)
+                            parentAdapter.updateData(data)
                         }
                     }
 
                     is Resource.Error -> {
                         binding.layoutEmpty.root.visibility = View.VISIBLE
+                        binding.rvParentActivity.visibility = View.GONE
                         binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
                         binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
-                        binding.layoutEmpty.tvMessage.text = "Gluby mengalami kendala saat ambil data. Coba periksa koneksi atau muat ulang halaman"
-                        binding.rvParentActivity.visibility = View.GONE
+                        binding.layoutEmpty.tvMessage.text =
+                            "Glubby mengalami kendala saat ambil data. Coba periksa koneksi atau muat ulang halaman"
                     }
+
                     else -> {}
                 }
             }

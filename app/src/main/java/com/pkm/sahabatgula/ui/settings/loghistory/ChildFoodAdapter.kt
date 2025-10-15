@@ -17,8 +17,10 @@ class ChildFoodAdapter(
     inner class ViewHolder(val binding: ItemChildFoodBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FoodLog) {
             with(binding) {
-                tvTitleCustomFoodCard.text = "${item.name} ${item.servingSize} ${item.servingUnit} ${item.weightSize} ${item.weightUnit}"
-                tvTitleCustomFoodExpand.text = "${item.name} ${item.servingSize} ${item.servingUnit} ${item.weightSize} ${item.weightUnit}"
+                val servingUnit = item.servingUnit
+                val foodServingUnit = servingUnit?.replaceFirstChar { it.uppercase() }
+                tvTitleCustomFoodCard.text = "${item.name} ${item.servingSize} ${foodServingUnit} ${item.weightSize} ${item.weightUnit}"
+                tvTitleCustomFoodExpand.text = "${item.name} ${item.servingSize} ${foodServingUnit} ${item.weightSize} ${item.weightUnit}"
                 tvFoodCalories.text = "${item.calories.toInt()} kkal"
                 tvDescFood.text = item.description ?: ""
                 tvTitleCustomFoodCard.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
@@ -31,12 +33,11 @@ class ChildFoodAdapter(
 
                 expandedView.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
                 icArrowRight.animate().rotation(if (item.isExpanded) 90f else 0f).setDuration(200).start()
-
+                icPlusAddFood.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
                 root.setOnClickListener {
                     onExpand(bindingAdapterPosition, item)
                 }
                 tvFoodCalories.visibility = if (item.isExpanded) View.GONE else View.VISIBLE
-
                 tvFoodCaloriesOnExpand.text = "${item.calories.toInt()} kkal"
             }
         }

@@ -75,7 +75,7 @@ class SugarFragment : Fragment() {
                                 title = "Batas Gula Terlampaui",
                                 consumed = state.currentSugar.toInt(),
                                 max = state.maxSugar.toInt(),
-                                suggestion = "Konsumsi gulamu sudah melebihi batas harian. Kurangi minuman atau camilan manis agar tubuhmu tidak kewalahan"
+                                suggestion = "Kamu gampang tergoda dengan makanan manis ya, konsumsi gulamu sudah melebihi batas. "
                             )
 
                             hasShownOverLimitDialog = true
@@ -122,22 +122,22 @@ class SugarFragment : Fragment() {
             in 0..25 -> SugarConsumedLevel(
                 icon = R.drawable.ic_sentiment_very_satisfied,
                 title = "Konsumsi Gula Rendah",
-                subtitle = "Kamu baru mengonsumsi sedikit gula hari ini. Tetap jaga pola makan seimbang ya",
+                subtitle = "Jangan sampai terlalu semangat dan tergoda dengan yang manis-manis",
                 )
             in 26..55 -> SugarConsumedLevel(
                 icon = R.drawable.ic_sentiment_satisfied,
                 title = "Konsumsi Gula Sedang",
-                subtitle = "Konsumsi gulamu sudah lebih dari setengah batas harian",
+                subtitle = "Wah, sudah hampir mencapai batas konsumsi gula harian. ",
             )
             in 56..80 -> SugarConsumedLevel(
                 icon = R.drawable.ic_sentiment_moderate,
                 title = "Konsumsi Gula Tinggi",
-                subtitle = "Kamu sudah hampir mencapai batas konsumsi harian",
+                subtitle = "Kamu pura-pura tidak tahu ya, konsumsi gulamu sangat tinggi hari ini",
             )
             else -> SugarConsumedLevel(
                 icon = R.drawable.ic_sentiment_exceeded,
                 title = "Konsumsi Gula Sangat Tinggi",
-                subtitle = "Konsumsi gula berlebih dapat meningkatkan risiko diabetes",
+                subtitle = "Jaga konsumsimu, manis hari ini bisa menjadi pahit dihari esok.",
             )
 
         }

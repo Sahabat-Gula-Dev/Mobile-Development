@@ -101,10 +101,17 @@ fun dateFormatterHistory(input: String): String {
     // Cek apakah tanggal ini adalah hari ini
     val today = LocalDate.now()
     return if (parsedDate == today) {
-        "$formattedDate (hari ini)"
+        "$formattedDate (Hari Ini)"
     } else {
         formattedDate
     }
+}
+
+fun convertUtcToLocalDateOnly(utcString: String): String {
+    val utcFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+    val localZoned = ZonedDateTime.parse(utcString, utcFormatter)
+        .withZoneSameInstant(ZoneId.of("Asia/Makassar"))
+    return localZoned.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 }
 
 

@@ -98,7 +98,7 @@ class WaterFragment : Fragment() {
                         MaterialAlertDialogBuilder(requireContext())
                             .setIcon(R.drawable.glubby_water)
                             .setTitle("Yuk Tambah 1 Gelas Lagi ")
-                            .setMessage("Satu gelas mewakili 250 ml. Gluby siap catat tambahan airmu, mau lanjut?")
+                            .setMessage("Kamu mau minum 250 mL? Gluby bantu catat ya?")
                             .setPositiveButton("Tambah") { dialog, _ ->
                                 viewModel.addOneGlassOfWater()
                                 triggerChartRefresh()
@@ -139,7 +139,7 @@ class WaterFragment : Fragment() {
 
                             glassImageViews.forEachIndexed { index, imageView ->
                                 val totalGlasses = glassImageViews.size
-                                val maxDisplayFilled = totalGlasses - 1 // 7 penuh, 1 terakhir kosong
+                                val maxDisplayFilled = totalGlasses - 1
 
                                 val isLastGlass = index == totalGlasses - 1
                                 val shouldFill = index < state.filledGlasses && index < maxDisplayFilled
@@ -147,7 +147,7 @@ class WaterFragment : Fragment() {
                                 if (shouldFill) {
                                     imageView.setImageResource(R.drawable.img_glass_filled)
                                 } else if (isLastGlass) {
-                                    imageView.setImageResource(R.drawable.img_glass_empty) // last glass always empty
+                                    imageView.setImageResource(R.drawable.img_glass_empty)
                                 } else {
                                     imageView.setImageResource(R.drawable.img_glass_empty)
                                 }
@@ -167,14 +167,13 @@ class WaterFragment : Fragment() {
                 viewModel.logWaterStatus.collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
-                            // Bisa tampilkan shimmer atau loading ringan
                         }
                         is Resource.Success -> {
                             Log.d("WATER FRAGMENT", "WaterFragment: Success")
                             showLogWaterStateDialog(
                                 DialogFoodUiState.Success(
                                     title = "Yey! Satu Gelas Lagi",
-                                    message = "Kamu baru saja bantu tubuhmu tetap segar dan bertenaga",
+                                    message = "Ternyata bukan hanya niat, sedikit lagi akan menjadi kebiasaan yang hebat",
                                     imageRes = R.drawable.glubby_water,
                                     calorieValue = null
                                 )
@@ -184,7 +183,7 @@ class WaterFragment : Fragment() {
                             showLogWaterStateDialog(
                                 DialogFoodUiState.Error(
                                     title = "Oops, Ada Masalah",
-                                    message = resource.message ?: "Terjadi kesalahan saat mencatat air.",
+                                    message = "Terjadi kesalahan saat mencatat air, periksa koneksi internetmu atau coba ulangi lagi",
                                     imageRes = R.drawable.glubby_error
                                 )
                             )

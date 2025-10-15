@@ -62,7 +62,6 @@ class WeeklyActivityFragment : Fragment() {
                         // Tampilkan loading indicator
                     }
                     is WeeklyActivityState.Success -> {
-                        // Panggil fungsi setup grafik dengan data dari ViewModel
                         setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                     }
                     is WeeklyActivityState.Error -> {
@@ -76,22 +75,18 @@ class WeeklyActivityFragment : Fragment() {
 
         chart.data = data
 
-        // Nonaktifkan interaksi
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false
-        chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
+        chart.setScaleEnabled(false)
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
         chart.setExtraOffsets(10f, 0f, 0f, 8f)
 
-        // Konfigurasi umum
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
 
-        // font
         val font = resources.getFont(R.font.jakarta_sans_family)
 
-        // Sumbu X (Horizontal)
         val xAxis = chart.xAxis
         xAxis.typeface = font
         xAxis.position = XAxis.XAxisPosition.BOTTOM

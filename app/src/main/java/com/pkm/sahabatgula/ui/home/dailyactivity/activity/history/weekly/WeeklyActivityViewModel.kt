@@ -46,11 +46,7 @@ class WeeklyActivityViewModel @Inject constructor(
     private fun loadWeeklyActivityData() {
         viewModelScope.launch {
             _uiState.value = WeeklyActivityState.Loading
-
-            // Ambil data mingguan dari database (melalui Flow)
-            // .firstOrNull() mengambil nilai saat ini dari Flow sekali saja
             val weeklyData = homeRepository.observeWeeklySummary().firstOrNull()
-
             if (weeklyData.isNullOrEmpty()) {
                 _uiState.value = WeeklyActivityState.Error("Data mingguan tidak ditemukan.")
                 return@launch

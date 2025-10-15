@@ -1,18 +1,25 @@
 package com.pkm.sahabatgula.ui.settings.loghistory
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pkm.sahabatgula.core.utils.DateConverter
 import com.pkm.sahabatgula.core.utils.dateFormatterHistory
 import com.pkm.sahabatgula.data.remote.model.HistoryItem
 import com.pkm.sahabatgula.databinding.ItemParentDateBinding
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class ParentActivityHistoryAdapter(
     historyList: List<HistoryItem>?
 ) : RecyclerView.Adapter<ParentActivityHistoryAdapter.ParentViewHolder>() {
 
-    private val filteredList = historyList?.filter { !it.activities.isNullOrEmpty() } ?: emptyList()
+    private val items = historyList
+        ?.filter { !it.activities.isNullOrEmpty() }
+        ?.toMutableList() ?: mutableListOf()
 
     inner class ParentViewHolder(val binding: ItemParentDateBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -23,7 +30,7 @@ class ParentActivityHistoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ParentViewHolder, position: Int) {
-        val historyItem = filteredList[position]
+        val historyItem = items[position]
 
         with(holder.binding) {
             tvDate.text = dateFormatterHistory(historyItem.date)
@@ -39,5 +46,14 @@ class ParentActivityHistoryAdapter(
         }
     }
 
-    override fun getItemCount(): Int = filteredList.size
+    override fun getItemCount(): Int = items.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newData: List<HistoryItem>) {
+        items.clear()
+        items.addAll(newData.filter { !it.activities.isNullOrEmpty() })
+        notifyDataSetChanged()
+    }
 }
+
+

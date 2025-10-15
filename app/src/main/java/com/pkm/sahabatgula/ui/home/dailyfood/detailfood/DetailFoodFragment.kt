@@ -77,7 +77,8 @@ class DetailFoodFragment : Fragment() {
 
         val foodName = foodsItem?.name ?: foodItemManual?.name
         val foodServingSize = foodsItem?.servingSize ?: foodItemManual?.servingSize
-        val foodServingUnit = foodsItem?.servingUnit ?: foodItemManual?.servingUnit
+        val servingUnit = foodsItem?.servingUnit ?: foodItemManual?.servingUnit
+        val foodServingUnit = servingUnit?.replaceFirstChar { it.uppercase() }
         val foodWeightSize = foodsItem?.weightSize ?: foodItemManual?.weightSize
         val foodWeightUnit = foodsItem?.weightUnit ?: foodItemManual?.weightUnit
         val foodId = foodsItem?.id ?: foodItemManual?.id
@@ -90,6 +91,7 @@ class DetailFoodFragment : Fragment() {
         }
 
         binding.apply {
+
             tvTitleFood.text =
                 "$foodName $foodServingSize $foodServingUnit $foodWeightSize $foodWeightUnit"
             tvFoodDesc.text = foodDesc ?: "-"

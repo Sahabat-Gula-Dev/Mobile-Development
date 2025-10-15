@@ -58,9 +58,8 @@ class HomeFragment : Fragment() {
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Hanya collect dari satu sumber: uiState
                 viewModel.uiState.collect { state ->
-                    handleState(state) // <-- Gunakan fungsi handleState yang sudah benar
+                    handleState(state)
                 }
             }
         }
@@ -109,7 +108,6 @@ class HomeFragment : Fragment() {
         profile: ProfileEntity,
         summary: SummaryResponse
     ) {
-//        val summaryData = summary.data
         val nutrients = summary.data.daily.nutrients
 
         var username = profile.username
@@ -289,7 +287,7 @@ class HomeFragment : Fragment() {
                         title = "Batas Kalori Terlampaui",
                         consumed = caloriesConsumed,
                         max = maxCalories,
-                        suggestion = "Asupan kalorimu sudah melebihi batas harian. Kurangi konsumsi makanan tinggi kalori untuk menjaga keseimbangan energi tubuhmu."
+                        suggestion = "Sepertinya kamu sangat royal dalam memilih makanan. Asupan kalorimu sudah melebihi batas, lebih perhatikan lagi pola konsumsimu"
                     )
                     isCalorieDialogShown = true
 

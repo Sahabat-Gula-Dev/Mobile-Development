@@ -60,9 +60,11 @@ class CustomFoodPagingAdapter (
         fun bind(food: FoodItem) {
             currentFood = food
 
-            binding.tvTitleCustomFoodCard.text = "${food.name} ${food.servingSize} ${food.servingUnit} ${food.weightSize} ${food.weightUnit}"
+            val servingUnit = food.servingUnit
+            val foodServingUnit = servingUnit?.replaceFirstChar { it.uppercase() }
+            binding.tvTitleCustomFoodCard.text = "${food.name} ${food.servingSize} ${foodServingUnit} ${food.weightSize} ${food.weightUnit}"
             binding.tvFoodCalories.text = "${food.calories.toInt()} kkal"
-            binding.tvTitleCustomFoodExpand.text = "${food.name} ${food.servingSize} ${food.servingUnit} ${food.weightSize} ${food.weightUnit}"
+            binding.tvTitleCustomFoodExpand.text = "${food.name} ${food.servingSize} ${foodServingUnit} ${food.weightSize} ${food.weightUnit}"
 
             if (food.isSelected) {
                 binding.icPlusAddFood.setImageResource(R.drawable.ic_checked)

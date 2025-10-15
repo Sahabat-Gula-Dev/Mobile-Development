@@ -85,10 +85,10 @@ class FatFragment : Fragment() {
                             if (progressFat >= 100 && !hasShownOverLimitDialog) {
                                 showNutrientExceededDialog(
                                     context = requireContext(),
-                                    title = "Batas Karbohidrat Terlampaui",
+                                    title = "Batas Lemak Terlampaui",
                                     consumed = state.totalFat.toInt(),
                                     max = state.maxFat.toInt(),
-                                    suggestion = "Karbohidratmu sudah melebihi batas harian. Kurangi porsi nasi, roti, atau camilan manis supaya asupanmu lebih seimbang"
+                                    suggestion = "Coba pilih makanan yang lebih sehat dan mengandung banyak serat seperti sayuran. Konsumsi lemakmu melampau batas hari ini."
                                 )
                                 hasShownOverLimitDialog = true
                             } else if (progressFat < 100) {
@@ -122,6 +122,7 @@ class FatFragment : Fragment() {
                             icAction.setImageResource(R.drawable.ic_history)
                             tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
                             tvSubtitleAction.text = "Cek ulang makananmu dan pastikan tetap dalam jalur sehat"
+                            root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_action_background))
                         }
 
                         binding.cardHistoryFat.root.setOnClickListener {

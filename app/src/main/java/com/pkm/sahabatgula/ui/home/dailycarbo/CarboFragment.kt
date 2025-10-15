@@ -96,7 +96,7 @@ class CarboFragment : Fragment() {
                                     title = "Batas Karbohidrat Terlampaui",
                                     consumed = state.totalCarbo.toInt(),
                                     max = state.maxCarbo.toInt(),
-                                    suggestion = "Karbohidratmu sudah melebihi batas harian. Kurangi porsi nasi, roti, atau camilan manis supaya asupanmu lebih seimbang"
+                                    suggestion = "Wah, kamu pasti mengkonsumsi makanan berat terlalu sering hari ini. Saatnya kamu menahan diri sedikit dan tetap jaga pola konsumsimu"
                                 )
                                 hasShownOverLimitDialog = true
                             } else if (progressCarbo < 100) {
@@ -115,6 +115,7 @@ class CarboFragment : Fragment() {
                             icAction.setImageResource(R.drawable.ic_history)
                             tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
                             tvSubtitleAction.text = "Cek ulang makananmu dan pastikan tetap dalam jalur sehat"
+                            root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_action_background))
                         }
 
                         binding.cardHistoryFood.root.setOnClickListener {

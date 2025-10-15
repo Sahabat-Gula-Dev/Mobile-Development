@@ -119,7 +119,7 @@ class LoginFragment : Fragment() {
                                         "Login Google Berhasil"
                                     else
                                         "Login Berhasil",
-                                    message = "Selamat datang kembali. Terima kasih sudah bergabung."
+                                    message = "Selamat datang kembali. Terima kasih sudah bergabung bersama Gluby."
                                 )
                             )
 
@@ -146,7 +146,7 @@ class LoginFragment : Fragment() {
                             stateDialog?.updateState(
                                 GlobalUiState.Error(
                                     title = errorTitle,
-                                    message = state.message ?: "Terjadi kesalahan, coba lagi."
+                                    message = "Terjadi kesalahan saat mencoba login, coba periksa koneksi atau ulangi lagi."
                                 )
                             )
                         }
