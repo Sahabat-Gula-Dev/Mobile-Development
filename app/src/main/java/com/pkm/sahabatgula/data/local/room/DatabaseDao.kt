@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProfileDao {
-    @Query("SELECT * FROM user_profile WHERE id = :userId")
+    @Query("SELECT * FROM user_profiles WHERE id = :userId")
     suspend fun getProfileByUserId(userId: String): ProfileEntity?
 
-    @Query("SELECT * FROM user_profile LIMIT 1")
+    @Query("SELECT * FROM user_profiles LIMIT 1")
     suspend fun getProfile(): ProfileEntity?
 
     @Upsert
@@ -26,13 +26,13 @@ interface ProfileDao {
     @Delete
     suspend fun deleteProfile(profile: ProfileEntity)
 
-    @Query("SELECT * FROM user_profile LIMIT 1")
+    @Query("SELECT * FROM user_profiles LIMIT 1")
     fun observeProfile(): Flow<ProfileEntity?>
 
-    @Query("SELECT * FROM user_profile LIMIT 1")
+    @Query("SELECT * FROM user_profiles LIMIT 1")
     fun getLocalProfile(): ProfileEntity?
 
-    @Query("DELETE FROM user_profile")
+    @Query("DELETE FROM user_profiles")
     suspend fun clearAll()
 
 }
@@ -42,35 +42,35 @@ interface SummaryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(summaries: List<SummaryEntity>)
 
-    @Query("SELECT * FROM summary WHERE type = :type AND date = :date LIMIT 1")
+    @Query("SELECT * FROM user_summary WHERE type = :type AND date = :date LIMIT 1")
     fun getSummaryByDate(type: String, date: String): Flow<SummaryEntity?>
 
-    @Query("SELECT * FROM summary WHERE type = :type AND date = :date LIMIT 1")
+    @Query("SELECT * FROM user_summary WHERE type = :type AND date = :date LIMIT 1")
     suspend fun getSummaryByDateForInsight(type: String, date: String): SummaryEntity
 
-    @Query("SELECT * FROM summary WHERE type = :type ORDER BY date DESC")
+    @Query("SELECT * FROM user_summary WHERE type = :type ORDER BY date DESC")
     fun getSummaryByType(type: String): Flow<List<SummaryEntity>>
 
-    @Query("SELECT * FROM summary WHERE type = 'DAILY' ORDER BY date DESC LIMIT 1")
+    @Query("SELECT * FROM user_summary WHERE type = 'DAILY' ORDER BY date DESC LIMIT 1")
     fun getLatestDailySummary(): Flow<SummaryEntity?>
 
-    @Query("SELECT * FROM summary")
+    @Query("SELECT * FROM user_summary")
     suspend fun getAll(): List<SummaryEntity>
 
-    @Query("DELETE FROM summary WHERE type = :type")
+    @Query("DELETE FROM user_summary WHERE type = :type")
     suspend fun clearByType(type: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll(summaries: List<SummaryEntity>)
 
-    @Query("SELECT * FROM summary WHERE type = 'WEEKLY' ORDER BY date ASC")
+    @Query("SELECT * FROM user_summary WHERE type = 'WEEKLY' ORDER BY date ASC")
     fun getAllWeeklySummary(): Flow<List<SummaryEntity>>
 
-    @Query("SELECT * FROM summary WHERE type = 'MONTHLY' ORDER BY date ASC")
+    @Query("SELECT * FROM user_summary WHERE type = 'MONTHLY' ORDER BY date ASC")
     fun getAllMonthlySummary(): Flow<List<SummaryEntity>>
 
     // clear
-    @Query("DELETE FROM summary")
+    @Query("DELETE FROM user_summary")
     suspend fun clearAllSumary()
 }
 
@@ -83,10 +83,10 @@ interface ChatDao {
 
     // Fungsi untuk mengambil semua pesan, diurutkan dari yang paling lama
     // Menggunakan Flow agar UI bisa update secara otomatis saat ada pesan baru
-    @Query("SELECT * FROM chat_messages ORDER BY timestamp ASC")
+    @Query("SELECT * FROM chat_messages_entity ORDER BY timestamp ASC")
     fun getAllMessages(): Flow<List<ChatMessageEntity>>
 
     // (Opsional) Fungsi untuk menghapus riwayat percakapan
-    @Query("DELETE FROM chat_messages")
+    @Query("DELETE FROM chat_messages_entity")
     suspend fun clearHistory()
 }

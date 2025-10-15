@@ -3,7 +3,7 @@ package com.pkm.sahabatgula.data.local.room
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "user_profile")
+@Entity(tableName = "user_profiles")
 data class ProfileEntity(
     @PrimaryKey val id: String,
     val username: String?,
@@ -30,7 +30,7 @@ data class ProfileEntity(
     val max_potassium: Double?
 )
 
-@Entity(tableName = "summary", primaryKeys = ["date", "type"])
+@Entity(tableName = "user_summary", primaryKeys = ["date", "type"])
 data class SummaryEntity(
     val date: String,
     val type: String, // "DAILY", "WEEKLY", "MONTHLY"

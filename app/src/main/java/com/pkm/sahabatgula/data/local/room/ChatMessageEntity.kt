@@ -7,13 +7,11 @@ enum class Sender {
     USER, GEMINI
 }
 
-@Entity(tableName = "chat_messages")
+@Entity(tableName = "chat_messages_entity")
 data class ChatMessageEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-
     val message: String,
-
     val sender: Sender,
     val timestamp: Long,
     val isError: Boolean = false,

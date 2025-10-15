@@ -4,9 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.pkm.sahabatgula.data.local.room.AppDatabase
 import com.pkm.sahabatgula.data.local.room.ChatDao
-import com.pkm.sahabatgula.data.local.room.MIGRATION_1_2
-import com.pkm.sahabatgula.data.local.room.MIGRATION_2_3
-import com.pkm.sahabatgula.data.local.room.MIGRATION_3_4
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.local.room.SummaryDao
 import dagger.Module
@@ -26,10 +23,8 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "sahabat_gula_db"
+            "sahabat_gula_prod_db"
         )
-            .fallbackToDestructiveMigration() // hanya untuk dev
-//            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
