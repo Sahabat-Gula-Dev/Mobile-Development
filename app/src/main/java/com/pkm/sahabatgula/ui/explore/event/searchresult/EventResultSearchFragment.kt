@@ -61,7 +61,6 @@ class EventResultSearchFragment : Fragment() {
     private fun setupRecyclerView() {
 
         eventAdapter = EventPagingDataAdapter { event ->
-            // Arahkan ke detail artikel
             val action = EventResultSearchFragmentDirections.actionEventResultSearchToDetailEvent(event)
             findNavController().navigate(action)
         }
@@ -97,7 +96,7 @@ class EventResultSearchFragment : Fragment() {
                 binding.layoutEmpty.root.visibility = View.VISIBLE
                 binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
                 binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
-                binding.layoutEmpty.tvMessage.text = errorState.error.localizedMessage
+                binding.layoutEmpty.tvMessage.text = "Terjadi kesalahan, coba periksa koneksi internetmu lalu muat ulang halaman"
                 binding.rvSearchResult.visibility = View.GONE
                 binding.tvHeaderResult.visibility = View.GONE
                 binding.tvSubtitleResult.visibility = View.GONE

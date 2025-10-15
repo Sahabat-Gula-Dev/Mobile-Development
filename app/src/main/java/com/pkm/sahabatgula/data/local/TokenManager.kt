@@ -26,7 +26,6 @@ class TokenManager(context: Context) {
         )
     } catch (e: Exception) {
         Log.e("TokenManager", "EncryptedSharedPreferences corrupted, resetting...", e)
-        // Jika gagal decrypt, hapus shared pref & buat ulang
         context.deleteSharedPreferences("auth_app_prefs")
 
         val masterKey = MasterKey.Builder(context)
@@ -47,7 +46,6 @@ class TokenManager(context: Context) {
         private const val PROFILE_COMPLETED_KEY = "PROFILE_COMPLETED"
     }
 
-    // === TOKEN ===
     fun saveAccessToken(token: String?) {
         sharedPreferences.edit { putString(ACCESS_TOKEN_KEY, token) }
     }

@@ -59,28 +59,44 @@ import retrofit2.http.Query
 interface ApiService {
 
     @POST("register")
-    suspend fun register(@Body userDataItem: RegisterRequest): Response<RegisterResponse>
+    suspend fun register(
+        @Body userDataItem: RegisterRequest
+    ): Response<RegisterResponse>
 
     @POST("resend-otp")
-    suspend fun resendOtp(@Body body: ResendOtpRequest): Response<ResendOtpResponse>
+    suspend fun resendOtp(
+        @Body body: ResendOtpRequest
+    ): Response<ResendOtpResponse>
 
     @POST("verify-otp")
-    suspend fun verifyOtp(@Body body: VerifyOtpRequest): Response<VerifyOtpResponse>
+    suspend fun verifyOtp(
+        @Body body: VerifyOtpRequest
+    ): Response<VerifyOtpResponse>
 
     @POST("login")
-    suspend fun login(@Body body: LoginRequest): Response<LoginResponse>
+    suspend fun login(
+        @Body body: LoginRequest
+    ): Response<LoginResponse>
 
     @POST("google")
-    suspend fun googleAuth(@Body body: GoogleAuthRequest): Response<GoogleAuthResponse>
+    suspend fun googleAuth(
+        @Body body: GoogleAuthRequest
+    ): Response<GoogleAuthResponse>
 
     @POST("forgot-password")
-    suspend fun forgotPasswordInputEmail(@Body body: ForgotPasswordRequest): Response<ForgotPasswordResponse>
+    suspend fun forgotPasswordInputEmail(
+        @Body body: ForgotPasswordRequest
+    ): Response<ForgotPasswordResponse>
 
     @POST("verify-reset-otp")
-    suspend fun verifyResetOtp(@Body body: VerifyResetOtpRequest): Response<VerifyResetOtpResponse>
+    suspend fun verifyResetOtp(
+        @Body body: VerifyResetOtpRequest
+    ): Response<VerifyResetOtpResponse>
 
     @POST("reset-password")
-    suspend fun resetPassword(@Body body: ResetPasswordRequest): Response<ResetPasswordResponse>
+    suspend fun resetPassword(
+        @Body body: ResetPasswordRequest
+    ): Response<ResetPasswordResponse>
 
     @POST ("setup")
     suspend fun setupProfile(
@@ -89,10 +105,14 @@ interface ApiService {
     ): Response<SetupProfileResponse>
 
     @GET("me")
-    suspend fun getMyProfile(@Header("Authorization") token: String): Response<MyProfileResponse>
+    suspend fun getMyProfile(
+        @Header("Authorization") token: String
+    ): Response<MyProfileResponse>
 
     @GET("summary")
-    suspend fun getSummary(@Header ("Authorization") token: String): Response<SummaryResponse>
+    suspend fun getSummary(
+        @Header ("Authorization") token: String
+    ): Response<SummaryResponse>
 
 
     @POST("log-water")
@@ -144,7 +164,8 @@ interface ApiService {
     ): Response<ActivityResponse>
 
     @GET("activity-categories")
-    suspend fun  getActivityCategories(): Response<ActivityCategoryListResponse>
+    suspend fun  getActivityCategories(
+    ): Response<ActivityCategoryListResponse>
 
     @GET("carousels")
     suspend fun getCarousels(
@@ -171,15 +192,12 @@ interface ApiService {
     ): Response<ArticleResponse>
 
     @GET("article-categories")
-    suspend fun getArticleCategories(): Response<ArticleCategoryListResponse>
+    suspend fun getArticleCategories(
+    ): Response<ArticleCategoryListResponse>
 
     @GET("event-categories")
-    suspend fun getEventCategories(): Response<EventCategoryListResponse>
-
-    @GET("articles/{id}")
-    suspend fun getArticleDetail(
-        @Path("id") id: String
-    ): Response<DetailArticleResponse>
+    suspend fun getEventCategories(
+    ): Response<EventCategoryListResponse>
 
     @GET("faqs")
     suspend fun getFaqs(
@@ -192,16 +210,11 @@ interface ApiService {
     ): Response<HelpCenterResponse>
 
     @GET("faq-categories")
-    suspend fun getFaqCategories(): Response<FaqCategoryListResponse>
+    suspend fun getFaqCategories(
+    ): Response<FaqCategoryListResponse>
 
     @GET("history-log")
     suspend fun getUserHistory(
         @Header("Authorization") token: String,
     ): Response<HistoryResponse>
-
-
-    @GET("api.json")
-    fun getHealthNews(
-        @Query("rss_url") rssUrl: String
-    ): Response<NewsResponse>
 }

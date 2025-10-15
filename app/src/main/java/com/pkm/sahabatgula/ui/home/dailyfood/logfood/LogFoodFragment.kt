@@ -64,7 +64,6 @@ class LogFoodFragment : Fragment() {
                     LogFoodFragmentDirections.actionAddLogFoodToScanResultFragment(uri.toString())
                 findNavController().navigate(action)
             } else {
-                // TAMBAHKAN LOG 4 (jika uri null)
                 Log.e("DEBUG_NAV", "LogFoodFragment: Listener dipanggil, TAPI URI null!")
             }
         }

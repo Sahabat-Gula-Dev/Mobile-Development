@@ -14,8 +14,6 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
@@ -31,7 +29,7 @@ class WeeklySugarFragment : Fragment() {
     private var _binding: FragmentWeeklyHistoryBinding? = null
     private val binding get() = _binding!!
     private val viewModel: WeeklySugarViewModel by viewModels()
-    private var selectedEntry: BarEntry? = null
+    private var selectedEntry: com.github.mikephil.charting.data.BarEntry? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,9 +46,10 @@ class WeeklySugarFragment : Fragment() {
 
         binding.weeklyChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                selectedEntry = e as? BarEntry
+                selectedEntry = e as? com.github.mikephil.charting.data.BarEntry
                 binding.weeklyChart.invalidate()
             }
+
             override fun onNothingSelected() {
                 selectedEntry = null
                 binding.weeklyChart.invalidate()
@@ -62,40 +61,29 @@ class WeeklySugarFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
-                    is WeeklySugarState.Loading -> {
-                        // Tampilkan loading indicator
-                    }
+                    is WeeklySugarState.Loading -> {}
                     is WeeklySugarState.Success -> {
-                        // Panggil fungsi setup grafik dengan data dari ViewModel
                         setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                     }
-                    is WeeklySugarState.Error -> {
-                    }
+                    is WeeklySugarState.Error -> {}
                 }
             }
         }
     }
 
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
-
         chart.data = data
-
-        // Nonaktifkan interaksi
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false
-        chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
+        chart.setScaleEnabled(false)
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
         chart.setExtraOffsets(10f, 0f, 0f, 8f)
-
-        // Konfigurasi umum
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
 
-        // font
         val font = resources.getFont(R.font.jakarta_sans_family)
 
-        // Sumbu X (Horizontal)
         val xAxis = chart.xAxis
         xAxis.typeface = font
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -107,18 +95,13 @@ class WeeklySugarFragment : Fragment() {
             }
         }
 
-        // Sumbu Y Kiri (Vertikal)
         val yAxisLeft = chart.axisLeft
         yAxisLeft.axisMinimum = 0f
         yAxisLeft.typeface = font
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.setDrawAxisLine(false)
 
-
-        // Sumbu Y Kanan
         chart.axisRight.isEnabled = false
-
-        // Refresh grafik untuk menampilkan data
         chart.invalidate()
     }
 

@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarData
@@ -20,8 +19,6 @@ import java.util.Locale
 import javax.inject.Inject
 import androidx.core.graphics.toColorInt
 
-
-// Sealed class untuk menampung state UI, termasuk data grafik
 sealed class WeeklySugarState {
     object Loading : WeeklySugarState()
     data class Success(
@@ -46,9 +43,6 @@ class WeeklySugarViewModel @Inject constructor(
     private fun loadWeeklySugarData() {
         viewModelScope.launch {
             _uiState.value = WeeklySugarState.Loading
-
-            // Ambil data mingguan dari database (melalui Flow)
-            // .firstOrNull() mengambil nilai saat ini dari Flow sekali saja
             val weeklyData = homeRepository.observeWeeklySummary().firstOrNull()
 
             if (weeklyData.isNullOrEmpty()) {
@@ -56,7 +50,6 @@ class WeeklySugarViewModel @Inject constructor(
                 return@launch
             }
 
-            // Proses data untuk grafik
             processDataForChart(weeklyData)
         }
     }
@@ -70,11 +63,9 @@ class WeeklySugarViewModel @Inject constructor(
             it.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
         }
 
-        // Siapkan BarEntry dan daftar warna
         val entries = ArrayList<BarEntry>()
-        val barColors = ArrayList<Int>() // <-- 1. Buat daftar kosong untuk warna
+        val barColors = ArrayList<Int>()
 
-        // Definisikan warna yang Anda inginkan
         val todayColor = "#FF3776".toColorInt()
         val previousDaysColor = "#FFDFE9".toColorInt()
 
@@ -84,22 +75,18 @@ class WeeklySugarViewModel @Inject constructor(
             }
 
             val sugarAmount = dataForDay?.sugar ?: 0.0
-            entries.add(
-                BarEntry(index.toFloat(), sugarAmount.toFloat())
-            )
+            entries.add(BarEntry(index.toFloat(), sugarAmount.toFloat()))
 
-            // --- LOGIKA PEWARNAAN DINAMIS ---
-            // 2. Cek apakah tanggal saat ini adalah 'today'
             if (date == today) {
-                barColors.add(todayColor) // Jika ya, gunakan warna "hari ini"
+                barColors.add(todayColor)
             } else {
-                barColors.add(previousDaysColor) // Jika tidak, gunakan warna "hari sebelumnya"
+                barColors.add(previousDaysColor)
             }
         }
 
         val dataSet = BarDataSet(entries, "Konsumsi Gula Mingguan")
         dataSet.setDrawValues(false)
-        dataSet.colors = barColors // <-- 3. Terapkan daftar warna ke dataset
+        dataSet.colors = barColors
         dataSet.isHighlightEnabled = false
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f

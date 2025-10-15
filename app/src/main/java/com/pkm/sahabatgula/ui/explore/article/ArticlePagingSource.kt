@@ -18,7 +18,6 @@ class ArticlePagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
-        // Halaman yang akan dimuat, defaultnya adalah 1
         val page = params.key ?: 1
         return try {
             Log.d("SearchDebug", "5. PAGINGSOURCE: Memanggil API. Page: $page, Query: '$query'")
@@ -31,23 +30,19 @@ class ArticlePagingSource(
 
             val articles = response.body()?.data ?: emptyList()
 
-            // Kembalikan data dalam bentuk LoadResult.Page
             LoadResult.Page(
                 data = articles,
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (articles.isEmpty()) null else page + 1
             )
         } catch (e: IOException) {
-            // Error koneksi jaringan
             LoadResult.Error(e)
         } catch (e: Exception) {
-            // Error lainnya
             LoadResult.Error(e)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
-        // Logika standar untuk refresh, bisa langsung dipakai
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

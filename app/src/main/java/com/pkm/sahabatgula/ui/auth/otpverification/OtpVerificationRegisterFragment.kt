@@ -67,7 +67,6 @@ class OtpVerificationRegisterFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 val customFont = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
-                // 1. Observe UI state → Timer dan resend
                 launch {
                     otpViewModel.ui.collect { state ->
                         when (state) {
@@ -86,15 +85,10 @@ class OtpVerificationRegisterFragment : Fragment() {
                                 binding.tvResend.setTypeface(customFont, Typeface.BOLD)
                                 binding.tvResend.text = getString(R.string.otp_resend_ready)
                             }
-//                            is OtpViewState.Loading -> {
-//                                binding.tvResend.isEnabled = false
-//                                binding.tvResend.text = "Mengirim ulang..."
-//                            }
                         }
                     }
                 }
 
-                // 2. Observe Effect → Toast & navigasi
                 launch {
                     otpViewModel.effect.collect { effect ->
                         when (effect) {

@@ -28,7 +28,6 @@ class LogManualFoodViewModel @Inject constructor(
     private val _categories = MutableLiveData<Resource<List<FoodCategories>>>()
     val categories: LiveData<Resource<List<FoodCategories>>> = _categories
 
-    private val _searchQuery = MutableStateFlow<String?>(null)
     private val _selectedCategoryId = MutableStateFlow<Int?>(null)
     val selectedCategoryId: StateFlow<Int?> = _selectedCategoryId
 
@@ -55,10 +54,6 @@ class LogManualFoodViewModel @Inject constructor(
             _categories.value = Resource.Loading()
             _categories.value = logFoodRepository.getFoodCategories()
         }
-    }
-
-    fun searchFood(query: String?) {
-        _currentQuery.value = query
     }
 
     fun setCategory(categoryId: Int?) {

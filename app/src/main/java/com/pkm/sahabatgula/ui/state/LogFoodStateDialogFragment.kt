@@ -23,7 +23,6 @@ class LogFoodStateDialogFragment : DialogFragment() {
 
     private var _binding: DialogLogFoodBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: LogFoodStateDialogViewModel by viewModels()
 
     private var state: DialogFoodUiState = DialogFoodUiState.None
     var dismissListener: (() -> Unit)? = null

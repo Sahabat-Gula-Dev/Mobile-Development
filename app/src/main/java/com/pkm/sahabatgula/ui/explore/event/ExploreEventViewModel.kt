@@ -49,10 +49,6 @@ class ExploreEventViewModel @Inject constructor(
         }
     }
 
-    fun searchEvents(query: String?) {
-        _searchQuery.value = query
-    }
-
     fun selectCategory(categoryId: Int?) {
         _selectedCategoryId.value = categoryId
     }

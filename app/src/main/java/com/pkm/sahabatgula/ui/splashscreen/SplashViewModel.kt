@@ -73,7 +73,6 @@ class SplashViewModel @Inject constructor(
                 }
 
             } catch (e: IOException) {
-                // Offline mode fallback
                 val localProfile = authRepository.getLocalProfile()
                 val bmi = localProfile?.bmi_score
                 if (bmi == null || bmi == 0.0) {

@@ -37,7 +37,6 @@ class HelpCenterViewModel @Inject constructor(private val faqRepository: FaqRepo
                     _categories.value = response.body()?.data ?: emptyList()
                 }
             } catch (e: Exception) {
-                // Handle error
             }
         }
     }
@@ -48,7 +47,6 @@ class HelpCenterViewModel @Inject constructor(private val faqRepository: FaqRepo
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val faqs: Flow<PagingData<FaqItem>> = _selectedCategoryId.flatMapLatest { categoryId ->
-        // Logika Pager sudah pindah ke Repository. ViewModel jadi lebih bersih.
         faqRepository.getFaqsStream(categoryId)
     }.cachedIn(viewModelScope)
 }

@@ -45,7 +45,7 @@ class MonthlyFatFragment : Fragment() {
             viewModel.uiState.collect { state ->
                 when (state) {
                     is MonthlyFatState.Loading -> {
-                        // Opsional: Tampilkan loading indicator
+
                     }
                     is MonthlyFatState.Success -> {
                         setupBarChart(binding.monthlyChart, state.barData, state.xAxisLabels)

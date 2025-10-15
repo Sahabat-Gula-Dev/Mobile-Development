@@ -93,8 +93,6 @@ class ExploreEventFragment : Fragment() {
             }
             false
         }
-
-        // di sini rv untuk berita
     }
 
     private fun hideKeyboard() {
@@ -112,7 +110,7 @@ class ExploreEventFragment : Fragment() {
                     is Resource.Error -> {
                         Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
                     }
-                    is Resource.Loading -> { /* Tampilkan loading jika perlu */ }
+                    is Resource.Loading -> {  }
                 }
             }
         }

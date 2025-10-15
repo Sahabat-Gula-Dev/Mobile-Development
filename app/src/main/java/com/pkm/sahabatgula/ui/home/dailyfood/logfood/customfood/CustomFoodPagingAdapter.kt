@@ -82,7 +82,6 @@ class CustomFoodPagingAdapter (
                 binding.icArrowRight.setImageResource(R.drawable.arrow_down_custom_food)
                 binding.icArrowRight.setSize(36)
 
-                // Isi data untuk view di dalam expanded_view
                 binding.tvFoodCaloriesOnExpand.text = "${food.calories.toInt()} kkal"
                 binding.tvDescFood.text = food.description
                 Glide.with(itemView.context)

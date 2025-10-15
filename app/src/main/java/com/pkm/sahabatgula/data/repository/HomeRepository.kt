@@ -168,7 +168,7 @@ fun SummaryData.toEntity(): List<SummaryEntity> {
         entities.add(
             SummaryEntity(
                 type = "MONTHLY",
-                date = DateConverter.getTodayLocalFormatted(),
+                date = m.date,
                 calories = m.nutrients.calories,
                 carbs = m.nutrients.carbs,
                 protein = m.nutrients.protein,

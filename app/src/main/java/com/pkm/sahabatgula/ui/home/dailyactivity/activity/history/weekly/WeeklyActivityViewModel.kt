@@ -21,7 +21,6 @@ import javax.inject.Inject
 import androidx.core.graphics.toColorInt
 
 
-// Sealed class untuk menampung state UI, termasuk data grafik
 sealed class WeeklyActivityState {
     object Loading : WeeklyActivityState()
     data class Success(
@@ -66,11 +65,9 @@ class WeeklyActivityViewModel @Inject constructor(
             it.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
         }
 
-        // Siapkan BarEntry dan daftar warna
         val entries = ArrayList<BarEntry>()
-        val barColors = ArrayList<Int>() // <-- 1. Buat daftar kosong untuk warna
+        val barColors = ArrayList<Int>()
 
-        // Definisikan warna yang Anda inginkan
         val todayColor = "#C77504".toColorInt()
         val previousDaysColor = "#F4E3CD".toColorInt()
 
@@ -84,18 +81,17 @@ class WeeklyActivityViewModel @Inject constructor(
                 BarEntry(index.toFloat(), burnedAmount.toFloat())
             )
 
-            // --- LOGIKA PEWARNAAN DINAMIS ---
-            // 2. Cek apakah tanggal saat ini adalah 'today'
+
             if (date == today) {
-                barColors.add(todayColor) // Jika ya, gunakan warna "hari ini"
+                barColors.add(todayColor)
             } else {
-                barColors.add(previousDaysColor) // Jika tidak, gunakan warna "hari sebelumnya"
+                barColors.add(previousDaysColor)
             }
         }
 
         val dataSet = BarDataSet(entries, "Konsumsi Gula Mingguan")
         dataSet.setDrawValues(false)
-        dataSet.colors = barColors // <-- 3. Terapkan daftar warna ke dataset
+        dataSet.colors = barColors
         dataSet.isHighlightEnabled = false
         val barData = BarData(dataSet)
         barData.barWidth = 0.6f

@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 import androidx.core.net.toUri
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.ui.state.GlobalUiState
 import com.pkm.sahabatgula.ui.state.StateDialogFragment
@@ -29,7 +28,6 @@ class ResultScanFoodFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ResultFoodScanViewModel by viewModels()
-//    private val viewModel: ResultFoodScanViewModel by hiltNavGraphViewModels(R.id.scan_graph)
 
     private lateinit var resultScanAdapter: ResultScanAdapter
 
@@ -87,16 +85,16 @@ class ResultScanFoodFragment : Fragment() {
                         if (stateDialog == null) {
                             stateDialog = StateDialogFragment.newInstance(
                                 GlobalUiState.Loading(
-                                    message = "Sedang memindai gambar...",
-                                    imageRes = com.pkm.sahabatgula.R.drawable.glubby_read
+                                    message = "Gluby sedang menganalisis makanan kamu, tunggu beberapa detik",
+                                    imageRes = R.drawable.glubby_read
                                 )
                             )
                             stateDialog?.show(parentFragmentManager, "ScanLoadingDialog")
                         } else {
                             stateDialog?.updateState(
                                 GlobalUiState.Loading(
-                                    message = "Sedang memindai gambar...",
-                                    imageRes = com.pkm.sahabatgula.R.drawable.glubby_read
+                                    message = "Gluby sedang menganalisis makanan kamu, tunggu beberapa detik",
+                                    imageRes = R.drawable.glubby_read
                                 )
                             )
                         }
@@ -106,17 +104,17 @@ class ResultScanFoodFragment : Fragment() {
                         if (stateDialog != null) {
                             stateDialog?.updateState(
                                 GlobalUiState.Error(
-                                    title = "Gagal Memindai",
-                                    message = state.message,
-                                    imageRes = com.pkm.sahabatgula.R.drawable.glubby_error
+                                    title = "Oops, Ada Masalah",
+                                    message = "Hasil scan ini kurang jelas. Coba ambil foto yang lebih jelas atau pilih dari daftar",
+                                    imageRes = R.drawable.glubby_error
                                 )
                             )
                         } else {
                             stateDialog = StateDialogFragment.newInstance(
                                 GlobalUiState.Error(
-                                    title = "Gagal Memindai",
-                                    message = state.message,
-                                    imageRes = com.pkm.sahabatgula.R.drawable.glubby_error
+                                    title = "Oops, Ada Masalah",
+                                    message = "Hasil scan ini kurang jelas. Coba ambil foto yang lebih jelas atau pilih dari daftar",
+                                    imageRes = R.drawable.glubby_error
                                 )
                             )
                             stateDialog?.show(parentFragmentManager, "ScanErrorDialog")

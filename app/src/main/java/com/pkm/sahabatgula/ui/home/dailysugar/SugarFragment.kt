@@ -142,14 +142,4 @@ class SugarFragment : Fragment() {
 
         }
     }
-
-    private fun showOverLimitDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Batas Gula Terlampaui")
-            .setMessage("Konsumsi gulamu sudah melebihi batas harian. Kurangi konsumsi makanan/minuman manis untuk menjaga kesehatanmu.")
-            .setPositiveButton("Oke") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
 }

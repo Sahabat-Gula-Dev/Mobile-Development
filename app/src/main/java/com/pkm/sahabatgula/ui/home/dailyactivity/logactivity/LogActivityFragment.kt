@@ -163,11 +163,11 @@ class LogActivityFragment : Fragment() {
         viewModel.categories.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    binding.chipGroupActivityCategories.removeAllViews() // Hapus chip statis
+                    binding.chipGroupActivityCategories.removeAllViews()
                     addCategoryChips(resource.data)
                 }
                 is Resource.Error -> Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
-                is Resource.Loading -> { /* Tampilkan loading jika perlu */ }
+                is Resource.Loading -> {  }
             }
         }
     }
@@ -180,46 +180,40 @@ class LogActivityFragment : Fragment() {
         val customTypefaceBold = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
 
         val backgroundStates = arrayOf(
-            intArrayOf(android.R.attr.state_checked), // Saat terpilih
-            intArrayOf(-android.R.attr.state_checked) // Saat normal (tidak terpilih)
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
         )
         val backgroundColors = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.md_theme_primary), // Warna solid saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)  // Warna putih/surface saat normal
+            ContextCompat.getColor(requireContext(), R.color.md_theme_primary),
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary)
         )
         val backgroundColorStateList = ColorStateList(backgroundStates, backgroundColors)
 
-        // --- Aturan untuk Warna Teks ---
+
         val textStates = arrayOf(
-            intArrayOf(android.R.attr.state_checked), // Saat terpilih
-            intArrayOf(-android.R.attr.state_checked) // Saat normal
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
         )
         val textColors = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary), // Warna putih saat terpilih
-            ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant)   // Warna abu-abu saat normal
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onPrimary),
+            ContextCompat.getColor(requireContext(), R.color.md_theme_onSurfaceVariant)
         )
         val textColorStateList = ColorStateList(textStates, textColors)
 
-        // Fungsi kecil untuk membantu konversi DP ke Pixel
         fun Float.dpToPx(): Float = (this * resources.displayMetrics.density)
 
-        // --- Buat Chip "Semua" ---
         val allChip = Chip(context).apply {
             text = "Semua"
             isCheckable = true
             isChecked = true
-            id = View.generateViewId() // Atau View.NO_ID
-
-            // Warna
+            id = View.generateViewId()
             chipBackgroundColor = backgroundColorStateList
             setTextColor(textColorStateList)
-            setChipStrokeColorResource(R.color.md_theme_outline) // Warna outline
-            chipStrokeWidth = 1f.dpToPx() // Lebar outline 1dp
+            setChipStrokeColorResource(R.color.md_theme_outline)
+            chipStrokeWidth = 1f.dpToPx()
 
-            // Bentuk (sangat rounded)
             chipCornerRadius = 50f.dpToPx()
 
-            // Menghilangkan ikon centang saat terpilih
             isCheckedIconVisible = false
             typeface = customTypefaceBold
             textSize = 11f
@@ -240,14 +234,12 @@ class LogActivityFragment : Fragment() {
                 tag = category.id
                 height = 36
 
-                // --- Terapkan Style yang sama ---
                 chipBackgroundColor = backgroundColorStateList
                 setTextColor(textColorStateList)
                 setChipStrokeColorResource(R.color.md_theme_outline)
                 chipStrokeWidth = 1f.dpToPx()
                 chipCornerRadius = 50f.dpToPx()
                 isCheckedIconVisible = false
-//                setTextAppearance(R.style.MyChipTextAppearance)
             }
             chipGroup.addView(chip)
         }
@@ -277,21 +269,18 @@ class LogActivityFragment : Fragment() {
                 }
             }
         }
-    
-        // 2. Listener untuk aksi keyboard "Search"
+
         editText.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = textView.text.toString().trim()
                 viewModel.searchActivity(query.ifEmpty { null })
-    
-                // Sembunyikan keyboard
+
                 textView.hideKeyboard()
                 return@setOnEditorActionListener true
             }
             false
         }
-    
-        // Sembunyikan keyboard saat ikon 'x' diklik
+
         binding.searchBarActivity.setEndIconOnClickListener {
             editText.text?.clear()
             editText.hideKeyboard()
@@ -310,12 +299,10 @@ class LogActivityFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.btnLogThisActivity.isEnabled = true
-//                    binding.btnLogThisActivity.text = "Catat Aktivitas"
                     Toast.makeText(context, "Aktivitas berhasil dicatat!", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Error -> {
                     binding.btnLogThisActivity.isEnabled = true
-//                    binding.btnLogThisActivity.text = "Catat Aktivitas"
                     Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
                 }
             }
@@ -349,7 +336,6 @@ class LogActivityFragment : Fragment() {
             setPadding(16, 0, 16, 8)
         }
 
-        // Format teks dengan angka kalori yang di-bold dan merah
         val foodsName = activityNames.joinToString(", ")
         val calorieText = "$totalCalories kkal"
 

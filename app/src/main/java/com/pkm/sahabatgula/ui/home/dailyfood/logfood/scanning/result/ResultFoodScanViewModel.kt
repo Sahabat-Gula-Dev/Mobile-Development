@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.core.utils.uriToFile
-import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.data.remote.model.FoodsItem
 import com.pkm.sahabatgula.data.repository.ScanRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,10 +31,6 @@ class ResultFoodScanViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ScanUiState>(ScanUiState.Loading)
     val uiState: StateFlow<ScanUiState> = _uiState
     private var lastResult: List<FoodsItem?> = emptyList()
-
-    fun hasScannedResult() = lastResult != null
-
-    fun getLastResult(): List<FoodsItem> = lastResult as List<FoodsItem>
 
 
     fun predictImage(imageUri: Uri?) {

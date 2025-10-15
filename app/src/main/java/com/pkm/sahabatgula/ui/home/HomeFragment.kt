@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.roundToInt
 import androidx.core.graphics.toColorInt
+import kotlin.math.round
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -103,6 +104,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun updateSuccessfullUi(
         profile: ProfileEntity,
@@ -115,17 +117,20 @@ class HomeFragment : Fragment() {
 
         binding.userName.text = username
         val caloriesConsumed = nutrients.calories
-        val carbsConsumed = summary.data.daily.nutrients.carbs
-        val proteinConsumed = summary.data.daily.nutrients.protein
-        val fatConsumed = summary.data.daily.nutrients.fat
-        val sugarConsumed = summary.data.daily.nutrients.sugar?:0.0
-        val steps = summary.data.daily.steps?:0
-        val waterIntake = summary.data.daily.water?:0
-        val maxCalories = profile.max_calories?:0
-        val maxCarbs = profile.max_carbs?:0.0
-        val maxProtein = profile.max_protein?:0.0
-        val maxFat = profile.max_fat?:0.0
-        val maxSugar = profile.max_sugar?:0.0
+        val carbsConsumed = roundTo2Decimals(summary.data.daily.nutrients.carbs?: 0.0)
+        val proteinConsumed = roundTo2Decimals(summary.data.daily.nutrients.protein?: 0.0)
+        val fatConsumed = roundTo2Decimals(summary.data.daily.nutrients.fat?: 0.0)
+        val sugarConsumed = roundTo2Decimals(summary.data.daily.nutrients.sugar ?: 0.0)
+
+        val steps = summary.data.daily.steps ?: 0
+        val waterIntake = summary.data.daily.water ?: 0
+
+        val maxCalories = profile.max_calories ?: 0
+        val maxCarbs = roundTo2Decimals(profile.max_carbs ?: 0.0)
+        val maxProtein = roundTo2Decimals(profile.max_protein ?: 0.0)
+        val maxFat = roundTo2Decimals(profile.max_fat ?: 0.0)
+        val maxSugar = roundTo2Decimals(profile.max_sugar ?: 0.0)
+
 
         updateCaloriesUI(caloriesConsumed?.toInt(), maxCalories)
 
@@ -146,7 +151,7 @@ class HomeFragment : Fragment() {
             tvNumberOfConsumption.text = doubleToZeroInt(sugarConsumed)
             tvTitleProgress.text = "Konsumsi Gula Hari Ini"
             tvNumberOfTotalNutrition.text = " dari ${maxSugar.toInt()} gr"
-            tvNumberOfPercentage.text = sugarConsumed.toDouble().toPercentage(maxSugar?.toInt())
+            tvNumberOfPercentage.text = sugarConsumed.toPercentage(maxSugar?.toInt())
         }
 
         // carbo
@@ -309,6 +314,10 @@ class HomeFragment : Fragment() {
 
     fun refreshData() {
         viewModel.refreshData()
+    }
+
+    fun roundTo2Decimals(value: Double): Double {
+        return round(value * 100) / 100
     }
 
 

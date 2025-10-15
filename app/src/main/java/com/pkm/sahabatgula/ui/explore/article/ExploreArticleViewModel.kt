@@ -22,7 +22,6 @@ class ExploreArticleViewModel @Inject constructor(
     private val repository: ExploreRepository
 ) : ViewModel() {
 
-    // StateFlow untuk menampung query pencarian saat ini
     private val _categories = MutableStateFlow<Resource<List<ArticleCategory>>>(Resource.Loading())
     val categories: StateFlow<Resource<List<ArticleCategory>>> = _categories
 
@@ -33,8 +32,6 @@ class ExploreArticleViewModel @Inject constructor(
     init {
         fetchArticleCategories()
     }
-
-    // Flow PagingData yang akan bereaksi setiap kali _searchQuery berubah
     val articles = combine(_searchQuery, _selectedCategoryId) { query, categoryId ->
         Pair(query, categoryId)
     }.flatMapLatest { (query, categoryId) ->
@@ -47,12 +44,6 @@ class ExploreArticleViewModel @Inject constructor(
         }
     }
 
-    // Fungsi yang dipanggil oleh Fragment untuk mengubah pencarian
-    fun searchArticles(query: String?) {
-        _searchQuery.value = query
-    }
-
-    // Fungsi yang dipanggil oleh Fragment saat Chip kategori diklik
     fun selectCategory(categoryId: Int?) {
         _selectedCategoryId.value = categoryId
     }

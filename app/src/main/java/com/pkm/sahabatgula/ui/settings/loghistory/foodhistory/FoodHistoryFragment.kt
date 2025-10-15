@@ -13,12 +13,10 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.databinding.FragmentFoodHistoryBinding
-import com.pkm.sahabatgula.ui.settings.loghistory.ParentActivityHistoryAdapter
 import com.pkm.sahabatgula.ui.settings.loghistory.ParentFoodHistoryAdapter
 import com.pkm.sahabatgula.ui.settings.loghistory.activityhistory.FoodHistoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FoodHistoryFragment : Fragment() {
@@ -63,11 +61,9 @@ class FoodHistoryFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.historyState.collect { resource ->
                 when (resource) {
-
                     is Resource.Success -> {
                         val data = resource.data
                             ?.filter { !it.activities.isNullOrEmpty() } ?: emptyList()
-
 
                         if (data.isEmpty()) {
                             binding.layoutEmpty.root.visibility = View.VISIBLE
@@ -82,7 +78,6 @@ class FoodHistoryFragment : Fragment() {
                             parentAdapter.updateData(data)
                         }
                     }
-
                     is Resource.Error -> {
                         binding.layoutEmpty.root.visibility = View.VISIBLE
                         binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)

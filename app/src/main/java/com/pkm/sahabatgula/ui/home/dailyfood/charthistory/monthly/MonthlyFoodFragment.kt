@@ -45,7 +45,6 @@ class MonthlyFoodFragment : Fragment() {
             viewModel.uiState.collect { state ->
                 when (state) {
                     is MonthlyFoodState.Loading -> {
-                        // Opsional: Tampilkan loading indicator
                     }
                     is MonthlyFoodState.Success -> {
                         setupBarChart(binding.monthlyChart, state.barData, state.xAxisLabels)
@@ -61,7 +60,6 @@ class MonthlyFoodFragment : Fragment() {
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
         chart.data = data
 
-        // Nonaktifkan interaksi zoom
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false
         chart.setScaleEnabled(false)
@@ -71,10 +69,8 @@ class MonthlyFoodFragment : Fragment() {
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
         chart.setExtraOffsets(10f, 0f, 0f, 8f)
-        // Mengatur font
         val jakartaSans: Typeface? = ResourcesCompat.getFont(requireContext(), R.font.jakarta_sans_family)
 
-        // Sumbu X (Horizontal)
         val xAxis = chart.xAxis
         xAxis.typeface = jakartaSans
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -86,18 +82,12 @@ class MonthlyFoodFragment : Fragment() {
                 return xAxisLabels.getOrNull(value.toInt()) ?: ""
             }
         }
-
-        // Sumbu Y Kiri (Vertikal)
         val yAxisLeft = chart.axisLeft
         yAxisLeft.typeface = jakartaSans
         yAxisLeft.axisMinimum = 0f
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.setDrawAxisLine(false)
-
-        // Sumbu Y Kanan (dinonaktifkan)
         chart.axisRight.isEnabled = false
-
-        // Memuat ulang tampilan grafik
         chart.invalidate()
     }
 

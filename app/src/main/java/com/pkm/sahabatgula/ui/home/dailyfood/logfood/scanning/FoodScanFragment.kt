@@ -1,15 +1,12 @@
 package com.pkm.sahabatgula.ui.home.dailyfood.logfood.scanning
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,14 +22,7 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentFoodScanBinding
-import com.pkm.sahabatgula.databinding.FragmentScanBinding
-import com.pkm.sahabatgula.ui.state.GlobalUiState
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
@@ -146,8 +136,7 @@ class FoodScanFragment : Fragment() {
 
                 override fun onError(exc: ImageCaptureException) {
                     super.onError(exc)
-                    Toast.makeText(requireContext(), "Gagal mengambil gambar: ${exc.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("CameraX", "Photo capture failed: ${exc.message}", exc)
+                    Toast.makeText(requireContext(), "Gagal mengambil gambar", Toast.LENGTH_SHORT).show()
                 }
 
             }

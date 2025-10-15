@@ -44,7 +44,6 @@ class ResetPasswordFragment : Fragment() {
             val newPassword = binding.editInputNewPass.text.toString()
             val confirmPassword = binding.editConfirmPass.text.toString()
 
-            // ✅ Validasi pakai Validator
             val passwordError = Validator.validatePassword(newPassword)
             val confirmError = if (newPassword != confirmPassword) "Konfirmasi password tidak cocok" else null
 

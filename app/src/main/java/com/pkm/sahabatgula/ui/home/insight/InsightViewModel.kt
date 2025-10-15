@@ -22,7 +22,6 @@ class InsightChatViewModel @Inject constructor(
 
     private val chatHistoryFlow = insightRepository.getChatHistory()
     private val _isTyping = MutableStateFlow(false)
-    val isTyping: StateFlow<Boolean> get() = _isTyping
     val chatHistory: StateFlow<List<ChatMessageEntity>> = combine(
         chatHistoryFlow,
         _isTyping

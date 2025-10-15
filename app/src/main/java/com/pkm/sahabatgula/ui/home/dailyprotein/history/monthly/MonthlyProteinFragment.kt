@@ -45,7 +45,6 @@ class MonthlyProteinFragment : Fragment() {
             viewModel.uiState.collect { state ->
                 when (state) {
                     is MonthlyProteinState.Loading -> {
-                        // Opsional: Tampilkan loading indicator
                     }
                     is MonthlyProteinState.Success -> {
                         setupBarChart(binding.monthlyChart, state.barData, state.xAxisLabels)

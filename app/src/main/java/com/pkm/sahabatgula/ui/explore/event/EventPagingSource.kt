@@ -19,7 +19,6 @@ class EventPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Event> {
-        // Halaman yang akan dimuat, defaultnya adalah 1
         val page = params.key ?: 1
         return try {
             Log.d("SearchDebug", "5. PAGINGSOURCE: Memanggil API. Page: $page, Query: '$query'")
@@ -32,23 +31,19 @@ class EventPagingSource(
 
             val events = response.body()?.data ?: emptyList()
 
-            // Kembalikan data dalam bentuk LoadResult.Page
             LoadResult.Page(
                 data = events,
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (events.isEmpty()) null else page + 1
             )
         } catch (e: IOException) {
-            // Error koneksi jaringan
             LoadResult.Error(e)
         } catch (e: Exception) {
-            // Error lainnya
             LoadResult.Error(e)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, Event>): Int? {
-        // Logika standar untuk refresh, bisa langsung dipakai
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

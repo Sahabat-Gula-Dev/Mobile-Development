@@ -18,7 +18,7 @@ class FaqPagingSource(
             val response = apiService.getFaqs(
                 page = page,
                 limit = params.loadSize,
-                quary = query, // 'quary' sesuai definisi di API-mu
+                quary = query,
                 categoryId = categoryId
             )
 

@@ -59,11 +59,9 @@ class ExploreFragment : Fragment() {
                     setupCarousel(resource.data)
                 }
                 is Resource.Error -> {
-                    // toast
                     Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
-                    // loading
                 }
             }
 

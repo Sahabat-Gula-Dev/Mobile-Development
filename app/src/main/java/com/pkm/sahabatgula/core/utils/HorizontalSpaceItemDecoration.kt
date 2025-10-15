@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HorizontalSpaceItemDecoration(private val spaceInDp: Int) : RecyclerView.ItemDecoration() {
 
-    // Konversi DP ke Pixel sekali saja saat inisialisasi
     private val spaceInPx: Int = (spaceInDp * Resources.getSystem().displayMetrics.density).toInt()
 
     override fun getItemOffsets(
@@ -19,7 +18,6 @@ class HorizontalSpaceItemDecoration(private val spaceInDp: Int) : RecyclerView.I
         val position = parent.getChildAdapterPosition(view)
         val itemCount = parent.adapter?.itemCount ?: 0
 
-        // Hanya tambahkan jarak jika bukan item terakhir
         if (position < itemCount - 1) {
             outRect.right = spaceInPx
         }

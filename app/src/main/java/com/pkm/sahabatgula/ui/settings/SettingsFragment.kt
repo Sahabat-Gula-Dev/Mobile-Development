@@ -207,7 +207,7 @@ class SettingsFragment : Fragment() {
             text = titleText
             gravity = android.view.Gravity.CENTER
             textSize = 18f
-            setTextColor(Color.BLACK)  // 🟡 Warna hitam
+            setTextColor(Color.BLACK)
             typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_semibold)
             setPadding(16, 0, 16, 8)
         }

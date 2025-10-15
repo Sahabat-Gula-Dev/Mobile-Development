@@ -193,11 +193,10 @@ class RegisterFragment : Fragment() {
                             stateDialog?.updateState(
                                 GlobalUiState.Success(
                                     title = "Login Google Berhasil",
-                                    message = "Selamat datang kembali!"
+                                    message = "Selamat datang kembali! Gluby sudah menunggu kamu"
                                 )
                             )
                             stateDialog?.dismissListener = {
-                                // stateDialog?.dismiss() // Opsional, listener biasanya dipanggil setelah dismiss
                                 viewLifecycleOwner.lifecycleScope.launchWhenResumed {
                                     findNavController().navigate(R.id.register_to_home)
                                 }
@@ -212,7 +211,6 @@ class RegisterFragment : Fragment() {
                                 )
                             )
                             stateDialog?.dismissListener = {
-                                // stateDialog?.dismiss() // Opsional
                                 viewLifecycleOwner.lifecycleScope.launchWhenResumed {
                                     findNavController().navigate(R.id.register_to_welcome_screen)
                                 }

@@ -86,9 +86,8 @@ class ActivityPagingAdapter(
                 binding.icPlusAddFood.visibility = View.GONE
 
                 binding.icArrowRight.setImageResource(R.drawable.arrow_down_custom_food)
-                binding.icArrowRight.setSize(36) // Ukuran normal saat expand
+                binding.icArrowRight.setSize(36)
 
-                // Isi data untuk view di dalam expanded_view
                 binding.tvFoodCaloriesOnExpand.text = "${activity.caloriesBurned.toInt()} kkal"
                 binding.tvDescFood.text = activity.description
                 Glide.with(itemView.context)

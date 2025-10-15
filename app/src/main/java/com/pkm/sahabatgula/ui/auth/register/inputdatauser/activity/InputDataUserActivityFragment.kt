@@ -1,5 +1,6 @@
 package com.pkm.sahabatgula.ui.auth.register.inputdatauser.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -93,6 +94,7 @@ class InputDataUserActivityFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateActivitySelection(selectedActivityLevel: String?){
         val isInactive = selectedActivityLevel == ActivityLevel.INACTIVE.value
         binding.chooseInactive.radioButton.isChecked = isInactive

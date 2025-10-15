@@ -62,11 +62,9 @@ class DetailFoodViewModel @Inject constructor(
         viewModelScope.launch {
             _logFoodStatus.value = Resource.Loading()
 
-            // Buat request body
             val foodItem = FoodItemRequest(foodId = foodId, portion = portion)
             val requestItems = listOf(foodItem)
 
-            // Panggil repository
             val result = logFoodRepository.logFood(requestItems)
             _logFoodStatus.value = result
         }

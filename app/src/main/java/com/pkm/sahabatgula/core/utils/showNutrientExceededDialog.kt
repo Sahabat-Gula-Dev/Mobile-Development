@@ -99,7 +99,6 @@ fun showNutrientExceededDialog(
     val container = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
-        // ❌ Jangan pakai match_parent di sini
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -120,7 +119,6 @@ fun showNutrientExceededDialog(
 
     val positiveButton = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
 
-// ambil parent view dari button (panel tombol)
     val buttonPanel = positiveButton.parent as? ViewGroup
     buttonPanel?.setBackgroundColor(
         ContextCompat.getColor(context, R.color.md_theme_onPrimary)

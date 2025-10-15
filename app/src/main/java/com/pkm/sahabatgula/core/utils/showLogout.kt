@@ -22,9 +22,8 @@ fun showLogoutConfirmationDialog(
     context: Context,
     onConfirm: () -> Unit
 ) {
-    // 🌟 Gambar Glubby di atas
     val imageView = ImageView(context).apply {
-        setImageResource(R.drawable.glubby_error) // ganti dengan asset glubby-mu
+        setImageResource(R.drawable.glubby_error)
         adjustViewBounds = true
         scaleType = ImageView.ScaleType.CENTER_INSIDE
         val size = context.resources.getDimensionPixelSize(R.dimen.dialog_image_size)
@@ -35,7 +34,6 @@ fun showLogoutConfirmationDialog(
         }
     }
 
-    // 📝 Title pakai spannable biar bisa bold
     val titleText = "Konfirmasi Logout"
     val spannableTitle = SpannableString(titleText).apply {
         setSpan(
@@ -55,7 +53,6 @@ fun showLogoutConfirmationDialog(
         typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_semibold)
     }
 
-    // 🧠 Message di bawahnya
     val messageView = TextView(context).apply {
         text = "Apakah kamu yakin ingin logout dari akun ini?"
         gravity = Gravity.CENTER
@@ -66,7 +63,6 @@ fun showLogoutConfirmationDialog(
         justificationMode = LineBreaker.JUSTIFICATION_MODE_NONE
     }
 
-    // 📦 Container
     val container = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
@@ -77,7 +73,6 @@ fun showLogoutConfirmationDialog(
         addView(messageView)
     }
 
-    // 🪄 Material Alert Dialog
     val dialog = MaterialAlertDialogBuilder(context)
         .setView(container)
         .setPositiveButton("Ya") { d, _ ->
@@ -91,7 +86,6 @@ fun showLogoutConfirmationDialog(
 
     dialog.show()
 
-    // Styling tombol (optional)
     dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)?.apply {
         setTypeface(typeface, Typeface.BOLD)
     }

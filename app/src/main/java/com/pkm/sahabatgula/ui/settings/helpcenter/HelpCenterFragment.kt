@@ -46,7 +46,7 @@ class HelpCenterFragment : Fragment() {
 
     private fun setupRecyclerView() {
         faqAdapter = FaqPagingDataAdapter()
-        binding.rvFaqs.apply { // Pastikan RecyclerView punya id 'recyclerView'
+        binding.rvFaqs.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = faqAdapter
         }

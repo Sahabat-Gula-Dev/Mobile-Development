@@ -44,7 +44,6 @@ class VerifyOtpForgotPassViewModel @Inject constructor(
     private val _effect: Channel<OtpForgotPassEffect> = Channel()
     val effect: Flow<OtpForgotPassEffect> = _effect.receiveAsFlow()
 
-    /** Mulai countdown timer 30 detik */
     fun startTimer(total: Int = 30) = viewModelScope.launch {
         _ui.value = OtpForgotPassViewState.Ticking(total)
         for (s in total - 1 downTo 1) {
@@ -54,7 +53,6 @@ class VerifyOtpForgotPassViewModel @Inject constructor(
         _ui.value = OtpForgotPassViewState.ReadyToResend
     }
 
-    /** Kirim ulang OTP */
     fun resendOtp() = viewModelScope.launch {
         if (_ui.value is OtpForgotPassViewState.Loading) return@launch
         _ui.value = OtpForgotPassViewState.Loading
@@ -71,7 +69,6 @@ class VerifyOtpForgotPassViewModel @Inject constructor(
         )
     }
 
-    /** Verifikasi kode OTP untuk reset password */
     fun verify(otpCode: String) = viewModelScope.launch {
         _ui.value = OtpForgotPassViewState.Loading
         val resource = repository.verifyResetOtp(email, otpCode)

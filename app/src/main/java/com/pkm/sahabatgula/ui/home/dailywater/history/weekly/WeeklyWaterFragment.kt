@@ -49,6 +49,7 @@ class WeeklyWaterFragment : Fragment() {
                 selectedEntry = e as? BarEntry
                 binding.weeklyChart.invalidate()
             }
+
             override fun onNothingSelected() {
                 selectedEntry = null
                 binding.weeklyChart.invalidate()
@@ -61,48 +62,39 @@ class WeeklyWaterFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is WeeklyWaterState.Loading -> {
-                            // tampilkan loading
-                        }
+                        is WeeklyWaterState.Loading -> {}
                         is WeeklyWaterState.Success -> {
                             setupBarChart(binding.weeklyChart, state.barData, state.xAxisLabels)
                         }
-                        is WeeklyWaterState.Error -> {
-                            // tampilkan pesan error
-                        }
+                        is WeeklyWaterState.Error -> {}
                     }
                 }
             }
         }
     }
 
-
     private fun setupBarChart(chart: BarChart, data: BarData, xAxisLabels: List<String>) {
         if (chart.data != null) {
             chart.data = data
-            chart.notifyDataSetChanged()  // Penting: beri tahu chart ada data baru
-            chart.invalidate()            // Render ulang chart
+            chart.notifyDataSetChanged()
+            chart.invalidate()
         } else {
             chart.data = data
             chart.invalidate()
         }
 
-        // Nonaktifkan interaksi
         chart.setTouchEnabled(true)
         chart.isDragEnabled = false
-        chart.setScaleEnabled(false) // <-- Menonaktifkan zoom
+        chart.setScaleEnabled(false)
         chart.isDoubleTapToZoomEnabled = false
         chart.setPinchZoom(false)
         chart.setExtraOffsets(10f, 0f, 0f, 8f)
 
-        // Konfigurasi umum
         chart.description.isEnabled = false
         chart.legend.isEnabled = false
 
-        // font
         val font = resources.getFont(R.font.jakarta_sans_family)
 
-        // Sumbu X (Horizontal)
         val xAxis = chart.xAxis
         xAxis.typeface = font
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -114,24 +106,19 @@ class WeeklyWaterFragment : Fragment() {
             }
         }
 
-        // Sumbu Y Kiri (Vertikal)
         val yAxisLeft = chart.axisLeft
         yAxisLeft.axisMinimum = 0f
         yAxisLeft.typeface = font
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.setDrawAxisLine(false)
 
-        // Sumbu Y Kanan
         chart.axisRight.isEnabled = false
-
-        // Refresh grafik untuk menampilkan data
         chart.invalidate()
     }
 
     fun refreshChartData() {
         viewModel.reloadWeeklyData()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

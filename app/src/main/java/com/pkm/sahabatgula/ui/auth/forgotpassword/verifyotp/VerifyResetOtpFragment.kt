@@ -96,7 +96,7 @@ class VerifyResetOtpFragment : Fragment() {
                                 stateDialog?.updateState(
                                     GlobalUiState.Error(
                                         title = "Verifikasi Gagal",
-                                        message = effect.message
+                                        message = "Kode OTP yang kamu masukkan salah atau sudah kadaluarsa. Coba kirim ulang kode."
                                     )
                                 )
                             }
@@ -104,7 +104,7 @@ class VerifyResetOtpFragment : Fragment() {
                                 stateDialog?.updateState(
                                     GlobalUiState.Success(
                                         title = "Kode telah dikirim ulang",
-                                        message = effect.message
+                                        message = "Gluby telah mengirim kode OTP baru. Cek Email kamu dan lanjutkan verifikasi."
                                     )
                                 )
                             }

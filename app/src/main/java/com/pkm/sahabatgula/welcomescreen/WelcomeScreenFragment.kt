@@ -39,9 +39,7 @@ class WelcomeScreenFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 binding.btnNext.isEnabled = false
                 try {
-                    // ambil profil terbaru; kalau offline, getOrFetchProfile bisa balikin cache kamu
                     val profile = sessionManager.getOrFetchProfile(apiService)
-
                     val goHome = profile != null && sessionManager.isProfileCompleted()
                     if (goHome) {
                         safeNavigate(R.id.action_welcome_screen_to_home_graph)
@@ -49,7 +47,6 @@ class WelcomeScreenFragment : Fragment() {
                         safeNavigate(R.id.action_welcome_screen_to_input_data_graph)
                     }
                 } catch (_: Exception) {
-                    // kalau gagal fetch profile, anggap belum lengkap ➜ ke input data
                     safeNavigate(R.id.action_welcome_screen_to_input_data_graph)
                 } finally {
                     binding.btnNext.isEnabled = true

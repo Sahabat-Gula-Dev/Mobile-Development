@@ -20,8 +20,6 @@ import androidx.core.graphics.toColorInt
 import java.time.YearMonth
 
 
-// Sealed class untuk menampung state UI, termasuk data grafik
-
 sealed class MonthlyActivityState {
     object Loading : MonthlyActivityState()
     data class Success(
@@ -48,7 +46,6 @@ class MonthlyActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = MonthlyActivityState.Loading
 
-            // Ambil data bulanan dari repository
             val monthlyData = homeRepository.observeMonthlySummary().firstOrNull()
 
             if (monthlyData.isNullOrEmpty()) {
@@ -61,11 +58,11 @@ class MonthlyActivityViewModel @Inject constructor(
     }
 
     private fun processDataForChart(monthlyData: List<SummaryEntity>) {
-        // Menggunakan YearMonth untuk bekerja dengan bulan
-        val currentMonth = YearMonth.now()
-        val locale = Locale.forLanguageTag("id-ID") // Locale Indonesia untuk nama bulan
 
-        // 1. Buat 7 slot untuk 7 bulan terakhir, diakhiri dengan bulan ini
+        val currentMonth = YearMonth.now()
+        val locale = Locale.forLanguageTag("id-ID")
+
+
         val monthSlots = (0..6).map { currentMonth.minusMonths(it.toLong()) }.reversed()
         val xAxisLabels = monthSlots.map {
             it.format(DateTimeFormatter.ofPattern("MMM", locale))
@@ -78,19 +75,15 @@ class MonthlyActivityViewModel @Inject constructor(
         val previousMonthColor = "#F4E3CD".toColorInt()
 
         monthSlots.forEachIndexed { index, yearMonth ->
-            // Format "yyyy-MM" untuk mencocokkan dengan data dari API/DB
             val monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
 
-            // Cari data yang cocok dengan slot bulan
             val dataForMonth = monthlyData.find { entity ->
-                // Pastikan date tidak null dan parse ke YearMonth
                 entity.date.let { YearMonth.parse(it, monthFormatter) } == yearMonth
             }
 
             val burnedAmount = dataForMonth?.burned ?: 0
             entries.add(BarEntry(index.toFloat(), burnedAmount.toFloat()))
 
-            // Logika pewarnaan dinamis
             if (yearMonth == currentMonth) {
                 barColors.add(currentMonthColor)
             } else {

@@ -29,7 +29,6 @@ class ArticleResultSearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ArticleResultSearchViewModel by viewModels()
-    private val args:ArticleResultSearchFragment by navArgs()
     private lateinit var articleAdapter: ArticlePagingDataAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -98,7 +97,7 @@ class ArticleResultSearchFragment : Fragment() {
                 binding.layoutEmpty.root.visibility = View.VISIBLE
                 binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
                 binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
-                binding.layoutEmpty.tvMessage.text = errorState.error.localizedMessage
+                binding.layoutEmpty.tvMessage.text = "Terjadi kesalahan, coba periksa koneksi internetmu lalu muat ulang halaman"
                 binding.rvSearchResult.visibility = View.GONE
                 binding.tvHeaderResult.visibility = View.GONE
                 binding.tvSubtitleResult.visibility = View.GONE
