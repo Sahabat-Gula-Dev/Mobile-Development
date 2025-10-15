@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.core.utils.showWaterDialog
 import com.pkm.sahabatgula.databinding.FragmentWaterBinding
 import com.pkm.sahabatgula.ui.home.dailywater.history.WaterChartPagerAdapter
 import com.pkm.sahabatgula.ui.home.dailywater.history.monthly.MonthlyWaterFragment
@@ -83,30 +84,29 @@ class WaterFragment : Fragment() {
                     }
 
                     if (currentState.filledGlasses >= 8) {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setIcon(R.drawable.glubby_success)
-                            .setTitle("Wah, Kamu Luar Biasa!")
-                            .setMessage("Kamu sudah mencapai target minum hari ini! Minum satu gelas lagi akan buat tubuhmu makin segar. Mau lanjut minum?")
-                            .setPositiveButton("Ya, Tambah") { dialog, _ ->
-                                viewModel.addOneGlassOfWater()
-                                triggerChartRefresh()
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton("Batal") { dialog, _ -> dialog.dismiss() }
-                            .show()
+                        showWaterDialog(
+                            context = requireContext(),
+                            imageRes = R.drawable.glubby_success,
+                            title = "Wah, Kamu Luar Biasa!",
+                            subtitle = "Kamu sudah mencapai target minum hari ini! Minum satu gelas lagi akan buat tubuhmu makin segar. Mau lanjut minum?",
+                            positiveText = "Ya, Tambah"
+                        ) {
+                            viewModel.addOneGlassOfWater()
+                            triggerChartRefresh()
+                        }
                     } else {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setIcon(R.drawable.glubby_water)
-                            .setTitle("Yuk Tambah 1 Gelas Lagi ")
-                            .setMessage("Kamu mau minum 250 mL? Gluby bantu catat ya?")
-                            .setPositiveButton("Tambah") { dialog, _ ->
-                                viewModel.addOneGlassOfWater()
-                                triggerChartRefresh()
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton("Batal") { dialog, _ -> dialog.dismiss() }
-                            .show()
+                        showWaterDialog(
+                            context = requireContext(),
+                            imageRes = R.drawable.glubby_water,
+                            title = "Yuk Tambah 1 Gelas Lagi",
+                            subtitle = "Kamu mau minum 250 mL? Glubby bantu catat ya?",
+                            positiveText = "Tambah"
+                        ) {
+                            viewModel.addOneGlassOfWater()
+                            triggerChartRefresh()
+                        }
                     }
+
                 }
             }
         }
@@ -116,7 +116,6 @@ class WaterFragment : Fragment() {
                 viewModel.waterState.collect { state ->
                     when (state) {
                         is WaterState.Loading -> {
-                            // Tampilkan UI loading jika perlu
                         }
                         is WaterState.Success -> {
                             binding.piDailyWater.apply {
