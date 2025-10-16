@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.data.remote.model.CarouselItem
 import com.pkm.sahabatgula.databinding.ItemCarouselBinding
 
@@ -23,6 +24,7 @@ class CarouselAdapter(
         val item = items[position]
         Glide.with(holder.itemView.context)
             .load(item.imageUrl)
+            .placeholder(R.drawable.image_placeholder)
             .into(holder.binding.imgCarouselImage)
 
         holder.itemView.setOnClickListener {

@@ -125,7 +125,7 @@ class InputDataUserBloodPressureFragment : Fragment() {
             if (currentBloodPressure != null) {
                 findNavController().navigate(R.id.input_blood_pressure_to_input_high_blood_glucose)
             } else {
-                Toast.makeText(requireContext(), "Silakan memilih terlebih dahulu", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Silakan memilih terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
         }
     }

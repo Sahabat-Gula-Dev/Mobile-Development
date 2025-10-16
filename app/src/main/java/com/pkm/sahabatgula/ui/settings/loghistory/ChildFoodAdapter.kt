@@ -28,7 +28,7 @@ class ChildFoodAdapter(
 
                 Glide.with(root.context)
                     .load(item.photoUrl)
-                    .placeholder(R.drawable.image_placeholder)
+                    .placeholder(R.drawable.image_placeholder_color)
                     .into(imgFood)
 
                 expandedView.visibility = if (item.isExpanded) View.VISIBLE else View.GONE

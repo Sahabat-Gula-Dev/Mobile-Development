@@ -70,10 +70,6 @@ class InputDataUserHistoryFamilyFragment : Fragment() {
         binding.chooseFirstFam.tvSubtitleChoice.visibility =
             if (isFirstSelected) View.VISIBLE else View.GONE
 
-        // memberikan nilai default true pada pilihan 1
-        binding.chooseFirstFam.radioButton.isChecked = true
-
-
         val isSecondSelected = selectedDiabetesFam == DiabetesFamily.SECONDFAM.value
         binding.chooseSecondFam.radioButton.isChecked = isSecondSelected
         binding.chooseSecondFam.cardChoice.setCardBackgroundColor(
@@ -132,7 +128,7 @@ class InputDataUserHistoryFamilyFragment : Fragment() {
                 findNavController().navigate(R.id.input_history_family_to_input_user_activity)
             }
             else {
-                Toast.makeText(requireContext(), "Silakan Lengkapi Data Anda", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Silakan Lengkapi Data Anda", Toast.LENGTH_SHORT).show()
             }
         }
     }

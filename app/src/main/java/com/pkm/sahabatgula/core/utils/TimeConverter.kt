@@ -92,20 +92,19 @@ fun formatEventDate(isoDate: String?): String {
 }
 
 
+@Suppress("DEPRECATION")
 fun dateFormatterHistory(input: String): String {
-    // Parse tanggal dari format "yyyy-MM-dd"
     val parsedDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-    // Formatter untuk format output "EEEE, dd MMMM yyyy"
     val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("id", "ID"))
-    val formattedDate = parsedDate.format(outputFormatter)
-    // Cek apakah tanggal ini adalah hari ini
+    val todayFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
     val today = LocalDate.now()
     return if (parsedDate == today) {
-        "$formattedDate (Hari Ini)"
+        "Hari ini, ${parsedDate.format(todayFormatter)}"
     } else {
-        formattedDate
+        parsedDate.format(outputFormatter)
     }
 }
+
 
 fun convertUtcToLocalDateOnly(utcString: String): String {
     val utcFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME

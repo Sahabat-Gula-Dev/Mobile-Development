@@ -99,7 +99,7 @@ class DetailFoodFragment : Fragment() {
 
             Glide.with(requireContext())
                 .load(foodPhoto)
-                .placeholder(R.drawable.image_placeholder)
+                .placeholder(R.drawable.image_placeholder_color)
                 .into(imgFood)
         }
 
@@ -220,7 +220,7 @@ class DetailFoodFragment : Fragment() {
         }
 
         val messageView = TextView(context).apply {
-            text = "Kamu akan mencatat $foodName dengan total kalori $calories kkal"
+            text = "Kamu akan mencatat $foodName dengan total kalori $calories kkal. Pastikan ini tidak melebihi baats konsumsimu ya!"
             gravity = Gravity.CENTER
             textSize = 14f
             setTextColor(Color.BLACK)

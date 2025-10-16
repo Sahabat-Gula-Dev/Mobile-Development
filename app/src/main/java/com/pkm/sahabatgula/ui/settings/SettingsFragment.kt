@@ -194,7 +194,7 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        val titleText = SpannableString("Konfirmasi Logout").apply {
+        val titleText = SpannableString("Kamu mau pergi?").apply {
             setSpan(
                 StyleSpan(Typeface.BOLD),
                 0,
@@ -213,7 +213,7 @@ class SettingsFragment : Fragment() {
         }
 
         val messageView = TextView(context).apply {
-            text = "Apakah kamu yakin ingin logout dari akun ini?"
+            text = "Sebelum kamu logout, Gluby ingin mengingatkan bahwa setiap langkah kecil menuju hidup sehat sangat berarti."
             gravity = android.view.Gravity.CENTER
             textSize = 14f
             setTextColor(Color.BLACK)

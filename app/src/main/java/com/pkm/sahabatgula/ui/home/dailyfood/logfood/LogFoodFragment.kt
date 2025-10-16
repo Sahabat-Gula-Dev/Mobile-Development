@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentScanBinding
 class LogFoodFragment : Fragment() {
 
@@ -25,6 +27,8 @@ class LogFoodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
 
         val toolbar = binding.topAppBar
         toolbar.setNavigationOnClickListener {

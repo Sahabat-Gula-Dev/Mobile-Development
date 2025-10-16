@@ -86,7 +86,7 @@ class InputDataUserDailyConsumptionFragment : Fragment() {
             findNavController().navigate(R.id.input_daily_consumption_to_input_history_family)
             }
                 else {
-                Toast.makeText(requireContext(), "Mohon Lengkapi Data Anda", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Mohon Lengkapi Data Anda", Toast.LENGTH_SHORT).show()
                 }
         }
     }

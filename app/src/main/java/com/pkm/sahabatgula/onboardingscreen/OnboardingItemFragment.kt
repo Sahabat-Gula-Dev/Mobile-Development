@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentOnboardingItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +37,7 @@ class OnboardingItemFragment : Fragment() {
         _binding = FragmentOnboardingItemBinding.inflate(inflater, container, false)
         Glide.with(this)
             .load(imageResId)
+            .placeholder(R.drawable.image_placeholder)
             .into(binding.imgSlide)
 
         binding.tvTitle.text = title

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.data.remote.model.FoodsItem
 import com.pkm.sahabatgula.databinding.ItemCardFoodBinding
 
@@ -37,6 +38,7 @@ class ResultScanAdapter(private val onItemClicked: (FoodsItem) -> Unit) :
             binding.tvFoodDesc.text = food.description
             Glide.with(binding.root.context)
                 .load(food.photoUrl)
+                .placeholder(R.drawable.image_placeholder_color)
                 .into(binding.imgFood)
         }
     }

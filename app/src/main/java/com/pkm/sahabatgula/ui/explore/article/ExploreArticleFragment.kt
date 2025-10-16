@@ -113,7 +113,7 @@ class ExploreArticleFragment : Fragment() {
                         setupChipGroup(resource.data)
                     }
                     is Resource.Error -> {
-                        Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Terjadi kesalahan saat memuat data kategori", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> { /* Tampilkan loading jika perlu */ }
                 }

@@ -3,14 +3,8 @@ package com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +17,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -58,7 +53,7 @@ class LogManualCustomFoodFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLogManualCustomFoodBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -66,35 +61,33 @@ class LogManualCustomFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val toolbar = binding.topAppBar
-        toolbar.setNavigationOnClickListener {
+        binding.topAppBar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
         viewModel.loadProfile()
         lifecycleScope.launchWhenStarted {
             viewModel.profile.collect { profile ->
-                if (profile != null) {
-                    maxSugar = profile.max_sugar
-                    maxCalories = profile.max_calories
+                profile?.let {
+                    maxSugar = it.max_sugar
+                    maxCalories = it.max_calories
                 }
             }
         }
 
-        binding.btnLogThisFood.setOnClickListener {
-            viewModel.logSelectedFoods()
-        }
+        setupRecyclerView()
+        setupSearch()
+        setupChipsObserver()
+        setupPagingDataObserver()
+        setupLogStatusObserver()
+        setupButtonStateObserver()
 
         binding.btnLogThisFood.setOnClickListener {
             val (names, totalCalories) = viewModel.getSelectedFoodNamesAndCalories()
-
             if (names.isEmpty()) {
-                Toast.makeText(requireContext(), "Pilih minimal satu makanan.", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Pilih minimal satu makanan.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             showMultipleFoodConfirmationDialog(names, totalCalories) {
                 viewModel.logSelectedFoods()
             }
@@ -105,40 +98,33 @@ class LogManualCustomFoodFragment : Fragment() {
                 is Resource.Success -> {
                     lifecycleScope.launch {
                         val food = viewModel.getSelectedFoodsSummaryFromDetail()
-                        val sugarConsumed = food?. sugar ?: 0.0
-                        val caloriesConsumed = food?.calories?.toInt() ?: 0
-
                         val sugarPercent = if (maxSugar != null && maxSugar != 0.0) {
-                            (sugarConsumed / maxSugar!!) * 100
+                            (food.sugar / maxSugar!!) * 100
                         } else 0.0
-
                         val caloriesPercent = if (maxCalories != null && maxCalories != 0) {
-                            (caloriesConsumed.toDouble() / maxCalories!!) * 100
+                            (food.calories.toDouble() / maxCalories!!) * 100
                         } else 0.0
 
-                        val sugarPercentRounded = String.format("%.0f", sugarPercent)
-                        val caloriesPercentRounded = String.format("%.0f", caloriesPercent)
-
-                        val personalizedMessage = "Saat ini kamu telah mengkonsumsi gula sebanyak $sugarPercentRounded% " + "dan kalori sebanyak $caloriesPercentRounded% dari batas konsumsi harianmu."
+                        val personalizedMessage = "Saat ini kamu telah mengkonsumsi gula sebanyak ${sugarPercent.toInt()}% " +
+                                "dan kalori sebanyak ${caloriesPercent.toInt()}% dari batas konsumsi harianmu."
 
                         showLogFoodStateDialog(
                             DialogFoodUiState.Success(
                                 title = "Yey! Sudah Tersimpan",
                                 message = personalizedMessage,
                                 imageRes = R.drawable.glubby_food,
-                                calorieValue = food?.calories?.toInt(),
-                                carbo = food?.carbo?.toInt(),
-                                protein = food?.protein?.toInt(),
-                                fat = food?.fat?.toInt(),
-                                sugar = food?.sugar ?: 0.0,
-                                sodium = food?.sodium ?: 0.0,
-                                fiber = food?.fiber ?: 0.0,
-                                kalium = food?.kalium ?: 0.0
+                                calorieValue = food.calories,
+                                carbo = food.carbo,
+                                protein = food.protein,
+                                fat = food.fat,
+                                sugar = food.sugar,
+                                sodium = food.sodium,
+                                fiber = food.fiber,
+                                kalium = food.kalium
                             )
                         )
                     }
                 }
-
                 is Resource.Error -> {
                     showLogFoodStateDialog(
                         DialogFoodUiState.Error(
@@ -148,18 +134,9 @@ class LogManualCustomFoodFragment : Fragment() {
                         )
                     )
                 }
-
                 is Resource.Loading -> {}
             }
         }
-
-
-        setupRecyclerView()
-        setupSearch()
-        setupChipsObserver()
-        setupPagingDataObserver()
-        setupLogStatusObserver()
-        setupButtonStateObserver()
     }
 
     private fun setupRecyclerView() {
@@ -172,29 +149,40 @@ class LogManualCustomFoodFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+
+        (binding.rvCustomFood.itemAnimator as? androidx.recyclerview.widget.SimpleItemAnimator)
+            ?.supportsChangeAnimations = false
+
         pagingAdapter.addLoadStateListener { loadStates ->
-            val isListEmpty = pagingAdapter.itemCount == 0 &&
-                    loadStates.refresh is androidx.paging.LoadState.NotLoading
+            val isLoading = loadStates.refresh is androidx.paging.LoadState.Loading
+            val isError = loadStates.refresh is androidx.paging.LoadState.Error
+            val isEmpty = pagingAdapter.itemCount == 0 && loadStates.refresh is androidx.paging.LoadState.NotLoading
 
-            if (isListEmpty) {
-                // Tidak ada hasil pencarian
-                binding.layoutEmpty.root.visibility = View.VISIBLE
-                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
-                binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
-                binding.layoutEmpty.tvMessage.text = "Kami tidak menemukan apapun untuk pencarian ini. Coba gunakan kata kunci lain."
-                binding.rvCustomFood.visibility = View.GONE
-            } else {
-                binding.layoutEmpty.root.visibility = View.GONE
-                binding.rvCustomFood.visibility = View.VISIBLE
-            }
-
-            // Kalau error saat load
-            val errorState = loadStates.refresh as? androidx.paging.LoadState.Error
-            if (errorState != null) {
-                binding.layoutEmpty.root.visibility = View.VISIBLE
-                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
-                binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
-                binding.layoutEmpty.tvMessage.text = "Pencarian makanan tidak dapat dilakukan, periksa koneksi internet kamu atau muat ulang halaman"
+            when {
+                isLoading -> {
+                    binding.layoutEmpty.root.visibility = View.GONE
+                    binding.rvCustomFood.visibility = View.GONE
+                }
+                isError -> {
+                    binding.layoutEmpty.root.visibility = View.VISIBLE
+                    binding.rvCustomFood.visibility = View.GONE
+                    binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                    binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
+                    binding.layoutEmpty.tvMessage.text =
+                        "Pencarian makanan tidak dapat dilakukan, periksa koneksi internet kamu atau muat ulang halaman"
+                }
+                isEmpty -> {
+                    binding.layoutEmpty.root.visibility = View.VISIBLE
+                    binding.rvCustomFood.visibility = View.GONE
+                    binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                    binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
+                    binding.layoutEmpty.tvMessage.text =
+                        "Kami tidak menemukan apapun untuk pencarian ini. Coba gunakan kata kunci lain."
+                }
+                else -> {
+                    binding.layoutEmpty.root.visibility = View.GONE
+                    binding.rvCustomFood.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -214,10 +202,7 @@ class LogManualCustomFoodFragment : Fragment() {
                     binding.chipGroupFoodCategories.removeAllViews()
                     addCategoryChips(resource.data)
                 }
-
-                is Resource.Error -> Toast.makeText(context, resource.message, Toast.LENGTH_SHORT)
-                    .show()
-
+                is Resource.Error -> Toast.makeText(context, "Terjadi kesalahan saat memuat kategori", Toast.LENGTH_SHORT).show()
                 is Resource.Loading -> {}
             }
         }
@@ -343,11 +328,7 @@ class LogManualCustomFoodFragment : Fragment() {
         viewModel.logFoodStatus.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> binding.btnLogThisFood.isEnabled = false
-                is Resource.Success -> {
-                    binding.btnLogThisFood.isEnabled = true
-                    binding.btnLogThisFood.text = "Catat Aktivitas"
-                }
-                is Resource.Error -> {
+                is Resource.Success, is Resource.Error -> {
                     binding.btnLogThisFood.isEnabled = true
                     binding.btnLogThisFood.text = "Catat Aktivitas"
                 }
@@ -356,8 +337,8 @@ class LogManualCustomFoodFragment : Fragment() {
     }
 
     private fun setupButtonStateObserver() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.selectedFoodIds.collect { selectedIds ->
+        lifecycleScope.launchWhenStarted {
+            viewModel.selectedFoodIdsState.collect { selectedIds ->
                 binding.btnLogThisFood.isEnabled = selectedIds.isNotEmpty()
             }
         }
@@ -390,15 +371,13 @@ class LogManualCustomFoodFragment : Fragment() {
             setPadding(16, 0, 16, 8)
         }
 
-        // Format teks dengan angka kalori yang di-bold dan merah
         val foodsName = foodNames.joinToString(", ")
         val calorieText = "$totalCalories kkal"
 
         val fullText =
-            "Kamu akan mencatat $foodsName dengan total kalori sebanyak $calorieText. Lanjutkan?"
+            "Kamu akan mencatat $foodsName dengan total kalori sebanyak $calorieText. Pastikan ini tidak melebihi batas konsumsimu ya!"
 
         val spannable = android.text.SpannableString(fullText)
-
         val calorieStart = fullText.indexOf(calorieText)
         val calorieEnd = calorieStart + calorieText.length
 
@@ -408,7 +387,6 @@ class LogManualCustomFoodFragment : Fragment() {
             calorieEnd,
             android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-
         spannable.setSpan(
             android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
             calorieStart,
@@ -454,7 +432,6 @@ class LogManualCustomFoodFragment : Fragment() {
         (positiveButton.parent as? View)?.setBackgroundColor(onPrimary)
         positiveButton.setBackgroundColor(Color.TRANSPARENT)
         negativeButton.setBackgroundColor(Color.TRANSPARENT)
-
         positiveButton.setTextColor(Color.BLACK)
         negativeButton.setTextColor(Color.BLACK)
         positiveButton.typeface = customFont

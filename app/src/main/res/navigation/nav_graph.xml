@@ -234,6 +234,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/log_food_fragment"
+        android:name="com.pkm.sahabatgula.ui.home.dailyfood.FoodFragment">
+        <action
+            android:id="@+id/action_log_food_to_log_history"
+            app:destination="@id/log_history_fragment"/>
+        <action
+            android:id="@+id/action_food_fragment_to_add_log_food"
+            app:destination="@id/add_log_food_fragment"/>
+    </fragment>
+
+
+    <fragment
         android:id="@+id/log_fat_fragment"
         android:name="com.pkm.sahabatgula.ui.home.dailyfat.FatFragment">
         <action
@@ -279,7 +291,9 @@
         android:name="com.pkm.sahabatgula.ui.home.dailyfood.detailfood.DetailFoodFragment">
         <action
             android:id="@+id/action_detail_food_fragment_to_home_graph"
-            app:destination="@id/home_graph"/>
+            app:destination="@id/home_graph"
+            app:popUpTo="@id/scan_graph"
+            app:popUpToInclusive="true" />
         <argument
             android:name="foodItem"
             app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"

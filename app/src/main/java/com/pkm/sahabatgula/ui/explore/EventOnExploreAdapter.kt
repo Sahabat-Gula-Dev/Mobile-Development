@@ -49,7 +49,7 @@ class EventOnExploreAdapter(
             binding.apply {
                 Glide.with(itemView.context)
                     .load(event.coverUrl)
-                    .placeholder(R.drawable.img_event)
+                    .placeholder(R.drawable.image_placeholder)
                     .error(R.drawable.img_event)
                     .into(imgArticle)
 

@@ -99,8 +99,8 @@ class WaterFragment : Fragment() {
                             context = requireContext(),
                             imageRes = R.drawable.glubby_water,
                             title = "Yuk Tambah 1 Gelas Lagi",
-                            subtitle = "Kamu mau minum 250 mL? Glubby bantu catat ya?",
-                            positiveText = "Tambah"
+                            subtitle = "Kamu mau minum 250 mL? Satu langkah kecil untuk hidrasi yang lebih baik. Glubby bantu catat ya?",
+                            positiveText = "Ya"
                         ) {
                             viewModel.addOneGlassOfWater()
                             triggerChartRefresh()
@@ -154,7 +154,7 @@ class WaterFragment : Fragment() {
 
                         }
                         is WaterState.Error -> {
-                            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -172,7 +172,7 @@ class WaterFragment : Fragment() {
                             showLogWaterStateDialog(
                                 DialogFoodUiState.Success(
                                     title = "Yey! Satu Gelas Lagi",
-                                    message = "Ternyata bukan hanya niat, sedikit lagi akan menjadi kebiasaan yang hebat",
+                                    message = "Ternyata bukan hanya niat, sedikit lagi akan menjadi kebiasaan yang hebat. Kamu keren!",
                                     imageRes = R.drawable.glubby_water,
                                     calorieValue = null
                                 )
@@ -195,7 +195,7 @@ class WaterFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorEvent.collect { message ->
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Terjadi kesalahan saat memuat halaman event", Toast.LENGTH_SHORT).show()
                 }
             }
         }

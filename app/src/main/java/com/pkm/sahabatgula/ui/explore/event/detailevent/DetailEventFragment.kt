@@ -145,7 +145,7 @@ class DetailEventFragment : Fragment() {
                             eventAdapter.submitList(resource.data)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Terjadi kesalahan saat memuat data event", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

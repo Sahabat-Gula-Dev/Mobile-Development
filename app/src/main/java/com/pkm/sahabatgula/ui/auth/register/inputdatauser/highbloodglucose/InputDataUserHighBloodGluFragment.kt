@@ -98,7 +98,6 @@ class InputDataUserHighBloodGluFragment : Fragment() {
         binding.chooseNoBloodGlucose.tvSubtitleChoice.visibility =
             if(isNoSelected) View.VISIBLE
             else View.GONE
-
     }
 
     private fun setupClickListener() {
@@ -121,7 +120,7 @@ class InputDataUserHighBloodGluFragment : Fragment() {
             if(currentBloodGlucose !=null) {
                 findNavController().navigate(R.id.input_high_blood_glucose_to_input_daily_consumption)
             } else {
-                Toast.makeText(requireContext(), "Silakan Melengkapi Data Anda", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Silakan Melengkapi Data Anda", Toast.LENGTH_SHORT).show()
             }
         }
 

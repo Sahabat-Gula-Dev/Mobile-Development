@@ -9,26 +9,15 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.core.utils.SearchParameters
 import com.pkm.sahabatgula.data.remote.model.ActivitiesDataItem
 import com.pkm.sahabatgula.data.remote.model.ActivityCategories
-import com.pkm.sahabatgula.data.remote.model.FoodItem
-import com.pkm.sahabatgula.data.remote.model.LogActivityItem
 import com.pkm.sahabatgula.data.remote.model.LogActivityItemRequest
 import com.pkm.sahabatgula.data.repository.LogActivityRepository
-import com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood.LogManualCustomFoodViewModel.SelectedFoodSummary
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.map
-import kotlin.text.contains
-
 
 @HiltViewModel
 class LogActivityViewModel @Inject constructor(
@@ -39,13 +28,15 @@ class LogActivityViewModel @Inject constructor(
     val categories: LiveData<Resource<List<ActivityCategories>>> = _categories
 
     private val _currentQuery = MutableStateFlow<String?>(null)
-    val _currentCategory = MutableStateFlow<Int?>(null)
+    private val _currentCategory = MutableStateFlow<Int?>(null)
 
-    private val _selectedActivityIds = MutableStateFlow<Set<String>>(emptySet())
-    val selectedActivityIds = _selectedActivityIds
-    private val _expandedActivityId = MutableStateFlow<String?>(null)
+    private val selectedActivityIds = mutableSetOf<String>()
+    private var expandedActivityId: String? = null
 
-    val _logActivityStatus = MutableLiveData<Resource<Unit>>()
+    private val _selectedActivityIdsState = MutableStateFlow<Set<String>>(emptySet())
+    val selectedActivityIdsState: StateFlow<Set<String>> = _selectedActivityIdsState
+
+    private val _logActivityStatus = MutableLiveData<Resource<Unit>>()
     val logActivityStatus: LiveData<Resource<Unit>> = _logActivityStatus
 
     private val cachedActivityList = mutableListOf<ActivitiesDataItem>()
@@ -54,64 +45,51 @@ class LogActivityViewModel @Inject constructor(
         fetchCategories()
     }
 
-    fun toggleActivitySelection(activityItem: ActivitiesDataItem) {
-        val currentSelected = _selectedActivityIds.value.toMutableSet()
-        if (currentSelected.contains(activityItem.id)) {
-            currentSelected.remove(activityItem.id)
-        } else {
-            currentSelected.add(activityItem.id)
-        }
-        _selectedActivityIds.value = currentSelected
-    }
-
-    fun getSelectedActivityNamesAndCalories(): Pair<List<String>, Int> {
-        val selectedIds = _selectedActivityIds.value
-        val allActivities = activityPagingData
-        return cachedActivityList
-            .filter { selectedIds.contains(it.id) }
-            .let { selectedActivities ->
-                val names = selectedActivities.map { it.name }
-                val totalCalories = selectedActivities.sumOf { it.caloriesBurned.toInt() }
-                names to totalCalories
-            }
-    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val activityPagingData: Flow<PagingData<ActivitiesDataItem>> = combine(
         _currentQuery,
-        _currentCategory,
-        _selectedActivityIds,
-        _expandedActivityId
-    ) { query, categoryId, selectedIds, expandedId ->
-        SearchParameters(query, categoryId, selectedIds, expandedId)
-    }.flatMapLatest { params ->
-        logActivityRepository.getActivityPaginated(null, params.categoryId) // ⬅️ kirim null agar backend tidak filter semua field
+        _currentCategory
+    ) { query, categoryId ->
+        query to categoryId
+    }.flatMapLatest { (query, categoryId) ->
+        logActivityRepository.getActivityPaginated(query, categoryId)
             .map { pagingData ->
-                pagingData
-                    .filter { activityItem ->
-                        params.query.isNullOrBlank() ||
-                                activityItem.name.contains(params.query!!, ignoreCase = true)
-                    }
-                    .map { foodItem ->
-                        val updated = foodItem.copy(
-                            isSelected = params.selectedIds.contains(foodItem.id),
-                            isExpanded = foodItem.id == params.expandedId
-                        )
+                pagingData.filter { item ->
+                    query.isNullOrBlank() || item.name.contains(query, ignoreCase = true)
+                }.map { item ->
+                    item.copy(
+                        isSelected = selectedActivityIds.contains(item.id),
+                        isExpanded = item.id == expandedActivityId
+                    ).also { updated ->
                         if (cachedActivityList.none { it.id == updated.id }) {
                             cachedActivityList.add(updated)
                         }
-                        updated
                     }
+                }
             }
+    }.cachedIn(viewModelScope)
+
+    fun toggleActivitySelection(activityItem: ActivitiesDataItem) {
+        if (selectedActivityIds.contains(activityItem.id)) {
+            selectedActivityIds.remove(activityItem.id)
+            activityItem.isSelected = false
+        } else {
+            selectedActivityIds.add(activityItem.id)
+            activityItem.isSelected = true
+        }
+        _selectedActivityIdsState.value = selectedActivityIds.toSet()
     }
 
     fun onExpandClicked(activityItem: ActivitiesDataItem) {
-        _expandedActivityId.value = if (_expandedActivityId.value == activityItem.id) {
+        expandedActivityId = if (expandedActivityId == activityItem.id) {
+            activityItem.isExpanded = false
             null
         } else {
+            activityItem.isExpanded = true
             activityItem.id
         }
     }
+
     private fun fetchCategories() {
         viewModelScope.launch {
             _categories.postValue(Resource.Loading())
@@ -129,33 +107,35 @@ class LogActivityViewModel @Inject constructor(
 
     fun logSelectedActivities() {
         viewModelScope.launch {
-            val selectedIds = _selectedActivityIds.value
-            if (selectedIds.isEmpty()) {
+            if (selectedActivityIds.isEmpty()) {
                 _logActivityStatus.value = Resource.Error("Pilih minimal satu aktivitas.")
                 return@launch
             }
             _logActivityStatus.value = Resource.Loading()
 
-            val requestItems = selectedIds.map { activityId ->
-                LogActivityItemRequest(activityId = activityId) // porsi default adalah 1
+            val requestItems = selectedActivityIds.map { activityId ->
+                LogActivityItemRequest(activityId = activityId)
             }
-
             val result = logActivityRepository.logActivity(requestItems)
             _logActivityStatus.value = result
         }
     }
 
+    fun getSelectedActivityNamesAndCalories(): Pair<List<String>, Int> {
+        val selected = cachedActivityList.filter { selectedActivityIds.contains(it.id) }
+        val names = selected.map { it.name }
+        val totalCalories = selected.sumOf { it.caloriesBurned.toInt() }
+        return names to totalCalories
+    }
+
     fun getSelectedActivitiesSummary(): SelectedActivitySummary {
-        val selectedIds = _selectedActivityIds.value
-        val selectedActivities = cachedActivityList.filter { selectedIds.contains(it.id) }
-
-        val totalCalories = selectedActivities.sumOf { it.caloriesBurned }
-
+        val selected = cachedActivityList.filter { selectedActivityIds.contains(it.id) }
+        val totalCalories = selected.sumOf { it.caloriesBurned }
         return SelectedActivitySummary(
-            totalCalories = totalCalories,
-            name = selectedActivities.firstOrNull()?.name ?: "",
-            duration = selectedActivities.firstOrNull()?.duration ?: 0,
-            durationUnit = selectedActivities.firstOrNull()?.durationUnit ?: ""
+            name = selected.firstOrNull()?.name ?: "",
+            duration = selected.firstOrNull()?.duration ?: 0,
+            durationUnit = selected.firstOrNull()?.durationUnit ?: "",
+            totalCalories = totalCalories
         )
     }
 
@@ -165,6 +145,4 @@ class LogActivityViewModel @Inject constructor(
         val durationUnit: String,
         val totalCalories: Int
     )
-
-
 }

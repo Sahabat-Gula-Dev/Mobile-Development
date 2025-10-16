@@ -12,23 +12,21 @@ import com.pkm.sahabatgula.core.utils.setSize
 import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.databinding.ItemCardCustomFoodBinding
 
-class CustomFoodPagingAdapter (
+class CustomFoodPagingAdapter(
     private val onSelectClick: (FoodItem) -> Unit,
     private val onExpandClick: (FoodItem) -> Unit
-): PagingDataAdapter<FoodItem, CustomFoodPagingAdapter.FoodCustomViewHolder>(FOOD_COMPARATOR) {
+) : PagingDataAdapter<FoodItem, CustomFoodPagingAdapter.FoodCustomViewHolder>(FOOD_COMPARATOR) {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ):FoodCustomViewHolder {
-        val binding = ItemCardCustomFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FoodCustomViewHolder(binding, onSelectClick, onExpandClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodCustomViewHolder {
+        val binding = ItemCardCustomFoodBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return FoodCustomViewHolder(binding, onSelectClick, onExpandClick, this)
     }
 
-    override fun onBindViewHolder(
-        holder: FoodCustomViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: FoodCustomViewHolder, position: Int) {
         val foodItem = getItem(position)
         if (foodItem != null) {
             holder.bind(foodItem)
@@ -38,33 +36,37 @@ class CustomFoodPagingAdapter (
     class FoodCustomViewHolder(
         private val binding: ItemCardCustomFoodBinding,
         private val onSelectClick: (FoodItem) -> Unit,
-        private val onExpandClick: (FoodItem) -> Unit
+        private val onExpandClick: (FoodItem) -> Unit,
+        private val adapter: CustomFoodPagingAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private var currentFood: FoodItem? = null
 
         init {
             binding.icPlusAddFood.setOnClickListener {
-                currentFood?.let { onSelectClick(it) }
-            }
-
-            val expandListener = View.OnClickListener {
-                if (currentFood?.isSelected == false) {
-                    currentFood?.let { onExpandClick(it) }
+                currentFood?.let {
+                    onSelectClick(it)
+                    adapter.notifyItemChanged(bindingAdapterPosition)
                 }
             }
 
-            binding.icArrowRight.setOnClickListener(expandListener)
+            binding.icArrowRight.setOnClickListener {
+                currentFood?.let {
+                    onExpandClick(it)
+                    adapter.notifyItemChanged(bindingAdapterPosition)
+                }
+            }
         }
 
         fun bind(food: FoodItem) {
             currentFood = food
 
-            val servingUnit = food.servingUnit
-            val foodServingUnit = servingUnit?.replaceFirstChar { it.uppercase() }
-            binding.tvTitleCustomFoodCard.text = "${food.name} ${food.servingSize} ${foodServingUnit} ${food.weightSize} ${food.weightUnit}"
+            val servingUnit = food.servingUnit?.replaceFirstChar { it.uppercase() } ?: ""
+            val titleText = "${food.name} ${food.servingSize} $servingUnit ${food.weightSize} ${food.weightUnit}"
+
+            binding.tvTitleCustomFoodCard.text = titleText
+            binding.tvTitleCustomFoodExpand.text = titleText
             binding.tvFoodCalories.text = "${food.calories.toInt()} kkal"
-            binding.tvTitleCustomFoodExpand.text = "${food.name} ${food.servingSize} ${foodServingUnit} ${food.weightSize} ${food.weightUnit}"
 
             if (food.isSelected) {
                 binding.icPlusAddFood.setImageResource(R.drawable.ic_checked)
@@ -84,17 +86,18 @@ class CustomFoodPagingAdapter (
 
                 binding.tvFoodCaloriesOnExpand.text = "${food.calories.toInt()} kkal"
                 binding.tvDescFood.text = food.description
+
                 Glide.with(itemView.context)
                     .load(food.photoUrl)
-                    .placeholder(R.drawable.image_placeholder)
+                    .placeholder(R.drawable.image_placeholder_color)
                     .into(binding.imgFood)
 
             } else {
-                binding.tvTitleCustomFoodExpand.visibility = View.GONE
-                binding.tvTitleCustomFoodCard.visibility = View.VISIBLE
                 binding.expandedView.visibility = View.GONE
                 binding.tvFoodCalories.visibility = View.VISIBLE
                 binding.icPlusAddFood.visibility = View.VISIBLE
+                binding.tvTitleCustomFoodExpand.visibility = View.GONE
+                binding.tvTitleCustomFoodCard.visibility = View.VISIBLE
 
                 if (food.isSelected) {
                     binding.icArrowRight.setImageResource(R.drawable.ic_food_salad)
@@ -116,5 +119,4 @@ class CustomFoodPagingAdapter (
                 oldItem == newItem
         }
     }
-
 }

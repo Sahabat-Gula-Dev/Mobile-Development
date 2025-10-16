@@ -51,7 +51,7 @@ class MonthlyFatFragment : Fragment() {
                         setupBarChart(binding.monthlyChart, state.barData, state.xAxisLabels)
                     }
                     is MonthlyFatState.Error -> {
-                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

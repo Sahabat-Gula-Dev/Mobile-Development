@@ -140,7 +140,7 @@ class DetailArticleFragment : Fragment() {
                             articleAdapter.submitList(resource.data)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Terjadi kesalahan saat memuat data artikel", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

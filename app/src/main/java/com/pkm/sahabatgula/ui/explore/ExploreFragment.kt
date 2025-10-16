@@ -59,7 +59,7 @@ class ExploreFragment : Fragment() {
                     setupCarousel(resource.data)
                 }
                 is Resource.Error -> {
-                    Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Terjadi kesalahan saat memuat halaman", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
                 }
@@ -121,7 +121,7 @@ class ExploreFragment : Fragment() {
                             articleAdapter.submitList(resource.data)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Terjadi kesalahan saat memuat data", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -194,7 +194,7 @@ class ExploreFragment : Fragment() {
                             eventAdapter.submitList(resource.data)
                         }
                         is Resource.Error -> {
-                            Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Terjadi kesalahan saat memuat data", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

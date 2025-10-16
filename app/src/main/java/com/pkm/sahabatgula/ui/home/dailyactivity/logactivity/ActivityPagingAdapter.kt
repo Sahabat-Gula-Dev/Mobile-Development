@@ -1,11 +1,10 @@
 package com.pkm.sahabatgula.ui.home.dailyactivity.logactivity
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,64 +13,55 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.setSize
 import com.pkm.sahabatgula.data.remote.model.ActivitiesDataItem
 import com.pkm.sahabatgula.databinding.ItemCardCustomFoodBinding
-import androidx.core.graphics.toColorInt
 
 class ActivityPagingAdapter(
     private val onSelectClick: (ActivitiesDataItem) -> Unit,
     private val onExpandClick: (ActivitiesDataItem) -> Unit
-): PagingDataAdapter<ActivitiesDataItem, ActivityPagingAdapter.ActivityViewHolder>(ACTIVITY_COMPARATOR) {
+) : PagingDataAdapter<ActivitiesDataItem, ActivityPagingAdapter.ActivityViewHolder>(ACTIVITY_COMPARATOR) {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ActivityViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val binding = ItemCardCustomFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ActivityViewHolder(binding, onSelectClick, onExpandClick)
+        return ActivityViewHolder(binding, onSelectClick, onExpandClick, this)
     }
 
-    override fun onBindViewHolder(
-        holder: ActivityViewHolder,
-        position: Int
-    ) {
-        val activity = getItem(position)
-        if (activity != null) {
-            holder.bind(activity)
-        }
+    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
 
     class ActivityViewHolder(
         private val binding: ItemCardCustomFoodBinding,
         private val onSelectClick: (ActivitiesDataItem) -> Unit,
-        private val onExpandClick: (ActivitiesDataItem) -> Unit
+        private val onExpandClick: (ActivitiesDataItem) -> Unit,
+        private val adapter: ActivityPagingAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private var currentActivity: ActivitiesDataItem? = null
 
         init {
             binding.icPlusAddFood.setOnClickListener {
-                currentActivity?.let { onSelectClick(it) }
-            }
-
-            val expandListener = View.OnClickListener {
-                if (currentActivity?.isSelected == false) {
-                    currentActivity?.let { onExpandClick(it) }
+                currentActivity?.let {
+                    onSelectClick(it)
+                    adapter.notifyItemChanged(bindingAdapterPosition)
                 }
             }
-
-            binding.icArrowRight.setOnClickListener(expandListener)
+            binding.icArrowRight.setOnClickListener {
+                currentActivity?.let {
+                    onExpandClick(it)
+                    adapter.notifyItemChanged(bindingAdapterPosition)
+                }
+            }
         }
 
         @SuppressLint("SetTextI18n")
         fun bind(activity: ActivitiesDataItem) {
             currentActivity = activity
 
-            binding.tvTitleCustomFoodCard.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
+            val title = "${activity.name} ${activity.duration} ${activity.durationUnit}"
+            binding.tvTitleCustomFoodCard.text = title
+            binding.tvTitleCustomFoodExpand.text = title
             binding.tvFoodCalories.text = "${activity.caloriesBurned} kkal"
-            binding.tvTitleCustomFoodExpand.text = "${activity.name} ${activity.duration} ${activity.durationUnit}"
-            binding.icPlusAddFood.setImageResource(R.drawable.ic_check_activity_yellow)
-            binding.icFoodSaladCloseToCalories.setImageResource(R.drawable.ic_calories)
             binding.tvFoodCaloriesOnExpand.setTextColor("#C80000".toColorInt())
-            binding.icPlusAddFood.setImageResource(R.drawable.ic_calories)
+
             if (activity.isSelected) {
                 binding.icPlusAddFood.setImageResource(R.drawable.ic_check_activity_yellow)
             } else {
@@ -92,9 +82,8 @@ class ActivityPagingAdapter(
                 binding.tvDescFood.text = activity.description
                 Glide.with(itemView.context)
                     .load(activity.photoUrl)
-                    .placeholder(R.drawable.image_placeholder)
+                    .placeholder(R.drawable.image_placeholder_color)
                     .into(binding.imgFood)
-
             } else {
                 binding.tvTitleCustomFoodExpand.visibility = View.GONE
                 binding.tvTitleCustomFoodCard.visibility = View.VISIBLE
@@ -122,5 +111,4 @@ class ActivityPagingAdapter(
                 oldItem == newItem
         }
     }
-
 }

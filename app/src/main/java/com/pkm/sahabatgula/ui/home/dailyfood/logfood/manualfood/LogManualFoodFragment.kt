@@ -89,7 +89,7 @@ class LogManualFoodFragment : Fragment() {
                     addCategoryChips(resource.data)
                 }
                 is Resource.Error -> {
-                    Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Terjadi kesalahan saat memuat data kategori makanan", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> { }
             }

@@ -44,6 +44,7 @@ class InsightFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+        binding.layoutEmpty.root.visibility = View.GONE
 
         setupRecyclerView()
         observeChatHistory()
@@ -71,6 +72,7 @@ class InsightFragment : Fragment() {
 
     }
 
+
     private fun setupRecyclerView() {
         chatAdapter = ChatAdapter()
         binding.rvChatMessages.adapter = chatAdapter
@@ -85,6 +87,12 @@ class InsightFragment : Fragment() {
                     chatAdapter.submitList(messages)
                     if (messages.isNotEmpty()) {
                         binding.rvChatMessages.smoothScrollToPosition(messages.size - 1)
+                        binding.layoutEmpty.root.visibility = View.GONE
+                    } else {
+                        binding.layoutEmpty.root.visibility = View.VISIBLE
+                        binding.layoutEmpty.tvTitle.text = "Belum ada pertanyaan"
+                        binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_email)
+                        binding.layoutEmpty.tvMessage.text = "Kamu belum menanyakan apa pun. Glubby siap bantu jawab pertanyaan seputar kesehatanmu!"
                     }
                 }
             }

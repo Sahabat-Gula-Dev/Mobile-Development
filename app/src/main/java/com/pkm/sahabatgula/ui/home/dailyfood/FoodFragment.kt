@@ -19,6 +19,7 @@ import com.pkm.sahabatgula.databinding.FragmentFoodBinding
 import com.pkm.sahabatgula.ui.home.dailyfood.charthistory.FoodChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.math.max
 
 @AndroidEntryPoint
 class FoodFragment : Fragment() {
@@ -62,8 +63,8 @@ class FoodFragment : Fragment() {
                 when (state) {
                     is FoodState.Success -> {
                         binding.piLogFood .apply {
-                            val tvRemainingCalories = (state.remainingCalories).coerceIn(0.0,100.0)
-                            tvRemaining.text = tvRemainingCalories.toInt().toString()
+                            val remaining = max(0, (state.remainingCalories).toInt())
+                            tvRemaining.text = remaining.toString()
                             tvRemaining.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_card))
                             val progressCalories = (state.totalCalories/ (state.maxCalories?.toDouble() ?: 0.0))*100
                             tvFormat.text = "kkal tersisa"
@@ -118,6 +119,10 @@ class FoodFragment : Fragment() {
                             tvTitleAction.text = "Catat Konsumsi Harian"
                             tvSubtitleAction.text = "Tetap pantau asupan makananmu dengan cermat ya"
                             root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_card_action))
+
+                            root.setOnClickListener {
+                                findNavController().navigate(R.id.action_food_fragment_to_add_log_food)
+                            }
                         }
 
                         binding.cardHistoryFood.apply {
@@ -125,6 +130,10 @@ class FoodFragment : Fragment() {
                             tvTitleAction.text = "Udah Makan Apa Aja Hari Ini?"
                             tvSubtitleAction.text = "Cek ulang makananmu dan pastikan tetap di jalur sehat"
                             root.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.brown_activity_calory_background))
+
+                            root.setOnClickListener {
+                                findNavController().navigate(R.id.action_log_food_to_log_history)
+                            }
                         }
 
                     }

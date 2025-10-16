@@ -38,7 +38,7 @@ class ChildActivityAdapter(
                 tvFoodCaloriesOnExpand.text = "${item.caloriesBurned.toInt()} kkal"
                 Glide.with(root.context)
                     .load(item.photoUrl)
-                    .placeholder(R.drawable.image_placeholder)
+                    .placeholder(R.drawable.image_placeholder_color)
                     .into(imgFood)
 
                 expandedView.visibility = if (item.isExpanded) View.VISIBLE else View.GONE

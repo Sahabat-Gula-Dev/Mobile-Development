@@ -161,7 +161,7 @@ class RegisterFragment : Fragment() {
                         }
 
                         is RegisterEffect.ShowInfo -> {
-                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
                         }
 
                         is RegisterEffect.ShowSuccess -> {

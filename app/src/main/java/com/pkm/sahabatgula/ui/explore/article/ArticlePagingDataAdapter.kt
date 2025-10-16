@@ -8,6 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
 import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.databinding.ComponentArticleBinding
@@ -45,6 +46,7 @@ class ArticlePagingDataAdapter(
             binding.apply {
                 Glide.with(itemView.context)
                     .load(article.coverUrl)
+                    .placeholder(R.drawable.image_placeholder)
                     .into(imgArticle)
 
                 tvDateToday.text = convertIsoToIndonesianDateArticle(article.createdAt)

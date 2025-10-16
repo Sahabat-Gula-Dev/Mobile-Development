@@ -91,7 +91,7 @@ class LogActivityFragment : Fragment() {
                     showLogActivityStateDialog(
                         DialogFoodUiState.Error(
                             title = "Oops, Ada Masalah",
-                            message = status.message ?: "Terjadi kesalahan, coba lagi.",
+                            message = "Terjadi kesalahan, periksa koneksi internet kamu atau coba ulangi kembali.",
                             imageRes = R.drawable.glubby_error
                         )
                     )
@@ -109,48 +109,61 @@ class LogActivityFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-    
         pagingAdapter = ActivityPagingAdapter(
-            onSelectClick = { activityItem ->
-                viewModel.toggleActivitySelection(activityItem)
-            },
-            onExpandClick = { foodItem ->
-                viewModel.onExpandClicked(foodItem)
-            }
+            onSelectClick = { viewModel.toggleActivitySelection(it) },
+            onExpandClick = { viewModel.onExpandClicked(it) }
         )
-    
-        binding.rvActivity .apply {
+        binding.rvActivity.apply {
             adapter = pagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+        (binding.rvActivity.itemAnimator as? androidx.recyclerview.widget.SimpleItemAnimator)
+            ?.supportsChangeAnimations = false
+
         pagingAdapter.addLoadStateListener { loadStates ->
-            val isListEmpty = pagingAdapter.itemCount == 0 &&
-                    loadStates.refresh is androidx.paging.LoadState.NotLoading
+            val isLoading = loadStates.refresh is androidx.paging.LoadState.Loading
+            val isError = loadStates.refresh is androidx.paging.LoadState.Error
+            val isEmpty = pagingAdapter.itemCount == 0 && loadStates.refresh is androidx.paging.LoadState.NotLoading
 
-            if (isListEmpty) {
-                // Tidak ada hasil pencarian
-                binding.layoutEmpty.root.visibility = View.VISIBLE
-                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
-                binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
-                binding.layoutEmpty.tvMessage.text = "Kami tidak menemukan apapun untuk pencarian ini. Coba gunakan kata kunci lain."
-                binding.rvActivity.visibility = View.GONE
-            } else {
-                binding.layoutEmpty.root.visibility = View.GONE
-                binding.rvActivity.visibility = View.VISIBLE
-            }
-
-            // Kalau error saat load
-            val errorState = loadStates.refresh as? androidx.paging.LoadState.Error
-            if (errorState != null) {
-                binding.layoutEmpty.root.visibility = View.VISIBLE
-                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
-                binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
-                binding.layoutEmpty.tvMessage.text = "Pencarian aktivitas tidak dapat dilakukan, periksa koneksi internet kamu atau muat ulang halaman"
+            when {
+                isLoading -> {
+                    binding.layoutEmpty.root.visibility = View.GONE
+                    binding.rvActivity.visibility = View.GONE
+                }
+                isError -> {
+                    binding.layoutEmpty.root.visibility = View.VISIBLE
+                    binding.rvActivity.visibility = View.GONE
+                    binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                    binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
+                    binding.layoutEmpty.tvMessage.text =
+                        "Pencarian aktivitas tidak dapat dilakukan, periksa koneksi internet kamu atau muat ulang halaman"
+                }
+                isEmpty -> {
+                    binding.layoutEmpty.root.visibility = View.VISIBLE
+                    binding.rvActivity.visibility = View.GONE
+                    binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                    binding.layoutEmpty.tvTitle.text = "Tidak Ada Hasil"
+                    binding.layoutEmpty.tvMessage.text =
+                        "Gluby tidak menemukan aktivitas yang cocok. Coba gunakan kata kunci lain."
+                }
+                else -> {
+                    binding.layoutEmpty.root.visibility = View.GONE
+                    binding.rvActivity.visibility = View.VISIBLE
+                }
             }
         }
     }
-    
+
+    private fun setupButtonStateObserver() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.selectedActivityIdsState.collect { selectedIds ->
+                binding.btnLogThisActivity.isEnabled = selectedIds.isNotEmpty()
+            }
+        }
+    }
+
+
     private fun setupPagingDataObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.activityPagingData.collectLatest { pagingData ->
@@ -166,7 +179,7 @@ class LogActivityFragment : Fragment() {
                     binding.chipGroupActivityCategories.removeAllViews()
                     addCategoryChips(resource.data)
                 }
-                is Resource.Error -> Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                is Resource.Error -> Toast.makeText(context, "Terjadi kesalahan saat memuat data kategori aktivitas", Toast.LENGTH_SHORT).show()
                 is Resource.Loading -> {  }
             }
         }
@@ -175,8 +188,6 @@ class LogActivityFragment : Fragment() {
     private fun addCategoryChips(categories: List<ActivityCategories>?) {
         val chipGroup = binding.chipGroupActivityCategories
         chipGroup.removeAllViews()
-
-        val customTypefaceRegular = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_regular)
         val customTypefaceBold = ResourcesCompat.getFont(requireContext(), R.font.plus_jakarta_sans_bold)
 
         val backgroundStates = arrayOf(
@@ -299,11 +310,10 @@ class LogActivityFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.btnLogThisActivity.isEnabled = true
-                    Toast.makeText(context, "Aktivitas berhasil dicatat!", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Error -> {
                     binding.btnLogThisActivity.isEnabled = true
-                    Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Terjadi kesalahan saat mencatat aktivitas", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -416,14 +426,6 @@ class LogActivityFragment : Fragment() {
         }
 
         dialog.show(parentFragmentManager, "LogFoodStateDialog")
-    }
-
-    private fun setupButtonStateObserver() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.selectedActivityIds.collect { selectedIds ->
-                binding.btnLogThisActivity.isEnabled = selectedIds.isNotEmpty()
-            }
-        }
     }
     
     override fun onDestroyView() {

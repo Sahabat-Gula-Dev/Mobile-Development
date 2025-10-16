@@ -90,16 +90,13 @@ class HomeFragment : Fragment() {
 
         when (state) {
             is HomeState.Loading -> {
-                Log.d("HomeFragment", "UI State: Loading")
+//                Log.d("HomeFragment", "UI State: Loading")
             }
             is HomeState.Success -> {
-                Log.d("HomeFragment", "UI State: Success, updating UI.")
-
                 updateSuccessfullUi(state.profile, state.summary)
             }
             is HomeState.Error -> {
-                Log.e("HomeFragment", "UI State: Error: ${state.message}")
-                Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Terjadi kesalahan saat memuat halaman home", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -112,10 +109,13 @@ class HomeFragment : Fragment() {
     ) {
         val nutrients = summary.data.daily.nutrients
 
-        var username = profile.username
-        username = username?.replaceFirstChar { it.uppercase() }
+        val username = profile.username
+            ?.lowercase()
+            ?.split(" ")
+            ?.firstOrNull()
+            ?.replaceFirstChar { it.uppercase() }
 
-        binding.userName.text = username
+        binding.userName.text = username ?: ""
         val caloriesConsumed = nutrients.calories
         val carbsConsumed = roundTo2Decimals(summary.data.daily.nutrients.carbs?: 0.0)
         val proteinConsumed = roundTo2Decimals(summary.data.daily.nutrients.protein?: 0.0)

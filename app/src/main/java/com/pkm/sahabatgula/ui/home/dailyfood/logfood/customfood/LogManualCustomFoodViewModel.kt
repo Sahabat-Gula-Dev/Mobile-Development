@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.ui.home.dailyfood.logfood.customfood
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,10 +9,8 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.core.utils.SearchParameters
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.local.room.ProfileEntity
-import com.pkm.sahabatgula.data.remote.model.Food
 import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodItem
 import com.pkm.sahabatgula.data.remote.model.FoodItemRequest
@@ -21,12 +18,7 @@ import com.pkm.sahabatgula.data.repository.LogFoodRepository
 import com.pkm.sahabatgula.data.repository.ScanRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,21 +33,25 @@ class LogManualCustomFoodViewModel @Inject constructor(
     val categories: LiveData<Resource<List<FoodCategories>>> = _categories
 
     private val _currentQuery = MutableStateFlow<String?>(null)
-    val _currentCategory = MutableStateFlow<Int?>(null)
+    private val _currentCategory = MutableStateFlow<Int?>(null)
 
-    private val _selectedFoodIds = MutableStateFlow<Set<String>>(emptySet())
-    val selectedFoodIds = _selectedFoodIds
-    private val _expandedFoodId = MutableStateFlow<String?>(null)
+    private val selectedFoodIds = mutableSetOf<String>()
+    private var expandedFoodId: String? = null
+
+    private val _selectedFoodIdsState = MutableStateFlow<Set<String>>(emptySet())
+    val selectedFoodIdsState: StateFlow<Set<String>> = _selectedFoodIdsState
 
     private val _logFoodStatus = MutableLiveData<Resource<Unit>>()
     val logFoodStatus: LiveData<Resource<Unit>> = _logFoodStatus
 
     private val cachedFoodList = mutableListOf<FoodItem>()
 
-    private val _foodDetail = MutableLiveData<Resource<FoodItem>>()
-    val foodDetail: MutableLiveData<Resource<FoodItem>> = _foodDetail
     private val _profile = MutableStateFlow<ProfileEntity?>(null)
     val profile: StateFlow<ProfileEntity?> get() = _profile
+
+    init {
+        fetchCategories()
+    }
 
     fun loadProfile() {
         viewModelScope.launch {
@@ -66,52 +62,45 @@ class LogManualCustomFoodViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val foodPagingData: Flow<PagingData<FoodItem>> = combine(
         _currentQuery,
-        _currentCategory,
-        _selectedFoodIds,
-        _expandedFoodId
-    ) { query, categoryId, selectedIds, expandedId ->
-        SearchParameters(query, categoryId, selectedIds, expandedId)
-    }.flatMapLatest { params ->
-        logFoodRepository.getFoodPaginated(null, params.categoryId) // ⬅️ kirim null agar backend tidak filter semua field
+        _currentCategory
+    ) { query, categoryId ->
+        query to categoryId
+    }.flatMapLatest { (query, categoryId) ->
+        logFoodRepository.getFoodPaginated(query, categoryId)
             .map { pagingData ->
-                pagingData
-                    .filter { foodItem ->
-                        params.query.isNullOrBlank() ||
-                                foodItem.name.contains(params.query!!, ignoreCase = true)
-                    }
-                    .map { foodItem ->
-                        val updated = foodItem.copy(
-                            isSelected = params.selectedIds.contains(foodItem.id),
-                            isExpanded = foodItem.id == params.expandedId
-                        )
+                pagingData.filter { item ->
+                    query.isNullOrBlank() || item.name.contains(query, ignoreCase = true)
+                }.map { item ->
+                    // apply selected/expanded state manual
+                    item.copy(
+                        isSelected = selectedFoodIds.contains(item.id),
+                        isExpanded = item.id == expandedFoodId
+                    ).also { updated ->
                         if (cachedFoodList.none { it.id == updated.id }) {
                             cachedFoodList.add(updated)
                         }
-                        updated
                     }
+                }
             }
-    }
-
-
-
-    init {
-        fetchCategories()
-    }
+    }.cachedIn(viewModelScope)
 
     fun toggleFoodSelection(foodItem: FoodItem) {
-        val currentSelected = _selectedFoodIds.value.toMutableSet()
-        if (currentSelected.contains(foodItem.id)) {
-            currentSelected.remove(foodItem.id)
+        if (selectedFoodIds.contains(foodItem.id)) {
+            selectedFoodIds.remove(foodItem.id)
+            foodItem.isSelected = false
         } else {
-            currentSelected.add(foodItem.id)
+            selectedFoodIds.add(foodItem.id)
+            foodItem.isSelected = true
         }
-        _selectedFoodIds.value = currentSelected
+        _selectedFoodIdsState.value = selectedFoodIds.toSet()
     }
 
     fun onExpandClicked(foodItem: FoodItem) {
-        _expandedFoodId.value = if (_expandedFoodId.value == foodItem.id) {
+        expandedFoodId = if (expandedFoodId == foodItem.id) {
+            foodItem.isExpanded = false
             null
         } else {
+            foodItem.isExpanded = true
             foodItem.id
         }
     }
@@ -133,16 +122,15 @@ class LogManualCustomFoodViewModel @Inject constructor(
 
     fun logSelectedFoods() {
         viewModelScope.launch {
-            val selectedIds = _selectedFoodIds.value
-            if (selectedIds.isEmpty()) {
+            if (selectedFoodIds.isEmpty()) {
                 _logFoodStatus.value = Resource.Error("Pilih minimal satu makanan.")
                 return@launch
             }
 
             _logFoodStatus.value = Resource.Loading()
 
-            val requestItems = selectedIds.map { foodId ->
-                FoodItemRequest(foodId = foodId, portion = 1) // ✅ CHANGED: porsi default 1
+            val requestItems = selectedFoodIds.map { foodId ->
+                FoodItemRequest(foodId = foodId, portion = 1)
             }
 
             val result = logFoodRepository.logFood(requestItems)
@@ -151,10 +139,8 @@ class LogManualCustomFoodViewModel @Inject constructor(
     }
 
     fun getSelectedFoodNamesAndCalories(): Pair<List<String>, Int> {
-        val selectedIds = _selectedFoodIds.value
-        val allFoods = foodPagingData
         return cachedFoodList
-            .filter { selectedIds.contains(it.id) }
+            .filter { selectedFoodIds.contains(it.id) }
             .let { selectedFoods ->
                 val names = selectedFoods.map { it.name }
                 val totalCalories = selectedFoods.sumOf { it.calories.toInt() }
@@ -163,8 +149,7 @@ class LogManualCustomFoodViewModel @Inject constructor(
     }
 
     suspend fun getSelectedFoodsSummaryFromDetail(): SelectedFoodSummary {
-        val selectedIds = _selectedFoodIds.value
-        if (selectedIds.isEmpty()) {
+        if (selectedFoodIds.isEmpty()) {
             return SelectedFoodSummary(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0)
         }
 
@@ -177,7 +162,7 @@ class LogManualCustomFoodViewModel @Inject constructor(
         var totalFiber = 0.0
         var totalKalium = 0.0
 
-        for (id in selectedIds) {
+        for (id in selectedFoodIds) {
             try {
                 val result = scanRepository.getFoodDetail(id)
                 if (result is Resource.Success && result.data != null) {
@@ -192,7 +177,6 @@ class LogManualCustomFoodViewModel @Inject constructor(
                     totalKalium += food.potassium ?: 0.0
                 }
             } catch (e: Exception) {
-                // Biar tidak stop semua kalau salah satu gagal
                 e.printStackTrace()
             }
         }
@@ -209,7 +193,6 @@ class LogManualCustomFoodViewModel @Inject constructor(
         )
     }
 
-
     data class SelectedFoodSummary(
         val calories: Int,
         val carbo: Int,
@@ -220,6 +203,4 @@ class LogManualCustomFoodViewModel @Inject constructor(
         val fiber: Double,
         val kalium: Double
     )
-
-
 }

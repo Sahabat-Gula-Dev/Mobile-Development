@@ -18,6 +18,7 @@ import com.pkm.sahabatgula.ui.settings.loghistory.activityhistory.FoodHistoryVie
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class FoodHistoryFragment : Fragment() {
 
@@ -52,10 +53,6 @@ class FoodHistoryFragment : Fragment() {
         parentAdapter = ParentFoodHistoryAdapter(emptyList())
         binding.rvParentFood.layoutManager = LinearLayoutManager(requireContext())
         binding.rvParentFood.adapter = parentAdapter
-
-        viewModel.fetchHistory(token)
-
-        binding.rvParentFood.layoutManager = LinearLayoutManager(requireContext())
         viewModel.fetchHistory(token)
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -63,7 +60,7 @@ class FoodHistoryFragment : Fragment() {
                 when (resource) {
                     is Resource.Success -> {
                         val data = resource.data
-                            ?.filter { !it.activities.isNullOrEmpty() } ?: emptyList()
+                            ?.filter { !it.foods.isNullOrEmpty() } ?: emptyList()
 
                         if (data.isEmpty()) {
                             binding.layoutEmpty.root.visibility = View.VISIBLE

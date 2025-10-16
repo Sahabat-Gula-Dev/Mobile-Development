@@ -49,7 +49,7 @@ class MonthlyWaterFragment : Fragment() {
                         setupBarChart(binding.monthlyChart, state.barData, state.xAxisLabels)
                     }
                     is MonthlyWaterState.Error -> {
-                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Tidak dapat memuat chart", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
