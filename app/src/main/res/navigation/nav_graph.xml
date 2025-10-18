@@ -160,6 +160,9 @@
                 app:argType="com.pkm.sahabatgula.data.remote.model.FoodsItem"
                 app:nullable="true"/>
         </action>
+        <action
+            android:id="@+id/action_result_food_scan_to_log_manual_custom_food_fragment"
+            app:destination="@id/log_manual_custom_food_fragment"/>
     </fragment>
 
     <fragment

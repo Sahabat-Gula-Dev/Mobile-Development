@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,112 +7,107 @@
     android:fillViewport="true"
     tools:context=".ui.explore.article.ExploreArticleFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:titleTextColor="@color/black"
+        app:navigationIconTint="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_app_bar"
+    <TextView
+        android:id="@+id/tv_title_explore_article"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Artikel Kesehatan"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="-12dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
+
+    <TextView
+        android:id="@+id/tv_subtitle_explore_article"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:letterSpacing="0.03"
+        android:lineSpacingExtra="1sp"
+        android:text="Dapatkan wawasan baru untuk hidup sehat yang lebih cerdas"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@id/tv_title_explore_article"
+        app:layout_constraintStart_toStartOf="@id/tv_title_explore_article"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_explore_article" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_bar_article"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/md_theme_onPrimary"
+        android:hint="Cari Artikel"
+        app:boxCornerRadiusBottomEnd="28dp"
+        app:boxCornerRadiusBottomStart="28dp"
+        app:boxCornerRadiusTopEnd="28dp"
+        app:boxCornerRadiusTopStart="28dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_explore_article"
+        app:startIconDrawable="@drawable/ic_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleTextColor="@color/black"
-            app:navigationIconTint="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-        <TextView
-            android:id="@+id/tv_title_explore_article"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Artikel Kesehatan"
-            android:textColor="@color/md_theme_onSurface"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginTop="-12dp"
-            android:layout_marginHorizontal="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
-
-        <TextView
-            android:id="@+id/tv_subtitle_explore_article"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.03"
-            android:lineSpacingExtra="1sp"
-            android:text="Dapatkan wawasan baru untuk hidup sehat yang lebih cerdas"
-            android:textSize="12dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_title_explore_article"
-            app:layout_constraintStart_toStartOf="@id/tv_title_explore_article"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_explore_article" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_bar_article"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/md_theme_onPrimary"
             android:hint="Cari Artikel"
-            app:boxCornerRadiusBottomEnd="28dp"
-            app:boxCornerRadiusBottomStart="28dp"
-            app:boxCornerRadiusTopEnd="28dp"
-            app:boxCornerRadiusTopStart="28dp"
-            app:endIconMode="clear_text"
-            app:hintEnabled="false"
-            android:layout_marginHorizontal="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_subtitle_explore_article"
-            app:startIconDrawable="@drawable/ic_search">
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Cari Artikel"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <HorizontalScrollView
+        android:id="@+id/layout_chip_group_article_categories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar_article">
 
-        <HorizontalScrollView
-            android:id="@+id/layout_chip_group_article_categories"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_article_categories"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_article">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group_article_categories"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleLine="true"
-                android:layout_marginHorizontal="16dp"
-                app:singleSelection="true">
-
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list_articles"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            app:singleLine="true"
             android:layout_marginHorizontal="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_chip_group_article_categories"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/component_article" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:singleSelection="true">
 
-</androidx.core.widget.NestedScrollView>
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list_articles"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_chip_group_article_categories"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/component_article" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
