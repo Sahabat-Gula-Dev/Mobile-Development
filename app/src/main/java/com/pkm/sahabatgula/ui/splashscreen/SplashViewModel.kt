@@ -8,14 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import com.pkm.sahabatgula.R
-import com.pkm.sahabatgula.core.utils.isNetworkAvailable
 import com.pkm.sahabatgula.data.local.TokenManager
-import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.repository.AuthRepository
 import com.pkm.sahabatgula.data.repository.OnboardingRepository
-import com.pkm.sahabatgula.ui.auth.login.LoginEffect
-import com.pkm.sahabatgula.ui.auth.login.LoginViewState
 import com.pkm.sahabatgula.ui.state.GlobalUiState
 import kotlinx.coroutines.launch
 import java.io.IOException

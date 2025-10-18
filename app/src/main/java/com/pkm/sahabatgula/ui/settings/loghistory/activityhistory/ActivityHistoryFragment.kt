@@ -1,29 +1,33 @@
 package com.pkm.sahabatgula.ui.settings.loghistory.activityhistory
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
+import com.pkm.sahabatgula.core.utils.filterForActivity
 import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.databinding.FragmentActivityHistoryBinding
+import com.pkm.sahabatgula.ui.settings.loghistory.HistorySharedViewModel
 import com.pkm.sahabatgula.ui.settings.loghistory.ParentActivityHistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.getValue
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class ActivityHistoryFragment : Fragment() {
     private var _binding: FragmentActivityHistoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ActivityHistoryViewModel by viewModels()
+    private val viewModel: HistorySharedViewModel by activityViewModels()
 
     @Inject
     lateinit var tokenManager: TokenManager
@@ -51,37 +55,38 @@ class ActivityHistoryFragment : Fragment() {
 
         viewModel.fetchHistory(token)
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.historyState.collect { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        val data = resource.data
-                            ?.filter { !it.activities.isNullOrEmpty() } ?: emptyList()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.historyState.collectLatest { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            val data = resource.data?.filterForActivity() ?: emptyList()
 
-                        if (data.isEmpty()) {
+                            if (data.isEmpty()) {
+                                binding.layoutEmpty.root.visibility = View.VISIBLE
+                                binding.rvParentActivity.visibility = View.GONE
+                                binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
+                                binding.layoutEmpty.tvTitle.text = "Riwayat Aktivitas Kosong"
+                                binding.layoutEmpty.tvMessage.text =
+                                    "Catat aktivitas harianmu sekarang, Gluby siap bantu pantau progres kesehatanmu!"
+                            } else {
+                                binding.layoutEmpty.root.visibility = View.GONE
+                                binding.rvParentActivity.visibility = View.VISIBLE
+                                parentAdapter.updateData(data)
+                            }
+                        }
+
+                        is Resource.Error -> {
                             binding.layoutEmpty.root.visibility = View.VISIBLE
                             binding.rvParentActivity.visibility = View.GONE
-                            binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_not_found)
-                            binding.layoutEmpty.tvTitle.text = "Belum Ada Aktivitas"
+                            binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
+                            binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
                             binding.layoutEmpty.tvMessage.text =
-                                "Aktivitas yang kamu catat akan muncul di sini"
-                        } else {
-                            binding.layoutEmpty.root.visibility = View.GONE
-                            binding.rvParentActivity.visibility = View.VISIBLE
-                            parentAdapter.updateData(data)
+                                "Glubby mengalami kendala saat ambil data. Coba periksa koneksi atau muat ulang halaman"
                         }
-                    }
 
-                    is Resource.Error -> {
-                        binding.layoutEmpty.root.visibility = View.VISIBLE
-                        binding.rvParentActivity.visibility = View.GONE
-                        binding.layoutEmpty.imgGlubby.setImageResource(R.drawable.glubby_error)
-                        binding.layoutEmpty.tvTitle.text = "Oops.. Ada Error"
-                        binding.layoutEmpty.tvMessage.text =
-                            "Glubby mengalami kendala saat ambil data. Coba periksa koneksi atau muat ulang halaman"
+                        else -> {}
                     }
-
-                    else -> {}
                 }
             }
         }

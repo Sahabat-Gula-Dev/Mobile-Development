@@ -1,18 +1,15 @@
 package com.pkm.sahabatgula.data.remote.api
 
-import com.pkm.sahabatgula.data.remote.model.ActivityCategories
 import com.pkm.sahabatgula.data.remote.model.ActivityCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.ActivityResponse
 import com.pkm.sahabatgula.data.remote.model.ArticleCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.ArticleResponse
 import com.pkm.sahabatgula.data.remote.model.CarouselResponse
 import com.pkm.sahabatgula.data.remote.model.CategoryListResponse
-import com.pkm.sahabatgula.data.remote.model.DetailArticleResponse
 import com.pkm.sahabatgula.data.remote.model.DetailFoodResponse
 import com.pkm.sahabatgula.data.remote.model.EventCategoryListResponse
 import com.pkm.sahabatgula.data.remote.model.EventResponse
 import com.pkm.sahabatgula.data.remote.model.FaqCategoryListResponse
-import com.pkm.sahabatgula.data.remote.model.FoodCategories
 import com.pkm.sahabatgula.data.remote.model.FoodListResponse
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordRequest
 import com.pkm.sahabatgula.data.remote.model.ForgotPasswordResponse
@@ -29,7 +26,6 @@ import com.pkm.sahabatgula.data.remote.model.LogWaterResponse
 import com.pkm.sahabatgula.data.remote.model.LoginRequest
 import com.pkm.sahabatgula.data.remote.model.LoginResponse
 import com.pkm.sahabatgula.data.remote.model.MyProfileResponse
-import com.pkm.sahabatgula.data.remote.model.NewsResponse
 import com.pkm.sahabatgula.data.remote.model.PredictionResponse
 import com.pkm.sahabatgula.data.remote.model.ProfileData
 import com.pkm.sahabatgula.data.remote.model.SetupProfileResponse
@@ -52,7 +48,6 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
-import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 

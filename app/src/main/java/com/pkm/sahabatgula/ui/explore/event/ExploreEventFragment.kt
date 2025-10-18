@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.pkm.sahabatgula.ui.explore.event
 
 import android.annotation.SuppressLint
@@ -155,7 +153,11 @@ class ExploreEventFragment : Fragment() {
             setTextColor(textColorStateList)
             setChipStrokeColorResource(R.color.md_theme_outline)
             chipStrokeWidth = 1f.dpToPx()
-            chipCornerRadius = 50f.dpToPx()
+            val radius = 50f.dpToPx()
+            shapeAppearanceModel = shapeAppearanceModel
+                .toBuilder()
+                .setAllCornerSizes(radius)
+                .build()
             isCheckedIconVisible = false
             typeface = customTypefaceBold
             textSize = 11f
@@ -178,7 +180,11 @@ class ExploreEventFragment : Fragment() {
                 setTextColor(textColorStateList)
                 setChipStrokeColorResource(R.color.md_theme_outline)
                 chipStrokeWidth = 1f.dpToPx()
-                chipCornerRadius = 50f.dpToPx()
+                val radius = 50f.dpToPx()
+                shapeAppearanceModel = shapeAppearanceModel
+                    .toBuilder()
+                    .setAllCornerSizes(radius)
+                    .build()
                 isCheckedIconVisible = false
             }
             chipGroup.addView(chip)

@@ -1,14 +1,19 @@
 package com.pkm.sahabatgula.ui.settings
 
-import android.R.attr.typeface
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.text.LineBreaker
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +24,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -62,7 +68,7 @@ class SettingsFragment : Fragment() {
             icCardSetting.setImageResource(R.drawable.ic_notifications)
             icCardSetting.setColorFilter(
                 ContextCompat.getColor(requireContext(), R.color.gray_icon),
-                android.graphics.PorterDuff.Mode.SRC_IN
+                PorterDuff.Mode.SRC_IN
             )
             tvTitleSettingCard.text = "Notifikasi"
             tvSubtitleSettingCard.text = "Kelola pengingat dan informasi penting"
@@ -106,12 +112,11 @@ class SettingsFragment : Fragment() {
         }
 
         val recipient = "info@sahabatgula.com"
-        val subject = "Saran Data Makanan Baru"
-        val message = "Halo tim Sahabat Gula, saya ingin memberikan saran terkait data makanan baru"
-        val intent = android.content.Intent(android.content.Intent.ACTION_SENDTO).apply {
-            data = android.net.Uri.parse("mailto:$recipient")
-            putExtra(android.content.Intent.EXTRA_SUBJECT, subject)
-            putExtra(android.content.Intent.EXTRA_TEXT, message)
+        val subject = Uri.encode("Saran Data Makanan Baru")
+        val body = Uri.encode("Halo tim Sahabat Gula, saya ingin memberikan saran terkait data makanan baru")
+
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = "mailto:$recipient?subject=$subject&body=$body".toUri()
         }
 
         binding.cardNewFoodSuggestions.apply {
@@ -123,8 +128,8 @@ class SettingsFragment : Fragment() {
             root.setOnClickListener {
                 try {
                     startActivity(intent)
-                } catch (e: android.content.ActivityNotFoundException) {
-                    Toast.makeText(requireContext(), "Tidak ada aplikasi email yang terinstall", android.widget.Toast.LENGTH_SHORT).show()
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(requireContext(), "Tidak ada aplikasi email yang terinstall", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -188,7 +193,7 @@ class SettingsFragment : Fragment() {
             scaleType = ImageView.ScaleType.CENTER_INSIDE
             val size = context.resources.getDimensionPixelSize(R.dimen.dialog_image_size)
             layoutParams = LinearLayout.LayoutParams(size, size).apply {
-                gravity = android.view.Gravity.CENTER
+                gravity = Gravity.CENTER
                 bottomMargin = 16
                 topMargin = 24
             }
@@ -214,19 +219,19 @@ class SettingsFragment : Fragment() {
 
         val messageView = TextView(context).apply {
             text = "Sebelum kamu logout, Gluby ingin mengingatkan bahwa setiap langkah kecil menuju hidup sehat sangat berarti."
-            gravity = android.view.Gravity.CENTER
+            gravity = Gravity.CENTER
             textSize = 14f
             setTextColor(Color.BLACK)
             typeface = ResourcesCompat.getFont(context, R.font.plus_jakarta_sans_regular)
             setPadding(32, 8, 32, 0)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 justificationMode = LineBreaker.JUSTIFICATION_MODE_NONE
             }
         }
 
         val container = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            gravity = android.view.Gravity.CENTER_HORIZONTAL
+            gravity = Gravity.CENTER_HORIZONTAL
             setBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_onPrimary))
             setPadding(24, 24, 24, 16)
             addView(imageView)

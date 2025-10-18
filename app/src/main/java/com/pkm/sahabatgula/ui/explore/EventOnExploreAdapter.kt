@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
-import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
 import com.pkm.sahabatgula.core.utils.formatEventDate
 import com.pkm.sahabatgula.data.remote.model.Event
 import com.pkm.sahabatgula.databinding.ComponentEventBinding

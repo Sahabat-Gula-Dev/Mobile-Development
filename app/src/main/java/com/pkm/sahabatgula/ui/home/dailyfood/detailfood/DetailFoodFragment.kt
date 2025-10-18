@@ -1,11 +1,7 @@
 package com.pkm.sahabatgula.ui.home.dailyfood.detailfood
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -19,7 +15,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -30,6 +28,7 @@ import com.pkm.sahabatgula.databinding.FragmentDetailFoodBinding
 import com.pkm.sahabatgula.ui.state.DialogFoodUiState
 import com.pkm.sahabatgula.ui.state.LogFoodStateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailFoodFragment : Fragment() {
@@ -60,12 +59,17 @@ class DetailFoodFragment : Fragment() {
         }
 
         viewModel.loadProfile()
-        lifecycleScope.launchWhenStarted {
-            viewModel.profile.collect { profile ->
-                if (profile != null) {
-                    maxSugar = profile.max_sugar
-                    maxCalories = profile.max_calories
-                    Log.d("DEBUG_NAV", "DetailFoodFragment: maxSugar: $maxSugar, maxCalories: $maxCalories")
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.profile.collect { profile ->
+                    if (profile != null) {
+                        maxSugar = profile.max_sugar
+                        maxCalories = profile.max_calories
+                        Log.d(
+                            "DEBUG_NAV",
+                            "DetailFoodFragment: maxSugar: $maxSugar, maxCalories: $maxCalories"
+                        )
+                    }
                 }
             }
         }
@@ -156,7 +160,8 @@ class DetailFoodFragment : Fragment() {
                     val sugarPercentRounded = String.format("%.0f", sugarPercent)
                     val caloriesPercentRounded = String.format("%.0f", caloriesPercent)
 
-                    val personalizedMessage = "Saat ini kamu telah mengkonsumsi gula sebanyak $sugarPercentRounded% " + "dan kalori sebanyak $caloriesPercentRounded% dari batas konsumsi harianmu."
+                    val personalizedMessage =
+                        "Saat ini kamu telah mengkonsumsi gula sebanyak $sugarPercentRounded% dan kalori sebanyak $caloriesPercentRounded% dari batas konsumsi harianmu."
 
                     showLogFoodStateDialog(
                         DialogFoodUiState.Success(

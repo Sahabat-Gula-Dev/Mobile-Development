@@ -14,7 +14,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentActivityBinding
 import com.pkm.sahabatgula.ui.home.dailyactivity.activity.history.ActivityChartPagerAdapter
-import com.pkm.sahabatgula.ui.home.dailyfood.charthistory.FoodChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

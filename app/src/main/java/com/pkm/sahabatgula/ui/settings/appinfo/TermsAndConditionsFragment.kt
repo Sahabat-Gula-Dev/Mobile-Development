@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentTermsAndConditionsBinding
 
 class TermsAndConditionsFragment : Fragment() {

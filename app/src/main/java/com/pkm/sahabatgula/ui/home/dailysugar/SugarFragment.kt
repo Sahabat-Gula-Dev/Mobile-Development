@@ -2,7 +2,6 @@ package com.pkm.sahabatgula.ui.home.dailysugar
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.ui.home.dailysugar.history.SugarChartPagerAdapter
 import com.pkm.sahabatgula.R

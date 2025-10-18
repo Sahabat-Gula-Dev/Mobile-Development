@@ -84,7 +84,7 @@
             android:id="@+id/tv_support_and_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Akun &amp; Preferensi Pengguna"
+            android:text="Support &amp; Layanan"
             app:layout_constraintTop_toBottomOf="@id/card_log_history"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="24dp"

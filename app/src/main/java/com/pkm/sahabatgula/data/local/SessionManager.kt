@@ -36,7 +36,7 @@ class SessionManager @Inject constructor(
         return result
     }
 
-    suspend fun isLoggedIn(): Boolean {
+    fun isLoggedIn(): Boolean {
         val token = tokenManager.getAccessToken()
         return !token.isNullOrEmpty() && !tokenManager.isAccessTokenExpired()
     }

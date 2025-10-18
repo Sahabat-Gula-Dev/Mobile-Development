@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
 import com.pkm.sahabatgula.data.local.SessionManager
-import com.pkm.sahabatgula.data.local.TokenManager
 import com.pkm.sahabatgula.data.local.room.ProfileDao
 import com.pkm.sahabatgula.data.remote.model.ProfileData
 import com.pkm.sahabatgula.data.remote.model.SetupProfileResponse
 import com.pkm.sahabatgula.data.repository.ProfileRepository
-import com.pkm.sahabatgula.data.repository.toProfileEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -12,12 +12,10 @@ import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentProteinBinding
-import com.pkm.sahabatgula.ui.home.dailycarbo.CarboState
 import com.pkm.sahabatgula.ui.home.dailyprotein.history.ProteinChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -39,7 +39,6 @@ class ForgotPasswordEmailViewModel @Inject constructor(
     val effect = _effect.asSharedFlow()
 
     fun requestOtp(email: String) {
-        // Validasi email dulu
         if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             viewModelScope.launch {
                 _effect.emit(ForgotPasswordEmailEffect.ShowError("Email tidak valid"))

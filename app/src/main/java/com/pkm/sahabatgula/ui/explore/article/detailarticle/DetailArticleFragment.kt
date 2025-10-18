@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,13 +18,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.core.utils.HorizontalSpaceItemDecoration
 import com.pkm.sahabatgula.core.utils.convertIsoToIndonesianDateArticle
 import com.pkm.sahabatgula.databinding.FragmentDetailArticleBinding
 import com.pkm.sahabatgula.ui.explore.ArticleOnExploreAdapter
-import com.pkm.sahabatgula.ui.explore.EventOnExploreAdapter
-import com.pkm.sahabatgula.ui.explore.ExploreFragmentDirections
-import com.pkm.sahabatgula.ui.explore.ExploreViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

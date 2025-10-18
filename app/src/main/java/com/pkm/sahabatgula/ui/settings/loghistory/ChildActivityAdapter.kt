@@ -1,7 +1,6 @@
 package com.pkm.sahabatgula.ui.settings.loghistory
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.capitalizeEachWord
 import com.pkm.sahabatgula.data.remote.model.ActivityLog
-import com.pkm.sahabatgula.data.remote.model.FoodLog
 import com.pkm.sahabatgula.databinding.ItemChildFoodBinding
 import androidx.core.graphics.toColorInt
 

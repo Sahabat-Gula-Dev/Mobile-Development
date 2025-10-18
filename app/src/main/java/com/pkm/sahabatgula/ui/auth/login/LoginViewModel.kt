@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.ui.auth.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource

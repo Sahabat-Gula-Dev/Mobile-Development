@@ -31,7 +31,7 @@ sealed class WeeklyFoodState {
 
 @HiltViewModel
 class WeeklyFoodViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    homeRepository: HomeRepository
 ) : ViewModel() {
 
     val uiState: StateFlow<WeeklyFoodState> = homeRepository.observeWeeklySummary()

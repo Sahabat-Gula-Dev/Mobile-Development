@@ -7,13 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.DialogLogFoodBinding
 import dagger.hilt.android.AndroidEntryPoint

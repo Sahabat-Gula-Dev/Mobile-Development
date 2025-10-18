@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pkm.sahabatgula.data.remote.api.ApiService
-import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.data.remote.model.Event
 import java.io.IOException
 

@@ -21,11 +21,6 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentInputDataUserHeavyBinding
 import com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataViewModel
 import kotlinx.coroutines.launch
-import kotlin.compareTo
-import kotlin.div
-import kotlin.text.compareTo
-import kotlin.times
-import kotlin.toString
 
 class InputDataUserHeavyFragment : Fragment() {
 

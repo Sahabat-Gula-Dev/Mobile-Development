@@ -5,13 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pkm.sahabatgula.core.utils.DateConverter
 import com.pkm.sahabatgula.core.utils.dateFormatterHistory
 import com.pkm.sahabatgula.data.remote.model.HistoryItem
 import com.pkm.sahabatgula.databinding.ItemParentDateBinding
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class ParentActivityHistoryAdapter(
     historyList: List<HistoryItem>?

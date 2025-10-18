@@ -21,7 +21,6 @@ import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentInputDataUserAgeBinding
 import com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 

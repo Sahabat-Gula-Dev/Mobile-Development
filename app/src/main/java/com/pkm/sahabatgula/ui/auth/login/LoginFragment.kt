@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -202,6 +203,7 @@ class LoginFragment : Fragment() {
                     request = request,
                     context = requireContext()
                 )
+
                 when (val credential = result.credential) {
                     is CustomCredential -> {
                         if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
@@ -212,10 +214,15 @@ class LoginFragment : Fragment() {
                         }
                     }
                 }
+            } catch (e: NoCredentialException) {
+                Log.d("GoogleSignIn", "No credential selected by user")
+            } catch (e: GetCredentialException) {
+                Log.e("GoogleSignIn", "Credential error: ${e.message}")
             } catch (e: Exception) {
-                Log.e("GoogleSignIn", "Error: ${e.message}")
+                Log.e("GoogleSignIn", "Unexpected error: ${e.message}")
             }
         }
+
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {

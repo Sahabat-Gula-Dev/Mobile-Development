@@ -124,7 +124,7 @@ class LogActivityViewModel @Inject constructor(
     fun getSelectedActivityNamesAndCalories(): Pair<List<String>, Int> {
         val selected = cachedActivityList.filter { selectedActivityIds.contains(it.id) }
         val names = selected.map { it.name }
-        val totalCalories = selected.sumOf { it.caloriesBurned.toInt() }
+        val totalCalories = selected.sumOf { it.caloriesBurned }
         return names to totalCalories
     }
 

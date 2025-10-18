@@ -1,10 +1,5 @@
 package com.pkm.sahabatgula.core.di
 
-import com.pkm.sahabatgula.BuildConfig
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import javax.inject.Qualifier
 
 @Qualifier

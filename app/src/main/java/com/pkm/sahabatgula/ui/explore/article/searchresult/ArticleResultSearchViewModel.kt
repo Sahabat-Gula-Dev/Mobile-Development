@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleResultSearchViewModel @Inject constructor(
-    private val repository: ExploreRepository,
+    repository: ExploreRepository,
     savedStateHandle: SavedStateHandle // Hilt akan menyediakan ini secara otomatis
 ) : ViewModel() {
 

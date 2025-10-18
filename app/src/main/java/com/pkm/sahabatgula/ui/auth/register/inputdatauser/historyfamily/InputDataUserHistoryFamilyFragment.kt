@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -14,8 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.data.remote.model.DiabetesFamily
-import com.pkm.sahabatgula.databinding.FragmentActivityHistoryBinding
-import com.pkm.sahabatgula.databinding.FragmentInputDataUserBloodPressureBinding
 import com.pkm.sahabatgula.databinding.FragmentInputDataUserHistoryFamilyBinding
 import com.pkm.sahabatgula.ui.auth.register.inputdatauser.InputDataViewModel
 import kotlinx.coroutines.launch

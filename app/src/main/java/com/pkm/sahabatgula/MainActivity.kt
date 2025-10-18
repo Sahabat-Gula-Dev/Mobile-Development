@@ -12,7 +12,7 @@ import com.pkm.sahabatgula.databinding.ActivityMainBinding
 import com.pkm.sahabatgula.ui.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
-@Suppress("DEPRECATION")
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

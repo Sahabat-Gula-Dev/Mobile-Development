@@ -35,6 +35,7 @@
             android:id="@+id/ic_arrow_expand"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/keyboard_arrow_down"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title"

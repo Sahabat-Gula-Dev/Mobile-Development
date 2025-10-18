@@ -14,14 +14,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
-import androidx.credentials.exceptions.GetCredentialException
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -40,7 +38,6 @@ import com.pkm.sahabatgula.ui.state.StateDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
@@ -182,9 +179,13 @@ class RegisterFragment : Fragment() {
                             )
                             stateDialog?.dismissListener = {
                                 val bundle = bundleOf("email" to effect.email)
-                                // Pastikan navigasi dilakukan setelah fragment resumed
-                                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                                    findNavController().navigate(R.id.register_to_otp_verification, bundle)
+                                viewLifecycleOwner.lifecycleScope.launch {
+                                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                                        findNavController().navigate(
+                                            R.id.register_to_otp_verification,
+                                            bundle
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -197,8 +198,10 @@ class RegisterFragment : Fragment() {
                                 )
                             )
                             stateDialog?.dismissListener = {
-                                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                                    findNavController().navigate(R.id.register_to_home)
+                                viewLifecycleOwner.lifecycleScope.launch {
+                                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                                        findNavController().navigate(R.id.register_to_home)
+                                    }
                                 }
                             }
                         }
@@ -211,8 +214,10 @@ class RegisterFragment : Fragment() {
                                 )
                             )
                             stateDialog?.dismissListener = {
-                                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                                    findNavController().navigate(R.id.register_to_welcome_screen)
+                                viewLifecycleOwner.lifecycleScope.launch {
+                                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                                        findNavController().navigate(R.id.register_to_welcome_screen)
+                                    }
                                 }
                             }
                         }

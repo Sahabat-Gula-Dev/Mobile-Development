@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventResultSearchViewModel @Inject constructor(
-    private val repository: ExploreRepository,
+    repository: ExploreRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

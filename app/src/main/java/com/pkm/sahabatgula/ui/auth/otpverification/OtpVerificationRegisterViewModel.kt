@@ -1,16 +1,10 @@
 package com.pkm.sahabatgula.ui.auth.otpverification
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.data.remote.model.LoginResponse
-import com.pkm.sahabatgula.data.remote.model.TokenData
 import com.pkm.sahabatgula.data.repository.AuthRepository
-import com.pkm.sahabatgula.ui.auth.login.LoginViewState.Error
-import com.pkm.sahabatgula.ui.auth.login.LoginViewState.Loading
-import com.pkm.sahabatgula.ui.auth.login.LoginViewState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay

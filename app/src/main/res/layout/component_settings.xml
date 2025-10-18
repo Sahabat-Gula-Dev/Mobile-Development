@@ -18,6 +18,7 @@
             android:id="@+id/ic_card_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
             android:src="@drawable/ic_person"
             app:layout_constraintTop_toTopOf="@id/tv_title_setting_card"
             app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_setting_card"

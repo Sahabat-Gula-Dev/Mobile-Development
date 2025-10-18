@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginStart
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -110,7 +109,11 @@ class HelpCenterFragment : Fragment() {
             setTextColor(textColorStateList)
             setChipStrokeColorResource(R.color.md_theme_outline)
             chipStrokeWidth = 1f.dpToPx()
-            chipCornerRadius = 50f.dpToPx()
+            val radius = 50f.dpToPx()
+                shapeAppearanceModel = shapeAppearanceModel
+                    .toBuilder()
+                    .setAllCornerSizes(radius)
+                    .build()
             isCheckedIconVisible = false
             typeface = customTypefaceBold
             textSize = 12f
@@ -130,7 +133,11 @@ class HelpCenterFragment : Fragment() {
                 setTextColor(textColorStateList)
                 setChipStrokeColorResource(R.color.md_theme_outline)
                 chipStrokeWidth = 1f.dpToPx()
-                chipCornerRadius = 50f.dpToPx()
+                val radius = 50f.dpToPx()
+                shapeAppearanceModel = shapeAppearanceModel
+                    .toBuilder()
+                    .setAllCornerSizes(radius)
+                    .build()
                 isCheckedIconVisible = false
                 typeface = customTypefaceRegular
                 textSize = 12f // Sesuaikan

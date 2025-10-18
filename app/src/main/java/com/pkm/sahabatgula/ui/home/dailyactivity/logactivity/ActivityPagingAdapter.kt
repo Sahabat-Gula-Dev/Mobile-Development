@@ -78,7 +78,7 @@ class ActivityPagingAdapter(
                 binding.icArrowRight.setImageResource(R.drawable.arrow_down_custom_food)
                 binding.icArrowRight.setSize(36)
 
-                binding.tvFoodCaloriesOnExpand.text = "${activity.caloriesBurned.toInt()} kkal"
+                binding.tvFoodCaloriesOnExpand.text = "${activity.caloriesBurned} kkal"
                 binding.tvDescFood.text = activity.description
                 Glide.with(itemView.context)
                     .load(activity.photoUrl)

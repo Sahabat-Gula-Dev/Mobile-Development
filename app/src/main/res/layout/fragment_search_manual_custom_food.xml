@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="16dp"
-    tools:context=".ui.home.dailyfood.customfood.search.SearchManualCustomFoodFragment">
+    android:paddingHorizontal="16dp">
     <TextView
         android:id="@+id/tv_header_result_custom_food"
         android:layout_width="wrap_content"

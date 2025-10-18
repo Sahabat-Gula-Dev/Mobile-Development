@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.databinding.FragmentStepBinding
 
 class StepFragment : Fragment() {

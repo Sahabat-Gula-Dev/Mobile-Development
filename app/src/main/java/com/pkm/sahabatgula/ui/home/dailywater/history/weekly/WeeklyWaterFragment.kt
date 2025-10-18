@@ -1,6 +1,5 @@
 package com.pkm.sahabatgula.ui.home.dailywater.history.weekly
 
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

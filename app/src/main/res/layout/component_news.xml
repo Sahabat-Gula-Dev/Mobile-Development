@@ -30,6 +30,7 @@
                 android:id="@+id/img_news"
                 android:layout_width="match_parent"
                 android:layout_height="205dp"
+                android:importantForAccessibility="no"
                 android:src="@drawable/img_food_satay"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>

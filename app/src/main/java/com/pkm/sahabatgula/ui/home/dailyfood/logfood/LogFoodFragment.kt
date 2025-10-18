@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
@@ -88,7 +86,7 @@ class LogFoodFragment : Fragment() {
             }
 
             findNavController().navigate(
-                com.pkm.sahabatgula.R.id.action_add_log_food_to_result_search_food_fragment,
+                R.id.action_add_log_food_to_result_search_food_fragment,
                 resultBundle
             )
         }

@@ -19,7 +19,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
@@ -37,7 +39,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class LogManualCustomFoodFragment : Fragment() {
 
@@ -66,11 +67,15 @@ class LogManualCustomFoodFragment : Fragment() {
         }
 
         viewModel.loadProfile()
-        lifecycleScope.launchWhenStarted {
-            viewModel.profile.collect { profile ->
-                profile?.let {
-                    maxSugar = it.max_sugar
-                    maxCalories = it.max_calories
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.profile.collect { profile ->
+                    profile?.let {
+                        maxSugar = it.max_sugar
+                        maxCalories = it.max_calories
+                    }
                 }
             }
         }
@@ -246,7 +251,11 @@ class LogManualCustomFoodFragment : Fragment() {
             setTextColor(textColorStateList)
             setChipStrokeColorResource(R.color.md_theme_outline)
             chipStrokeWidth = 1f.dpToPx()
-            chipCornerRadius = 50f.dpToPx()
+            val radius = 50f.dpToPx()
+                shapeAppearanceModel = shapeAppearanceModel
+                    .toBuilder()
+                    .setAllCornerSizes(radius)
+                    .build()
             isCheckedIconVisible = false
             typeface = bold
             textSize = 11f
@@ -268,7 +277,11 @@ class LogManualCustomFoodFragment : Fragment() {
                 setTextColor(textColorStateList)
                 setChipStrokeColorResource(R.color.md_theme_outline)
                 chipStrokeWidth = 1f.dpToPx()
-                chipCornerRadius = 50f.dpToPx()
+                val radius = 50f.dpToPx()
+                shapeAppearanceModel = shapeAppearanceModel
+                    .toBuilder()
+                    .setAllCornerSizes(radius)
+                    .build()
                 isCheckedIconVisible = false
             }
             chipGroup.addView(chip)
@@ -337,9 +350,11 @@ class LogManualCustomFoodFragment : Fragment() {
     }
 
     private fun setupButtonStateObserver() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.selectedFoodIdsState.collect { selectedIds ->
-                binding.btnLogThisFood.isEnabled = selectedIds.isNotEmpty()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedFoodIdsState.collect { selectedIds ->
+                    binding.btnLogThisFood.isEnabled = selectedIds.isNotEmpty()
+                }
             }
         }
     }

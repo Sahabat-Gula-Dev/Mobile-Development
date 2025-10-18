@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.data.remote.model.FaqItem
 import com.pkm.sahabatgula.databinding.ComponentHelpCenterBinding // Ganti dengan path Binding-mu
 

@@ -1,12 +1,9 @@
 package com.pkm.sahabatgula.ui.home.dailysugar.history.weekly
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope

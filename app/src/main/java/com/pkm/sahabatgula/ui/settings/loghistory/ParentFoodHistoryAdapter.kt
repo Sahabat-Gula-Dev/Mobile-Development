@@ -14,7 +14,7 @@ class ParentFoodHistoryAdapter(
 ) : RecyclerView.Adapter<ParentFoodHistoryAdapter.ParentViewHolder>() {
 
     private val items = historyList
-        ?.filter { !it.activities.isNullOrEmpty() }
+        ?.filter { !it.foods.isNullOrEmpty() }
         ?.toMutableList() ?: mutableListOf()
 
     inner class ParentViewHolder(val binding: ItemParentDateBinding) :
@@ -47,7 +47,7 @@ class ParentFoodHistoryAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newData: List<HistoryItem>) {
         items.clear()
-        items.addAll(newData.filter { !it.activities.isNullOrEmpty() })
+        items.addAll(newData.filter { !it.foods.isNullOrEmpty() })
         notifyDataSetChanged()
     }
 }

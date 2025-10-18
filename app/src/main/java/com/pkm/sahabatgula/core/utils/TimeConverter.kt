@@ -30,7 +30,7 @@ object DateConverter {
 fun newsTimeConverter(dateString: String): String {
     return try {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
+        val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag("id-ID"))
         val date: Date = inputFormat.parse(dateString)!!
         outputFormat.format(date)
     } catch (e: Exception) {
@@ -42,7 +42,7 @@ fun newsTimeConverter(dateString: String): String {
 fun convertIsoToIndonesianDateArticle(isoDate: String?): String {
     return try {
         val zonedDateTime = ZonedDateTime.parse(isoDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-        val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
+        val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.forLanguageTag("id-ID"))
         zonedDateTime.format(formatter)
     } catch (e: Exception) {
         e.printStackTrace()
@@ -51,7 +51,7 @@ fun convertIsoToIndonesianDateArticle(isoDate: String?): String {
 }
 
 fun formatEventDateTime(dateStr: String?, startStr: String?, endStr: String?): Pair<String, String> {
-    val locale = Locale("id", "ID")
+    val locale = Locale.forLanguageTag("id-ID")
     val localDate = LocalDate.parse(dateStr)
     val titleFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", locale)
     val formattedDate = localDate.format(titleFormatter)
@@ -83,7 +83,7 @@ fun formatEventDate(isoDate: String?): String {
         val date = LocalDate.parse(isoDate, inputFormatter)
 
         // Output format Indonesia: "04 Oktober 2025"
-        val outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
+        val outputFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.forLanguageTag("id-ID"))
         date.format(outputFormatter)
 
     } catch (e: Exception) {
@@ -91,12 +91,10 @@ fun formatEventDate(isoDate: String?): String {
     }
 }
 
-
-@Suppress("DEPRECATION")
 fun dateFormatterHistory(input: String): String {
     val parsedDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-    val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("id", "ID"))
-    val todayFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
+    val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.forLanguageTag("id-ID"))
+    val todayFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.forLanguageTag("id-ID"))
     val today = LocalDate.now()
     return if (parsedDate == today) {
         "Hari ini, ${parsedDate.format(todayFormatter)}"

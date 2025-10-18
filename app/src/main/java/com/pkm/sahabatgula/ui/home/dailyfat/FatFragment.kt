@@ -16,10 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
 import com.pkm.sahabatgula.core.utils.showNutrientExceededDialog
 import com.pkm.sahabatgula.databinding.FragmentFatBinding
-import com.pkm.sahabatgula.databinding.FragmentProteinBinding
-import com.pkm.sahabatgula.ui.home.dailycarbo.CarboState
 import com.pkm.sahabatgula.ui.home.dailyfat.history.FatChartPagerAdapter
-import com.pkm.sahabatgula.ui.home.dailyprotein.history.ProteinChartPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue

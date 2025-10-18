@@ -1,12 +1,9 @@
 package com.pkm.sahabatgula.ui.explore.article
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.pkm.sahabatgula.core.Resource
-import com.pkm.sahabatgula.data.remote.model.Article
 import com.pkm.sahabatgula.data.remote.model.ArticleCategory
 import com.pkm.sahabatgula.data.repository.ExploreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

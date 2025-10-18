@@ -3,9 +3,6 @@ package com.pkm.sahabatgula.data.repository
 import com.pkm.sahabatgula.core.utils.DateConverter
 import com.pkm.sahabatgula.data.remote.api.ApiService
 import com.pkm.sahabatgula.data.remote.model.HistoryItem
-import com.pkm.sahabatgula.data.remote.model.HistoryResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class HistoryRepository @Inject constructor(

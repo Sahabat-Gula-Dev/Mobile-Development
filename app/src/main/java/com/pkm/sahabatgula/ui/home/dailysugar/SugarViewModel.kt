@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pkm.sahabatgula.data.repository.HomeRepository
 import com.pkm.sahabatgula.core.utils.DateConverter
-import com.pkm.sahabatgula.ui.home.dailyprotein.ProteinState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

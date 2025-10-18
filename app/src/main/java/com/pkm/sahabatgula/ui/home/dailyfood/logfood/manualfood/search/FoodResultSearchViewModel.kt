@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FoodResultSearchViewModel @Inject constructor(
-    private val logFoodRepository: LogFoodRepository,
+    logFoodRepository: LogFoodRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

@@ -43,11 +43,7 @@ object DatabaseModule {
         return appDatabase.ChatDao()
     }
 
-
-
-
-
-    // Jika ada DAO lain nanti (misal: FoodDao), tambahkan resepnya di sini
+    // Jika ada DAO lain nanti (misal: FoodDao), tambahkan di sini
     // @Provides
     // fun provideFoodDao(appDatabase: AppDatabase): FoodDao {
     //     return appDatabase.foodDao()

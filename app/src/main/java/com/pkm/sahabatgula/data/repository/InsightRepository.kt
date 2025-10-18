@@ -99,6 +99,12 @@ class InsightRepository @Inject constructor(
               "height_cm": ${profile?.height ?: 0},
               "weight_kg": ${profile?.weight ?: 0},
               "risk_index": ${profile?.risk_index ?: 0},
+              "risk index memiliki beberapa kategorim dengan ketentuan:
+               ${profile?.risk_index ?: 0} <= 3: "Risiko Sangat Rendah,
+               ${profile?.risk_index ?: 0} <= 8: "Risiko Diabetes Rendah,
+               ${profile?.risk_index ?: 0} <= 12: "Risiko Diabetes Sedang,
+               ${profile?.risk_index ?: 0} <= 20: "Risiko Diabetes Tinggi,
+               ${profile?.risk_index ?: 0} > 20: "Risiko Sangat Tinggi"
               "bmi_score": ${profile?.bmi_score ?: 0.0},
         
               "daily_targets": {

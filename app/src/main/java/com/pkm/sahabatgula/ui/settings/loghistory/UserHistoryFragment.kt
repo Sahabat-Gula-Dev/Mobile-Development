@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pkm.sahabatgula.R
-import com.pkm.sahabatgula.databinding.FragmentScanBinding
 import com.pkm.sahabatgula.databinding.FragmentUserHistoryBinding
-import com.pkm.sahabatgula.ui.home.dailyfood.logfood.LogFoodPagerAdapter
 
 class UserHistoryFragment : Fragment() {
     private var _binding: FragmentUserHistoryBinding? = null
